@@ -1,0 +1,65 @@
+import { MyRewardsSection } from './MyRewardsSection'
+import { Skeleton } from './Skeleton'
+import { BaseCard } from '../BaseCard'
+import { ClaimRewardsDialog } from '@/components/dialogs/ClaimRewardsDialog'
+import {
+  AccumulatedRewardsIcon,
+  ClaimableRewardsIcon,
+  PendingRewardsIcon,
+} from '@/components/icons'
+
+interface MyRewardsProps {
+  claimableRewards: number
+  isDisabled?: boolean
+  isLoading?: boolean
+  pendingRewards: number
+  totalAccumulatedRewards: number
+}
+
+export function MyRewards({
+  claimableRewards,
+  isDisabled,
+  isLoading,
+  pendingRewards,
+  totalAccumulatedRewards,
+}: MyRewardsProps) {
+  return (
+    <BaseCard className="mx-auto flex h-[338px] w-full max-w-md flex-col justify-between text-DAppDeep sm:h-[600px] md:h-[580px]">
+      {isLoading ? (
+        <Skeleton />
+      ) : (
+        <>
+          <h3 className="pb-6 text-2xl font-bold leading-8 text-DAppDeep sm:mb-4 sm:border-b sm:border-DAppGray/20">
+            My Rewards
+          </h3>
+          <MyRewardsSection
+            className="pb-2 sm:border-none sm:pb-0"
+            icon={<ClaimableRewardsIcon />}
+            rewards={claimableRewards}
+            title="Claimable"
+            tooltip="Rewards ready to be claimed from all your validators"
+          />
+          <ClaimRewardsDialog
+            claimableRewards={claimableRewards}
+            disabledTrigger={isDisabled}
+          />
+          <MyRewardsSection
+            className="mb-6 mt-2 pt-2 sm:border-t sm:pt-6"
+            icon={<PendingRewardsIcon />}
+            rewards={+pendingRewards}
+            title="Pending"
+            tooltip="Non-confirmed rewards that will become claimable after proposing a block"
+            type="pending"
+          />
+          <MyRewardsSection
+            className="mb-8"
+            icon={<AccumulatedRewardsIcon />}
+            rewards={totalAccumulatedRewards}
+            title="Lifetime earned"
+            tooltip="Claimable now + already claimed in the past"
+          />
+        </>
+      )}
+    </BaseCard>
+  )
+}
