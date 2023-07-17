@@ -22,7 +22,6 @@ export interface Validator {
   accumulated: number
   warning: Warnings
   subscribed: boolean
-  status: string
 }
 
 export type TableDataTypes = Validator | Block

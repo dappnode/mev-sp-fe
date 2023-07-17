@@ -62,7 +62,6 @@ export function UserInfo() {
         validatorId: validatorIndex,
         validatorKey: validatorKey as `0x${string}`,
         warning: setWarning(status),
-        status,
       })
     )
   }

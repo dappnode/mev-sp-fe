@@ -14,15 +14,13 @@ import type { IDialogStates } from './types'
 const steps = ['Fee recipient', 'MEV Blocks check', 'Deposit', 'Done']
 
 interface SubscribeToMevDialogProps {
-  validatorId?: number
-  validatorIds?: number[]
-  validatorKey?: `0x${string}`
+  validatorId: number
+  validatorKey: `0x${string}`
 }
 
 export function SubscribeToMevDialog({
   validatorId,
   validatorKey,
-  validatorIds,
 }: SubscribeToMevDialogProps) {
   const { chain } = useNetwork()
   const [dialogState, setDialogState] = useState<IDialogStates>('initial')
@@ -38,6 +36,7 @@ export function SubscribeToMevDialog({
     handleOpenChange(newOpen)
     if (!newOpen) setDialogState('initial')
   }
+
   return (
     <BaseDialog
       disabledTrigger={chain?.unsupported}

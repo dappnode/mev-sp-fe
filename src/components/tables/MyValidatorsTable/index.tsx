@@ -5,8 +5,7 @@ import { ServerErrorWarning } from './components/ServerErrorWarning'
 import { headerTooltip, PAGE_SIZE } from './config'
 import { TableLayout } from '../components/Table'
 import { HeaderTooltip } from '../components/HeaderTooltip'
-import { Button } from '@/components/common/Button'
-import { useMemo, useState, useCallback } from 'react'
+import { useMemo } from 'react'
 import Link from 'next/link'
 import {
   createColumnHelper,
@@ -20,65 +19,11 @@ import { useSearchInput } from '@/hooks/useSearchInput'
 import { addEthSuffix, shortenEthAddress } from '@/utils/web3'
 import { toFixedNoTrailingZeros } from '@/utils/decimals'
 import { getBeaconChainExplorer } from '@/utils/config'
-
-import type { TableMeta, RowData } from '@tanstack/react-table'
 import type { Validator } from '../types'
-
-declare module '@tanstack/table-core' {
-  interface TableMeta<TData extends RowData> {
-    onRowSelection: (info: RowData) => void
-    rowsSelected: boolean
-    selectedValidators: number[]
-    allValidatorsIndex: number[]
-  }
-}
-
-declare module '@tanstack/table-core' {
-  interface TableMetaValidator<TData extends RowData> {
-    rowsSelected: boolean
-  }
-}
-
-const getUnsubscribedOrUntrackedIndices = (validators: Validator[]) => {
-  return validators.reduce((acc: number[], validator: Validator): number[] => {
-    if (
-      validator.status === 'notsubscribed' ||
-      validator.status === 'untracked'
-    ) {
-      return [...acc, validator.validatorId]
-    }
-    return acc
-  }, [])
-}
 
 const columnHelper = createColumnHelper<Validator>()
 
 const columns = [
-  columnHelper.accessor('validatorKey', {
-    header: '',
-    cell: (info) => {
-      const { table } = info
-      const {
-        validatorId,
-        warning,
-        subscribed: isSubscribed,
-      } = info.row.original
-      const isBanned = warning === 'banned'
-      if (isSubscribed || isBanned) return null
-      return (
-        <input
-          type="checkbox"
-          name="validator"
-          value={validatorId}
-          defaultChecked={isSubscribed}
-          key={`checkbox-${validatorId}`}
-          onChange={() => {
-            table.options?.meta?.onRowSelection(info)
-          }}
-        />
-      )
-    },
-  }),
   columnHelper.accessor('address', {
     header: () => (
       <HeaderTooltip header="Address" tooltip={headerTooltip.address} />
@@ -117,31 +62,12 @@ const columns = [
     cell: (info) => <WarningIcon warning={info.getValue()} />,
   }),
   columnHelper.accessor('subscribed', {
-    header: (info) => {
-      const validatorsSelected = info.table.options.meta?.rowsSelected
-      return (
-        <Button
-          size="sm"
-          buttonType="secondary"
-          onPress={() => {
-            if (validatorsSelected) {
-              // subscribeSelectedValidators();
-            } else {
-              // subscribeAllValidators();
-            }
-          }}>
-          <p className="text-xs">
-            Subscribe {validatorsSelected ? 'Picked' : 'All'}
-          </p>
-        </Button>
-      )
-    },
+    header: '',
     cell: (info) => {
       const isSubscribed = info.getValue()
       const { validatorKey, validatorId, warning } = info.row.original
       const isBanned = warning === 'banned'
       if (isBanned) return null
-      console.log({ isSubscribed })
       return isSubscribed ? (
         <UnsubscribeToMevDialog validatorId={validatorId} />
       ) : (
@@ -167,9 +93,7 @@ export function MyValidatorsTable({
   isLoading,
   serverError,
 }: MyValidatorsTableProps) {
-  const [selectedValidators, setSelectedValidators] = useState<any[]>([])
   const { searchInput, setSearchInput, debouncedSearchInput } = useSearchInput()
-
   const filteredData = useMemo(
     () =>
       data
@@ -194,25 +118,6 @@ export function MyValidatorsTable({
     [debouncedSearchInput, data]
   )
 
-  const onRowSelection = useCallback((info: any) => {
-    const validatorId = info.row.original.validatorId
-    setSelectedValidators((prevSelectedValidators) => {
-      if (prevSelectedValidators.includes(validatorId)) {
-        // Validator is already in the list, so remove it
-        return prevSelectedValidators.filter(
-          (validator: string) => validator !== validatorId
-        )
-      } else {
-        // Validator is not in the list, so add it
-        return [...prevSelectedValidators, validatorId]
-      }
-    })
-  }, [])
-
-  const subscribeSelectedValidators = () => {
-    // Subscribe to all of the validators that are stored in the `selectedValidators` state variable.
-  }
-
   const table = useReactTable({
     columns,
     data: filteredData ?? [],
@@ -223,12 +128,6 @@ export function MyValidatorsTable({
     },
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    meta: {
-      onRowSelection,
-      rowsSelected: selectedValidators.length > 0,
-      selectedValidators,
-      allValidatorsIndex: getUnsubscribedOrUntrackedIndices(data ?? []),
-    },
   })
 
   if (!isConnected) {

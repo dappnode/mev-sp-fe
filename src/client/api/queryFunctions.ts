@@ -44,9 +44,7 @@ export const fetchValidatorsByDepositor = async (
   address: `0x${string}` | undefined
 ) => {
   const response = await apiClient.get(
-    endpoints.memoryValidators(
-      '0xa111B576408B1CcDacA3eF26f22f082C49bcaa55' || '0x0'
-    )
+    endpoints.memoryValidators(address || '0x0')
   )
   return ValidatorSchema.array().parse(convertKeysToCamelCase(response.data))
 }

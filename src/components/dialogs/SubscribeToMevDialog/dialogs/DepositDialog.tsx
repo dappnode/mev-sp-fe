@@ -19,7 +19,6 @@ import { SMOOTHING_POOL_ADDRESS } from '@/utils/config'
 
 interface DepositDialogProps extends DialogProps {
   validatorId: number
-  validatorIds?: number[]
   setShowCloseButton: (show: boolean) => void
 }
 
