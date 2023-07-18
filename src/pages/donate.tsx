@@ -8,7 +8,7 @@ export default function Donate() {
   const { isConnected } = useAccount()
   return (
     <>
-      <Head title="Support DAppNode" />
+      <Head title="Support Solo Stakers" />
       <main className="mx-auto flex max-w-5xl items-center justify-between pt-6">
         <div className="relative mt-20 hidden h-[520px] w-[490px] lg:block">
           <Image
@@ -91,15 +91,13 @@ export default function Donate() {
         </div>
         <article className="mx-auto mt-14 flex max-w-fit flex-col text-center lg:mt-0 lg:text-left">
           <h1 className="mt-2 text-5xl font-bold leading-[56px] text-DAppDeep">
-            Support DAppNode
+            Support Solo Stakers
           </h1>
           <h2 className="order-first text-base font-normal tracking-wider text-DAppBlue">
             MEV Smoothing Pool
           </h2>
           <p className="mt-2 max-w-md text-lg font-normal leading-8 text-DAppDeep">
-            Lorem ipsum dolor sit amet consectetur. Non nulla ut dolor turpis
-            habitasse. Orci leo id amet sit. Feugiat quisque mi auctor pharetra.
-            Diam purus lorem ut felis adipiscing dis cras.
+            You can support Solo Stakers and increase their revenue by donating directly into the pool. It's a great way of supporting the true decentralized Node Runners that keep Ethereum decentralized at scale.
           </p>
           <div className="mx-auto mt-8 w-[220px] lg:mx-0">
             {isConnected ? <DonateDialog /> : <ConnectWalletButton />}
