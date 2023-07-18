@@ -75,33 +75,33 @@ const howToFeatures = [
 
 const howToSteps = [
   {
-    title: 'User Connects',
+    title: 'Subscribe to the Pool',
     description:
-      'User connects to the web with a given address (deposit address): This endpoint returns a list of the validators deposited with that address. This endpoint returns a list of the validators deposited with that address (the ones that can be subscribed)',
+      'Connect to the Dashboard with your Withdrawal Address of your validators and register them to start accumulating rewards. If you prefer to wait until your next block proposal, you can simply set your Fee Recipient Address to the Smoothing Pool and your validator will be subscribed when you send your first EL rewards',
     imageSrc: 'images/how-to-step-1.svg',
   },
   {
-    title: 'Returning User',
+    title: 'Claim Rewards',
     description:
-      'User connects (and has already some active subscriptions). This endpoint returns all validators subscribed from that deposit address with the state (active, banned, redcard, yellowcard, etc) balance, etc.',
+      'After every sucessful block proposal, you will be able to claim all accumulated rewards for that validator. You won't depend on the MEV of that particular block, and you will get an average of all successfully proposed blocks in the pool!',
     imageSrc: 'images/how-to-step-2.svg',
   },
   {
-    title: 'Check In',
+    title: 'No cheating possible',
     description:
-      'Check if a validator key has properly registered (for subscript)',
+      'You start accumulating rewards since registration, but rewards can only be claimed after successfully proposing a block. This prevents anyone stealing rewards without sending their MEV rewards to the pool. If you miss a block, no problem! We have a "card system" and you'll get a Yellow card for a missed block -you will still accumulate rewards but won't be able to withdraw until your next proposal-, a Red one for two misses -you will stop accumulating rewards until you propose a block to the pool- and a Ban if you send your MEV rewards from the block somewhere else -all your accumulated rewards will be divided among the rest of participants',
     imageSrc: 'images/how-to-step-3.svg',
   },
   {
-    title: 'UI Metrics',
+    title: 'Check your rewards at any time',
     description:
-      'UI has some metrics: total subscribers, avg rewards, total rewards, etc',
+      'Look at the dashboard to see  total subscribers, avg rewards, total rewards, etc; and Log in to see specific metrics about your validators',
     imageSrc: 'images/how-to-step-4.svg',
   },
   {
-    title: 'SP Blocks',
+    title: 'Transparency: Keep Track of all the blocks coming into Smooth',
     description:
-      'For Latest Blocks to SP. This endpoint returns all proposed. Same for missed blocks and wrong fee',
+      'You can see all blocks that are sent to Smooth. See if they have MEV, if they missed and who proposed them.',
     imageSrc: 'images/how-to-step-5.svg',
   },
 ]
