@@ -60,15 +60,15 @@ export default function HowTo() {
 
 const howToFeatures = [
   {
-    title: 'Feature',
+    title: 'Pool rewards, Earn More',
     description:
-      'A Smart Contract that receives MEV rewards from a group of stakers that decide to share MEV rewards',
+      'Pool your MEV rewards together with other Stakers and get payouts from every block in the pool',
     icon: <FeaturesIcon />,
   },
   {
-    title: 'Pool Rewards',
+    title: 'Smooth and Simple',
     description:
-      'A MEV Smoothing Pool that allows users to set their fee recipient to it and accrue pool rewards.',
+      'Simply set your Fee Recipient Address to Smooth and claim your rewards after proposing a slot',
     icon: <WalletIcon />,
   },
 ]
