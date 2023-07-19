@@ -13,7 +13,7 @@ export default function Donate() {
         <div className="relative mt-20 hidden h-[520px] w-[490px] lg:block">
           <Image
             alt="ETH Circle"
-            className="absolute left-36 bottom-14"
+            className="absolute bottom-14 left-36"
             height={230}
             src="images/eth-circle.svg"
             width={230}
@@ -27,14 +27,14 @@ export default function Donate() {
           />
           <Image
             alt="WETH Circle"
-            className="absolute right-20 -bottom-14"
+            className="absolute -bottom-14 right-20"
             height={180}
             src="images/weth-circle.svg"
             width={180}
           />
           <Image
             alt="USDC Circle"
-            className="absolute left-20 -top-5"
+            className="absolute -top-5 left-20"
             height={176}
             src="images/usdc-circle.svg"
             width={176}
@@ -62,7 +62,7 @@ export default function Donate() {
           />
           <Image
             alt="Circle"
-            className="absolute top-28 left-14"
+            className="absolute left-14 top-28"
             height={110}
             src="images/currency-circle.svg"
             width={110}
@@ -76,14 +76,14 @@ export default function Donate() {
           />
           <Image
             alt="Circle"
-            className="absolute top-40 right-12"
+            className="absolute right-12 top-40"
             height={124}
             src="images/currency-circle.svg"
             width={124}
           />
           <Image
             alt="Circle"
-            className="absolute bottom-20 -right-7"
+            className="absolute -right-7 bottom-20"
             height={160}
             src="images/currency-circle.svg"
             width={160}
@@ -97,7 +97,7 @@ export default function Donate() {
             MEV Smoothing Pool
           </h2>
           <p className="mt-2 max-w-md text-lg font-normal leading-8 text-DAppDeep">
-            You can support Solo Stakers and increase their revenue by donating directly into the pool. It's a great way of supporting the true decentralized Node Runners that keep Ethereum decentralized at scale.
+            {`You can support Solo Stakers and increase their revenue by donating directly into the pool. It's a great way of supporting the true decentralized Node Runners that keep Ethereum decentralized at scale.`}
           </p>
           <div className="mx-auto mt-8 w-[220px] lg:mx-0">
             {isConnected ? <DonateDialog /> : <ConnectWalletButton />}
