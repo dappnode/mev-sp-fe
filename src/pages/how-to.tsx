@@ -82,14 +82,12 @@ const howToSteps = [
   },
   {
     title: 'Claim Rewards',
-    description:
-      'After every sucessful block proposal, you will be able to claim all accumulated rewards for that validator. You won't depend on the MEV of that particular block, and you will get an average of all successfully proposed blocks in the pool!',
+    description: `After every sucessful block proposal, you will be able to claim all accumulated rewards for that validator. You won't depend on the MEV of that particular block, and you will get an average of all successfully proposed blocks in the pool!`,
     imageSrc: 'images/how-to-step-2.svg',
   },
   {
     title: 'No cheating possible',
-    description:
-      'You start accumulating rewards since registration, but rewards can only be claimed after successfully proposing a block. This prevents anyone stealing rewards without sending their MEV rewards to the pool. If you miss a block, no problem! We have a "card system" and you'll get a Yellow card for a missed block -you will still accumulate rewards but won't be able to withdraw until your next proposal-, a Red one for two misses -you will stop accumulating rewards until you propose a block to the pool- and a Ban if you send your MEV rewards from the block somewhere else -all your accumulated rewards will be divided among the rest of participants',
+    description: `You start accumulating rewards since registration, but rewards can only be claimed after successfully proposing a block. This prevents anyone stealing rewards without sending their MEV rewards to the pool. If you miss a block, no problem! We have a "card system" and you'll get a Yellow card for a missed block -you will still accumulate rewards but won't be able to withdraw until your next proposal-, a Red one for two misses -you will stop accumulating rewards until you propose a block to the pool- and a Ban if you send your MEV rewards from the block somewhere else -all your accumulated rewards will be divided among the rest of participants`,
     imageSrc: 'images/how-to-step-3.svg',
   },
   {
