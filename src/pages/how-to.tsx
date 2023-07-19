@@ -21,7 +21,7 @@ export default function HowTo() {
               MEV Smoothing Pool
             </h1>
             <h3 className="mt-7 text-center text-base font-normal leading-8 xl:text-left">
-              Get a high value MEV block by joining forces with other stakers.
+              Get higher MEV revenue by joining forces with other stakers
             </h3>
             {howToFeatures.map((feature) => (
               <HowToFeature
