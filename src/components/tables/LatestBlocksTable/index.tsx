@@ -56,12 +56,16 @@ const getColumns = (blackExplorerUrl?: string) => [
       <HeaderTooltip header="Reward Type" tooltip={headerTooltip.rewardType} />
     ),
     cell: (info) => {
-      let rewardType = info.getValue();
+      const rewardType = info.getValue();
+      let modifiedRewardType: string = rewardType;
+  
       // Replace "vanila" with "vanilla" if it exists in the rewardType
-      rewardType = rewardType.replace('vanila', 'vanilla');
-      return rewardType === 'unknownrewardtype' ? '-' : rewardType;
+      modifiedRewardType = modifiedRewardType.replace('vanila', 'vanilla');
+      const displayRewardType = modifiedRewardType === 'unknownrewardtype' ? '-' : modifiedRewardType;
+      return displayRewardType;
     },
   }),
+  
   columnHelper.accessor('reward', {
     header: () => (
       <HeaderTooltip header="Reward" tooltip={headerTooltip.reward} />
