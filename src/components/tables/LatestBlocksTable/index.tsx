@@ -122,7 +122,7 @@ export function LatestBlocksTable({
     getPaginationRowModel: getPaginationRowModel(),
   })
 
-  if (isLoading) return <Skeleton title="Latest Blocks to SP" />
+  if (isLoading) return <Skeleton title="Latest Smooth Blocks" />
 
   return (
     <TableLayout
@@ -137,7 +137,7 @@ export function LatestBlocksTable({
       setFilterValue={setFilterValue}
       setSearchInput={setSearchInput}
       table={table}
-      title="Latest Blocks to SP"
+      title="Latest Smooth Blocks"
     />
   )
 }
