@@ -55,7 +55,10 @@ const getColumns = (blackExplorerUrl?: string) => [
     header: () => (
       <HeaderTooltip header="Reward Type" tooltip={headerTooltip.rewardType} />
     ),
-    cell: (info) => info.getValue(),
+    cell: (info) => {
+      const rewardType = info.getValue();
+      return rewardType === 'unknownrewardtype' ? '-' : rewardType;
+    },
   }),
   columnHelper.accessor('reward', {
     header: () => (
