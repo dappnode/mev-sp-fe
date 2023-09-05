@@ -57,9 +57,15 @@ const getColumns = (blackExplorerUrl?: string) => [
     ),
     cell: (info) => {
       const rewardType = info.getValue();
-      return rewardType === 'unknownrewardtype' ? '-' : rewardType;
+      let modifiedRewardType: string = rewardType;
+  
+      // Replace "vanila" with "vanilla" if it exists in the rewardType
+      modifiedRewardType = modifiedRewardType.replace('vanila', 'vanilla');
+      const displayRewardType = modifiedRewardType === 'unknownrewardtype' ? '-' : modifiedRewardType;
+      return displayRewardType;
     },
   }),
+  
   columnHelper.accessor('reward', {
     header: () => (
       <HeaderTooltip header="Reward" tooltip={headerTooltip.reward} />
@@ -74,8 +80,8 @@ const getColumns = (blackExplorerUrl?: string) => [
         blockType === 'okpoolproposal'
           ? 'Proposed'
           : blockType === 'missedproposal'
-          ? 'Missed'
-          : 'Wrong Fee'
+            ? 'Missed'
+            : 'Wrong Fee'
       return formattedBlockType
     },
   }),
