@@ -56,7 +56,9 @@ const getColumns = (blackExplorerUrl?: string) => [
       <HeaderTooltip header="Reward Type" tooltip={headerTooltip.rewardType} />
     ),
     cell: (info) => {
-      const rewardType = info.getValue();
+      let rewardType = info.getValue();
+      // Replace "vanila" with "vanilla" if it exists in the rewardType
+      rewardType = rewardType.replace('vanila', 'vanilla');
       return rewardType === 'unknownrewardtype' ? '-' : rewardType;
     },
   }),
@@ -74,8 +76,8 @@ const getColumns = (blackExplorerUrl?: string) => [
         blockType === 'okpoolproposal'
           ? 'Proposed'
           : blockType === 'missedproposal'
-          ? 'Missed'
-          : 'Wrong Fee'
+            ? 'Missed'
+            : 'Wrong Fee'
       return formattedBlockType
     },
   }),
