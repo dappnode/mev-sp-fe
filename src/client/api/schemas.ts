@@ -63,13 +63,13 @@ export const StatisticsSchema = z.object({
   totalAccumulatedRewardsWei: z.string(),
   totalPendingRewardsWei: z.string(),
   totalRewardsSentWei: z.string(),
+  totalRewardsSent30DaysWei: z.string(),
+  rewardsPerValidatorPer30DaysWei: z.string(),
   totalDonationsWei: z.string(),
   avgBlockRewardWei: z.string(),
   totalProposedBlocks: z.number(),
   totalMissedBlocks: z.number(),
   totalWrongfeeBlocks: z.number(),
-  total_rewards_sent_30days_wei: z.string(),
- rewards_per_validator_per_30days_wei: z.string(),
 })
 
 export const onChainProofSchema = z.object({

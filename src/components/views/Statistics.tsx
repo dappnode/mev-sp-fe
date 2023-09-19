@@ -22,7 +22,7 @@ export function Statistics() {
         subscribers={statisticsQuery.data?.totalSubscribedValidators}
       />
       <AverageRewardsCard
-        averageEthRewardWei={statisticsQuery.data?.rewards_per_validator_per_30days_wei}
+        averageEthRewardWei={statisticsQuery.data?.rewardsPerValidatorPer30DaysWei}
         isError={statisticsQuery.isError}
         isLoading={!serverStatus.data?.ready || statisticsQuery.isLoading}
       />
@@ -30,7 +30,7 @@ export function Statistics() {
         isError={statisticsQuery.isError}
         isLoading={!serverStatus.data?.ready || statisticsQuery.isLoading}
         lastSevenDaysEthRewardWei={statisticsQuery.data?.totalRewardsSentWei}
-        totalEthRewardWei={statisticsQuery.data?.total_rewards_sent_30days_wei}
+        totalEthRewardWei={statisticsQuery.data?.totalRewardsSent30DaysWei}
       />
       <LastCheckpointCard
         isError={statusQuery.isError}
