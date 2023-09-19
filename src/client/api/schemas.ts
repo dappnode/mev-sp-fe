@@ -68,6 +68,8 @@ export const StatisticsSchema = z.object({
   totalProposedBlocks: z.number(),
   totalMissedBlocks: z.number(),
   totalWrongfeeBlocks: z.number(),
+  total_rewards_sent_30days_wei: z.string(),
+ rewards_per_validator_per_30days_wei: z.string(),
 })
 
 export const onChainProofSchema = z.object({

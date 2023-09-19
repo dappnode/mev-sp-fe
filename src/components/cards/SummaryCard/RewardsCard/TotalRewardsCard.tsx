@@ -18,7 +18,7 @@ export function TotalRewardsCard({
       ethRewardWei={totalEthRewardWei}
       isError={isError}
       isLoading={isLoading}
-      secondaryRewardTitle="Last 7 days"
+      secondaryRewardTitle="Last 30 days"
       secondaryRewardWei={lastSevenDaysEthRewardWei}
       title="Total Rewards"
       tooltip="Total rewards over the last 30 days"
