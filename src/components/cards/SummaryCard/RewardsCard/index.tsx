@@ -71,7 +71,7 @@ export function AverageCard({
   return (
     <SummaryCard
       bottomLeftText=""
-      bottomRightText={`${toFixedNoTrailingZeros(ethReward, 4)} ETH`}
+      bottomRightText=""
       isError={isError}
       isLoading={isLoading}
       title={title}
