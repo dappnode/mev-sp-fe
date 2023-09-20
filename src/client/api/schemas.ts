@@ -63,6 +63,8 @@ export const StatisticsSchema = z.object({
   totalAccumulatedRewardsWei: z.string(),
   totalPendingRewardsWei: z.string(),
   totalRewardsSentWei: z.string(),
+  totalRewardsSent30daysWei: z.string(),
+  rewardsPerValidatorPer30daysWei: z.string(),
   totalDonationsWei: z.string(),
   avgBlockRewardWei: z.string(),
   totalProposedBlocks: z.number(),
