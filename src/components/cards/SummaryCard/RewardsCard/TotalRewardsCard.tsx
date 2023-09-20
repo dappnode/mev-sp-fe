@@ -7,6 +7,7 @@ interface TotalRewardsCardProps {
   lastSevenDaysEthRewardWei: string | undefined
 }
 
+
 export function TotalRewardsCard({
   totalEthRewardWei,
   isLoading,
