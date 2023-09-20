@@ -70,14 +70,17 @@ export const fetchStatus = async () => {
 }
 
 export const fetchStatistics = async () => {
-  const response = await apiClient.get(endpoints.statistics)
-  try{
-    StatisticsSchema.parse(convertKeysToCamelCase(response.data))
+  try {
+    const response = await apiClient.get(endpoints.statistics);
+    const parsedData = StatisticsSchema.parse(convertKeysToCamelCase(response.data));
+    return parsedData;
   } catch (e) {
-    console.log(e)
+    console.log(e);
+    // Handle the error or return a default value if needed
+    return null; // For example, return null in case of an error
   }
-  return StatisticsSchema.parse(convertKeysToCamelCase(response.data))
-}
+};
+
 
 export const fetchOnChainProof = async (address: `0x${string}` | undefined) => {
   const response = await apiClient.get(endpoints.onchainProof(address || '0x0'))
