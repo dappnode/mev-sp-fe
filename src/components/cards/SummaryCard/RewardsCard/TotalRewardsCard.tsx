@@ -4,14 +4,14 @@ interface TotalRewardsCardProps {
   totalEthRewardWei: string | undefined
   isLoading: boolean
   isError: boolean
-  lastSevenDaysEthRewardWei: string | undefined
+  last30daysEthRewardWei: string | undefined
 }
 
 export function TotalRewardsCard({
   totalEthRewardWei,
   isLoading,
   isError,
-  lastSevenDaysEthRewardWei,
+  last30daysEthRewardWei,
 }: TotalRewardsCardProps) {
   return (
     <RewardsCard
@@ -19,7 +19,7 @@ export function TotalRewardsCard({
       isError={isError}
       isLoading={isLoading}
       secondaryRewardTitle="Last 30 days"
-      secondaryRewardWei={lastSevenDaysEthRewardWei}
+      secondaryRewardWei={last30daysEthRewardWei}
       title="Total Rewards"
       tooltip="Total rewards over the last 30 days"
     />

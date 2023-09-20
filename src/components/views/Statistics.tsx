@@ -29,8 +29,8 @@ export function Statistics() {
       <TotalRewardsCard
         isError={statisticsQuery.isError}
         isLoading={!serverStatus.data?.ready || statisticsQuery.isLoading}
-        lastSevenDaysEthRewardWei={statisticsQuery.data?.totalRewardsSentWei}
-        totalEthRewardWei={statisticsQuery.data?.totalRewardsSent30daysWei}
+        last30daysEthRewardWei={statisticsQuery.data?.totalRewardsSent30daysWei}
+        totalEthRewardWei={statisticsQuery.data?.totalRewardsSentWei}
       />
       <LastCheckpointCard
         isError={statusQuery.isError}

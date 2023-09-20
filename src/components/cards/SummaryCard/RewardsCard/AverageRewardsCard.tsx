@@ -16,8 +16,8 @@ export function AverageRewardsCard({
       ethRewardWei={averageEthRewardWei}
       isError={isError}
       isLoading={isLoading}
-      secondaryRewardTitle=""
-      secondaryRewardWei=""
+      secondaryRewardTitle="test"
+      secondaryRewardWei={averageEthRewardWei}
       title="Validator's Monthly Rewards"
       tooltip="Smooth Validator Average Rewards for the Past 30 Days"
     />
