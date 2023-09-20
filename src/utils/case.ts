@@ -6,7 +6,7 @@
  * toCamelCase('foo_bar') // returns 'fooBar'
  */
 function toCamelCase(str: string): string {
-  return str.replace(/_([a-z])/g, (match, char) => char.toUpperCase())
+  return str.replace(/_([a-z0-9])/g, (match, char) => char.toUpperCase())
 }
 
 /**
