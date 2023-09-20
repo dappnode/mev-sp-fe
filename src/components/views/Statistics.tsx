@@ -22,9 +22,9 @@ export function Statistics() {
         subscribers={statisticsQuery.data?.totalSubscribedValidators}
       />
       <AverageRewardsCard
-        averageEthRewardWei={statisticsQuery.data?.rewardsPerValidatorPer30daysWei}
         isError={statisticsQuery.isError}
         isLoading={!serverStatus.data?.ready || statisticsQuery.isLoading}
+        rewardsPerValidatorPer30daysWei={statisticsQuery.data?.rewardsPerValidatorPer30daysWei}
       />
       <TotalRewardsCard
         isError={statisticsQuery.isError}
