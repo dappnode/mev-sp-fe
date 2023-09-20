@@ -1,27 +1,23 @@
-import { RewardsCard } from '.'
+import { AverageCard } from '.'
 
 interface AverageRewardsCardProps {
-  averageEthRewardWei: string | undefined
   isLoading: boolean
   isError: boolean
-  spAverageEthRewardWei: string | undefined
+  rewardsPerValidatorPer30daysWei: string | undefined
 }
 
 export function AverageRewardsCard({
-  averageEthRewardWei,
   isLoading,
   isError,
-  spAverageEthRewardWei,
+  rewardsPerValidatorPer30daysWei,
 }: AverageRewardsCardProps) {
   return (
-    <RewardsCard
-      ethRewardWei={averageEthRewardWei}
+    <AverageCard
+      ethRewardWei={rewardsPerValidatorPer30daysWei}
       isError={isError}
       isLoading={isLoading}
-      secondaryRewardTitle="SP Average"
-      secondaryRewardWei={spAverageEthRewardWei}
-      title="Average Rewards"
-      tooltip="Average rewards over the last 30 days"
+      title="Validator's Monthly Rewards"
+      tooltip="Smooth Validator Average Rewards for the Past 30 Days"
     />
   )
 }

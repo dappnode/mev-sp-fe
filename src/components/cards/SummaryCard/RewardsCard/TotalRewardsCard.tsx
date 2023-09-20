@@ -4,24 +4,24 @@ interface TotalRewardsCardProps {
   totalEthRewardWei: string | undefined
   isLoading: boolean
   isError: boolean
-  lastSevenDaysEthRewardWei: string | undefined
+  last30daysEthRewardWei: string | undefined
 }
 
 export function TotalRewardsCard({
   totalEthRewardWei,
   isLoading,
   isError,
-  lastSevenDaysEthRewardWei,
+  last30daysEthRewardWei,
 }: TotalRewardsCardProps) {
   return (
     <RewardsCard
       ethRewardWei={totalEthRewardWei}
       isError={isError}
       isLoading={isLoading}
-      secondaryRewardTitle="Last 7 days"
-      secondaryRewardWei={lastSevenDaysEthRewardWei}
+      secondaryRewardTitle="Last 30 days"
+      secondaryRewardWei={last30daysEthRewardWei}
       title="Total Rewards"
-      tooltip="Total rewards over the last 30 days"
+      tooltip="Total rewards sent into the Smoothing Pool"
     />
   )
 }
