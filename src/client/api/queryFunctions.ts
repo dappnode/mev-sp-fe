@@ -73,7 +73,9 @@ export const fetchStatistics = async () => {
   try {
     const response = await apiClient.get(endpoints.statistics);
     console.log(response.data)
-    const parsedData = StatisticsSchema.parse(convertKeysToCamelCase(response.data));
+    const convertedData = convertKeysToCamelCase(response.data);
+    console.log(convertedData)
+    const parsedData = StatisticsSchema.parse(convertedData);
     return parsedData;
   } catch (e) {
     console.log(e);
