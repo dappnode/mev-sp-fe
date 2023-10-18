@@ -35,9 +35,9 @@ export function LastCheckpointCard({
       isError={isError}
       isLoading={isLoading}
       title="Last Checkpoint"
-      tooltip="Time since last onchain update">
+      tooltip=`${console.log(process.env.BACKEND_URL)}`>
       <h4 className="text-base font-normal leading-7 text-DAppDeep ">
-        {formatTime(lastCheckpoint)}
+        {${console.log(process.env.NEXT_PUBLIC_BACKEND_URL)}}
       </h4>
     </SummaryCard>
   )
