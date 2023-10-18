@@ -35,9 +35,9 @@ export function LastCheckpointCard({
       isError={isError}
       isLoading={isLoading}
       title="Last Checkpoint"
-      tooltip=`${console.log(process.env.BACKEND_URL)}`>
+      tooltip="Last checkpoint">
       <h4 className="text-base font-normal leading-7 text-DAppDeep ">
-        {${console.log(process.env.NEXT_PUBLIC_BACKEND_URL)}}
+        {formatTime(lastCheckpoint)}
       </h4>
     </SummaryCard>
   )
