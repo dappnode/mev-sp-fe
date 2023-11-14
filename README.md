@@ -1,7 +1,3 @@
-# Next.js Web3 Starter
-
-An opinionated starter teplate for Next.js and Web3 projects. Inspired by [Nexth](https://github.com/wslyvh/nexth) ✨
-
 ![Readme Image](./public/og.png)
 
 ## Getting Started
