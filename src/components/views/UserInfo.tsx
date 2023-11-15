@@ -3,7 +3,7 @@ import { MyValidatorsTable } from '../tables/MyValidatorsTable'
 import { useQuery } from '@tanstack/react-query'
 import { useAccount, useNetwork } from 'wagmi'
 import { weiToEth } from '@/utils/web3'
-import type { Validator } from '@/components/tables/types'
+import type { ValidatorWithCheckbox } from '@/components/tables/types'
 import {
   fetchOnChainProof,
   fetchValidatorsByDepositor,
@@ -45,7 +45,7 @@ export function UserInfo() {
     }
   }
 
-  let tableData: Validator[] = []
+  let tableData: ValidatorWithCheckbox[] = []
   if (validatorsQuery.data) {
     tableData = validatorsQuery.data.map(
       ({
@@ -55,6 +55,7 @@ export function UserInfo() {
         pendingRewardsWei,
         accumulatedRewardsWei,
       }) => ({
+        checkbox: false,
         address: validatorKey as `0x${string}`,
         pending: weiToEth(pendingRewardsWei || 0),
         accumulated: weiToEth(accumulatedRewardsWei || 0),

@@ -89,7 +89,7 @@ const columns = [
 ]
 
 interface MyValidatorsTableProps {
-  data?: Validator[]
+  data?: ValidatorWithCheckbox[]
   isConnected?: boolean
   isLoading?: boolean
   serverError?: boolean
