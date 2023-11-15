@@ -20,7 +20,7 @@ import { useSearchInput } from '@/hooks/useSearchInput'
 import { addEthSuffix, shortenEthAddress } from '@/utils/web3'
 import { toFixedNoTrailingZeros } from '@/utils/decimals'
 import { getBeaconChainExplorer } from '@/utils/config'
-import type { TableMeta, RowData } from '@tanstack/react-table'
+import type { RowData } from '@tanstack/react-table'
 import type { Validator } from '../types'
 
 declare module '@tanstack/table-core' {
@@ -49,7 +49,6 @@ const getUnsubscribedOrUntrackedIndices = (validators: Validator[]) => {
     return acc
   }, [])
 }
-
 
 const columnHelper = createColumnHelper<Validator>()
 
@@ -135,7 +134,8 @@ const columns = [
           </p>
         </Button>
       )
-    },    cell: (info) => {
+    },
+    cell: (info) => {
       const isSubscribed = info.getValue()
       const { validatorKey, validatorId, warning } = info.row.original
       const isBanned = warning === 'banned'
