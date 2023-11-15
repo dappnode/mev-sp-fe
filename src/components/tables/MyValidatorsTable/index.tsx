@@ -19,12 +19,12 @@ import { useSearchInput } from '@/hooks/useSearchInput'
 import { addEthSuffix, shortenEthAddress } from '@/utils/web3'
 import { toFixedNoTrailingZeros } from '@/utils/decimals'
 import { getBeaconChainExplorer } from '@/utils/config'
-import type { Validator } from '../types'
+import type { Validator, ValidatorWithCheckbox } from '../types'
 
-const columnHelper = createColumnHelper<Validator>()
+const columnHelper = createColumnHelper<ValidatorWithCheckbox>()
 
 const columns = [
-  columnHelper.accessor('address', {
+  columnHelper.accessor('checkbox', {
     header: () => <input type="checkbox" />,  // Add a checkbox in the header for select all feature
     cell: (info) => (
       <input
