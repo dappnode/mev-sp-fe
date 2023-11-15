@@ -40,13 +40,13 @@ export function LatestBlocksSP() {
   return (
     <div className="mt-8">
       <LatestBlocksTable
+        data={blocks}
+        isLoading={isLoading}
         blockExplorerUrl={
           SELECTED_CHAIN === 'mainnet'
             ? 'https://beaconcha.in'
             : 'https://prater.beaconcha.in'
         }
-        data={blocks}
-        isLoading={isLoading}
       />
     </div>
   )
