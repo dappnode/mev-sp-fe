@@ -5,7 +5,7 @@ import { ServerErrorWarning } from './components/ServerErrorWarning'
 import { headerTooltip, PAGE_SIZE } from './config'
 import { TableLayout } from '../components/Table'
 import { HeaderTooltip } from '../components/HeaderTooltip'
-import { useState, useMemo } from 'react'
+import { useMemo } from 'react'
 import Link from 'next/link'
 import {
   createColumnHelper,
@@ -24,6 +24,14 @@ import type { Validator } from '../types'
 const columnHelper = createColumnHelper<Validator>()
 
 const columns = [
+  columnHelper.accessor('address', {
+    header: () => <input type="checkbox" />,  // Add a checkbox in the header for select all feature
+    cell: (info) => (
+      <input
+        type="checkbox"
+      />
+    ),
+  });
   columnHelper.accessor('address', {
     header: () => (
       <HeaderTooltip header="Address" tooltip={headerTooltip.address} />
@@ -93,7 +101,6 @@ export function MyValidatorsTable({
   isLoading,
   serverError,
 }: MyValidatorsTableProps) {
-  const [selectedValidators, setSelectedValidators] = useState<Set<unknown>>(new Set());
   const { searchInput, setSearchInput, debouncedSearchInput } = useSearchInput()
   const filteredData = useMemo(
     () =>
@@ -118,34 +125,6 @@ export function MyValidatorsTable({
 
     [debouncedSearchInput, data]
   )
-  const checkboxColumn = columnHelper.accessor('validatorId', {
-    header: () => (
-      <input
-        type="checkbox"
-        onChange={(e) => {
-          const newSelected = e.target.checked ? new Set(data?.map(v => v.validatorId)) : new Set();
-          setSelectedValidators(newSelected);
-        }}
-      />
-    ),
-    cell: (info) => (
-      <input
-        type="checkbox"
-        checked={selectedValidators.has(info.row.original.validatorId)}
-        onChange={(e) => {
-          const newSelected = new Set(selectedValidators);
-          if (e.target.checked) {
-            newSelected.add(info.row.original.validatorId);
-          } else {
-            newSelected.delete(info.row.original.validatorId);
-          }
-          setSelectedValidators(newSelected);
-        }}
-      />
-    ),
- });
- 
- columns.unshift(checkboxColumn);
 
   const table = useReactTable({
     columns,
@@ -183,4 +162,3 @@ export function MyValidatorsTable({
     />
   )
 }
-
