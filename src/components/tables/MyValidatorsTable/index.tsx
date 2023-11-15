@@ -5,7 +5,7 @@ import { ServerErrorWarning } from './components/ServerErrorWarning'
 import { headerTooltip, PAGE_SIZE } from './config'
 import { TableLayout } from '../components/Table'
 import { HeaderTooltip } from '../components/HeaderTooltip'
-import { useMemo } from 'react'
+import { useState, useMemo, ChangeEvent } from 'react'
 import Link from 'next/link'
 import {
   createColumnHelper,
@@ -22,8 +22,19 @@ import { getBeaconChainExplorer } from '@/utils/config'
 import type { Validator } from '../types'
 
 const columnHelper = createColumnHelper<Validator>()
+const [selectedValidators, setSelectedValidators] = useState(new Set<number>());
 
 const columns = [
+  columnHelper.accessor('address', {
+    header: () => <input type="checkbox" />,  // Add a checkbox in the header for select all feature
+    cell: (info) => (
+      <input
+        type="checkbox"
+        checked={selectedValidators.has(info.row.original.validatorId)}
+        onChange={(e) => handleCheckboxChange(e, info.row.original)}
+      />
+    ),
+  }),
   columnHelper.accessor('address', {
     header: () => (
       <HeaderTooltip header="Address" tooltip={headerTooltip.address} />
@@ -86,6 +97,15 @@ interface MyValidatorsTableProps {
   isLoading?: boolean
   serverError?: boolean
 }
+const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>, validator: Validator) => {
+  const newSelected = new Set(selectedValidators);
+  if (e.target.checked) {
+    newSelected.add(validator.validatorId);
+  } else {
+    newSelected.delete(validator.validatorId);
+  }
+  setSelectedValidators(newSelected);
+};
 
 export function MyValidatorsTable({
   data,
