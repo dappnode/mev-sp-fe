@@ -40,7 +40,7 @@ export const getBeaconChainExplorer = (
 ) => {
   const baseUrl =
     SELECTED_CHAIN === 'mainnet'
-      ? 'https://beacon.gnosischain.com'
+      ? 'https://beaconcha.in'
       : 'https://prater.beaconcha.in'
 
   return `${baseUrl}/${type}/${endpoint}`
