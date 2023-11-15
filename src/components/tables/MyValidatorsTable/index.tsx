@@ -31,7 +31,7 @@ const columns = [
         type="checkbox"
       />
     ),
-  });
+  }),
   columnHelper.accessor('address', {
     header: () => (
       <HeaderTooltip header="Address" tooltip={headerTooltip.address} />
