@@ -23,6 +23,7 @@ import { getBeaconChainExplorer } from '@/utils/config'
 import type { RowData } from '@tanstack/react-table'
 import type { Validator } from '../types'
 
+// @ts-ignore
 declare module '@tanstack/table-core' {
   interface TableMeta<TData extends RowData> {
     onRowSelection: (info: RowData) => void
