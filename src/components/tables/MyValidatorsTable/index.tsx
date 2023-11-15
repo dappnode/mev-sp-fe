@@ -94,18 +94,6 @@ export function MyValidatorsTable({
   serverError,
 }: MyValidatorsTableProps) {
   const [selectedValidators, setSelectedValidators] = useState<Set<unknown>>(new Set());
-  const handleCheckboxChange = (e: { target: { checked: any } }, validator: { validatorId: any }) => {
-    const newSelected = new Set(selectedValidators);
-    const validatorId = validator.validatorId; // Ensure this is a number
-  
-    if (e.target.checked) {
-      newSelected.add(validatorId);
-    } else {
-      newSelected.delete(validatorId);
-    }
-  
-    setSelectedValidators(newSelected);
-  };
   const { searchInput, setSearchInput, debouncedSearchInput } = useSearchInput()
   const filteredData = useMemo(
     () =>
@@ -195,3 +183,4 @@ export function MyValidatorsTable({
     />
   )
 }
+
