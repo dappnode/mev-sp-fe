@@ -39,7 +39,7 @@ export function LatestBlocksSP() {
   return (
     <div className="mt-8">
       <LatestBlocksTable
-        blockExplorerUrl="https://prater.beaconcha.in"
+        blockExplorerUrl="https://beaconcha.in"
         data={blocks}
         isLoading={isLoading}
       />
