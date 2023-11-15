@@ -14,13 +14,15 @@ import type { IDialogStates } from './types'
 const steps = ['Fee recipient', 'MEV Blocks check', 'Deposit', 'Done']
 
 interface SubscribeToMevDialogProps {
-  validatorId: number
+  validatorId?: number
+  validatorIds?: number[]
   validatorKey: `0x${string}`
 }
 
 export function SubscribeToMevDialog({
   validatorId,
   validatorKey,
+  validatorIds,
 }: SubscribeToMevDialogProps) {
   const { chain } = useNetwork()
   const [dialogState, setDialogState] = useState<IDialogStates>('initial')
@@ -55,7 +57,7 @@ export function SubscribeToMevDialog({
               steps={steps}
               validatorKey={validatorKey}
             />
-          ) : dialogState === 'confirm' ? (
+          ) : dialogState === 'confirm' && !validatorIds ? (
             <CheckMevBoostDialog
               handleChangeDialogState={setDialogState}
               handleClose={handleCloseDialog}
@@ -63,13 +65,23 @@ export function SubscribeToMevDialog({
               validatorKey={validatorKey}
             />
           ) : dialogState === 'loading' ? (
-            <DepositDialog
-              handleChangeDialogState={setDialogState}
-              handleClose={handleCloseDialog}
-              setShowCloseButton={setShowCloseButton}
-              steps={steps}
-              validatorId={validatorId}
-            />
+            validatorIds ? (
+              <DepositDialog
+                handleChangeDialogState={setDialogState}
+                handleClose={handleCloseDialog}
+                setShowCloseButton={setShowCloseButton}
+                steps={steps}
+                validatorIds={validatorIds}
+              />
+            ) : validatorId != null ? (
+              <DepositDialog
+                handleChangeDialogState={setDialogState}
+                handleClose={handleCloseDialog}
+                setShowCloseButton={setShowCloseButton}
+                steps={steps}
+                validatorId={validatorId}
+              />
+            ) : null
           ) : (
             <SuccessDialog
               handleChangeDialogState={setDialogState}

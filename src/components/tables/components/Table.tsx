@@ -39,7 +39,7 @@ export function TableLayout<T extends TableDataTypes>({
 }: TableProps<T>) {
   return (
     <div className="w-full overflow-hidden rounded-lg bg-white">
-      <div className="flex items-center justify-between py-6 px-8">
+      <div className="flex items-center justify-between px-8 py-6">
         <h3 className="text-2xl font-bold leading-8 text-DAppDeep">{title}</h3>
         <div className="flex items-center gap-x-11">
           <div className="max-w-xs">
@@ -69,7 +69,7 @@ export function TableLayout<T extends TableDataTypes>({
                     key={header.id}
                     className="py-4 text-left text-sm font-medium">
                     {header.isPlaceholder ? null : (
-                      <p className="w-fit px-6 text-left">
+                      <p className="w-fit pl-6 pr-2 text-left">
                         {flexRender(
                           header.column.columnDef.header,
                           header.getContext()
@@ -87,7 +87,7 @@ export function TableLayout<T extends TableDataTypes>({
                 {row.getVisibleCells().map((cell) => (
                   <td
                     key={cell.id}
-                    className="py-3 px-7 text-sm font-normal text-DAppDeep">
+                    className="px-7 py-3 text-sm font-normal text-DAppDeep">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}

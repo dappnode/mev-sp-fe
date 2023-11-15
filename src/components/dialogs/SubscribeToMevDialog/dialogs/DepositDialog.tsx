@@ -18,7 +18,8 @@ import { weiToEth } from '@/utils/web3'
 import { SMOOTHING_POOL_ADDRESS } from '@/utils/config'
 
 interface DepositDialogProps extends DialogProps {
-  validatorId: number
+  validatorId?: number
+  validatorIds?: number[]
   setShowCloseButton: (show: boolean) => void
 }
 
