@@ -5,7 +5,7 @@ import { ServerErrorWarning } from './components/ServerErrorWarning'
 import { headerTooltip, PAGE_SIZE } from './config'
 import { TableLayout } from '../components/Table'
 import { HeaderTooltip } from '../components/HeaderTooltip'
-import { useState, useMemo, ChangeEvent } from 'react'
+import { useState, useMemo } from 'react'
 import Link from 'next/link'
 import {
   createColumnHelper,
