@@ -84,7 +84,7 @@ const data: Validator[] = [
     subscribed: false,
     status: 'yellowcard',
   },
-]
+] as Validator[];
 
 const meta: Meta<typeof MyValidatorsTable> = {
   title: 'table/MyValidatorsTable',
