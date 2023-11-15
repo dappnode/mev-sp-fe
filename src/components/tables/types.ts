@@ -24,4 +24,6 @@ export interface Validator {
   subscribed: boolean
 }
 
+export type ValidatorWithCheckbox = Validator & { checkbox: boolean };
+
 export type TableDataTypes = Validator | Block
