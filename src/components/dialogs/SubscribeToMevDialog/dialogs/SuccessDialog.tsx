@@ -32,8 +32,8 @@ export function SuccessDialog({ steps, handleClose }: DialogProps) {
         </p>
         <p>to The Smooth</p>
         <p>
-          You are now accumulating rewards from the Smoothing Pool. Claim them
-          after you successfully propose a block!
+          You are now accumulating rewards from the Smooth. Claim them after you
+          successfully propose a block!
         </p>
       </div>
       <Button buttonType="secondary" className="mt-4" onPress={handleClose}>

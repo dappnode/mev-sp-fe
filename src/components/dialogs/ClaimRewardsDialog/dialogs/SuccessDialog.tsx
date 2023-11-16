@@ -8,7 +8,7 @@ export function SuccessDialog({ handleClose }: DialogProps) {
       <div className="px-6 text-center text-DAppDeep">
         <h3 className="text-lg font-normal">Congratulations!</h3>
         <div className="mt-4 text-lg font-normal tracking-wide">
-          <p>You have claimed your rewards from the smoothing pool.</p>
+          <p>You have claimed your rewards from the smooth.</p>
           <p>You can check out more LSD options.</p>
         </div>
         <Link

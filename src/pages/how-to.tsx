@@ -77,7 +77,7 @@ const howToSteps = [
   {
     title: 'Subscribe to the Pool',
     description:
-      'Connect to the Dashboard with your Withdrawal Address of your validators and register them to start accumulating rewards. If you prefer to wait until your next block proposal, you can simply set your Fee Recipient Address to the Smoothing Pool and your validator will be subscribed when you send your first EL rewards',
+      'Connect to the Dashboard with your Withdrawal Address of your validators and register them to start accumulating rewards. If you prefer to wait until your next block proposal, you can simply set your Fee Recipient Address to the Smooth and your validator will be subscribed when you send your first EL rewards',
     imageSrc: 'images/how-to-step-1.svg',
   },
   {

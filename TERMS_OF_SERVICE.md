@@ -2,7 +2,7 @@
 
 Effective as of Oct 18, 2023
 
-By downloading, accessing or using the Dappnode MEV Smoothing Pool (referenced herein "Smooth"), you (referenced herein as “you” or the “user”) certify that you have read and agreed to the terms and conditions below (the “Terms”) which form a binding contract between you and DAppNode (referenced herein as “we” or “us”). If you do not agree to the Terms, do not download or use the Smooth.
+By downloading, accessing or using the Dappnode Smooth (referenced herein "Smooth"), you (referenced herein as “you” or the “user”) certify that you have read and agreed to the terms and conditions below (the “Terms”) which form a binding contract between you and DAppNode (referenced herein as “we” or “us”). If you do not agree to the Terms, do not download or use the Smooth.
 
 Smooth is made of three components, the [mev-sp-oracle](https://github.com/dappnode/mev-sp-oracle) (referenced as "oracle"), [mev-sp-contracts](https://github.com/dappnode/mev-sp-contracts) (referenced as "contract") and [mev-sp-fe](https://github.com/dappnode/mev-sp-fe) (referenced as "frontend"). Same terms of service apply for all components, which acts as a whole in the referenced Smooth.
 
@@ -22,7 +22,7 @@ Smooth reserves the right to remove validators from the pool if they don’t fol
 
 ### Warranty Disclaimer
 
-THE SMOOTH IS PROVIDED ON AN “AS-IS” BASIS AND MAY INCLUDE ERRORS, OMISSIONS, OR OTHER INACCURACIES. DAPPNODE AND ITS CONTRIBUTORS MAKE NO REPRESENTATIONS OR WARRANTIES ABOUT DAPPNODE FOR ANY PURPOSE, AND HEREBY EXPRESSLY DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING, WITHOUT LIMITATION, ANY WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT OR ANY OTHER IMPLIED WARRANTY UNDER THE UNIFORM COMPUTER INFORMATION TRANSACTIONS ACT AS ENACTED BY ANY STATE. WE ALSO MAKE NO REPRESENTATIONS OR WARRANTIES THAT THE DAPPNODE MEV SMOOTHING POOL WILL OPERATE ERROR-FREE, UNINTERRUPTED, OR IN A MANNER THAT WILL MEET YOUR REQUIREMENTS AND/OR NEEDS. THEREFORE, YOU ASSUME THE ENTIRE RISK REGARDING THE QUALITY AND/OR PERFORMANCE OF THE DAPPNODE MEV SMOOTHING POOL AND ANY TRANSACTIONS ENTERED INTO THEREON.
+THE SMOOTH IS PROVIDED ON AN “AS-IS” BASIS AND MAY INCLUDE ERRORS, OMISSIONS, OR OTHER INACCURACIES. DAPPNODE AND ITS CONTRIBUTORS MAKE NO REPRESENTATIONS OR WARRANTIES ABOUT DAPPNODE FOR ANY PURPOSE, AND HEREBY EXPRESSLY DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING, WITHOUT LIMITATION, ANY WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT OR ANY OTHER IMPLIED WARRANTY UNDER THE UNIFORM COMPUTER INFORMATION TRANSACTIONS ACT AS ENACTED BY ANY STATE. WE ALSO MAKE NO REPRESENTATIONS OR WARRANTIES THAT THE DAPPNODE SMOOTH WILL OPERATE ERROR-FREE, UNINTERRUPTED, OR IN A MANNER THAT WILL MEET YOUR REQUIREMENTS AND/OR NEEDS. THEREFORE, YOU ASSUME THE ENTIRE RISK REGARDING THE QUALITY AND/OR PERFORMANCE OF THE DAPPNODE SMOOTH AND ANY TRANSACTIONS ENTERED INTO THEREON.
 
 ### Limitation of Liability
 
