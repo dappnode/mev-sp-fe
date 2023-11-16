@@ -94,7 +94,7 @@ export default function Donate() {
             Support Solo Stakers
           </h1>
           <h2 className="order-first text-base font-normal tracking-wider text-DAppBlue">
-            MEV Smoothing Pool
+            Smooth
           </h2>
           <p className="mt-2 max-w-md text-lg font-normal leading-8 text-DAppDeep">
             {`You can support Solo Stakers and increase their revenue by donating directly into the pool. It's a great way of supporting the true decentralized Node Runners that keep Ethereum decentralized at scale.`}

@@ -58,7 +58,7 @@ export function MobileMenuDialog() {
                   width={50}
                 />
                 <h2 className="ml-4 font-urbanist text-base font-bold text-DAppGray">
-                  MEV <span className="text-DAppDeep">Smoothing Pool</span>
+                  Smooth
                 </h2>
               </Link>
               <nav className="flex flex-col gap-y-4">

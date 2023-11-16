@@ -86,7 +86,7 @@ export function DepositDialog({
             </p>
           )}
           <div className="mt-4 flex items-center justify-center text-lg font-normal tracking-wide">
-            <p>to The MEV Smoothing Pool </p>{' '}
+            <p>to The Smooth </p>{' '}
             <Link
               className="ml-2 flex items-center"
               href="https://dappnode.com/"
