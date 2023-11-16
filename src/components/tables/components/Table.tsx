@@ -107,11 +107,15 @@ export function TableLayout<T extends TableDataTypes>({
                       selectedItems.length > 0
                     }
                     onChange={() => {
-                      const allItemsSelected =
+                      const allItemsSelected: boolean =
                         selectedItems.length === data.length
+
                       setSelectedItems(
-                        allItemsSelected ? [] : data.map((item) => item.id)
+                        allItemsSelected
+                          ? []
+                          : data.map((item: T) => String(item))
                       )
+
                       setShowActionButton(!allItemsSelected)
                     }}
                   />
