@@ -86,7 +86,7 @@ export function DepositDialog({
             </p>
           )}
           <div className="mt-4 flex items-center justify-center text-lg font-normal tracking-wide">
-            <p>to The MEV Smoothing Pool </p>{' '}
+            <p>to Smooth</p>{' '}
             <Link
               className="ml-2 flex items-center"
               href="https://dappnode.com/"
@@ -94,7 +94,7 @@ export function DepositDialog({
               target="_blank">
               <Tooltip
                 iconType="question"
-                tooltip="To learn more about the required collateral for the smoothing pool click the ?"
+                tooltip="To learn more about the required collateral for the smooth click the ?"
               />
             </Link>
           </div>

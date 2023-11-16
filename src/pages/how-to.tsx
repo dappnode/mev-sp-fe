@@ -18,7 +18,7 @@ export default function HowTo() {
           />
           <div className="mx-auto">
             <h1 className="mt-12 text-center text-5xl font-bold text-DAppDeep xl:text-left">
-              MEV Smoothing Pool
+              Smooth
             </h1>
             <h3 className="mt-7 text-center text-base font-normal leading-8 xl:text-left">
               Get higher MEV revenue by joining forces with other stakers
@@ -37,7 +37,7 @@ export default function HowTo() {
           <div className="mx-auto max-w-fit text-center">
             <h2 className="text-5xl font-bold">How to Use</h2>
             <h4 className="mt-6 text-xl font-normal">
-              Check all the steps to use the MEV Smoothing Pool
+              Check all the steps to use the Smooth
             </h4>
           </div>
           <div className="mt-14 flex flex-col gap-y-8 sm:mt-20 sm:gap-y-28">
@@ -77,7 +77,7 @@ const howToSteps = [
   {
     title: 'Subscribe to the Pool',
     description:
-      'Connect to the Dashboard with your Withdrawal Address of your validators and register them to start accumulating rewards. If you prefer to wait until your next block proposal, you can simply set your Fee Recipient Address to the Smoothing Pool and your validator will be subscribed when you send your first EL rewards',
+      'Connect to the Dashboard with your Withdrawal Address of your validators and register them to start accumulating rewards. If you prefer to wait until your next block proposal, you can simply set your Fee Recipient Address to the Smooth and your validator will be subscribed when you send your first EL rewards',
     imageSrc: 'images/how-to-step-1.svg',
   },
   {
