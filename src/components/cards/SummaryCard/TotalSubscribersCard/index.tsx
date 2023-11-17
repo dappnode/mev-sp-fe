@@ -1,6 +1,6 @@
-import { toFixedNoTrailingZeros } from '@/utils/decimals'
 import { SummaryCard, SummaryCardProps } from '..'
 import { BsFillPersonFill } from 'react-icons/bs'
+import { toFixedNoTrailingZeros } from '@/utils/decimals'
 
 interface TotalSubscribersCardProps
   extends Pick<SummaryCardProps, 'isError' | 'isLoading'> {
@@ -27,10 +27,7 @@ export function TotalSubscribersCard({
   return (
     <SummaryCard
       bottomLeftText="Smooth Fee"
-      bottomRightText={`${toFixedNoTrailingZeros(
-        adjustedPoolFeesPercent || NaN,
-        4
-      )}%`}
+      bottomRightText={`${toFixedNoTrailingZeros(adjustedPoolFeesPercent || NaN, 4)}%`}
       isError={isError}
       isLoading={isLoading}
       title="Total Subscribers">
