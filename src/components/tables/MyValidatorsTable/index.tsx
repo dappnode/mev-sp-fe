@@ -1,3 +1,5 @@
+/* eslint-disable no-else-return */
+/* eslint-disable react/button-has-type */
 import { WarningIcon } from './components/WarningIcon'
 import { Skeleton } from './components/Skeleton'
 import { NotConnectedWarning } from './components/NotConnectedWarning'
@@ -5,7 +7,7 @@ import { ServerErrorWarning } from './components/ServerErrorWarning'
 import { headerTooltip, PAGE_SIZE } from './config'
 import { TableLayout } from '../components/Table'
 import { HeaderTooltip } from '../components/HeaderTooltip'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import {
   createColumnHelper,
@@ -24,6 +26,20 @@ import type { Validator } from '../types'
 const columnHelper = createColumnHelper<Validator>()
 
 const columns = [
+  columnHelper.accessor('checkbox', {
+    header: () => <input type="checkbox" />,
+    cell: (info) => {
+      console.log('Checkbox Cell Info:', info) // Log the info object to the console go to > row > original
+
+      return (
+        <input
+          checked={info.row.getIsSelected()}
+          type="checkbox"
+          onChange={() => info.row.toggleSelected()}
+        />
+      )
+    },
+  }),
   columnHelper.accessor('address', {
     header: () => (
       <HeaderTooltip header="Address" tooltip={headerTooltip.address} />
@@ -94,6 +110,47 @@ export function MyValidatorsTable({
   serverError,
 }: MyValidatorsTableProps) {
   const { searchInput, setSearchInput, debouncedSearchInput } = useSearchInput()
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [selectedRow, setSelectedRow] = useState<Validator | null>(null)
+
+  const handleSubscribeOrUnsubscribe = () => {
+    if (selectedRow) {
+      const { validatorKey, validatorId, subscribed } = selectedRow
+
+      return (
+        <button
+          onClick={() =>
+            handleSubscribeOrUnsubscribeClick(
+              validatorId,
+              validatorKey,
+              subscribed
+            )
+          }>
+          {subscribed ? 'Unsubscribe' : 'Subscribe'}
+        </button>
+      )
+    }
+
+    return null
+  }
+
+  const handleSubscribeOrUnsubscribeClick = (
+    validatorId: number,
+    validatorKey: string,
+    isSubscribed: boolean
+  ) => {
+    // You can open your modal here based on the isSubscribed status
+    if (isSubscribed) {
+      // Open modal MultiDepositDialog
+      console.log(`Opening Unsubscribe modal for validator ${validatorId}`)
+    } else {
+      // Open modal MultiDepositDialog
+      console.log(
+        `Opening Subscribe modal for validator ${validatorId} with key ${validatorKey}`
+      )
+    }
+  }
+
   const filteredData = useMemo(
     () =>
       data
@@ -143,14 +200,18 @@ export function MyValidatorsTable({
   }
 
   return (
-    <TableLayout
-      className="h-[440px]"
-      data={data ?? []}
-      searchInput={searchInput}
-      searchPlaceholder="Search Validator"
-      setSearchInput={setSearchInput}
-      table={table}
-      title="My Validators"
-    />
+    <>
+      {handleSubscribeOrUnsubscribe()}
+
+      <TableLayout
+        className="h-[440px]"
+        data={data ?? []}
+        searchInput={searchInput}
+        searchPlaceholder="Search Validator"
+        setSearchInput={setSearchInput}
+        table={table}
+        title="My Validators"
+      />
+    </>
   )
 }

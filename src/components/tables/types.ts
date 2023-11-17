@@ -22,6 +22,7 @@ export interface Validator {
   accumulated: number
   warning: Warnings
   subscribed: boolean
+  checkbox: boolean
 }
 
 export type TableDataTypes = Validator | Block
