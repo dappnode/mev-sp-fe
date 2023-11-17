@@ -6,6 +6,7 @@ import clsx from 'clsx'
 import { useState } from 'react'
 import { SearchInput } from '@/components/common/SearchInput'
 import { FilterGroup } from '@/components/common/FilterGroup'
+// import { SubscribeToMevDialog } from '@/components/dialogs/SubscribeToMevDialog'
 
 interface TableProps<T> {
   className?: string
@@ -65,7 +66,11 @@ export function TableLayout<T extends TableDataTypes>({
   const handleActionButtonClick = () => {
     // Perform subscribe or unsubscribe action here based on selectedItems
     console.log('Perform action on selected items:', selectedItems)
-
+    // return (
+    //   <SubscribeToMevDialog
+    //       validatorIds={validatorIds}
+    //     />
+    // )
     // Reset selected items and hide the action button
     setSelectedItems([])
     setShowActionButton(false)
