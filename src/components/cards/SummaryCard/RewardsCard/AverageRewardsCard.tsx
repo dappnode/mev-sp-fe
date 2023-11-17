@@ -1,5 +1,5 @@
-import { BigNumber } from 'ethers';
 import { AverageCard } from '.';
+import { BigNumber } from 'ethers';
 
 interface AverageRewardsCardProps {
   isLoading: boolean
