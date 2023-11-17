@@ -53,9 +53,11 @@ export function RewardsCard({
 interface AverageCardProps
   extends Omit<
     SummaryCardProps,
-    'children' | 'bottomLeftText' | 'bottomRightText' | 'secondaryRewardTitle' | 'secondaryRewardWei'
+    'children' | 'bottomLeftText' | 'bottomRightText' 
   > {
   ethRewardWei: string | undefined;
+  poolFeeTitle: string;
+  poolFeesPercent: number | undefined;
 }
 
 // Create the AverageCard component
@@ -65,17 +67,18 @@ export function AverageCard({
   title,
   tooltip,
   ethRewardWei,
+  poolFeeTitle,
+  poolFeesPercent
 }: AverageCardProps) {
   const ethReward = weiToEth(ethRewardWei);
-
   return (
     <SummaryCard
-      bottomLeftText=""
-      bottomRightText=""
       isError={isError}
       isLoading={isLoading}
       title={title}
       tooltip={tooltip}
+      bottomLeftText={poolFeeTitle}
+      bottomRightText={`${toFixedNoTrailingZeros(poolFeesPercent || NaN, 4)}%`}
     >
       <div className="flex items-center">
         <FaEthereum className="mr-2 h-[24px] w-[14px] text-DAppDeep" />

@@ -4,12 +4,14 @@ import { TotalRewardsCard } from '../cards/SummaryCard/RewardsCard/TotalRewardsC
 import { LastCheckpointCard } from '../cards/SummaryCard/LastCheckpointCard'
 import { useQuery } from '@tanstack/react-query'
 import {
+  fetchConfig,
   fetchStatistics,
   fetchStatus,
   validateServerStatus,
 } from '@/client/api/queryFunctions'
 
 export function Statistics() {
+  const configQuery = useQuery(['config'], fetchConfig)
   const statisticsQuery = useQuery(['statistics'], fetchStatistics)
   const statusQuery = useQuery(['status'], fetchStatus)
   const serverStatus = useQuery(['serverStatus'], validateServerStatus)
@@ -25,6 +27,7 @@ export function Statistics() {
         isError={statisticsQuery.isError}
         isLoading={!serverStatus.data?.ready || statisticsQuery.isLoading}
         rewardsPerValidatorPer30daysWei={statisticsQuery.data?.rewardsPerValidatorPer30daysWei}
+        poolFeesPercent={configQuery.data?.poolFeesPercent}
       />
       <TotalRewardsCard
         isError={statisticsQuery.isError}
