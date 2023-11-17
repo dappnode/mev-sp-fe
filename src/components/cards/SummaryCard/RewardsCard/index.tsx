@@ -73,12 +73,12 @@ export function AverageCard({
   const ethReward = weiToEth(ethRewardWei);
   return (
     <SummaryCard
+      bottomLeftText={poolFeeTitle}
+      bottomRightText={`${toFixedNoTrailingZeros(poolFeesPercent || NaN, 4)}%`}
       isError={isError}
       isLoading={isLoading}
       title={title}
       tooltip={tooltip}
-      bottomLeftText={poolFeeTitle}
-      bottomRightText={`${toFixedNoTrailingZeros(poolFeesPercent || NaN, 4)}%`}
     >
       <div className="flex items-center">
         <FaEthereum className="mr-2 h-[24px] w-[14px] text-DAppDeep" />

@@ -13,21 +13,24 @@ export function AverageRewardsCard({
   rewardsPerValidatorPer30daysWei,
   poolFeesPercent
 }: AverageRewardsCardProps) {
-  if (poolFeesPercent !== undefined) {
+  let adjustedPoolFeesPercent = poolFeesPercent;
+
+  if (adjustedPoolFeesPercent !== undefined) {
     // poolFeesPercent is multiplied x 100 in the backend, so 1000 = 10%, this is 
     // because the oracle doesnt want to deal with decimals.
     // We assume poolFeesPercent will never be 0.
-    poolFeesPercent = poolFeesPercent / 100
+    adjustedPoolFeesPercent /= 100;
   } else {
-    poolFeesPercent = NaN
+    adjustedPoolFeesPercent = NaN;
   }
+
   return (
     <AverageCard
       ethRewardWei={rewardsPerValidatorPer30daysWei}
       isError={isError}
       isLoading={isLoading}
       poolFeeTitle="Smooth Fee"
-      poolFeesPercent={poolFeesPercent}
+      poolFeesPercent={adjustedPoolFeesPercent}
       title="Validator's Monthly Rewards"
       tooltip="Smooth Validator Average Rewards for the Past 30 Days"
     />
