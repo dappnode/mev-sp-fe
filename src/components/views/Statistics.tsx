@@ -27,6 +27,7 @@ export function Statistics() {
       <AverageRewardsCard
         isError={statisticsQuery.isError}
         isLoading={!serverStatus.data?.ready || statisticsQuery.isLoading}
+        poolFeesPercent={configQuery.data?.poolFeesPercent}
         rewardsPerValidatorPer30daysWei={statisticsQuery.data?.rewardsPerValidatorPer30daysWei}
       />
       <TotalRewardsCard
