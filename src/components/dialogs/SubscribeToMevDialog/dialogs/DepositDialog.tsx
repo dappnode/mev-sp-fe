@@ -154,7 +154,6 @@ export function DepositDialog({
 }
 
 export function MultiDepositDialog({
-  steps,
   validatorIds,
   setShowCloseButton,
   handleClose,
@@ -178,6 +177,7 @@ export function MultiDepositDialog({
 
   // Multiply the collateral by the number of validator IDs
   const totalDepositValue = collateralInWei.mul(validatorIds.length);
+  const totalDepositInEth = weiToEth(totalDepositValue.toString());
 
   const contractWrite = useContractWrite({
     address: SMOOTHING_POOL_ADDRESS,
@@ -210,19 +210,25 @@ export function MultiDepositDialog({
   return (
     <>
       <div className="-mt-2 text-DAppDeep">
-        <h3 className="mb-6 text-left text-2xl font-bold">Deposit</h3>
-        <StepProgressBar currentStep={2} steps={steps} />
+        <h3 className="mb-5 text-left text-2xl font-bold">Deposit</h3>
       </div>
       {!waitForTransaction.isError ? (
         <div className="text-center">
+          {/* Warning message about fee recipient */}
+        <div className="mt-1 px-4 py-3 border border-yellow-400 bg-yellow-100 text-yellow-800 rounded-md">
+          <p className="text-sm md:text-base">
+            Warning: When doing a multisubscription, Smooth will not check if all selected validators have the correct fee recipient set.
+             Please ensure all your validators have {configQuery.data?.poolAddress} as fee_recipient in each MEV relay they are registered to.
+          </p>
+        </div>
           <h4 className="mb-4 text-lg font-normal">
-            To start earning rewards, please deposit
+            To start earning rewards with {validatorIds.length} validators, please deposit
           </h4>
           {configQuery.isLoading ? (
             <div className="mx-auto h-8 w-20 animate-pulse rounded bg-SkeletonGray" />
           ) : (
             <p className="text-2xl font-bold">
-              {weiToEth(configQuery.data?.collateralInWei)} ETH
+              {totalDepositInEth} ETH
             </p>
           )}
           <div className="mt-4 flex items-center justify-center text-lg font-normal tracking-wide">

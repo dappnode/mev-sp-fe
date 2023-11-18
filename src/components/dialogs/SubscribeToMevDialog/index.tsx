@@ -4,6 +4,7 @@ import {
   DepositDialog,
   MultiDepositDialog,
   SuccessDialog,
+  MultiSuccessDialog
 } from './dialogs'
 import { BaseDialog } from '../BaseDialog'
 import { useState } from 'react'
@@ -112,12 +113,12 @@ export function MultiSubscribeToMevDialog({
       handleOpenChange={handleOpenChangeDialog}
       open={open}
       showCloseButton={showCloseButton}
-      subtitle="Multi-Subscribe"
+      subtitle="Subscribe selected Validators"
       triggerButtonProp="outline"
-      triggerText="Multi-Subscribe">
+      triggerText="Subscribe selected Validators">
       <AnimatePresence>
         <div className="flex h-[550px] flex-col justify-between text-DAppDeep sm:h-[500px]">
-          {dialogState === 'loading' ? (
+          {dialogState === 'initial' ? (
             <MultiDepositDialog
               handleChangeDialogState={setDialogState}
               handleClose={handleCloseDialog}
@@ -126,10 +127,11 @@ export function MultiSubscribeToMevDialog({
               validatorIds={validatorIds}
             />
           ) : (
-            <SuccessDialog
+            <MultiSuccessDialog
               handleChangeDialogState={setDialogState}
               handleClose={handleCloseDialog}
               steps={steps}
+              validatorIds={validatorIds}
             />
           )}
         </div>
