@@ -79,7 +79,7 @@ export function InitialDialog({
             </div>
             <div className="mt-4 font-semibold">
               {!registeredRelaysQuery.isLoading &&
-                'Great, your fee recipient is already set to the MEV Smoothing Pool!'}
+                'Great, your fee recipient is already set to Smooth!'}
             </div>
           </>
         ) : (

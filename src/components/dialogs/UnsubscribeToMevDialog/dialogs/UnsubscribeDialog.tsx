@@ -64,7 +64,7 @@ export function UnsubscribeDialog({
       {!waitForTransaction.isError ? (
         <div className="text-center">
           <h4 className="text-lg font-normal">
-            You are unsubscribing to the MEV Smoothing Pool
+            You are unsubscribing from Smooth
           </h4>
           {waitForTransaction.isLoading && (
             <div className="mt-6 w-full rounded-lg bg-violet-50 px-4 py-8 text-sm font-normal text-DAppDeep">
