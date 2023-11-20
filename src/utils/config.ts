@@ -60,8 +60,8 @@ export const PAGES = [
     path: '/donate',
   },
   {
-    name: 'Analytics',
-    path: 'https://dappnode.com/',
+    name: 'Documentation',
+    path: 'https://docs.dappnode.io/docs/smooth',
   },
 ]
 
