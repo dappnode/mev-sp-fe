@@ -60,7 +60,7 @@ export const PAGES = [
     path: '/donate',
   },
   {
-    name: 'Smooth Docs',
+    name: 'Documentation',
     path: 'https://docs.dappnode.io/docs/smooth',
   },
 ]
