@@ -21,7 +21,7 @@ export function TotalRewardsCard({
       secondaryRewardTitle="Last 30 days"
       secondaryRewardWei={last30daysEthRewardWei}
       title="Total Rewards"
-      tooltip="Total rewards sent into the Smoothing Pool"
+      tooltip="Total rewards sent into Smooth"
     />
   )
 }

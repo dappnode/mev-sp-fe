@@ -94,7 +94,7 @@ export function DepositDialog({
               target="_blank">
               <Tooltip
                 iconType="question"
-                tooltip="To learn more about the required collateral for the smoothing pool click the ?"
+                tooltip="To learn more about the required collateral for Smooth, click the ?"
               />
             </Link>
           </div>

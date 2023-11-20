@@ -20,7 +20,7 @@ export function Header() {
           width={50}
         />
         <h2 className="ml-4 hidden font-urbanist text-2xl font-bold text-DAppGray lg:inline lg:text-3xl">
-          MEV <span className="text-DAppDeep">Smoothing Pool</span>
+          <span className="text-DAppDeep">Smooth</span>
         </h2>
       </Link>
       <nav className="hidden md:flex md:gap-x-5">
