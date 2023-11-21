@@ -35,7 +35,7 @@ export const SMOOTHING_POOL_ADDRESS = process.env
 export const WEB3_CHAINS = [SELECTED_CHAIN === 'mainnet' ? mainnet : goerli]
 
 export const getBeaconChainExplorer = (
-  type: 'slot' | 'validator',
+  type: 'slot' | 'validator' | 'block' | 'tx',
   endpoint: string | number
 ) => {
   const baseUrl =

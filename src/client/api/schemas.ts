@@ -19,6 +19,13 @@ export const BlockSchema = z.object({
   withdrawalAddress: z.string(),
 })
 
+export const DonationSchema = z.object({
+  amountWei: z.string(),
+  blockNumber: z.number(),
+  txHash: z.string(),
+  sender: z.string(),
+})
+
 export const ValidatorSchema = z.object({
   status: z.string(),
   accumulatedRewardsWei: z.string().or(z.null()),

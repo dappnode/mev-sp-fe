@@ -8,6 +8,14 @@ export interface Block {
   blockType: 'okpoolproposal' | 'missedproposal' | 'wrongfeerecipient'
 }
 
+
+export interface Donation {
+  txHash: string
+  sender: string
+  reward: number
+  blockNumber: number
+}
+
 interface Proposer {
   withdrawalAddress: `0x${string}`
   validatorKey: `0x${string}`
@@ -24,4 +32,4 @@ export interface Validator {
   subscribed: boolean
 }
 
-export type TableDataTypes = Validator | Block
+export type TableDataTypes = Validator | Block | Donation

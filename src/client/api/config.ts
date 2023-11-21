@@ -5,6 +5,7 @@ export const endpoints = {
   status: 'status',
   statistics: 'memory/statistics/',
   allBlocks: 'memory/allblocks',
+  allDonations: 'memory/donations',
   proposedBlocks: 'memory/proposedblocks',
   registeredRelays: (validatorKey: `0x${string}`) =>
     `registeredrelays/${validatorKey}`,
