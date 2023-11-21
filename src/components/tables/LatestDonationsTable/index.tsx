@@ -88,16 +88,16 @@ export function LatestDonationsTable({
 }: LatestDonationsTableProps) {
   const { searchInput, setSearchInput, debouncedSearchInput } = useSearchInput()
 
-  const filteredData = useMemo(
-    () =>
-      data?.filter((donation) => {
-        if (!debouncedSearchInput) return true
-        return donation.sender
-          .toLocaleLowerCase()
-          .includes(debouncedSearchInput.toLocaleLowerCase())
-      }) ?? [],
-    [data, debouncedSearchInput]
-  )
+  const filteredData = useMemo(() => {
+    const sortedAndFilteredData = data?.filter((donation) => {
+      if (!debouncedSearchInput) return true;
+      return donation.sender
+        .toLocaleLowerCase()
+        .includes(debouncedSearchInput.toLocaleLowerCase());
+    }).sort((a, b) => b.blockNumber - a.blockNumber) ?? []; // Sorting by blockNumber in descending order
+
+    return sortedAndFilteredData;
+  }, [data, debouncedSearchInput]);
 
   const table = useReactTable({
     columns: getDonationColumns(blockExplorerUrl),
