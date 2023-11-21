@@ -67,7 +67,7 @@ const getDonationColumns = (blackExplorerUrl?: string) => [
         },
       }),
   columnHelper.accessor('reward', {
-    header: () => <HeaderTooltip header="Reward" tooltip={headerTooltip.reward} />,
+    header: () => <HeaderTooltip header="Amount" tooltip={headerTooltip.reward} />,
     cell: (info) => {
       const reward = info.getValue()
       return <span>{toFixedNoTrailingZeros(reward, 6)} ETH</span>
