@@ -1,3 +1,8 @@
+import { validateRelaysBaseUrls } from '../../utils/validateRelays'
+
+// validates RELAYS_BASE_URLS environment variable correct format
+validateRelaysBaseUrls()
+
 export const baseUrl = '/api/'
 
 export const endpoints = {

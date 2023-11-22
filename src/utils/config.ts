@@ -20,6 +20,9 @@ if (!process.env.NEXT_PUBLIC_SMOOTHING_POOL_ADDRESS) {
 if (!process.env.NEXT_PUBLIC_SELECTED_CHAIN) {
   throw new Error('NEXT_PUBLIC_SELECTED_CHAIN is not set')
 }
+if (!process.env.NEXT_PUBLIC_RELAYS_BASE_URLS) {
+  throw new Error('RELAYS_BASE_URLS is not set')
+}
 
 if (!SUPPORTED_CHAINS.includes(process.env.NEXT_PUBLIC_SELECTED_CHAIN)) {
   throw new Error(
@@ -33,6 +36,8 @@ export const SMOOTHING_POOL_ADDRESS = process.env
   .NEXT_PUBLIC_SMOOTHING_POOL_ADDRESS as `0x${string}`
 
 export const WEB3_CHAINS = [SELECTED_CHAIN === 'mainnet' ? mainnet : goerli]
+
+export const RELAYS_BASE_URLS = process.env.RELAYS_BASE_URLS
 
 export const getBeaconChainExplorer = (
   type: 'slot' | 'validator' | 'block' | 'tx',
