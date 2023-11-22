@@ -3,6 +3,7 @@ import { endpoints } from './config'
 import {
   BlockSchema,
   ConfigSchema,
+  DonationSchema,
   StatusSchema,
   StatisticsSchema,
   ValidatorSchema,
@@ -57,6 +58,11 @@ export const fetchValidatorByIndex = async (index: number) => {
 export const fetchAllBlocks = async () => {
   const response = await apiClient.get(endpoints.allBlocks)
   return BlockSchema.array().parse(convertKeysToCamelCase(response.data))
+}
+
+export const fetchAllDonations = async () => {
+  const response = await apiClient.get(endpoints.allDonations)
+  return DonationSchema.array().parse(convertKeysToCamelCase(response.data))
 }
 
 export const fetchProposedBlocks = async () => {
