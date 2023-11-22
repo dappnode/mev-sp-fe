@@ -1,6 +1,6 @@
 // pages/api/validatorRelayers.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { isValidPubkey } from '@/utils/isValidPubkey'; // Assuming you have a utility function for validating public keys
+import { isValidPubkey } from '../../../utils/isValidPubkey';
 
 const handleValidatorRelayers = async (req: NextApiRequest, res: NextApiResponse) => {
     // Extracting the public key from the request
