@@ -141,7 +141,7 @@ export function MyValidatorsTable({
   if (serverError) {
     return <ServerErrorWarning title="My Validators" />
   }
-
+  
   return (
     <TableLayout
       className="h-[440px]"

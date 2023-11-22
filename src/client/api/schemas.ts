@@ -118,3 +118,9 @@ export const registeredRelaysSchema = z.object({
   wrongFeeRelayers: z.array(relayerSchema).or(z.null()).optional(),
   unregisteredRelayers: z.array(relayerSchema).or(z.null()).optional(),
 })
+
+export const localRegisteredRelaysScema = z.object({
+  allValidatorsCorrect: z.boolean(),
+  incorrectValidators: z.array(z.string()),
+  validators: z.array(registeredRelaysSchema),
+})

@@ -4,6 +4,7 @@ import { RxDotFilled } from 'react-icons/rx'
 import { StepProgressBar } from '@/components/common/StepProgressBar'
 import { Button } from '@/components/common/Button'
 import { fetchValidatorRegisteredRelays } from '@/client/api/queryFunctions'
+import { localFetchValidatorRegisteredRelays } from '@/client/api/queryFunctions'
 import { shortenEthAddress } from '@/utils/web3'
 
 interface CheckMevBoostDialogProps extends DialogProps {
@@ -20,7 +21,6 @@ export function CheckMevBoostDialog({
     queryKey: ['registered-relays'],
     queryFn: () => fetchValidatorRegisteredRelays(validatorKey),
   })
-
   return (
     <>
       <div className="-mt-2 text-DAppDeep">

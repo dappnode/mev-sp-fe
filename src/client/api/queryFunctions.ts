@@ -9,8 +9,10 @@ import {
   ValidatorSchema,
   onChainProofSchema,
   registeredRelaysSchema,
+  localRegisteredRelaysScema,
 } from './schemas'
 import { AxiosError } from 'axios'
+import { handleValidatorRelayers } from '@/components/tables/MyValidatorsTable/components/validatorRelayers'
 import { convertKeysToCamelCase } from '@/utils/case'
 
 export const validateServerStatus = async () => {
@@ -88,6 +90,17 @@ export const fetchOnChainProof = async (address: `0x${string}` | undefined) => {
 export const fetchValidatorRegisteredRelays = async (
   validatorKey: `0x${string}`
 ) => {
+  // const test = await handleValidatorRelayers("0xa7396f2b6255f1598aad576ea429515077322461531098878226a949b369b0063fee82adaa5df2ad8f9f7d07c3796be2")
+  // console.log(test)
   const response = await apiClient.get(endpoints.registeredRelays(validatorKey))
   return registeredRelaysSchema.parse(convertKeysToCamelCase(response.data))
+}
+
+
+export const localFetchValidatorRegisteredRelays = async (
+  validatorKey: `0x${string}`
+) => {
+  const response = await handleValidatorRelayers(validatorKey)
+  console.log(response)
+  return localRegisteredRelaysScema.parse(response)
 }
