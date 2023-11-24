@@ -3,27 +3,32 @@
 import { WagmiConfig } from 'wagmi'
 import { ReactNode, useEffect, useState } from 'react'
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react'
-import {
-  mainnet,
-  polygon,
-  avalanche,
-  arbitrum,
-  bsc,
-  optimism,
-  gnosis,
-  fantom,
-} from 'wagmi/chains'
+import { mainnet, goerli } from 'wagmi/chains'
 
-const chains = [
-  mainnet,
-  polygon,
-  avalanche,
-  arbitrum,
-  bsc,
-  optimism,
-  gnosis,
-  fantom,
-]
+const SUPPORTED_CHAINS = ['mainnet', 'goerli']
+
+if (!process.env.NEXT_PUBLIC_SMOOTHING_POOL_ADDRESS) {
+  throw new Error('NEXT_PUBLIC_SMOOTHING_POOL_ADDRESS is not set')
+}
+
+if (!process.env.NEXT_PUBLIC_SELECTED_CHAIN) {
+  throw new Error('NEXT_PUBLIC_SELECTED_CHAIN is not set')
+}
+
+if (!SUPPORTED_CHAINS.includes(process.env.NEXT_PUBLIC_SELECTED_CHAIN)) {
+  throw new Error(
+    'NEXT_PUBLIC_SELECTED_CHAIN is not one of the supported chains'
+  )
+}
+
+export const SELECTED_CHAIN = process.env.NEXT_PUBLIC_SELECTED_CHAIN
+
+export const SMOOTHING_POOL_ADDRESS = process.env
+  .NEXT_PUBLIC_SMOOTHING_POOL_ADDRESS as `0x${string}`
+
+export const WEB3_CHAINS = [SELECTED_CHAIN === 'mainnet' ? mainnet : goerli]
+
+const chains = WEB3_CHAINS
 
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID || ''
 
