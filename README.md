@@ -10,6 +10,12 @@ pnpm install
 pnpm dev
 ```
 
+Before pushing and deploying run:
+
+```bash
+pnpm run build
+```
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## Deploy on Vercel
