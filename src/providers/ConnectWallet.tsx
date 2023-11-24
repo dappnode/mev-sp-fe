@@ -1,3 +1,4 @@
+/* eslint-disable react/button-has-type */
 /* eslint-disable react/jsx-no-useless-fragment */
 import { WagmiConfig } from 'wagmi'
 import { ReactNode, useEffect, useState } from 'react'

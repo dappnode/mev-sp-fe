@@ -4,7 +4,7 @@ import { useIsMounted } from '@/hooks/useIsMounted'
 import { MainLayout } from '@/components/layout/MainLayout'
 import { Seo } from '@/components/layout/Seo'
 import { ReactQueryProvider } from '@/providers/ReactQuery'
-import { Web3Provider } from '@/providers/Web3'
+import { ConnectWallet } from '@/providers/ConnectWallet'
 import type { AppProps } from 'next/app'
 
 const inter = Inter({
@@ -22,7 +22,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Seo />
-      <Web3Provider>
+      <ConnectWallet>
         <ReactQueryProvider>
           {isMounted && (
             <MainLayout
@@ -31,7 +31,7 @@ export default function App({ Component, pageProps }: AppProps) {
             </MainLayout>
           )}
         </ReactQueryProvider>
-      </Web3Provider>
+      </ConnectWallet>
     </>
   )
 }
