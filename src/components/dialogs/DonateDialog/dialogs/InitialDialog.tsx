@@ -29,12 +29,10 @@ export function InitialDialog({
   })
 
   const { config } = usePrepareSendTransaction({
-    request: {
-      to: SMOOTHING_POOL_ADDRESS,
-      value: debouncedEthAmount
-        ? utils.parseEther(debouncedEthAmount)
-        : undefined,
-    },
+    to: SMOOTHING_POOL_ADDRESS,
+    value: debouncedEthAmount
+      ? utils.parseEther(debouncedEthAmount).toBigInt()
+      : undefined,
   })
 
   const contractWrite = useSendTransaction(config)

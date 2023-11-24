@@ -35,7 +35,6 @@ export function UnsubscribeDialog({
   const contractWrite = useContractWrite({
     address: SMOOTHING_POOL_ADDRESS,
     abi,
-    mode: 'recklesslyUnprepared',
     functionName: 'unsubscribeValidator',
     args: [validatorId],
     onSuccess: () => {

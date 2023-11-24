@@ -41,6 +41,9 @@ dependencies:
   '@wagmi/chains':
     specifier: ^0.2.25
     version: 0.2.25(typescript@5.3.2)
+  '@wagmi/core':
+    specifier: ^1.4.7
+    version: 1.4.7(@types/react@18.0.28)(react@18.2.0)(typescript@5.3.2)(viem@1.19.6)(zod@3.22.4)
   '@web3modal/wagmi':
     specifier: ^3.3.2
     version: 3.3.2(@types/react@18.0.28)(@wagmi/core@1.4.7)(typescript@5.3.2)(viem@1.19.6)
@@ -14311,6 +14314,7 @@ packages:
 
   /proxy-compare@2.5.1:
     resolution: {integrity: sha512-oyfc0Tx87Cpwva5ZXezSp5V9vht1c7dZBhvuV/y3ctkgMVUmiAGDVeeB0dKhGSyT0v1ZTEQYpe/RXlBVBNuCLA==}
+    requiresBuild: true
 
   /proxy-from-env@1.1.0:
     resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}

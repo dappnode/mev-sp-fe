@@ -38,7 +38,6 @@ export function WithdrawDialog({
   const contractWrite = useContractWrite({
     address: SMOOTHING_POOL_ADDRESS,
     abi,
-    mode: 'recklesslyUnprepared',
     functionName: 'claimRewards',
     args: [
       address,

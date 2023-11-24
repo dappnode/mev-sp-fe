@@ -43,13 +43,11 @@ export function DepositDialog({
   const contractWrite = useContractWrite({
     address: SMOOTHING_POOL_ADDRESS,
     abi,
-    mode: 'recklesslyUnprepared',
     functionName: 'subscribeValidator',
     args: [validatorId],
-    overrides: {
-      from: address,
-      value: utils.parseUnits(configQuery.data?.collateralInWei || '0', 'wei'),
-    },
+    value: utils
+      .parseUnits(configQuery.data?.collateralInWei || '0', 'wei')
+      .toBigInt(),
     onSuccess: () => {
       setShowCloseButton(false)
     },
