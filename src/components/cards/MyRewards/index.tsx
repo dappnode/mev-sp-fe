@@ -2,6 +2,7 @@ import { MyRewardsSection } from './MyRewardsSection'
 import { Skeleton } from './Skeleton'
 import { BaseCard } from '../BaseCard'
 import { ClaimRewardsDialog } from '@/components/dialogs/ClaimRewardsDialog'
+import { formatTime } from '@/utils/formatTime'
 import {
   AccumulatedRewardsIcon,
   ClaimableRewardsIcon,
@@ -12,6 +13,7 @@ interface MyRewardsProps {
   claimableRewards: number
   isDisabled?: boolean
   isLoading?: boolean
+  nextCheckpoint: number | undefined,
   pendingRewards: number
   totalAccumulatedRewards: number
 }
@@ -20,6 +22,7 @@ export function MyRewards({
   claimableRewards,
   isDisabled,
   isLoading,
+  nextCheckpoint,
   pendingRewards,
   totalAccumulatedRewards,
 }: MyRewardsProps) {
@@ -29,9 +32,11 @@ export function MyRewards({
         <Skeleton />
       ) : (
         <>
-          <h3 className="pb-6 text-2xl font-bold leading-8 text-DAppDeep sm:mb-4 sm:border-b sm:border-DAppGray/20">
+          <h3 className=" text-2xl font-bold leading-8 text-DAppDeep sm:mb-4">
             My Rewards
           </h3>
+          <p className="pb-4 font-light leading-6 text-sm text-DAppDeep sm:mb-4 sm:border-b sm:border-DAppGray/20"> 
+          {`Updates in: ${formatTime(nextCheckpoint)}`} </p>
           <MyRewardsSection
             className="pb-2 sm:border-none sm:pb-0"
             icon={<ClaimableRewardsIcon />}
