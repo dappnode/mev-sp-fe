@@ -5,6 +5,7 @@ import { AiOutlineInfoCircle } from 'react-icons/ai'
 import CopyToClipboard from 'react-copy-to-clipboard'
 import toast, { Toaster } from 'react-hot-toast'
 import { FaCopy } from 'react-icons/fa'
+import { RxDotFilled } from 'react-icons/rx'
 import { StepProgressBar } from '@/components/common/StepProgressBar'
 import { Button } from '@/components/common/Button'
 import {
@@ -34,6 +35,9 @@ export function InitialDialog({
   })
 
   const isCorrectFeeRecipient = registeredRelaysQuery.data?.correctFeeRecipients
+  const noMevRelays = 
+    registeredRelaysQuery.data?.correctFeeRelayers?.length === 0 &&
+    registeredRelaysQuery.data?.wrongFeeRelayers?.length === 0
 
   const handleNext = () => {
     if (!isCorrectFeeRecipient) {
@@ -43,90 +47,191 @@ export function InitialDialog({
     }
   }
 
-  return (
-    <>
-      <Toaster />
-      <div className="-mt-2 text-DAppDeep">
-        <h3 className="mb-6 text-left text-2xl font-bold">Warning</h3>
-        <StepProgressBar currentStep={0} steps={steps} />
-      </div>
-      <div className="sm:px-6">
+  const renderLoadingOrError = () => {
+    if (registeredRelaysQuery.isLoading) {
+      return (
         <div>
-          <h4 className="mb-2 text-DAppNeutral/500">Your Validator</h4>
-          <p className="h-8 overflow-scroll">
-            {shortenEthAddress(validatorKey, 16, 16)}
-          </p>
+          <h4 className="text-center">Checking MevBoost relays...</h4>
+          <div className="mx-auto mt-8 h-10 w-80 animate-pulse rounded bg-SkeletonGray" />
         </div>
-        {registeredRelaysQuery.isLoading ||
-        registeredRelaysQuery.data?.correctFeeRecipients ? (
-          <>
-            <div className="mt-8">
-              <h4 className="mb-2 text-DAppNeutral/500">
-                Current Fee Recipient address
-              </h4>
-              {registeredRelaysQuery.isLoading ? (
-                <div className="h-8 w-96 animate-pulse rounded bg-SkeletonGray" />
-              ) : (
-                <p className="h-8 overflow-scroll">
-                  {shortenEthAddress(
-                    registeredRelaysQuery.data?.correctFeeRelayers?.[0]
-                      .feeRecipient,
-                    16,
-                    16
-                  )}
-                </p>
-              )}
+      )
+    }
+    if (registeredRelaysQuery.isError) {
+      return <div>Error when trying to fetch validator's Fee recipient</div>
+    }
+    return null
+  }
+
+  const renderMevOpportunitiesSection = () => {
+    if (registeredRelaysQuery.isLoading) {
+      return (
+        <div>
+          <h4 className="text-center">Checking MevBoost relayers...</h4>
+          <div className="mx-auto mt-8 h-10 w-80 animate-pulse rounded bg-SkeletonGray" />
+        </div>
+      )
+    }
+    if (registeredRelaysQuery.isError) {
+      return <div>Error when trying to fetch validator's Fee recipient</div>
+    }
+
+    const relays = isCorrectFeeRecipient
+      ? registeredRelaysQuery.data?.correctFeeRelayers
+      : registeredRelaysQuery.data?.wrongFeeRelayers
+
+    const title = isCorrectFeeRecipient
+      ? 'Receiving MEV opportunities from'
+      : "Does not have Smooth's address as Fee Recipient in:"
+
+    return (
+      <div>
+        <h4 className="mb-2 text-DAppNeutral/500">{title}</h4>
+        <ul>
+          {relays?.map(({ relayAddress }) => (
+            <li key={relayAddress} className="flex items-center">
+              <RxDotFilled
+                className={`-ml-1 h-6 w-6 ${
+                  isCorrectFeeRecipient ? 'text-green-500' : 'text-red-500'
+                }`}
+              />
+              {relayAddress}
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+
+  const renderRelayStatus = () => {
+    if (!registeredRelaysQuery.isLoading && noMevRelays) {
+      return (
+        <div className="mt-6 overflow-auto text-center text-base text-orange-500">
+          <AiOutlineInfoCircle className="mx-auto h-8 w-8" />{' '}
+          <h4 className="font-bold mt-2">
+            You're not registered to any MEV relays yet. Subscribe to MEV relays
+            to start using Smooth!
+          </h4>
+        </div>
+      )
+    } else if (!isCorrectFeeRecipient) {
+      return (
+        <div>
+          <div className="mt-2">{renderMevOpportunitiesSection()}</div>
+          <div className="mt-6 overflow-auto text-center text-base text-orange-500">
+            <div className="flex items-center justify-center">
+              <AiOutlineInfoCircle className="h-8 w-8 mr-2" />{' '}
+              {/* Align the icon with the text */}
+              <h4 className="font-bold">Fee recipient warning!</h4>
             </div>
-            <div className="mt-4 font-semibold">
-              {!registeredRelaysQuery.isLoading &&
-                'Great, your fee recipient is already set to Smooth!'}
-            </div>
-          </>
-        ) : (
-          <div className="mt-6 overflow-auto text-center text-base text-red-500">
-            <AiOutlineInfoCircle className="mx-auto h-8 w-8" />
-            <h4 className="mt-3 font-bold">Fee recipient error!</h4>
             <p className="mt-2 font-normal">
-              The fee recipient address is not set as{' '}
+              This validator's fee recipient is not{' '}
               <CopyToClipboard
                 text={configQuery.data?.poolAddress || ''}
                 onCopy={() =>
                   toast('Address copied to clipboard', { icon: '✂️' })
                 }>
                 <div className="flex cursor-pointer items-center justify-center">
-                  <span className="overflow-scroll font-semibold">
-                    {shortenEthAddress(configQuery.data?.poolAddress, 16, 16)}
+                  <span className="font-semibold">
+                    {shortenEthAddress(configQuery.data?.poolAddress, 10, 10)}
                   </span>
                   <FaCopy className="ml-1 h-4 w-4" />
                 </div>
               </CopyToClipboard>{' '}
-              Please{' '}
+              in one or more MEV relays. Please change your fee recipient in
+              your dappnode's{' '}
               <Link
                 className="inline font-medium underline-offset-2 hover:underline"
-                href="https://usedappnode.notion.site/How-to-change-your-fee-recipient-85ca6d30bfba4ae1a093d5e63e09c9e8"
+                href="http://brain.web3signer.dappnode/"
                 rel="noopener noreferrer"
                 target="_blank">
-                follow these instructions ↗
+                Staking Brain ↗
               </Link>{' '}
-              to change the fee recipient and try again.
+              for this validator and try again, or make sure you're not using
+              these relays anymore.
+            </p>
+            <p className="mt-6 text-sm">
+              If you've already changed your fee recipient,{' '}
+              <Link
+                href="http://example.com" // Replace with dappnode docs fee recipient section
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-blue-600">
+                click here
+              </Link>{' '}
+              for more information.
             </p>
           </div>
-        )}
+        </div>
+      )
+    } else if (isCorrectFeeRecipient) {
+      return (
+        <div className="mt-4 text-lg font-semibold">
+          Great, you're already registered to MEV relays and your validator's
+          fee recipient is set to Smooth!
+        </div>
+      )
+    }
+  }
+
+  return (
+    <>
+      <Toaster />
+      <div className="-mt-2 text-DAppDeep">
+        <h3 className="mb-6 text-left text-2xl font-bold">
+          Fee Recipient Check
+        </h3>
+        <StepProgressBar currentStep={0} steps={steps} />
       </div>
-      <div>
-        <Button
-          isDisabled={registeredRelaysQuery.isLoading}
-          onPress={handleNext}>
-          {registeredRelaysQuery.isLoading || isCorrectFeeRecipient
-            ? 'Next'
-            : 'I will change the Fee Recipient in my validator'}
-        </Button>
-        {(registeredRelaysQuery.isLoading || isCorrectFeeRecipient) && (
+      <div className="sm:px-6">
+        <div>
+          <h4 className="mb-2 text-DAppNeutral/500">Your Validator</h4>
+          <p className="h-8">{shortenEthAddress(validatorKey, 16, 16)}</p>
+        </div>
+        {renderLoadingOrError() || renderRelayStatus()}
+      </div>
+      
+      {noMevRelays ? (
+        <div>
+          <Button
+            isDisabled={registeredRelaysQuery.isLoading}
+            onPress={handleClose}>
+            I will register to MEV relays
+          </Button>
           <Button buttonType="secondary" className="mt-4" onPress={handleClose}>
             Cancel
           </Button>
-        )}
-      </div>
+        </div>
+      ) : registeredRelaysQuery.isLoading || isCorrectFeeRecipient ? (
+        <div>
+          <Button
+            isDisabled={registeredRelaysQuery.isLoading}
+            onPress={handleNext}>
+            Next
+          </Button>
+          <Button buttonType="secondary" className="mt-4" onPress={handleClose}>
+            Cancel
+          </Button>
+        </div>
+      ) : (
+        <div className="flex justify-between mt-4 ">
+          <Button
+            onPress={handleClose}
+            className="h-17 px-4 ml-2" // Adjust height, padding, and margin for smaller buttons and space between them
+          >
+            I will change my Fee Recipient
+          </Button>
+          <Button
+            buttonType="secondary"
+            isDisabled={registeredRelaysQuery.isLoading}
+            onPress={() => {
+              handleChangeDialogState('confirm')
+            }}
+            className="h-17 px-4 ml-5" // Adjust height and padding for smaller buttons
+          >
+            Continue to subscription anyways
+          </Button>
+        </div>
+      )}
     </>
   )
 }
