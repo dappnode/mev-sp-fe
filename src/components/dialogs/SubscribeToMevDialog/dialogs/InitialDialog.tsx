@@ -35,7 +35,7 @@ export function InitialDialog({
   })
 
   const isCorrectFeeRecipient = registeredRelaysQuery.data?.correctFeeRecipients
-  const noMevRelays = 
+  const noMevRelays =
     registeredRelaysQuery.data?.correctFeeRelayers?.length === 0 &&
     registeredRelaysQuery.data?.wrongFeeRelayers?.length === 0
 
@@ -57,14 +57,18 @@ export function InitialDialog({
       )
     }
     if (registeredRelaysQuery.isError) {
-      return <div>Error when trying to fetch validator's Fee recipient</div>
+      return (
+        <div>Error when trying to fetch validator&#39;s Fee recipient</div>
+      )
     }
     return null
   }
 
   const renderMevOpportunitiesSection = () => {
     if (registeredRelaysQuery.isError) {
-      return <div>Error when trying to fetch validator's Fee recipient</div>
+      return (
+        <div>Error when trying to fetch validator&#39;s Fee recipient</div>
+      )
     }
     const relays = isCorrectFeeRecipient
       ? registeredRelaysQuery.data?.correctFeeRelayers
@@ -76,22 +80,24 @@ export function InitialDialog({
 
     return (
       <div>
-      <h4 className="mb-2 text-DAppNeutral/500">{title}</h4>
-      <div style={{ maxHeight: '80px', overflowY: 'auto' }}> {/* Adjust maxHeight as needed */}
-        <ul>
-          {relays?.map(({ relayAddress }) => (
-            <li key={relayAddress} className="flex items-center">
-              <RxDotFilled
-                className={`-ml-1 h-6 w-6 ${
-                  isCorrectFeeRecipient ? 'text-green-500' : 'text-red-500'
-                }`}
-              />
-              {relayAddress}
-            </li>
-          ))}
-        </ul>
+        <h4 className="mb-2 text-DAppNeutral/500">{title}</h4>
+        <div style={{ maxHeight: '80px', overflowY: 'auto' }}>
+          {' '}
+          {/* Adjust maxHeight as needed */}
+          <ul>
+            {relays?.map(({ relayAddress }) => (
+              <li key={relayAddress} className="flex items-center">
+                <RxDotFilled
+                  className={`-ml-1 h-6 w-6 ${
+                    isCorrectFeeRecipient ? 'text-green-500' : 'text-red-500'
+                  }`}
+                />
+                {relayAddress}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
-    </div>
     )
   }
 
@@ -101,12 +107,13 @@ export function InitialDialog({
         <div className="mt-6 overflow-auto text-center text-base text-orange-500">
           <AiOutlineInfoCircle className="mx-auto h-8 w-8" />{' '}
           <h4 className="font-bold mt-2">
-            You're not registered to any MEV relays yet. Subscribe to MEV relays
-            to start using Smooth!
+            You are not registered to any MEV relays yet. Subscribe to MEV
+            relays to start using Smooth!
           </h4>
         </div>
       )
-    } else if (!isCorrectFeeRecipient) {
+    }
+    if (!isCorrectFeeRecipient) {
       return (
         <div>
           <div className="mt-2">{renderMevOpportunitiesSection()}</div>
@@ -117,7 +124,7 @@ export function InitialDialog({
               <h4 className="font-bold">Fee recipient warning!</h4>
             </div>
             <p className="mt-2 font-normal">
-              This validator's fee recipient is not{' '}
+              This validator&#39;s fee recipient is not{' '}
               <CopyToClipboard
                 text={configQuery.data?.poolAddress || ''}
                 onCopy={() =>
@@ -131,7 +138,7 @@ export function InitialDialog({
                 </div>
               </CopyToClipboard>{' '}
               in one or more MEV relays. Please change your fee recipient in
-              your dappnode's{' '}
+              your dappnode&#39;s{' '}
               <Link
                 className="inline font-medium underline-offset-2 hover:underline"
                 href="http://brain.web3signer.dappnode/"
@@ -139,16 +146,16 @@ export function InitialDialog({
                 target="_blank">
                 Staking Brain ↗
               </Link>{' '}
-              for this validator and try again, or make sure you're not using
-              these relays anymore.
+              for this validator and try again, or make sure you&#39;re not
+              using these relays anymore.
             </p>
             <p className="mt-6 text-sm">
-              If you've already changed your fee recipient,{' '}
+              If you have already changed your fee recipient,{' '}
               <Link
+                className="underline hover:text-blue-600"
                 href="http://example.com" // Replace with dappnode docs fee recipient section
-                target="_blank"
                 rel="noopener noreferrer"
-                className="underline hover:text-blue-600">
+                target="_blank">
                 click here
               </Link>{' '}
               for more information.
@@ -156,14 +163,16 @@ export function InitialDialog({
           </div>
         </div>
       )
-    } else if (isCorrectFeeRecipient) {
+    }
+    if (isCorrectFeeRecipient) {
       return (
         <div className="mt-4 text-lg font-semibold">
-          Great, you're already registered to MEV relays and your validator's
-          fee recipient is set to Smooth!
+          Great, you are already registered to MEV relays and your
+          validator&#39;s fee recipient is set to Smooth!
         </div>
       )
     }
+    return null
   }
 
   return (
@@ -182,7 +191,7 @@ export function InitialDialog({
         </div>
         {renderLoadingOrError() || renderRelayStatus()}
       </div>
-      
+
       {noMevRelays ? (
         <div>
           <Button
@@ -208,19 +217,17 @@ export function InitialDialog({
       ) : (
         <div className="flex justify-between mt-4 ">
           <Button
-            onPress={handleClose}
             className="h-17 px-4 ml-2" // Adjust height, padding, and margin for smaller buttons and space between them
-          >
+            onPress={handleClose}>
             I will change my Fee Recipient
           </Button>
           <Button
             buttonType="secondary"
+            className="h-17 px-4 ml-5" // Adjust height and padding for smaller buttons
             isDisabled={registeredRelaysQuery.isLoading}
             onPress={() => {
               handleChangeDialogState('confirm')
-            }}
-            className="h-17 px-4 ml-5" // Adjust height and padding for smaller buttons
-          >
+            }}>
             Continue to subscription anyways
           </Button>
         </div>
