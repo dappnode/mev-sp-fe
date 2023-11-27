@@ -63,18 +63,9 @@ export function InitialDialog({
   }
 
   const renderMevOpportunitiesSection = () => {
-    if (registeredRelaysQuery.isLoading) {
-      return (
-        <div>
-          <h4 className="text-center">Checking MevBoost relayers...</h4>
-          <div className="mx-auto mt-8 h-10 w-80 animate-pulse rounded bg-SkeletonGray" />
-        </div>
-      )
-    }
     if (registeredRelaysQuery.isError) {
       return <div>Error when trying to fetch validator's Fee recipient</div>
     }
-
     const relays = isCorrectFeeRecipient
       ? registeredRelaysQuery.data?.correctFeeRelayers
       : registeredRelaysQuery.data?.wrongFeeRelayers
@@ -85,7 +76,8 @@ export function InitialDialog({
 
     return (
       <div>
-        <h4 className="mb-2 text-DAppNeutral/500">{title}</h4>
+      <h4 className="mb-2 text-DAppNeutral/500">{title}</h4>
+      <div style={{ maxHeight: '80px', overflowY: 'auto' }}> {/* Adjust maxHeight as needed */}
         <ul>
           {relays?.map(({ relayAddress }) => (
             <li key={relayAddress} className="flex items-center">
@@ -99,6 +91,7 @@ export function InitialDialog({
           ))}
         </ul>
       </div>
+    </div>
     )
   }
 
