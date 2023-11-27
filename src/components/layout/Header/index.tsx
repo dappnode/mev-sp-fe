@@ -74,7 +74,9 @@ export function Header() {
         })}
       </nav>
       <div className="flex items-center">
-        <w3m-account-button />
+        <Button buttonType="secondary" color="blue" size="sm">
+          <w3m-account-button />
+        </Button>
 
         <div className="md:hidden">
           <MobileMenuDialog />
