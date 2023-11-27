@@ -6,6 +6,7 @@ import { weiToEth } from '@/utils/web3'
 import type { Validator } from '@/components/tables/types'
 import {
   fetchOnChainProof,
+  fetchStatus,
   fetchValidatorsByDepositor,
   validateServerStatus,
 } from '@/client/api/queryFunctions'
@@ -24,6 +25,9 @@ export function UserInfo() {
     queryFn: () => fetchOnChainProof(address),
     enabled: !!address,
   })
+
+  const statusQuery = useQuery(['status'], fetchStatus)
+
   const serverStatus = useQuery(['serverStatus'], validateServerStatus)
 
   const totalAccumulatedRewards = weiToEth(
@@ -80,6 +84,7 @@ export function UserInfo() {
         <MyRewards
           claimableRewards={claimableRewards}
           isLoading={!serverStatus.data?.ready || !isConnected}
+          nextCheckpoint={statusQuery.data?.nextCheckpointRemainingUnix}
           pendingRewards={pendingRewards}
           totalAccumulatedRewards={totalAccumulatedRewards}
           isDisabled={
