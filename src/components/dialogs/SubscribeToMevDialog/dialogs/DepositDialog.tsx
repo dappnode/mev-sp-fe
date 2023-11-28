@@ -76,7 +76,7 @@ export function DepositDialog({
       {!waitForTransaction.isError ? (
         <div className="text-center">
           <h4 className="mb-4 text-lg font-normal">
-            To start earning rewards, please deposit
+            To subscribe and start earning rewards, please deposit
           </h4>
           {configQuery.isLoading ? (
             <div className="mx-auto h-8 w-20 animate-pulse rounded bg-SkeletonGray" />
@@ -89,7 +89,7 @@ export function DepositDialog({
             <p>to Smooth </p>{' '}
             <Link
               className="ml-2 flex items-center"
-              href="https://dappnode.com/"
+              href="https://docs.dappnode.io/docs/smooth"
               rel="noopener noreferrer"
               target="_blank">
               <Tooltip

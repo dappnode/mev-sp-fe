@@ -44,7 +44,7 @@ export function SuccessDialog({ steps, handleClose }: DialogProps) {
         </p>
         <p>
           You can now change your fee recipient in your validator software
-          without any penalties. We&apos;re sad to see you go!
+          without any penalties. We&#39;re sad to see you go!
         </p>
       </div>
       <Button buttonType="secondary" className="mt-4" onPress={handleClose}>

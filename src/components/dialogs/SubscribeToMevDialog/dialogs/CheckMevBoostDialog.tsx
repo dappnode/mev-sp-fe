@@ -48,7 +48,7 @@ export function CheckMevBoostDialog({
             </div>
             <div className="mt-3">
               <h4 className="mb-2 text-DAppNeutral/500">
-                Receiving MEV opportunities from
+                Has the correct fee recipient in:
               </h4>
               {registeredRelaysQuery.isLoading ? (
                 <div className="h-8 w-96 animate-pulse rounded bg-SkeletonGray" />
