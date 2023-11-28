@@ -47,7 +47,7 @@ export function SubscribeToMevDialog({
       triggerButtonProp="outline"
       triggerText="Subscribe">
       <AnimatePresence>
-      <div className="flex h-[550px] flex-col justify-between text-DAppDeep sm:h-[650px]"> {/* Adjusted height */}
+      <div className="flex h-[550px] flex-col justify-between text-DAppDeep sm:h-[680px]"> {/* Adjusted height */}
           {dialogState === 'initial' ? (
             <InitialDialog
               handleChangeDialogState={setDialogState}

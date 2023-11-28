@@ -147,10 +147,10 @@ export function InitialDialog({
                 Staking Brain ↗
               </Link>{' '}
               for this validator and try again, or make sure you&#39;re not
-              using these relays anymore.
+              using these relays anymore. Your validator will be <strong>BANNED</strong> from Smooth if it uses a relay with an incorrect fee recipient.
             </p>
             <p className="mt-6 text-sm">
-              If you have already changed your fee recipient,{' '}
+              If you have already changed your fee recipient and this warning is still appearing,{' '}
               <Link
                 className="underline hover:text-blue-600"
                 href="http://example.com" // Replace with dappnode docs fee recipient section
