@@ -33,29 +33,15 @@ const chains = WEB3_CHAINS
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID || ''
 
 const metadata = {
-  name: 'Dappnode Smooth',
-  description: 'Dappnode Smooth',
-  url: 'https://smooth.dappnode.io/',
+  name: 'Next Starter Template',
+  description: 'A Next.js starter template with Web3Modal v3 + Wagmi',
+  url: 'https://web3modal.com',
   icons: ['https://avatars.githubusercontent.com/u/37784886'],
 }
 
-const wagmiConfig = defaultWagmiConfig({
-  chains,
-  projectId,
-  metadata,
-})
+const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata })
 
-createWeb3Modal({
-  wagmiConfig,
-  projectId,
-  chains,
-  defaultChain: goerli,
-  themeVariables: {
-    '--w3m-accent': 'linear-gradient(to right, #9731dd, #c237ea)',
-    '--w3m-border-radius-master': '1px',
-    '--w3m-z-index': 1000,
-  },
-})
+createWeb3Modal({ wagmiConfig, projectId, chains })
 
 interface Web3ProviderProps {
   children: ReactNode
