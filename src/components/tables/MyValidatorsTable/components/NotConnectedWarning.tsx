@@ -14,7 +14,7 @@ export function NotConnectedWarning({ title }: NotConnectedWarningProps) {
         <h2 className="mb-3 mt-2 text-center text-3xl font-bold leading-[50px] md:leading-[60px]">
           Join Smooth and earn higher rewards!
         </h2>
-        <w3m-account-button />
+        <w3m-button />
       </div>
     </div>
   )

@@ -7,34 +7,11 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import clsx from 'clsx'
 import { RxExternalLink } from 'react-icons/rx'
-import { useState } from 'react'
-import {
-  createWeb3Modal,
-  useWeb3Modal,
-  useWeb3ModalEvents,
-  useWeb3ModalState,
-  useWeb3ModalTheme,
-} from '@web3modal/wagmi/react'
 import { PAGES } from '@/utils/config'
 import { MobileMenuDialog } from '@/components/dialogs/MobileMenuDialog'
-import { ConnectWallet } from '@/providers/ConnectWallet'
-import { Button } from '@/components/common/Button'
 
 export function Header() {
   const router = useRouter()
-  const [isNetworkSwitchHighlighted, setIsNetworkSwitchHighlighted] =
-    useState(false)
-  const [isConnectHighlighted, setIsConnectHighlighted] = useState(false)
-
-  const closeAll = () => {
-    setIsNetworkSwitchHighlighted(false)
-    setIsConnectHighlighted(false)
-  }
-
-  const modal = useWeb3Modal()
-  const state = useWeb3ModalState()
-  const { themeMode, themeVariables, setThemeMode } = useWeb3ModalTheme()
-  const events = useWeb3ModalEvents()
 
   return (
     <header className="flex h-24 items-center justify-between border-b bg-white p-4 md:p-6">
@@ -74,9 +51,7 @@ export function Header() {
         })}
       </nav>
       <div className="flex items-center">
-        <Button buttonType="secondary" color="blue" size="sm">
-          <w3m-account-button />
-        </Button>
+        <w3m-button balance="hide" />
 
         <div className="md:hidden">
           <MobileMenuDialog />
