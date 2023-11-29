@@ -178,17 +178,14 @@ export function MultiDepositDialog({
   // Multiply the collateral by the number of validator IDs
   const totalDepositValue = collateralInWei.mul(validatorIds.length);
   const totalDepositInEth = weiToEth(totalDepositValue.toString());
+  const totalDepositInString = totalDepositInEth.toString();
 
   const contractWrite = useContractWrite({
     address: SMOOTHING_POOL_ADDRESS,
     abi,
-    mode: 'recklesslyUnprepared',
     functionName: 'subscribeValidators',
     args: [validatorIds],
-    overrides: {
-      from: address,
-      value: totalDepositValue,
-    },
+     value: utils.parseEther(totalDepositInString).toBigInt(),
     onSuccess: () => {
       setShowCloseButton(false)
     },
