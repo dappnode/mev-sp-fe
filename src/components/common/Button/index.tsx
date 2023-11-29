@@ -9,6 +9,7 @@ interface ButtonProps extends AriaButtonProps {
   className?: string
   isLoading?: boolean
   buttonType?: 'primary' | 'secondary' | 'tertiary' | 'unstyled'
+  onClick?: (() => Promise<void>) | undefined
 }
 
 export function Button(props: ButtonProps) {
@@ -27,9 +28,9 @@ export function Button(props: ButtonProps) {
       type="button"
       className={clsx(
         'w-full rounded text-sm font-semibold outline-none transition duration-200 hover:opacity-90 active:opacity-80 disabled:opacity-75',
-        size === 'sm' && 'py-1.5 px-3',
-        size === 'md' && 'py-2 px-4',
-        size === 'lg' && 'py-4 px-5',
+        size === 'sm' && 'px-3 py-1.5',
+        size === 'md' && 'px-4 py-2',
+        size === 'lg' && 'px-5 py-4',
         buttonType === 'primary' && 'text-white',
         buttonType === 'secondary' && 'border-2  bg-white',
         buttonType === 'tertiary' && 'border-none bg-white',

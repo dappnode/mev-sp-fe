@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 import { v4 as uuidv4 } from 'uuid'
 import { IoIosArrowForward, IoIosArrowBack } from 'react-icons/io'
 import clsx from 'clsx'

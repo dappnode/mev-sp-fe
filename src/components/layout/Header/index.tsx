@@ -1,10 +1,13 @@
+/* eslint-disable react/button-has-type */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import clsx from 'clsx'
 import { RxExternalLink } from 'react-icons/rx'
 import { PAGES } from '@/utils/config'
-import { ConnectWalletButton } from '@/components/common/ConnectWalletButton'
 import { MobileMenuDialog } from '@/components/dialogs/MobileMenuDialog'
 
 export function Header() {
@@ -48,7 +51,8 @@ export function Header() {
         })}
       </nav>
       <div className="flex items-center">
-        <ConnectWalletButton />
+        <w3m-button balance="hide" />
+
         <div className="md:hidden">
           <MobileMenuDialog />
         </div>

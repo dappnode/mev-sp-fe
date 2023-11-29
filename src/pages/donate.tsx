@@ -2,7 +2,6 @@ import Image from 'next/image'
 import { useAccount } from 'wagmi'
 import { Head } from '@/components/layout/Head'
 import { DonateDialog } from '@/components/dialogs/DonateDialog'
-import { ConnectWalletButton } from '@/components/common/ConnectWalletButton'
 
 export default function Donate() {
   const { isConnected } = useAccount()
@@ -100,7 +99,7 @@ export default function Donate() {
             {`You can support Solo Stakers and increase their revenue by donating directly into the pool. It's a great way of supporting the true decentralized Node Runners that keep Ethereum decentralized at scale.`}
           </p>
           <div className="mx-auto mt-8 w-[220px] lg:mx-0">
-            {isConnected ? <DonateDialog /> : <ConnectWalletButton />}
+            {isConnected ? <DonateDialog /> : <w3m-account-button />}
           </div>
         </article>
       </main>
