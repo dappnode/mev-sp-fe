@@ -153,7 +153,7 @@ export function InitialDialog({
               If you have already changed your fee recipient and this warning is still appearing,{' '}
               <Link
                 className="underline hover:text-blue-600"
-                href="http://example.com" // Replace with dappnode docs fee recipient section
+                href="https://docs.dappnode.io/docs/smooth/subscribe-to-smooth/manual" // Replace with dappnode docs fee recipient section
                 rel="noopener noreferrer"
                 target="_blank">
                 click here
