@@ -117,7 +117,7 @@ export function MultiSubscribeToMevDialog({
       triggerButtonProp="outline"
       triggerText="Subscribe selected Validators">
       <AnimatePresence>
-        <div className="flex h-[550px] flex-col justify-between text-DAppDeep sm:h-[500px]">
+        <div className="flex h-[550px] flex-col justify-between text-DAppDeep sm:h-[610px]">
           {dialogState === 'initial' ? (
             <MultiDepositDialog
               handleChangeDialogState={setDialogState}

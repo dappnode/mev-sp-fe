@@ -211,11 +211,13 @@ export function MultiDepositDialog({
       </div>
       {!waitForTransaction.isError ? (
         <div className="text-center">
+          You are trying to subscribe your validators with IDs: {validatorIds.join(', ')}. Make sure this is correct and they are not already
+          subscribed to the pool!
           {/* Warning message about fee recipient */}
         <div className="mt-1 px-4 py-3 border border-yellow-400 bg-yellow-100 text-yellow-800 rounded-md">
           <p className="text-sm md:text-base">
             Warning: When doing a multisubscription, Smooth will not check if all selected validators have the correct fee recipient set.
-             Please ensure all your validators have {configQuery.data?.poolAddress} as fee_recipient in each MEV relay they are registered to.
+             Please ensure all your validators have {configQuery.data?.poolAddress} as fee recipient in each MEV relay they are registered to.
           </p>
         </div>
           <h4 className="mb-4 text-lg font-normal">
@@ -232,7 +234,7 @@ export function MultiDepositDialog({
             <p>to The MEV Smoothing Pool </p>{' '}
             <Link
               className="ml-2 flex items-center"
-              href="https://dappnode.com/"
+              href="https://docs.dappnode.io/docs/smooth"
               rel="noopener noreferrer"
               target="_blank">
               <Tooltip
