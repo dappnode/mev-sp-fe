@@ -19,38 +19,38 @@ export default function Donate() {
             width={230}
           />
           <Image
-            alt="WETH Circle"
+            alt="ETH Circle"
             className="absolute -left-10 bottom-32 "
             height={180}
-            src="images/weth-circle.svg"
+            src="images/eth-circle.svg"
             width={180}
           />
           <Image
-            alt="WETH Circle"
+            alt="ETH Circle"
             className="absolute -bottom-14 right-20"
             height={180}
-            src="images/weth-circle.svg"
+            src="images/eth-circle.svg"
             width={180}
           />
           <Image
-            alt="USDC Circle"
+            alt="ETH Circle"
             className="absolute -top-5 left-20"
             height={176}
-            src="images/usdc-circle.svg"
+            src="images/eth-circle.svg"
             width={176}
           />
           <Image
-            alt="USDT Circle"
+            alt="ETH Circle"
             className="absolute right-28 top-6"
             height={136}
-            src="images/usdt-circle.svg"
+            src="images/eth-circle.svg"
             width={136}
           />
           <Image
-            alt="DAI Circle"
+            alt="ETH Circle"
             className="absolute -right-10 top-8"
             height={170}
-            src="images/dai-circle.svg"
+            src="images/eth-circle.svg"
             width={170}
           />
           <Image
