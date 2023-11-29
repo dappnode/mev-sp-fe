@@ -69,7 +69,7 @@ export function TableLayout<T extends TableDataTypes>({
                     key={header.id}
                     className="py-4 text-left text-sm font-medium">
                     {header.isPlaceholder ? null : (
-                      <p className="w-fit px-6 text-left">
+                      <p className="w-fit px-4 text-left">
                         {flexRender(
                           header.column.columnDef.header,
                           header.getContext()
@@ -87,7 +87,7 @@ export function TableLayout<T extends TableDataTypes>({
                 {row.getVisibleCells().map((cell) => (
                   <td
                     key={cell.id}
-                    className="py-3 px-7 text-sm font-normal text-DAppDeep">
+                    className="py-3 px-4 text-sm font-normal text-DAppDeep">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}

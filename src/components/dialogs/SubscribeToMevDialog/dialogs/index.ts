@@ -1,6 +1,6 @@
 import { InitialDialog } from './InitialDialog'
 import { CheckMevBoostDialog } from './CheckMevBoostDialog'
-import { DepositDialog } from './DepositDialog'
-import { SuccessDialog } from './SuccessDialog'
+import { DepositDialog, MultiDepositDialog } from './DepositDialog'
+import { SuccessDialog, MultiSuccessDialog } from './SuccessDialog'
 
-export { InitialDialog, CheckMevBoostDialog, DepositDialog, SuccessDialog }
+export { InitialDialog, CheckMevBoostDialog, DepositDialog, MultiDepositDialog, SuccessDialog, MultiSuccessDialog }
