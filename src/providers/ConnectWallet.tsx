@@ -36,7 +36,6 @@ const metadata = {
   name: 'Dappnode Smooth',
   description: 'Dappnode Smooth',
   url: 'https://smooth.dappnode.io/',
-  icons: ['https://avatars.githubusercontent.com/u/37784886'],
 }
 
 const wagmiConfig = defaultWagmiConfig({
@@ -49,7 +48,7 @@ createWeb3Modal({
   wagmiConfig,
   projectId,
   chains,
-  defaultChain: goerli,
+  defaultChain: mainnet,
   themeVariables: {
     '--w3m-accent': 'linear-gradient(to right, #9731dd, #c237ea)',
     '--w3m-border-radius-master': '1px',
