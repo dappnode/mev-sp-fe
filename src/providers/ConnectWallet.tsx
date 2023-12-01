@@ -5,40 +5,22 @@ import { ReactNode, useEffect, useState } from 'react'
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react'
 import { mainnet, goerli } from 'wagmi/chains'
 
-const SUPPORTED_CHAINS = ['mainnet', 'goerli']
-
-if (!process.env.NEXT_PUBLIC_SMOOTHING_POOL_ADDRESS) {
-  throw new Error('NEXT_PUBLIC_SMOOTHING_POOL_ADDRESS is not set')
+const projectId = process.env.NEXT_PUBLIC_PROJECT_ID
+if (!projectId) {
+  throw new Error('NEXT_PUBLIC_PROJECT_ID is not set')
 }
 
-if (!process.env.NEXT_PUBLIC_SELECTED_CHAIN) {
-  throw new Error('NEXT_PUBLIC_SELECTED_CHAIN is not set')
-}
-
-if (!SUPPORTED_CHAINS.includes(process.env.NEXT_PUBLIC_SELECTED_CHAIN)) {
-  throw new Error(
-    'NEXT_PUBLIC_SELECTED_CHAIN is not one of the supported chains'
-  )
-}
-
-export const SELECTED_CHAIN = process.env.NEXT_PUBLIC_SELECTED_CHAIN
-
-export const SMOOTHING_POOL_ADDRESS = process.env
-  .NEXT_PUBLIC_SMOOTHING_POOL_ADDRESS as `0x${string}`
-
-export const WEB3_CHAINS = [SELECTED_CHAIN === 'mainnet' ? mainnet : goerli]
-
-const chains = WEB3_CHAINS
-
-const projectId = process.env.NEXT_PUBLIC_PROJECT_ID || ''
+// 2. Create wagmiConfig
+const chains = [mainnet, goerli]
 
 const metadata = {
   name: 'Dappnode Smooth',
   description: 'Dappnode Smooth',
   url: 'https://smooth.dappnode.io/',
+  icons: ['https://avatars.githubusercontent.com/u/37784886'],
 }
 
-const wagmiConfig = defaultWagmiConfig({
+export const wagmiConfig = defaultWagmiConfig({
   chains,
   projectId,
   metadata,
@@ -48,6 +30,8 @@ createWeb3Modal({
   wagmiConfig,
   projectId,
   chains,
+  enableAnalytics: true,
+  metadata,
   defaultChain: mainnet,
   themeVariables: {
     '--w3m-accent': 'linear-gradient(to right, #9731dd, #c237ea)',
