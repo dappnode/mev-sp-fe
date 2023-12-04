@@ -79,7 +79,7 @@ export function InitialDialog({
       </div>
       <div className="mt-6 flex w-full flex-col gap-y-5 rounded-lg bg-violet-50 p-4 text-sm font-normal text-DAppDeep">
         <div className="flex items-center justify-between">
-          <p>Donation to DAppNode</p>
+          <p>Donation to Solo Stakers</p>
           <p>
             {ethAmount} {data?.symbol}
           </p>

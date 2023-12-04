@@ -27,7 +27,7 @@ export function DonateDialog() {
     <BaseDialog
       handleOpenChange={handleOpenChangeDialog}
       open={open}
-      subtitle="Donate to DAppNode"
+      subtitle="Donate to Smooth"
       triggerText="Donate now">
       {dialogState === 'initial' ? (
         <InitialDialog
