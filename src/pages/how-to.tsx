@@ -40,10 +40,10 @@ export default function HowTo() {
               Explore all the steps for using Smooth. We highly recommend
               reviewing&nbsp;
               <a
+                className="text-blue-500 underline hover:text-blue-700"
                 href="https://docs.dappnode.io/docs/smooth/"
-                target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-500 underline hover:text-blue-700">
+                target="_blank">
                 the documentation
               </a>{' '}
               before getting started!
