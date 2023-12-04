@@ -1,4 +1,4 @@
-import { goerli, mainnet, gnosis } from '@wagmi/chains'
+import { goerli, mainnet } from '@wagmi/chains'
 
 export const SITE_NAME = 'Smooth'
 export const SITE_DESCRIPTION =
@@ -11,7 +11,7 @@ export const SOCIAL_TWITTER = 'dappnode'
 export const SOCIAL_GITHUB = 'dappnode'
 export const SOCIAL_LINKEDIN = 'dappnode'
 
-const SUPPORTED_CHAINS = ['mainnet', 'goerli', 'gnosis']
+const SUPPORTED_CHAINS = ['mainnet', 'goerli']
 
 if (!process.env.NEXT_PUBLIC_SMOOTHING_POOL_ADDRESS) {
   throw new Error('NEXT_PUBLIC_SMOOTHING_POOL_ADDRESS is not set')
@@ -32,10 +32,7 @@ export const SELECTED_CHAIN = process.env.NEXT_PUBLIC_SELECTED_CHAIN
 export const SMOOTHING_POOL_ADDRESS = process.env
   .NEXT_PUBLIC_SMOOTHING_POOL_ADDRESS as `0x${string}`
 
-export const WEB3_CHAINS = [
-  SELECTED_CHAIN === 'mainnet' ? mainnet : goerli,
-  SELECTED_CHAIN === 'gnosis' ? gnosis : null, // Add this line for Gnosis
-].filter(Boolean)
+export const WEB3_CHAINS = [SELECTED_CHAIN === 'mainnet' ? mainnet : goerli]
 
 export const getBeaconChainExplorer = (
   type: 'slot' | 'validator' | 'block' | 'tx',
