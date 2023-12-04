@@ -37,7 +37,16 @@ export default function HowTo() {
           <div className="mx-auto max-w-fit text-center">
             <h2 className="text-5xl font-bold">How to Use</h2>
             <h4 className="mt-6 text-xl font-normal">
-              Check all the steps to use Smooth
+              Explore all the steps for using Smooth. We highly recommend
+              reviewing&nbsp;
+              <a
+                href="https://docs.dappnode.io/docs/smooth/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 underline hover:text-blue-700">
+                the documentation
+              </a>{' '}
+              before getting started!
             </h4>
           </div>
           <div className="mt-14 flex flex-col gap-y-8 sm:mt-20 sm:gap-y-28">
@@ -77,12 +86,12 @@ const howToSteps = [
   {
     title: 'Subscribe to the Pool',
     description:
-      'Connect to the Dashboard with your Withdrawal Address of your validators and register them to start accumulating rewards. If you prefer to wait until your next block proposal, you can simply set your Fee Recipient Address to the Smoothing Pool and your validator will be subscribed when you send your first EL rewards',
+      "Update your fee recipient address to Smooth's and connect to the Dashboard using the withdrawal address of your validators. Register them to start accumulating rewards. If you opt to wait until your next block proposal, you can easily set your Fee Recipient Address to the Smoothing Pool. Your validator will automatically be subscribed when you send your next block proposal EL rewards!",
     imageSrc: 'images/how-to-step-1.svg',
   },
   {
     title: 'Claim Rewards',
-    description: `After every sucessful block proposal, you will be able to claim all accumulated rewards for that validator. You won't depend on the MEV of that particular block, and you will get an average of all successfully proposed blocks in the pool!`,
+    description: `After every sucessful block proposal, you will be able to claim the accumulated rewards for that validator. You won't depend on the MEV of that particular block, and you will get an average of all successfully proposed blocks in the pool!`,
     imageSrc: 'images/how-to-step-2.svg',
   },
   {
