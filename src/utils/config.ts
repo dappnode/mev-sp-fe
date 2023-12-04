@@ -1,16 +1,3 @@
-import { goerli, mainnet } from '@wagmi/chains'
-
-export const SITE_NAME = 'Smooth'
-export const SITE_DESCRIPTION =
-  'Smooth is a dashboard for Ethereum validators to join and receive a share of block proposal fees, ensuring a more stable and predictable return on investment.'
-export const SITE_URL = 'https://dappnode-mev-pool.vercel.app/'
-export const MAIN_SITE_URL = 'https://dappnode.com/'
-
-export const SOCIAL_DISCORD = 'dappnode'
-export const SOCIAL_TWITTER = 'dappnode'
-export const SOCIAL_GITHUB = 'dappnode'
-export const SOCIAL_LINKEDIN = 'dappnode'
-
 const SUPPORTED_CHAINS = ['mainnet', 'goerli']
 
 if (!process.env.NEXT_PUBLIC_SMOOTHING_POOL_ADDRESS) {
@@ -32,8 +19,6 @@ export const SELECTED_CHAIN = process.env.NEXT_PUBLIC_SELECTED_CHAIN
 export const SMOOTHING_POOL_ADDRESS = process.env
   .NEXT_PUBLIC_SMOOTHING_POOL_ADDRESS as `0x${string}`
 
-export const WEB3_CHAINS = [SELECTED_CHAIN === 'mainnet' ? mainnet : goerli]
-
 export const getBeaconChainExplorer = (
   type: 'slot' | 'validator' | 'block' | 'tx',
   endpoint: string | number
@@ -45,6 +30,17 @@ export const getBeaconChainExplorer = (
 
   return `${baseUrl}/${type}/${endpoint}`
 }
+
+export const SITE_NAME = 'Smooth'
+export const SITE_DESCRIPTION =
+  'Smooth is a dashboard for Ethereum validators to join and receive a share of block proposal fees, ensuring a more stable and predictable return on investment.'
+export const SITE_URL = 'https://dappnode-mev-pool.vercel.app/'
+export const MAIN_SITE_URL = 'https://dappnode.com/'
+
+export const SOCIAL_DISCORD = 'dappnode'
+export const SOCIAL_TWITTER = 'dappnode'
+export const SOCIAL_GITHUB = 'dappnode'
+export const SOCIAL_LINKEDIN = 'dappnode'
 
 export const PAGES = [
   {
