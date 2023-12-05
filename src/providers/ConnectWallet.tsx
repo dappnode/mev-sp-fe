@@ -4,13 +4,15 @@ import { WagmiConfig } from 'wagmi'
 import { ReactNode, useEffect, useState } from 'react'
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react'
 import { mainnet, goerli } from 'wagmi/chains'
+import { SELECTED_CHAIN } from '@/utils/config'
 
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID
 if (!projectId) {
   throw new Error('NEXT_PUBLIC_PROJECT_ID is not set')
 }
 
-const chains = [mainnet, goerli]
+const WEB3_CHAINS = [SELECTED_CHAIN === 'mainnet' ? mainnet : goerli]
+const chains = WEB3_CHAINS
 
 const metadata = {
   name: 'Dappnode Smooth',
