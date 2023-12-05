@@ -99,7 +99,7 @@ export default function Donate() {
             {`You can support Solo Stakers and increase their revenue by donating directly into the pool. It's a great way of supporting the true decentralized Node Runners that keep Ethereum decentralized at scale.`}
           </p>
           <div className="mx-auto mt-8 w-[220px] lg:mx-0">
-            {isConnected ? <DonateDialog /> : <w3m-account-button />}
+            {isConnected ? <DonateDialog /> : <w3m-button label="Donate" />}
           </div>
         </article>
       </main>

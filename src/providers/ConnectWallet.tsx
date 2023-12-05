@@ -10,17 +10,17 @@ if (!projectId) {
   throw new Error('NEXT_PUBLIC_PROJECT_ID is not set')
 }
 
-// 2. Create wagmiConfig
 const chains = [mainnet, goerli]
 
 const metadata = {
   name: 'Dappnode Smooth',
-  description: 'Dappnode Smooth',
+  description:
+    'Smooth is a dashboard for Ethereum validators to join and receive a share of block proposal fees, ensuring a more stable and predictable return on investment.',
   url: 'https://smooth.dappnode.io/',
   icons: ['https://avatars.githubusercontent.com/u/37784886'],
 }
 
-export const wagmiConfig = defaultWagmiConfig({
+const wagmiConfig = defaultWagmiConfig({
   chains,
   projectId,
   metadata,
