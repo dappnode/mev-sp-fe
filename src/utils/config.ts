@@ -1,4 +1,6 @@
-const SUPPORTED_CHAINS = ['mainnet', 'goerli']
+import { goerli, mainnet } from './chainsUtil'
+
+const SUPPORTED_CHAINS = [mainnet, goerli]
 
 if (!process.env.NEXT_PUBLIC_SMOOTHING_POOL_ADDRESS) {
   throw new Error('NEXT_PUBLIC_SMOOTHING_POOL_ADDRESS is not set')
@@ -8,13 +10,18 @@ if (!process.env.NEXT_PUBLIC_SELECTED_CHAIN) {
   throw new Error('NEXT_PUBLIC_SELECTED_CHAIN is not set')
 }
 
-if (!SUPPORTED_CHAINS.includes(process.env.NEXT_PUBLIC_SELECTED_CHAIN)) {
-  throw new Error(
-    'NEXT_PUBLIC_SELECTED_CHAIN is not one of the supported chains'
-  )
+const selectedChainName = process.env.NEXT_PUBLIC_SELECTED_CHAIN
+
+// Check if the selected chain name exists in the array
+const isChainSupported = SUPPORTED_CHAINS.some(
+  (chain) => chain.name === selectedChainName
+)
+
+if (!isChainSupported) {
+  throw new Error(`${selectedChainName} is not one of the supported chains`)
 }
 
-export const SELECTED_CHAIN = process.env.NEXT_PUBLIC_SELECTED_CHAIN
+export const SELECTED_CHAIN = selectedChainName
 
 export const SMOOTHING_POOL_ADDRESS = process.env
   .NEXT_PUBLIC_SMOOTHING_POOL_ADDRESS as `0x${string}`

@@ -1,18 +1,41 @@
-/* eslint-disable react/button-has-type */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import clsx from 'clsx'
 import { RxExternalLink } from 'react-icons/rx'
+import { getNetwork } from '@wagmi/core'
+import { useWeb3Modal } from '@web3modal/wagmi/react'
 import { PAGES } from '@/utils/config'
 import { MobileMenuDialog } from '@/components/dialogs/MobileMenuDialog'
+import { Button } from '@/components/common/Button'
 
 export function Header() {
   const router = useRouter()
+  const modal = useWeb3Modal()
+  const { chain } = getNetwork()
+  const SELECTED_CHAIN =
+    process.env.NEXT_PUBLIC_SELECTED_CHAIN?.toLowerCase()?.trim()
+  const connectedChain = chain?.name?.toLowerCase()?.trim()
 
+  if (SELECTED_CHAIN === undefined) {
+    console.error('SELECTED_CHAIN is undefined. Check your configuration.')
+  }
+
+  const isConnectedToCorrectChain =
+    SELECTED_CHAIN !== undefined && connectedChain === SELECTED_CHAIN
+
+  let networkStatusMessage
+
+  if (isConnectedToCorrectChain) {
+    networkStatusMessage = 'correct network'
+  } else {
+    networkStatusMessage = 'wrong network'
+  }
+
+  console.log('chain: ', chain)
+  console.log('SELECTED_CHAIN:', SELECTED_CHAIN)
+  console.log('connectedChain:', connectedChain)
+  console.log('isConnectedToCorrectChain:', isConnectedToCorrectChain)
   return (
     <header className="flex h-24 items-center justify-between border-b bg-white p-4 md:p-6">
       <Link className="flex items-center" href="/">
@@ -51,8 +74,17 @@ export function Header() {
         })}
       </nav>
       <div className="flex items-center">
-        <w3m-button balance="hide" />
-
+        {isConnectedToCorrectChain ? (
+          <w3m-button balance="hide" />
+        ) : (
+          <Button
+            buttonType="secondary"
+            className="max-w-fit"
+            color="red"
+            onClick={() => modal.open({ view: 'Networks' })}>
+            {networkStatusMessage}
+          </Button>
+        )}
         <div className="md:hidden">
           <MobileMenuDialog />
         </div>
