@@ -35,9 +35,14 @@ export function InitialDialog({
   })
 
   const isCorrectFeeRecipient = registeredRelaysQuery.data?.correctFeeRecipients
+
   const noMevRelays =
-    registeredRelaysQuery.data?.correctFeeRelayers?.length === 0 &&
-    registeredRelaysQuery.data?.wrongFeeRelayers?.length === 0
+    registeredRelaysQuery.data?.correctFeeRelayers === null &&
+    registeredRelaysQuery.data?.wrongFeeRelayers === null
+
+  const noCorrectFeeRelayers = 
+    registeredRelaysQuery.data?.correctFeeRelayers === null ||
+    registeredRelaysQuery.data?.correctFeeRelayers === undefined
 
   const handleNext = () => {
     if (!isCorrectFeeRecipient) {
@@ -113,7 +118,28 @@ export function InitialDialog({
         </div>
       )
     }
-    if (!isCorrectFeeRecipient) {
+    
+    if (!registeredRelaysQuery.isLoading && noCorrectFeeRelayers === true) {
+      return (
+        <div className="mt-6 overflow-auto text-center text-base text-red-500">
+          <AiOutlineInfoCircle className="mx-auto h-8 w-8" />
+          <h4 className="font-bold mt-2">
+            Alert: This validator&#39;s fee recipient is not set to Smooth! Please update your fee recipient.
+            <br />
+            <br />
+            Check out {' '}
+            <Link
+                className="inline font-medium underline-offset-2 hover:underline"
+                href="https://docs.dappnode.io/docs/smooth"
+                rel="noopener noreferrer"
+                target="_blank">
+                Smooth Docs ↗
+              </Link>{' '}
+          </h4>
+        </div>
+      );
+    }
+    if (!registeredRelaysQuery.isLoading && !isCorrectFeeRecipient) {
       return (
         <div>
           <div className="mt-2">{renderMevOpportunitiesSection()}</div>
@@ -164,7 +190,7 @@ export function InitialDialog({
         </div>
       )
     }
-    if (isCorrectFeeRecipient) {
+    if (!registeredRelaysQuery.isLoading && isCorrectFeeRecipient) {
       return (
         <div className="mt-4 text-lg font-semibold">
           Great, you are already registered to MEV relays and your
@@ -203,6 +229,14 @@ export function InitialDialog({
             Cancel
           </Button>
         </div>
+      ) : noCorrectFeeRelayers === true ? (
+        <div>
+          <Button
+            isDisabled={registeredRelaysQuery.isLoading}
+            onPress={handleClose}>
+            I will update my fee recipient to Smooth address.
+          </Button>
+        </div>
       ) : registeredRelaysQuery.isLoading || isCorrectFeeRecipient ? (
         <div>
           <Button
@@ -217,13 +251,13 @@ export function InitialDialog({
       ) : (
         <div className="flex justify-between mt-4 ">
           <Button
-            className="h-17 px-4 ml-2" // Adjust height, padding, and margin for smaller buttons and space between them
+            className="h-17 px-4 ml-2"
             onPress={handleClose}>
             I will change my Fee Recipient
           </Button>
           <Button
             buttonType="secondary"
-            className="h-17 px-4 ml-5" // Adjust height and padding for smaller buttons
+            className="h-17 px-4 ml-5"
             isDisabled={registeredRelaysQuery.isLoading}
             onPress={() => {
               handleChangeDialogState('confirm')
