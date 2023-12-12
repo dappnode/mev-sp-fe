@@ -1,4 +1,4 @@
-export const PAGE_SIZE = 50
+export const PAGE_SIZE = 10
 
 export const headerTooltip = {
   slot: 'Slot of the block',
