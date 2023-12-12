@@ -26,9 +26,11 @@ export function Footer() {
               width={26}
             />
           </Link>
-          <h4 className="ml-4 mt-2 flex items-center justify-center text-xs sm:text-left">
-            Dappnode <FiExternalLink className="ml-1" />
-          </h4>
+          <Link href={MAIN_SITE_URL} rel="noopener noreferrer" target="_blank">
+            <h4 className="ml-4 mt-2 flex items-center justify-center text-xs sm:text-left">
+              Dappnode <FiExternalLink className="ml-1" />
+            </h4>
+          </Link>
         </div>
 
         {/* Right side text */}
