@@ -68,7 +68,7 @@ export const SOCIALS = [
   },
   {
     name: 'Discord',
-    path: SOCIAL_DISCORD,
+    path: `https://discord.gg/${SOCIAL_DISCORD}`,
   },
   {
     name: 'GitHub',
