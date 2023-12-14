@@ -31,10 +31,9 @@ export const getBeaconChainExplorer = (
   return `${baseUrl}/${type}/${endpoint}`
 }
 
-export const SITE_NAME = 'Smooth'
-export const SITE_DESCRIPTION =
-  'Smooth is a dashboard for Ethereum validators to join and receive a share of block proposal fees, ensuring a more stable and predictable return on investment.'
-export const SITE_URL = 'https://dappnode-mev-pool.vercel.app/'
+export const SITE_NAME = `Smooth | Dappnode's MEV Smoothing Pool | Maximize your eth staking rewards`
+export const SITE_DESCRIPTION = `Elevate your Ethereum solo staking experience and maximize your rewards with Smooth. Pool your MEV rewards seamlessly with other stakers and enjoy payouts from every block. Join Dappnode's MEV Smoothing Pool today!`
+export const SITE_URL = 'https://smooth.dappnode.io/'
 export const MAIN_SITE_URL = 'https://dappnode.com/'
 
 export const SOCIAL_DISCORD = 'dappnode'
