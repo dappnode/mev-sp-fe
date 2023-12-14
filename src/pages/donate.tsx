@@ -1,3 +1,4 @@
+import dappnodeLogo from '../../public/images/dappnode-logo.svg'
 import Image from 'next/image'
 import { useAccount } from 'wagmi'
 import { Head } from '@/components/layout/Head'
@@ -19,14 +20,7 @@ export default function Donate() {
           />
           <Image
             alt="ETH Circle"
-            className="absolute -left-10 bottom-32 "
-            height={180}
-            src="images/eth-circle.svg"
-            width={180}
-          />
-          <Image
-            alt="ETH Circle"
-            className="absolute -bottom-14 right-20"
+            className="absolute -left-10 bottom-32"
             height={180}
             src="images/eth-circle.svg"
             width={180}
@@ -45,55 +39,46 @@ export default function Donate() {
             src="images/eth-circle.svg"
             width={136}
           />
-          <Image
-            alt="ETH Circle"
-            className="absolute -right-10 top-8"
-            height={170}
-            src="images/eth-circle.svg"
-            width={170}
-          />
-          <Image
-            alt="Circle"
-            className="absolute bottom-4 left-14"
-            height={120}
-            src="images/currency-circle.svg"
-            width={120}
-          />
-          <Image
-            alt="Circle"
-            className="absolute left-14 top-28"
-            height={110}
-            src="images/currency-circle.svg"
-            width={110}
-          />
-          <Image
-            alt="Circle"
-            className="absolute left-48 top-36"
-            height={90}
-            src="images/currency-circle.svg"
-            width={90}
-          />
-          <Image
-            alt="Circle"
-            className="absolute right-12 top-40"
-            height={124}
-            src="images/currency-circle.svg"
-            width={124}
-          />
-          <Image
-            alt="Circle"
-            className="absolute -right-7 bottom-20"
-            height={160}
-            src="images/currency-circle.svg"
-            width={160}
-          />
+          <div className="relative">
+            <div className="absolute left-14 top-28 flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-md shadow-yellow-100">
+              <Image
+                alt="Circle"
+                className="z-50"
+                height={40}
+                src={dappnodeLogo}
+                width={40}
+              />
+            </div>
+          </div>
+          <div className="relative">
+            <div className="absolute left-44 top-36 flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-md shadow-yellow-100">
+              <Image
+                alt="Circle"
+                className="z-50"
+                height={40}
+                src={dappnodeLogo}
+                width={40}
+              />
+            </div>
+          </div>
+          <div className="relative">
+            <div className="absolute right-12 top-40 flex h-20 w-20 items-center justify-center rounded-full bg-white shadow-md shadow-yellow-100">
+              <Image
+                alt="Circle"
+                className="z-50"
+                height={50}
+                src={dappnodeLogo}
+                width={50}
+              />
+            </div>
+          </div>
         </div>
         <article className="mx-auto mt-14 flex max-w-fit flex-col text-center lg:mt-0 lg:text-left">
           <h1 className="mt-2 text-5xl font-bold leading-[56px] text-DAppDeep">
             Support Solo Stakers
           </h1>
           <h2 className="order-first text-base font-normal tracking-wider text-DAppBlue">
-          Fund decentralization directly to Solo Stakers&apos; wallets
+            Fund decentralization directly to Solo Stakers&apos; wallets
           </h2>
           <p className="mt-2 max-w-md text-lg font-normal leading-8 text-DAppDeep">
             {`You can support Solo Stakers and increase their revenue by donating directly into the pool. It's a great way of supporting the true decentralized Node Runners that keep Ethereum decentralized at scale.`}

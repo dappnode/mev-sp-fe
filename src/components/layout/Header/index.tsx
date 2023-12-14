@@ -1,7 +1,3 @@
-/* eslint-disable react/button-has-type */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
