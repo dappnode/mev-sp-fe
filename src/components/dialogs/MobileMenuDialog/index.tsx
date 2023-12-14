@@ -24,7 +24,7 @@ export function MobileMenuDialog() {
         <AnimatePresence>
           <Dialog.Content>
             <motion.div
-              className="fixed top-0 right-0 h-screen w-[300px] max-w-[75%] border bg-white p-6"
+              className="fixed right-0 top-0 h-screen w-[300px] max-w-[75%] border bg-white p-6"
               animate={{
                 // opacity: 1,
                 x: 0,
@@ -45,12 +45,12 @@ export function MobileMenuDialog() {
                 <Button
                   aria-label="Close"
                   buttonType="unstyled"
-                  className="fixed top-6 right-6 max-w-fit"
+                  className="fixed right-6 top-6 max-w-fit"
                   size="none">
                   <IoClose className="h-6 w-6 text-DAppDeep" />
                 </Button>
               </Dialog.Close>
-              <Link className="mt-10 mb-5 flex items-center" href="/">
+              <Link className="mb-5 mt-10 flex items-center" href="/">
                 <Image
                   alt="Dappnode logo"
                   height={50}
