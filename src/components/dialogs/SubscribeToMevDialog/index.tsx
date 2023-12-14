@@ -1,5 +1,6 @@
 import {
   InitialDialog,
+  MultiInitialDialog,
   CheckMevBoostDialog,
   DepositDialog,
   MultiDepositDialog,
@@ -21,7 +22,8 @@ interface SubscribeToMevDialogProps {
 }
 
 interface MultiSubscribeToMevDialogProps {
-  validatorIds: number[]
+  validatorIds: number[],
+  validatorKeys: `0x${string}`[]
 }
 
 export function SubscribeToMevDialog({
@@ -91,6 +93,7 @@ export function SubscribeToMevDialog({
 
 export function MultiSubscribeToMevDialog({
   validatorIds,
+  validatorKeys,
 }: MultiSubscribeToMevDialogProps) {
   const { chain } = useNetwork()
   const [dialogState, setDialogState] = useState<IDialogStates>('initial')
@@ -119,7 +122,14 @@ export function MultiSubscribeToMevDialog({
       <AnimatePresence>
         <div className="flex h-[550px] flex-col justify-between text-DAppDeep sm:h-[610px]">
           {dialogState === 'initial' ? (
-            <MultiDepositDialog
+            <MultiInitialDialog
+            handleChangeDialogState={setDialogState}
+            handleClose={handleCloseDialog}
+            steps={steps}
+            validatorKeys={validatorKeys}
+          />
+          ) : dialogState === 'confirm' ? ( 
+             <MultiDepositDialog
               handleChangeDialogState={setDialogState}
               handleClose={handleCloseDialog}
               setShowCloseButton={setShowCloseButton}
