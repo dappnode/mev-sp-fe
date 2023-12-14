@@ -91,3 +91,15 @@ export const fetchValidatorRegisteredRelays = async (
   const response = await apiClient.get(endpoints.registeredRelays(validatorKey))
   return registeredRelaysSchema.parse(convertKeysToCamelCase(response.data))
 }
+
+export const fetchMultiValidatorRegisteredRelays = async (
+  validatorKeys: `0x${string}`[]
+) => {
+  const promises = validatorKeys.map(async (validatorKey) => {
+    const response = await apiClient.get(endpoints.registeredRelays(validatorKey));
+    return registeredRelaysSchema.parse(convertKeysToCamelCase(response.data));
+  });
+
+  return Promise.all(promises);
+};
+
