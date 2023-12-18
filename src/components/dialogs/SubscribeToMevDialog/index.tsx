@@ -15,6 +15,7 @@ import { useDialog } from '@/hooks/useDialog'
 import type { IDialogStates } from './types'
 
 const steps = ['Fee recipient', 'MEV Blocks check', 'Deposit', 'Done']
+const stepsMulti = ['Fee recipient', 'Deposit', 'Done']
 
 interface SubscribeToMevDialogProps {
   validatorId: number
@@ -120,12 +121,12 @@ export function MultiSubscribeToMevDialog({
       triggerButtonProp="outline"
       triggerText="Subscribe selected Validators">
       <AnimatePresence>
-        <div className="flex h-[550px] flex-col justify-between text-DAppDeep sm:h-[610px]">
+        <div className="flex h-[550px] flex-col justify-between text-DAppDeep sm:h-[480px]">
           {dialogState === 'initial' ? (
             <MultiInitialDialog
             handleChangeDialogState={setDialogState}
             handleClose={handleCloseDialog}
-            steps={steps}
+            steps={stepsMulti}
             validatorKeys={validatorKeys}
           />
           ) : dialogState === 'confirm' ? ( 
@@ -133,14 +134,14 @@ export function MultiSubscribeToMevDialog({
               handleChangeDialogState={setDialogState}
               handleClose={handleCloseDialog}
               setShowCloseButton={setShowCloseButton}
-              steps={steps}
+              steps={stepsMulti}
               validatorIds={validatorIds}
             />
           ) : (
             <MultiSuccessDialog
               handleChangeDialogState={setDialogState}
               handleClose={handleCloseDialog}
-              steps={steps}
+              steps={stepsMulti}
               validatorIds={validatorIds}
             />
           )}
