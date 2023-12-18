@@ -1,5 +1,6 @@
 import {
   InitialDialog,
+  MultiInitialDialog,
   CheckMevBoostDialog,
   DepositDialog,
   MultiDepositDialog,
@@ -14,6 +15,7 @@ import { useDialog } from '@/hooks/useDialog'
 import type { IDialogStates } from './types'
 
 const steps = ['Fee recipient', 'MEV Blocks check', 'Deposit', 'Done']
+const stepsMulti = ['Fee recipient', 'Deposit', 'Done']
 
 interface SubscribeToMevDialogProps {
   validatorId: number
@@ -21,7 +23,8 @@ interface SubscribeToMevDialogProps {
 }
 
 interface MultiSubscribeToMevDialogProps {
-  validatorIds: number[]
+  validatorIds: number[],
+  validatorKeys: `0x${string}`[]
 }
 
 export function SubscribeToMevDialog({
@@ -91,6 +94,7 @@ export function SubscribeToMevDialog({
 
 export function MultiSubscribeToMevDialog({
   validatorIds,
+  validatorKeys,
 }: MultiSubscribeToMevDialogProps) {
   const { chain } = useNetwork()
   const [dialogState, setDialogState] = useState<IDialogStates>('initial')
@@ -117,20 +121,27 @@ export function MultiSubscribeToMevDialog({
       triggerButtonProp="outline"
       triggerText="Subscribe selected Validators">
       <AnimatePresence>
-        <div className="flex h-[550px] flex-col justify-between text-DAppDeep sm:h-[610px]">
+        <div className="flex h-[550px] flex-col justify-between text-DAppDeep sm:h-[480px]">
           {dialogState === 'initial' ? (
-            <MultiDepositDialog
+            <MultiInitialDialog
+            handleChangeDialogState={setDialogState}
+            handleClose={handleCloseDialog}
+            steps={stepsMulti}
+            validatorKeys={validatorKeys}
+          />
+          ) : dialogState === 'confirm' ? ( 
+             <MultiDepositDialog
               handleChangeDialogState={setDialogState}
               handleClose={handleCloseDialog}
               setShowCloseButton={setShowCloseButton}
-              steps={steps}
+              steps={stepsMulti}
               validatorIds={validatorIds}
             />
           ) : (
             <MultiSuccessDialog
               handleChangeDialogState={setDialogState}
               handleClose={handleCloseDialog}
-              steps={steps}
+              steps={stepsMulti}
               validatorIds={validatorIds}
             />
           )}

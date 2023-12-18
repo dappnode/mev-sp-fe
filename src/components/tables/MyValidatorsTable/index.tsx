@@ -118,6 +118,8 @@ export function MyValidatorsTable({
   const { searchInput, setSearchInput, debouncedSearchInput } = useSearchInput()
   const [showMultiSubscribeDialog, setShowMultiSubscribeDialog] = useState(false);
   const [selectedValidatorIds, setSelectedValidatorIds] = useState<number[]>([]);
+  const [selectedValidatorKeys, setSelectedValidatorKeys] = useState<`0x${string}`[]>([]);
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [columns, setColumns] = useState<ColumnDef<Validator, any>[]>([]);
 
@@ -167,6 +169,8 @@ export function MyValidatorsTable({
   useEffect(() => {
     const selectedRowsData = table.getSelectedRowModel().rows.map(row => row.original);
     const validatorIds = selectedRowsData.map(validator => validator.validatorId);
+    const validatorKeys = selectedRowsData.map(validator => validator.validatorKey);
+    setSelectedValidatorKeys(validatorKeys);
     setSelectedValidatorIds(validatorIds);
   
     // Show the dialog only if two or more validators are selected
@@ -191,6 +195,7 @@ export function MyValidatorsTable({
       {showMultiSubscribeDialog && (
         <MultiSubscribeToMevDialog
           validatorIds={selectedValidatorIds}
+          validatorKeys={selectedValidatorKeys}
         />
       )}
       <TableLayout

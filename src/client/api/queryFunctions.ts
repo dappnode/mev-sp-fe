@@ -91,3 +91,25 @@ export const fetchValidatorRegisteredRelays = async (
   const response = await apiClient.get(endpoints.registeredRelays(validatorKey))
   return registeredRelaysSchema.parse(convertKeysToCamelCase(response.data))
 }
+
+export const fetchMultiValidatorRegisteredRelays = async (
+  validatorKeys: `0x${string}`[]
+) => {
+  const delay = (ms: number | undefined) => new Promise(resolve => {
+    setTimeout(resolve, ms);
+  });
+    
+  const responses = [];
+
+  // eslint-disable-next-line no-restricted-syntax
+  for (const validatorKey of validatorKeys) {
+    // eslint-disable-next-line no-await-in-loop
+    await delay(1500); // Wait for 1.5 seconds for each validator
+    // eslint-disable-next-line no-await-in-loop
+    const response = await apiClient.get(endpoints.registeredRelays(validatorKey));
+    responses.push(registeredRelaysSchema.parse(convertKeysToCamelCase(response.data)));
+  }
+
+  return responses;
+};
+
