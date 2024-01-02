@@ -5,6 +5,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 const data: Block[] = [
   {
     slot: 1,
+    date: "",
     proposer: {
       withdrawalAddress: '0x00005ea00ac477b1030ce78506496e8c2de24bf5',
       validatorKey:
@@ -17,6 +18,7 @@ const data: Block[] = [
   },
   {
     slot: 2,
+    date: "",
     proposer: {
       withdrawalAddress: '0x00005ea00ac477b1030ce78506496e8c2de24bf5',
       validatorKey:
@@ -29,6 +31,7 @@ const data: Block[] = [
   },
   {
     slot: 3,
+    date: "",
     proposer: {
       withdrawalAddress: '0x00005ea00ac477b1030ce78506496e8c2de24bf5',
       validatorKey:
@@ -41,6 +44,7 @@ const data: Block[] = [
   },
   {
     slot: 4,
+    date: "",
     proposer: {
       withdrawalAddress: '0x00005ea00ac477b1030ce78506496e8c2de24bf5',
       validatorKey:
@@ -53,6 +57,7 @@ const data: Block[] = [
   },
   {
     slot: 5,
+    date: "",
     proposer: {
       withdrawalAddress: '0x00005ea00ac477b1030ce78506496e8c2de24bf5',
       validatorKey:
@@ -65,6 +70,7 @@ const data: Block[] = [
   },
   {
     slot: 6,
+    date: "",
     proposer: {
       withdrawalAddress: '0x00005ea00ac477b1030ce78506496e8c2de24bf5',
       validatorKey:
@@ -77,6 +83,7 @@ const data: Block[] = [
   },
   {
     slot: 7,
+    date: "",
     proposer: {
       withdrawalAddress: '0x00005ea00ac477b1030ce78506496e8c2de24bf5',
       validatorKey:
@@ -89,6 +96,7 @@ const data: Block[] = [
   },
   {
     slot: 8,
+    date: "",
     proposer: {
       withdrawalAddress: '0x00005ea00ac477b1030ce78506496e8c2de24bf5',
       validatorKey:
@@ -101,6 +109,7 @@ const data: Block[] = [
   },
   {
     slot: 9,
+    date: "",
     proposer: {
       withdrawalAddress: '0x00005ea00ac477b1030ce78506496e8c2de24bf5',
       validatorKey:
@@ -113,6 +122,7 @@ const data: Block[] = [
   },
   {
     slot: 10,
+    date: "",
     proposer: {
       withdrawalAddress: '0x00005ea00ac477b1030ce78506496e8c2de24bf5',
       validatorKey:
@@ -125,6 +135,7 @@ const data: Block[] = [
   },
   {
     slot: 11,
+    date: "",
     proposer: {
       withdrawalAddress: '0x00005ea00ac477b1030ce78506496e8c2de24bf5',
       validatorKey:
@@ -137,6 +148,7 @@ const data: Block[] = [
   },
   {
     slot: 12,
+    date: "",
     proposer: {
       withdrawalAddress: '0x00005ea00ac477b1030ce78506496e8c2de24bf5',
       validatorKey:
