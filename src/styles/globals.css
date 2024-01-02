@@ -9,3 +9,27 @@
     margin: 0;
   }
 }
+
+/* Example.css */
+
+.rotating-text {
+  display: flex;
+  width: 100%;
+  overflow: hidden;
+}
+
+.rotating-text a {
+  display: inline-block;
+  animation: marquee 12s linear infinite;
+  will-change: transform;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
