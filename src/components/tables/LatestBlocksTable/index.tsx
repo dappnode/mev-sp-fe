@@ -18,6 +18,58 @@ import type { Block } from '../types'
 
 const columnHelper = createColumnHelper<Block>()
 
+const getRelativeTimeFromSlot = (slot: number) => {
+  const genesisUnixTime = 1606824023; // Unix time of the genesis block
+  const slotDurationSeconds = 12; // Duration for each slot in seconds
+
+  // Calculate the timestamp for the given slot
+  const slotTimestamp = genesisUnixTime + slot * slotDurationSeconds;
+
+  // Calculate the difference between current time and the slot time
+  const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+  const timeDifference = currentTime - slotTimestamp;
+
+  // Convert time difference to human-readable format
+  const minutes = Math.floor(timeDifference / 60);
+  const seconds = timeDifference % 60;
+  const hours = Math.floor(timeDifference / 3600);
+  const days = Math.floor(timeDifference / 86400);
+
+  if (days > 0) {
+    const remainingHours = Math.floor((timeDifference % 86400) / 3600);
+    const dayStr = days === 1 ? 'day' : 'days';
+    const hourStr = remainingHours === 1 ? 'hour' : 'hours';
+    return `${days} ${dayStr} ${remainingHours} ${hourStr} ago`;
+  }
+  
+  if (hours > 0) {
+    const hourStr = hours === 1 ? 'hour' : 'hours';
+    return `${hours} ${hourStr} ago`;
+  }
+  
+  if (minutes > 0) {
+    const minuteStr = minutes === 1 ? 'minute' : 'minutes';
+    return `${minutes} ${minuteStr} ago`;
+  }
+  
+  return `${seconds} seconds ago`;
+};
+
+
+const getAbsoluteTimeFromSlot = (slot: number) => {
+  const genesisUnixTime = 1606824023; // Unix time of the genesis block
+  const slotDurationSeconds = 12; // Duration for each slot in seconds
+
+  // Calculate the timestamp for the given slot
+  const slotTimestamp = genesisUnixTime + slot * slotDurationSeconds;
+
+  // Create a Date object using the calculated timestamp
+  const absoluteDate = new Date(slotTimestamp * 1000);
+
+  // Return the formatted absolute date in local time
+  return absoluteDate.toLocaleString();
+};
+
 const getColumns = (blackExplorerUrl?: string) => [
   columnHelper.accessor('slot', {
     header: () => <HeaderTooltip header="Slot" tooltip={headerTooltip.slot} />,
@@ -32,6 +84,18 @@ const getColumns = (blackExplorerUrl?: string) => [
           {slot.toLocaleString()}
         </Link>
       )
+    },
+  }),
+  columnHelper.accessor('date', { // Adding the 'date' column
+    header: () => <HeaderTooltip header="Date" tooltip={headerTooltip.date} />,
+    cell: (info) => {
+      const slot = info.row.original.slot;
+      const relativeTime = getRelativeTimeFromSlot(slot);
+      const absoluteTime = getAbsoluteTimeFromSlot(slot); // Function for absolute time
+
+      return (
+        <span title={absoluteTime}>{relativeTime}</span> // Display relative time with title as absolute time
+      );
     },
   }),
   columnHelper.accessor('proposer', {

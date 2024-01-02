@@ -26,6 +26,7 @@ export function LatestBlocksSP() {
       }) => ({
         blockType,
         slot,
+        date: "",
         proposer: {
           withdrawalAddress: withdrawalAddress as `0x${string}`,
           validatorKey: validatorKey as `0x${string}`,

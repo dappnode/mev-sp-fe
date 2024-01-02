@@ -2,6 +2,7 @@ import type { Warnings } from './MyValidatorsTable/components/WarningIcon'
 
 export interface Block {
   slot: number
+  date: string
   proposer: Proposer
   rewardType: 'vanila' | 'mev' | 'unknownrewardtype' | ''
   reward: number
