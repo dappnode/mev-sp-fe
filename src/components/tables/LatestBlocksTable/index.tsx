@@ -40,16 +40,21 @@ const getRelativeTimeFromSlot = (slot: number) => {
     const dayStr = days === 1 ? 'day' : 'days';
     const hourStr = remainingHours === 1 ? 'hour' : 'hours';
     return `${days} ${dayStr} ${remainingHours} ${hourStr} ago`;
-  } else if (hours > 0) {
+  }
+  
+  if (hours > 0) {
     const hourStr = hours === 1 ? 'hour' : 'hours';
     return `${hours} ${hourStr} ago`;
-  } else if (minutes > 0) {
+  }
+  
+  if (minutes > 0) {
     const minuteStr = minutes === 1 ? 'minute' : 'minutes';
     return `${minutes} ${minuteStr} ago`;
-  } else {
-    return `${seconds} seconds ago`;
   }
+  
+  return `${seconds} seconds ago`;
 };
+
 
 const getAbsoluteTimeFromSlot = (slot: number) => {
   const genesisUnixTime = 1606824023; // Unix time of the genesis block
