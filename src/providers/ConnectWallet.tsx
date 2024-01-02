@@ -1,8 +1,12 @@
-/* eslint-disable react/button-has-type */
 /* eslint-disable react/jsx-no-useless-fragment */
-import { WagmiConfig } from 'wagmi'
+import { WagmiConfig, createConfig, configureChains } from 'wagmi'
 import { ReactNode, useEffect, useState } from 'react'
-import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react'
+import { createWeb3Modal } from '@web3modal/wagmi/react'
+import { walletConnectProvider } from '@web3modal/wagmi'
+import { publicProvider } from '@wagmi/core/providers/public'
+import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
+import { InjectedConnector } from 'wagmi/connectors/injected'
+import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 import { mainnet, goerli } from 'wagmi/chains'
 import { SELECTED_CHAIN } from '@/utils/config'
 
@@ -11,8 +15,13 @@ if (!projectId) {
   throw new Error('NEXT_PUBLIC_PROJECT_ID is not set')
 }
 
-const WEB3_CHAINS = [SELECTED_CHAIN === 'mainnet' ? mainnet : goerli]
-const chains = WEB3_CHAINS
+const selectedChain = SELECTED_CHAIN === 'mainnet' ? mainnet : goerli
+const web3Chains = [selectedChain]
+
+const { chains, publicClient } = configureChains(web3Chains, [
+  walletConnectProvider({ projectId }),
+  publicProvider(),
+])
 
 const metadata = {
   name: 'Dappnode Smooth',
@@ -22,10 +31,20 @@ const metadata = {
   icons: ['https://avatars.githubusercontent.com/u/37784886'],
 }
 
-const wagmiConfig = defaultWagmiConfig({
-  chains,
-  projectId,
-  metadata,
+const wagmiConfig = createConfig({
+  autoConnect: false,
+  connectors: [
+    new WalletConnectConnector({
+      chains,
+      options: { projectId, showQrModal: false, metadata },
+    }),
+    new InjectedConnector({ chains, options: { shimDisconnect: true } }),
+    new CoinbaseWalletConnector({
+      chains,
+      options: { appName: metadata.name },
+    }),
+  ],
+  publicClient,
 })
 
 createWeb3Modal({
