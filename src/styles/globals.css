@@ -10,7 +10,7 @@
   }
 }
 
-/* Example.css */
+/* Banner */
 
 .rotating-text {
   display: flex;
@@ -18,9 +18,9 @@
   overflow: hidden;
 }
 
-.rotating-text a {
+.rotating-text div {
   display: inline-block;
-  animation: marquee 12s linear infinite;
+  animation: marquee 20s linear infinite;
   will-change: transform;
 }
 
