@@ -10,26 +10,29 @@
   }
 }
 
-/* Example.css */
+/* Banner */
 
 .rotating-text {
   display: flex;
-  width: 100%;
-  overflow: hidden;
+  width: 100%; /* Adjust the width based on the number of rotations you want */
+  animation: marquee 18s linear infinite;
 }
 
-.rotating-text a {
-  display: inline-block;
-  animation: marquee 12s linear infinite;
-  will-change: transform;
+.rotating-text div {
+  white-space: nowrap;
 }
 
 @keyframes marquee {
-  from {
-    transform: translateX(100%);
+  0% {
+    transform: translateX(0);
   }
-  to {
+  100% {
     transform: translateX(-100%);
   }
 }
+
+
+
+
+
 
