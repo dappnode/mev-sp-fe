@@ -10,26 +10,26 @@
   }
 }
 
-/* Example.css */
+/* Banner */
 
 .rotating-text {
-  display: flex;
-  width: 100%;
+  display: block;
   overflow: hidden;
+  white-space: nowrap;
+  width: 100vw;
 }
 
-.rotating-text a {
+.rotating-text div {
   display: inline-block;
-  animation: marquee 12s linear infinite;
-  will-change: transform;
+  /* Start just off-screen to the right */
+  animation: marquee 20s linear infinite;
 }
 
 @keyframes marquee {
-  from {
-    transform: translateX(100%);
+  0% {
+    transform: translateX(180%);
   }
-  to {
-    transform: translateX(-100%);
+  100% {
+    transform: translateX(-60%);
   }
 }
-
