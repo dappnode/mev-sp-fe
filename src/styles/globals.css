@@ -9,3 +9,27 @@
     margin: 0;
   }
 }
+
+/* Banner */
+
+.rotating-text {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100vw;
+}
+
+.rotating-text div {
+  display: inline-block;
+  /* Start just off-screen to the right */
+  animation: marquee 20s linear infinite;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(180%);
+  }
+  100% {
+    transform: translateX(-60%);
+  }
+}

@@ -1,5 +1,6 @@
 import { Footer } from './Footer'
 import { Header } from './Header'
+import Banner from '../common/Banner'
 import { ReactNode } from 'react'
 import { useRouter } from 'next/router'
 import clsx from 'clsx'
@@ -22,6 +23,7 @@ export function MainLayout({ children, className }: MainLayoutProps) {
         className
       )}>
       <Header />
+      <Banner />
       <div className="mx-auto min-h-screen-content max-w-7xl p-4 md:p-8">
         {children}
       </div>
