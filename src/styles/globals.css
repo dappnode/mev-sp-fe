@@ -13,23 +13,20 @@
 /* Banner */
 
 .rotating-text {
-  display: block;
-  overflow: hidden;
-  white-space: nowrap;
-  width: 100vw;
+  display: flex;
+  width: 100%; 
+  animation: marquee 18s linear infinite;
 }
 
 .rotating-text div {
-  display: inline-block;
-  /* Start just off-screen to the right */
-  animation: marquee 20s linear infinite;
+  white-space: nowrap;
 }
 
 @keyframes marquee {
   0% {
-    transform: translateX(180%);
+    transform: translateX(0);
   }
   100% {
-    transform: translateX(-60%);
+    transform: translateX(-100%);
   }
 }
