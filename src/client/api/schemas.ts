@@ -6,6 +6,7 @@ export const BlockSchema = z.object({
   validatorKey: z.string(),
   blockType: z.union([
     z.literal('okpoolproposal'),
+    z.literal('okpoolproposalblskeys'),
     z.literal('missedproposal'),
     z.literal('wrongfeerecipient'),
   ]),
