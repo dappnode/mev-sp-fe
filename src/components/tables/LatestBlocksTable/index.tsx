@@ -145,7 +145,9 @@ const getColumns = (blackExplorerUrl?: string) => [
           ? 'Proposed'
           : blockType === 'missedproposal'
             ? 'Missed'
-            : 'Wrong Fee'
+            : blockType === 'okpoolproposalblskeys'
+              ? 'Invalid (BLS)'
+              : 'Wrong Fee'
       return formattedBlockType
     },
   }),
@@ -220,6 +222,10 @@ const filterOptions = [
   {
     label: 'Proposed',
     value: 'okpoolproposal',
+  },
+  {
+    label: 'Invalid(BLS)',
+    value: 'okpoolproposalblskeys',
   },
   {
     label: 'Wrong Fee',
