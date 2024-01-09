@@ -68,13 +68,17 @@ export function TableLayout<T extends TableDataTypes>({
                   <th
                     key={header.id}
                     className="py-4 text-left text-sm font-medium">
-                    {header.isPlaceholder ? null : (
-                      <p className="w-fit px-4 text-left">
-                        {flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                      </p>
+                    {header.isPlaceholder && (
+                      <th
+                        key={header.id}
+                        className="py-4 text-left text-sm font-medium">
+                        <p className="w-fit px-4 text-left">
+                          {flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                        </p>
+                      </th>
                     )}
                   </th>
                 ))}
