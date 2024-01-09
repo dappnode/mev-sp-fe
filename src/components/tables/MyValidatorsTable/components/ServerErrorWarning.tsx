@@ -12,7 +12,7 @@ export function ServerErrorWarning({ title }: NotConnectedWarningProps) {
       <div className="w-100 absolute left-auto top-20 mt-16 flex flex-col items-center bg-white px-16 pb-16 pt-8 shadow-md">
         <AlertIcon />
         <h2 className="mb-3 mt-2 text-center text-3xl font-bold leading-[50px] text-red-500 md:leading-[60px]">
-          Server Request Error
+          Oracle is syncing
         </h2>
         <h4 className="text-red-500">
           Oracle node is currently syncing and not serving requests
