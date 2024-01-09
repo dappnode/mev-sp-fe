@@ -6,7 +6,7 @@ export interface Block {
   proposer: Proposer
   rewardType: 'vanila' | 'mev' | 'unknownrewardtype' | ''
   reward: number
-  blockType: 'okpoolproposal' | 'missedproposal' | 'wrongfeerecipient'
+  blockType: 'okpoolproposal' | 'okpoolproposalblskeys' | 'missedproposal' | 'wrongfeerecipient'
 }
 
 
