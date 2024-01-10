@@ -1,79 +1,79 @@
-import { PAGE_SIZE, headerTooltip } from './config'
-import { Skeleton } from './components/Skeleton'
-import { TableLayout } from '../components/Table'
-import { HeaderTooltip } from '../components/HeaderTooltip'
-import Link from 'next/link'
-import { useMemo, useState } from 'react'
+import { PAGE_SIZE, headerTooltip } from './config';
+import { Skeleton } from './components/Skeleton';
+import { TableLayout } from '../components/Table';
+import { HeaderTooltip } from '../components/HeaderTooltip';
+import Link from 'next/link';
+import { useMemo, useState } from 'react';
 import {
   createColumnHelper,
   getCoreRowModel,
   getPaginationRowModel,
   useReactTable,
-} from '@tanstack/react-table'
-import { useSearchInput } from '@/hooks/useSearchInput'
-import { addEthSuffix, shortenEthAddress } from '@/utils/web3'
-import { toFixedNoTrailingZeros } from '@/utils/decimals'
-import { getBeaconChainExplorer } from '@/utils/config'
-import type { Block } from '../types'
+} from '@tanstack/react-table';
+import { useSearchInput } from '@/hooks/useSearchInput';
+import { addEthSuffix, shortenEthAddress } from '@/utils/web3';
+import { toFixedNoTrailingZeros } from '@/utils/decimals';
+import { getBeaconChainExplorer } from '@/utils/config';
+import type { Block } from '../types';
 
-const columnHelper = createColumnHelper<Block>()
+const columnHelper = createColumnHelper<Block>();
 
 const getRelativeTimeFromSlot = (slot: number) => {
-  const genesisUnixTime = 1606824023 // Unix time of the genesis block
-  const slotDurationSeconds = 12 // Duration for each slot in seconds
+  const genesisUnixTime = 1606824023; // Unix time of the genesis block
+  const slotDurationSeconds = 12; // Duration for each slot in seconds
 
   // Calculate the timestamp for the given slot
-  const slotTimestamp = genesisUnixTime + slot * slotDurationSeconds
+  const slotTimestamp = genesisUnixTime + slot * slotDurationSeconds;
 
   // Calculate the difference between current time and the slot time
-  const currentTime = Math.floor(Date.now() / 1000) // Current time in seconds
-  const timeDifference = currentTime - slotTimestamp
+  const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+  const timeDifference = currentTime - slotTimestamp;
 
   // Convert time difference to human-readable format
-  const minutes = Math.floor(timeDifference / 60)
-  const seconds = timeDifference % 60
-  const hours = Math.floor(timeDifference / 3600)
-  const days = Math.floor(timeDifference / 86400)
+  const minutes = Math.floor(timeDifference / 60);
+  const seconds = timeDifference % 60;
+  const hours = Math.floor(timeDifference / 3600);
+  const days = Math.floor(timeDifference / 86400);
 
   if (days > 0) {
-    const remainingHours = Math.floor((timeDifference % 86400) / 3600)
-    const dayStr = days === 1 ? 'day' : 'days'
-    const hourStr = remainingHours === 1 ? 'hour' : 'hours'
-    return `${days} ${dayStr} ${remainingHours} ${hourStr} ago`
+    const remainingHours = Math.floor((timeDifference % 86400) / 3600);
+    const dayStr = days === 1 ? 'day' : 'days';
+    const hourStr = remainingHours === 1 ? 'hour' : 'hours';
+    return `${days} ${dayStr} ${remainingHours} ${hourStr} ago`;
   }
 
   if (hours > 0) {
-    const hourStr = hours === 1 ? 'hour' : 'hours'
-    return `${hours} ${hourStr} ago`
+    const hourStr = hours === 1 ? 'hour' : 'hours';
+    return `${hours} ${hourStr} ago`;
   }
 
   if (minutes > 0) {
-    const minuteStr = minutes === 1 ? 'minute' : 'minutes'
-    return `${minutes} ${minuteStr} ago`
+    const minuteStr = minutes === 1 ? 'minute' : 'minutes';
+    return `${minutes} ${minuteStr} ago`;
   }
 
-  return `${seconds} seconds ago`
-}
+  return `${seconds} seconds ago`;
+};
 
 const getAbsoluteTimeFromSlot = (slot: number) => {
-  const genesisUnixTime = 1606824023 // Unix time of the genesis block
-  const slotDurationSeconds = 12 // Duration for each slot in seconds
+  const genesisUnixTime = 1606824023; // Unix time of the genesis block
+  const slotDurationSeconds = 12; // Duration for each slot in seconds
 
   // Calculate the timestamp for the given slot
-  const slotTimestamp = genesisUnixTime + slot * slotDurationSeconds
+  const slotTimestamp = genesisUnixTime + slot * slotDurationSeconds;
 
   // Create a Date object using the calculated timestamp
-  const absoluteDate = new Date(slotTimestamp * 1000)
+  const absoluteDate = new Date(slotTimestamp * 1000);
 
   // Return the formatted absolute date in local time
-  return absoluteDate.toLocaleString()
-}
+  return absoluteDate.toLocaleString();
+};
 
 const getColumns = (blackExplorerUrl?: string) => [
   columnHelper.accessor('slot', {
     header: () => <HeaderTooltip header="Slot" tooltip={headerTooltip.slot} />,
     cell: (info) => {
-      const slot = info.getValue()
+      const slot = info.getValue();
       return (
         <Link
           className="font-medium underline"
@@ -82,20 +82,20 @@ const getColumns = (blackExplorerUrl?: string) => [
           target="_blank">
           {slot.toLocaleString()}
         </Link>
-      )
+      );
     },
   }),
   columnHelper.accessor('date', {
     // Adding the 'date' column
     header: () => <HeaderTooltip header="Date" tooltip={headerTooltip.date} />,
     cell: (info) => {
-      const slot = info.row.original.slot
-      const relativeTime = getRelativeTimeFromSlot(slot)
-      const absoluteTime = getAbsoluteTimeFromSlot(slot) // Function for absolute time
+      const slot = info.row.original.slot;
+      const relativeTime = getRelativeTimeFromSlot(slot);
+      const absoluteTime = getAbsoluteTimeFromSlot(slot); // Function for absolute time
 
       return (
         <span title={absoluteTime}>{relativeTime}</span> // Display relative time with title as absolute time
-      )
+      );
     },
   }),
   columnHelper.accessor('proposer', {
@@ -103,7 +103,7 @@ const getColumns = (blackExplorerUrl?: string) => [
       <HeaderTooltip header="Proposer" tooltip={headerTooltip.proposer} />
     ),
     cell: (info) => {
-      const proposer = info.getValue()
+      const proposer = info.getValue();
       return (
         <Link
           className="font-medium underline"
@@ -112,7 +112,7 @@ const getColumns = (blackExplorerUrl?: string) => [
           target="_blank">
           {shortenEthAddress(proposer.validatorKey.toLocaleString())}
         </Link>
-      )
+      );
     },
   }),
   columnHelper.accessor('rewardType', {
@@ -120,14 +120,14 @@ const getColumns = (blackExplorerUrl?: string) => [
       <HeaderTooltip header="Reward Type" tooltip={headerTooltip.rewardType} />
     ),
     cell: (info) => {
-      const rewardType = info.getValue()
-      let modifiedRewardType: string = rewardType
+      const rewardType = info.getValue();
+      let modifiedRewardType: string = rewardType;
 
       // Replace "vanila" with "vanilla" if it exists in the rewardType
-      modifiedRewardType = modifiedRewardType.replace('vanila', 'vanilla')
+      modifiedRewardType = modifiedRewardType.replace('vanila', 'vanilla');
       const displayRewardType =
-        modifiedRewardType === 'unknownrewardtype' ? '-' : modifiedRewardType
-      return displayRewardType
+        modifiedRewardType === 'unknownrewardtype' ? '-' : modifiedRewardType;
+      return displayRewardType;
     },
   }),
 
@@ -140,7 +140,7 @@ const getColumns = (blackExplorerUrl?: string) => [
   columnHelper.accessor('blockType', {
     header: () => <HeaderTooltip header="Block Type" />,
     cell: (info) => {
-      const blockType = info.getValue()
+      const blockType = info.getValue();
       const formattedBlockType =
         blockType === 'okpoolproposal'
           ? 'Proposed'
@@ -148,16 +148,16 @@ const getColumns = (blackExplorerUrl?: string) => [
           ? 'Missed'
           : blockType === 'okpoolproposalblskeys'
           ? 'Invalid (BLS)'
-          : 'Wrong Fee'
-      return formattedBlockType
+          : 'Wrong Fee';
+      return formattedBlockType;
     },
   }),
-]
+];
 
 interface LatestBlocksTableProps {
-  blockExplorerUrl?: string
-  data?: Block[]
-  isLoading: boolean
+  blockExplorerUrl?: string;
+  data?: Block[];
+  isLoading: boolean;
 }
 
 export function LatestBlocksTable({
@@ -165,23 +165,26 @@ export function LatestBlocksTable({
   data,
   isLoading,
 }: LatestBlocksTableProps) {
-  const [filterValue, setFilterValue] = useState<string>(filterOptions[0].value)
-  const { searchInput, setSearchInput, debouncedSearchInput } = useSearchInput()
+  const [filterValue, setFilterValue] = useState<string>(
+    filterOptions[0].value
+  );
+  const { searchInput, setSearchInput, debouncedSearchInput } =
+    useSearchInput();
 
   const filteredData = useMemo(
     () =>
       data
         ?.filter((row) => {
-          const validatorKey = row.proposer.validatorKey.toLowerCase()
-          const search = debouncedSearchInput.toLowerCase()
+          const validatorKey = row.proposer.validatorKey.toLowerCase();
+          const search = debouncedSearchInput.toLowerCase();
           return (
             validatorKey.includes(search) &&
             (row.blockType === filterValue || filterValue === 'all')
-          )
+          );
         })
         .sort((a, b) => b.slot - a.slot),
     [debouncedSearchInput, filterValue, data]
-  )
+  );
 
   const table = useReactTable({
     columns: getColumns(blockExplorerUrl),
@@ -193,9 +196,9 @@ export function LatestBlocksTable({
     },
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-  })
+  });
 
-  if (isLoading) return <Skeleton title="Latest Smooth Blocks" />
+  if (isLoading) return <Skeleton title="Latest Smooth Blocks" />;
 
   return (
     <TableLayout
@@ -212,7 +215,7 @@ export function LatestBlocksTable({
       table={table}
       title="Latest Smooth Blocks"
     />
-  )
+  );
 }
 
 const filterOptions = [
@@ -236,4 +239,4 @@ const filterOptions = [
     label: 'Missed',
     value: 'missedproposal',
   },
-]
+];
