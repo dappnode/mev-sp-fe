@@ -19,56 +19,55 @@ import type { Block } from '../types'
 const columnHelper = createColumnHelper<Block>()
 
 const getRelativeTimeFromSlot = (slot: number) => {
-  const genesisUnixTime = 1606824023; // Unix time of the genesis block
-  const slotDurationSeconds = 12; // Duration for each slot in seconds
+  const genesisUnixTime = 1606824023 // Unix time of the genesis block
+  const slotDurationSeconds = 12 // Duration for each slot in seconds
 
   // Calculate the timestamp for the given slot
-  const slotTimestamp = genesisUnixTime + slot * slotDurationSeconds;
+  const slotTimestamp = genesisUnixTime + slot * slotDurationSeconds
 
   // Calculate the difference between current time and the slot time
-  const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
-  const timeDifference = currentTime - slotTimestamp;
+  const currentTime = Math.floor(Date.now() / 1000) // Current time in seconds
+  const timeDifference = currentTime - slotTimestamp
 
   // Convert time difference to human-readable format
-  const minutes = Math.floor(timeDifference / 60);
-  const seconds = timeDifference % 60;
-  const hours = Math.floor(timeDifference / 3600);
-  const days = Math.floor(timeDifference / 86400);
+  const minutes = Math.floor(timeDifference / 60)
+  const seconds = timeDifference % 60
+  const hours = Math.floor(timeDifference / 3600)
+  const days = Math.floor(timeDifference / 86400)
 
   if (days > 0) {
-    const remainingHours = Math.floor((timeDifference % 86400) / 3600);
-    const dayStr = days === 1 ? 'day' : 'days';
-    const hourStr = remainingHours === 1 ? 'hour' : 'hours';
-    return `${days} ${dayStr} ${remainingHours} ${hourStr} ago`;
+    const remainingHours = Math.floor((timeDifference % 86400) / 3600)
+    const dayStr = days === 1 ? 'day' : 'days'
+    const hourStr = remainingHours === 1 ? 'hour' : 'hours'
+    return `${days} ${dayStr} ${remainingHours} ${hourStr} ago`
   }
-  
-  if (hours > 0) {
-    const hourStr = hours === 1 ? 'hour' : 'hours';
-    return `${hours} ${hourStr} ago`;
-  }
-  
-  if (minutes > 0) {
-    const minuteStr = minutes === 1 ? 'minute' : 'minutes';
-    return `${minutes} ${minuteStr} ago`;
-  }
-  
-  return `${seconds} seconds ago`;
-};
 
+  if (hours > 0) {
+    const hourStr = hours === 1 ? 'hour' : 'hours'
+    return `${hours} ${hourStr} ago`
+  }
+
+  if (minutes > 0) {
+    const minuteStr = minutes === 1 ? 'minute' : 'minutes'
+    return `${minutes} ${minuteStr} ago`
+  }
+
+  return `${seconds} seconds ago`
+}
 
 const getAbsoluteTimeFromSlot = (slot: number) => {
-  const genesisUnixTime = 1606824023; // Unix time of the genesis block
-  const slotDurationSeconds = 12; // Duration for each slot in seconds
+  const genesisUnixTime = 1606824023 // Unix time of the genesis block
+  const slotDurationSeconds = 12 // Duration for each slot in seconds
 
   // Calculate the timestamp for the given slot
-  const slotTimestamp = genesisUnixTime + slot * slotDurationSeconds;
+  const slotTimestamp = genesisUnixTime + slot * slotDurationSeconds
 
   // Create a Date object using the calculated timestamp
-  const absoluteDate = new Date(slotTimestamp * 1000);
+  const absoluteDate = new Date(slotTimestamp * 1000)
 
   // Return the formatted absolute date in local time
-  return absoluteDate.toLocaleString();
-};
+  return absoluteDate.toLocaleString()
+}
 
 const getColumns = (blackExplorerUrl?: string) => [
   columnHelper.accessor('slot', {
@@ -86,16 +85,17 @@ const getColumns = (blackExplorerUrl?: string) => [
       )
     },
   }),
-  columnHelper.accessor('date', { // Adding the 'date' column
+  columnHelper.accessor('date', {
+    // Adding the 'date' column
     header: () => <HeaderTooltip header="Date" tooltip={headerTooltip.date} />,
     cell: (info) => {
-      const slot = info.row.original.slot;
-      const relativeTime = getRelativeTimeFromSlot(slot);
-      const absoluteTime = getAbsoluteTimeFromSlot(slot); // Function for absolute time
+      const slot = info.row.original.slot
+      const relativeTime = getRelativeTimeFromSlot(slot)
+      const absoluteTime = getAbsoluteTimeFromSlot(slot) // Function for absolute time
 
       return (
         <span title={absoluteTime}>{relativeTime}</span> // Display relative time with title as absolute time
-      );
+      )
     },
   }),
   columnHelper.accessor('proposer', {
@@ -120,16 +120,17 @@ const getColumns = (blackExplorerUrl?: string) => [
       <HeaderTooltip header="Reward Type" tooltip={headerTooltip.rewardType} />
     ),
     cell: (info) => {
-      const rewardType = info.getValue();
-      let modifiedRewardType: string = rewardType;
-  
+      const rewardType = info.getValue()
+      let modifiedRewardType: string = rewardType
+
       // Replace "vanila" with "vanilla" if it exists in the rewardType
-      modifiedRewardType = modifiedRewardType.replace('vanila', 'vanilla');
-      const displayRewardType = modifiedRewardType === 'unknownrewardtype' ? '-' : modifiedRewardType;
-      return displayRewardType;
+      modifiedRewardType = modifiedRewardType.replace('vanila', 'vanilla')
+      const displayRewardType =
+        modifiedRewardType === 'unknownrewardtype' ? '-' : modifiedRewardType
+      return displayRewardType
     },
   }),
-  
+
   columnHelper.accessor('reward', {
     header: () => (
       <HeaderTooltip header="Reward" tooltip={headerTooltip.reward} />
@@ -144,10 +145,10 @@ const getColumns = (blackExplorerUrl?: string) => [
         blockType === 'okpoolproposal'
           ? 'Proposed'
           : blockType === 'missedproposal'
-            ? 'Missed'
-            : blockType === 'okpoolproposalblskeys'
-              ? 'Invalid (BLS)'
-              : 'Wrong Fee'
+          ? 'Missed'
+          : blockType === 'okpoolproposalblskeys'
+          ? 'Invalid (BLS)'
+          : 'Wrong Fee'
       return formattedBlockType
     },
   }),
@@ -171,10 +172,10 @@ export function LatestBlocksTable({
     () =>
       data
         ?.filter((row) => {
-          const address = row.proposer.withdrawalAddress.toLowerCase()
+          const validatorKey = row.proposer.validatorKey.toLowerCase()
           const search = debouncedSearchInput.toLowerCase()
           return (
-            address.includes(search) &&
+            validatorKey.includes(search) &&
             (row.blockType === filterValue || filterValue === 'all')
           )
         })
