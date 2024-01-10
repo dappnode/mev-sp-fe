@@ -1,22 +1,22 @@
-import { PAGE_SIZE, headerTooltip } from './config'
-import { Skeleton } from './components/Skeleton'
-import { TableLayout } from '../components/Table'
-import { HeaderTooltip } from '../components/HeaderTooltip'
-import Link from 'next/link'
-import { useMemo, useState } from 'react'
+import { PAGE_SIZE, headerTooltip } from './config';
+import { Skeleton } from './components/Skeleton';
+import { TableLayout } from '../components/Table';
+import { HeaderTooltip } from '../components/HeaderTooltip';
+import Link from 'next/link';
+import { useMemo, useState } from 'react';
 import {
   createColumnHelper,
   getCoreRowModel,
   getPaginationRowModel,
   useReactTable,
-} from '@tanstack/react-table'
-import { useSearchInput } from '@/hooks/useSearchInput'
-import { addEthSuffix, shortenEthAddress } from '@/utils/web3'
-import { toFixedNoTrailingZeros } from '@/utils/decimals'
-import { getBeaconChainExplorer } from '@/utils/config'
-import type { Block } from '../types'
+} from '@tanstack/react-table';
+import { useSearchInput } from '@/hooks/useSearchInput';
+import { addEthSuffix, shortenEthAddress } from '@/utils/web3';
+import { toFixedNoTrailingZeros } from '@/utils/decimals';
+import { getBeaconChainExplorer } from '@/utils/config';
+import type { Block } from '../types';
 
-const columnHelper = createColumnHelper<Block>()
+const columnHelper = createColumnHelper<Block>();
 
 const getRelativeTimeFromSlot = (slot: number) => {
   const genesisUnixTime = 1606824023; // Unix time of the genesis block
@@ -41,20 +41,19 @@ const getRelativeTimeFromSlot = (slot: number) => {
     const hourStr = remainingHours === 1 ? 'hour' : 'hours';
     return `${days} ${dayStr} ${remainingHours} ${hourStr} ago`;
   }
-  
+
   if (hours > 0) {
     const hourStr = hours === 1 ? 'hour' : 'hours';
     return `${hours} ${hourStr} ago`;
   }
-  
+
   if (minutes > 0) {
     const minuteStr = minutes === 1 ? 'minute' : 'minutes';
     return `${minutes} ${minuteStr} ago`;
   }
-  
+
   return `${seconds} seconds ago`;
 };
-
 
 const getAbsoluteTimeFromSlot = (slot: number) => {
   const genesisUnixTime = 1606824023; // Unix time of the genesis block
@@ -74,7 +73,7 @@ const getColumns = (blackExplorerUrl?: string) => [
   columnHelper.accessor('slot', {
     header: () => <HeaderTooltip header="Slot" tooltip={headerTooltip.slot} />,
     cell: (info) => {
-      const slot = info.getValue()
+      const slot = info.getValue();
       return (
         <Link
           className="font-medium underline"
@@ -83,10 +82,11 @@ const getColumns = (blackExplorerUrl?: string) => [
           target="_blank">
           {slot.toLocaleString()}
         </Link>
-      )
+      );
     },
   }),
-  columnHelper.accessor('date', { // Adding the 'date' column
+  columnHelper.accessor('date', {
+    // Adding the 'date' column
     header: () => <HeaderTooltip header="Date" tooltip={headerTooltip.date} />,
     cell: (info) => {
       const slot = info.row.original.slot;
@@ -103,7 +103,7 @@ const getColumns = (blackExplorerUrl?: string) => [
       <HeaderTooltip header="Proposer" tooltip={headerTooltip.proposer} />
     ),
     cell: (info) => {
-      const proposer = info.getValue()
+      const proposer = info.getValue();
       return (
         <Link
           className="font-medium underline"
@@ -112,7 +112,7 @@ const getColumns = (blackExplorerUrl?: string) => [
           target="_blank">
           {shortenEthAddress(proposer.validatorKey.toLocaleString())}
         </Link>
-      )
+      );
     },
   }),
   columnHelper.accessor('rewardType', {
@@ -122,14 +122,15 @@ const getColumns = (blackExplorerUrl?: string) => [
     cell: (info) => {
       const rewardType = info.getValue();
       let modifiedRewardType: string = rewardType;
-  
+
       // Replace "vanila" with "vanilla" if it exists in the rewardType
       modifiedRewardType = modifiedRewardType.replace('vanila', 'vanilla');
-      const displayRewardType = modifiedRewardType === 'unknownrewardtype' ? '-' : modifiedRewardType;
+      const displayRewardType =
+        modifiedRewardType === 'unknownrewardtype' ? '-' : modifiedRewardType;
       return displayRewardType;
     },
   }),
-  
+
   columnHelper.accessor('reward', {
     header: () => (
       <HeaderTooltip header="Reward" tooltip={headerTooltip.reward} />
@@ -139,24 +140,24 @@ const getColumns = (blackExplorerUrl?: string) => [
   columnHelper.accessor('blockType', {
     header: () => <HeaderTooltip header="Block Type" />,
     cell: (info) => {
-      const blockType = info.getValue()
+      const blockType = info.getValue();
       const formattedBlockType =
         blockType === 'okpoolproposal'
           ? 'Proposed'
           : blockType === 'missedproposal'
-            ? 'Missed'
-            : blockType === 'okpoolproposalblskeys'
-              ? 'Invalid (BLS)'
-              : 'Wrong Fee'
-      return formattedBlockType
+          ? 'Missed'
+          : blockType === 'okpoolproposalblskeys'
+          ? 'Invalid (BLS)'
+          : 'Wrong Fee';
+      return formattedBlockType;
     },
   }),
-]
+];
 
 interface LatestBlocksTableProps {
-  blockExplorerUrl?: string
-  data?: Block[]
-  isLoading: boolean
+  blockExplorerUrl?: string;
+  data?: Block[];
+  isLoading: boolean;
 }
 
 export function LatestBlocksTable({
@@ -164,23 +165,26 @@ export function LatestBlocksTable({
   data,
   isLoading,
 }: LatestBlocksTableProps) {
-  const [filterValue, setFilterValue] = useState<string>(filterOptions[0].value)
-  const { searchInput, setSearchInput, debouncedSearchInput } = useSearchInput()
+  const [filterValue, setFilterValue] = useState<string>(
+    filterOptions[0].value
+  );
+  const { searchInput, setSearchInput, debouncedSearchInput } =
+    useSearchInput();
 
   const filteredData = useMemo(
     () =>
       data
         ?.filter((row) => {
-          const address = row.proposer.withdrawalAddress.toLowerCase()
-          const search = debouncedSearchInput.toLowerCase()
+          const validatorKey = row.proposer.validatorKey.toLowerCase();
+          const search = debouncedSearchInput.toLowerCase();
           return (
-            address.includes(search) &&
+            validatorKey.includes(search) &&
             (row.blockType === filterValue || filterValue === 'all')
-          )
+          );
         })
         .sort((a, b) => b.slot - a.slot),
     [debouncedSearchInput, filterValue, data]
-  )
+  );
 
   const table = useReactTable({
     columns: getColumns(blockExplorerUrl),
@@ -192,9 +196,9 @@ export function LatestBlocksTable({
     },
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-  })
+  });
 
-  if (isLoading) return <Skeleton title="Latest Smooth Blocks" />
+  if (isLoading) return <Skeleton title="Latest Smooth Blocks" />;
 
   return (
     <TableLayout
@@ -211,7 +215,7 @@ export function LatestBlocksTable({
       table={table}
       title="Latest Smooth Blocks"
     />
-  )
+  );
 }
 
 const filterOptions = [
@@ -235,4 +239,4 @@ const filterOptions = [
     label: 'Missed',
     value: 'missedproposal',
   },
-]
+];
