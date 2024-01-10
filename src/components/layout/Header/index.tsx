@@ -1,17 +1,30 @@
-/* eslint-disable react/button-has-type */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import clsx from 'clsx'
 import { RxExternalLink } from 'react-icons/rx'
+import { useWeb3Modal, useWeb3ModalState } from '@web3modal/wagmi/react'
+import { getNetwork } from '@wagmi/core'
 import { PAGES } from '@/utils/config'
 import { MobileMenuDialog } from '@/components/dialogs/MobileMenuDialog'
+import { Button } from '@/components/common/Button'
 
 export function Header() {
   const router = useRouter()
+  const selectedNetworkId = useWeb3ModalState()
+  const modal = useWeb3Modal()
+  const { chain } = getNetwork()
+  console.log('chain: ', chain)
+
+  const isWrongNetwork =
+    selectedNetworkId &&
+    selectedNetworkId.selectedNetworkId !==
+      process.env.NEXT_PUBLIC_SELECTED_CHAIN
+
+  const isCorrectNetwork =
+    selectedNetworkId &&
+    selectedNetworkId.selectedNetworkId ===
+      process.env.NEXT_PUBLIC_SELECTED_CHAIN
 
   return (
     <header className="flex h-24 items-center justify-between border-b bg-white p-4 md:p-6">
@@ -53,6 +66,21 @@ export function Header() {
       <div className="flex items-center">
         <w3m-button balance="hide" />
 
+        {isWrongNetwork && (
+          <div className="ml-2 text-red-500">
+            Wrong Network: {selectedNetworkId.selectedNetworkId}
+          </div>
+        )}
+
+        {isCorrectNetwork && (
+          <div className="ml-2 text-green-500">Correct Network</div>
+        )}
+
+        {chain && (
+          <div className="ml-2">
+            Detected Chain: {chain.name} ({chain.id})
+          </div>
+        )}
         <div className="md:hidden">
           <MobileMenuDialog />
         </div>

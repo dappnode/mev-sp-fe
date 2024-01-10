@@ -1,4 +1,4 @@
-const SUPPORTED_CHAINS = ['mainnet', 'goerli']
+export const SUPPORTED_CHAINS = ['mainnet', 'goerli']
 
 if (!process.env.NEXT_PUBLIC_SMOOTHING_POOL_ADDRESS) {
   throw new Error('NEXT_PUBLIC_SMOOTHING_POOL_ADDRESS is not set')
