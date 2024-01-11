@@ -7,6 +7,7 @@ import {
   StatusSchema,
   StatisticsSchema,
   ValidatorSchema,
+  ValidatorsByIndexSchema,
   onChainProofSchema,
   registeredRelaysSchema,
 } from './schemas'
@@ -50,9 +51,10 @@ export const fetchValidatorsByDepositor = async (
   return ValidatorSchema.array().parse(convertKeysToCamelCase(response.data))
 }
 
-export const fetchValidatorByIndex = async (index: number) => {
+export const fetchValidatorByIndex = async (index: string) => {
   const response = await apiClient.get(endpoints.memoryValidator(index))
-  return ValidatorSchema.parse(convertKeysToCamelCase(response.data))
+  console.log("Data before Zod validation!!!:", convertKeysToCamelCase(response.data));
+  return ValidatorsByIndexSchema.parse(convertKeysToCamelCase(response.data))
 }
 
 export const fetchAllBlocks = async () => {

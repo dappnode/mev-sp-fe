@@ -37,6 +37,11 @@ export const ValidatorSchema = z.object({
   validatorKey: z.string(),
 })
 
+export const ValidatorsByIndexSchema = z.object({
+  foundValidators: z.array(ValidatorSchema),
+  notFoundValidators: z.array(z.string()).or(z.null()).or(z.undefined()),
+});
+
 export const StatusSchema = z.object({
   isConsensusInSync: z.boolean(),
   isExecutionInSync: z.boolean(),

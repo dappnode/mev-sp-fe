@@ -11,7 +11,7 @@ import { weiToEth } from '@/utils/web3'
 import { toFixedNoTrailingZeros } from '@/utils/decimals'
 
 interface ClaimableRewardsDialogProps extends DialogProps {
-  validatorId: number
+  validatorId: string
 }
 
 export function ClaimableRewardsDialog({
@@ -31,8 +31,10 @@ export function ClaimableRewardsDialog({
     queryKey: ['validator', validatorId],
     queryFn: () => fetchValidatorByIndex(validatorId),
   })
+  console.log("calling", validatorId)
 
   const handleNextPage = () => {
+
     if (onChainProofQuery.data?.claimableRewardsWei === '0') {
       handleChangeDialogState('unsubscribe')
     } else {
@@ -77,7 +79,7 @@ export function ClaimableRewardsDialog({
                 <p>Pending Rewards</p>
                 <p>
                   {toFixedNoTrailingZeros(
-                    weiToEth(validatorQuery.data?.pendingRewardsWei || 0),
+                    weiToEth(validatorQuery.data?.foundValidators?.[0]?.pendingRewardsWei || 0),
                     4
                   )}{' '}
                   ETH
