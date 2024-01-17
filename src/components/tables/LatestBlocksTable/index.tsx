@@ -13,13 +13,19 @@ import {
 import { useSearchInput } from '@/hooks/useSearchInput';
 import { addEthSuffix, shortenEthAddress } from '@/utils/web3';
 import { toFixedNoTrailingZeros } from '@/utils/decimals';
-import { getBeaconChainExplorer } from '@/utils/config';
+import { SELECTED_CHAIN, getBeaconChainExplorer } from '@/utils/config';
 import type { Block } from '../types';
 
 const columnHelper = createColumnHelper<Block>();
 
 const getRelativeTimeFromSlot = (slot: number) => {
-  const genesisUnixTime = 1606824023; // Unix time of the genesis block
+  let genesisUnixTime: number;
+  if (SELECTED_CHAIN === 'goerli') {
+    genesisUnixTime = 1616508000; // Unix time of the genesis block in testnet
+  }
+  else {
+    genesisUnixTime = 1606824023; // Unix time of the genesis block in mainnet
+  }
   const slotDurationSeconds = 12; // Duration for each slot in seconds
 
   // Calculate the timestamp for the given slot
