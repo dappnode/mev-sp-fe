@@ -5,10 +5,12 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useTheme } from 'next-themes'
 import clsx from 'clsx'
 import { RxExternalLink } from 'react-icons/rx'
 import { PAGES } from '@/utils/config'
 import { MobileMenuDialog } from '@/components/dialogs/MobileMenuDialog'
+import { Button } from '@/components/common/Button'
 
 export function Header() {
   const router = useRouter()
@@ -50,13 +52,36 @@ export function Header() {
           )
         })}
       </nav>
-      <div className="flex items-center">
-        <w3m-button balance="hide" />
+      <div className="flex items-center gap-3">
+        <div className="w-1/5">
+          <ToggleThemeBtn />
+        </div>
 
+        <w3m-button balance="hide" />
         <div className="md:hidden">
           <MobileMenuDialog />
         </div>
       </div>
     </header>
+  )
+}
+
+function ToggleThemeBtn() {
+  const { systemTheme, theme, setTheme } = useTheme()
+  const currentTheme = theme === 'system' ? systemTheme : theme
+  return (
+    <Button
+      buttonType="secondary"
+      size="sm"
+      onPress={() =>
+        currentTheme === 'dark' ? setTheme('light') : setTheme('dark')
+      }>
+      <Image
+        alt="logo"
+        height={50}
+        src={`/images/${currentTheme === 'dark' ? 'sun' : 'moon'}.svg`}
+        width={50}
+      />
+    </Button>
   )
 }
