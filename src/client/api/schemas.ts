@@ -37,6 +37,16 @@ export const ValidatorSchema = z.object({
   validatorKey: z.string(),
 })
 
+export const singleValidatorByIndexSchema = z.object({
+  status: z.string(),
+  accumulatedRewardsWei: z.number().or(z.null()),
+  pendingRewardsWei: z.number().or(z.null()),
+  collateralWei: z.number().or(z.null()),
+  withdrawalAddress: z.string(),
+  validatorIndex: z.number(),
+  validatorKey: z.string(),
+})
+
 export const StatusSchema = z.object({
   isConsensusInSync: z.boolean(),
   isExecutionInSync: z.boolean(),
