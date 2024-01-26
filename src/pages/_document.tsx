@@ -7,6 +7,7 @@ export default function Document() {
       ? 'G-CZ1Q4XLCV7'
       : 'G-C7R9Y6T56G'
 
+  console.log('Google Analytics ID:', gaId)
   return (
     <Html lang="en">
       <Head />

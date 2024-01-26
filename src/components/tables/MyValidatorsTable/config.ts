@@ -1,4 +1,4 @@
-export const PAGE_SIZE = 6
+export const PAGE_SIZE = 1
 
 export const headerTooltip = {
   address: 'Address of the validator',

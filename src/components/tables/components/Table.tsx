@@ -2,6 +2,8 @@ import { Pagination } from './Pagination'
 import { TableDataTypes } from '../types'
 import { flexRender, type Table as TableType } from '@tanstack/react-table'
 import clsx from 'clsx'
+import { useEffect, useState, Dispatch, SetStateAction } from 'react'
+
 import { SearchInput } from '@/components/common/SearchInput'
 import { FilterGroup } from '@/components/common/FilterGroup'
 
@@ -37,6 +39,36 @@ export function TableLayout<T extends TableDataTypes>({
   table,
   title,
 }: TableProps<T>) {
+  const [currentPage, setCurrentPage] = useState<number>(0)
+
+  useEffect(() => {
+    const storedPage = localStorage.getItem('paginationPage')
+    if (storedPage !== null) {
+      setCurrentPage(Number(storedPage))
+    }
+  }, [])
+
+  const handlePageChange: Dispatch<SetStateAction<number>> = (
+    newPage: number | ((prevState: number) => number)
+  ) => {
+    // Check if newPage is a function or a number
+    const nextPage =
+      typeof newPage === 'function' ? newPage(currentPage) : newPage
+
+    // Update the pagination state
+    setCurrentPage(nextPage)
+
+    // Store the pagination state in localStorage
+    localStorage.setItem('paginationPage', String(nextPage))
+  }
+
+  useEffect(() => {
+    console.log('currentPage:', currentPage)
+    console.log('itemsPerPage:', table.getState().pagination.pageSize)
+    console.log('totalItems:', data.length)
+    console.log('totalPages:', table.getPageCount())
+  }, [currentPage, table, data])
+
   return (
     <div className="w-full overflow-hidden rounded-lg bg-white">
       <div className="flex items-center justify-between py-6 px-8">
@@ -96,10 +128,11 @@ export function TableLayout<T extends TableDataTypes>({
           </tbody>
         </table>
       </div>
+
       <Pagination
-        currentPage={table.getState().pagination.pageIndex}
+        currentPage={currentPage}
         itemsPerPage={table.getState().pagination.pageSize}
-        setCurrentPage={table.setPageIndex}
+        setCurrentPage={handlePageChange}
         totalItems={data.length}
         totalPages={table.getPageCount()}
       />

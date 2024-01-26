@@ -30,6 +30,9 @@ export function Pagination({
     setCurrentPage,
   })
 
+  console.log('setCurrentPage:', setCurrentPage)
+  console.log('currentPage:', currentPage)
+
   return (
     <div className="flex h-[80px] w-full flex-col items-center justify-between bg-white px-4 py-3 md:h-[60px] md:flex-row md:px-8">
       <p className="mr-2 text-center text-sm font-normal text-DAppNeutral/500 md:text-left ">
