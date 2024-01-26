@@ -51,14 +51,9 @@ export function TableLayout<T extends TableDataTypes>({
   const handlePageChange: Dispatch<SetStateAction<number>> = (
     newPage: number | ((prevState: number) => number)
   ) => {
-    // Check if newPage is a function or a number
     const nextPage =
       typeof newPage === 'function' ? newPage(currentPage) : newPage
-
-    // Update the pagination state
     setCurrentPage(nextPage)
-
-    // Store the pagination state in localStorage
     localStorage.setItem('paginationPage', String(nextPage))
   }
 
@@ -128,7 +123,6 @@ export function TableLayout<T extends TableDataTypes>({
           </tbody>
         </table>
       </div>
-
       <Pagination
         currentPage={currentPage}
         itemsPerPage={table.getState().pagination.pageSize}
