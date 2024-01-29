@@ -81,7 +81,7 @@ export function UserInfo() {
           data={memoizedTableData}
           isConnected={isConnected}
           isLoading={validatorsQuery.isLoading}
-          serverError={validatorsQuery.isError || onChainProofQuery.isError}
+          serverError={validatorsQuery.isError || !serverStatus.data?.ready}
         />
       </div>
       <div className="col-span-4 sm:order-2 sm:col-span-1">
