@@ -1,9 +1,10 @@
 import { MyRewards } from '../cards/MyRewards'
 import { MyValidatorsTable } from '../tables/MyValidatorsTable'
+import { Warnings } from '../tables/MyValidatorsTable/components/WarningIcon'
+import { useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useAccount, useNetwork } from 'wagmi'
 import { weiToEth } from '@/utils/web3'
-import type { Validator } from '@/components/tables/types'
 import {
   fetchOnChainProof,
   fetchStatus,
@@ -49,33 +50,36 @@ export function UserInfo() {
     }
   }
 
-  let tableData: Validator[] = []
-  if (validatorsQuery.data) {
-    tableData = validatorsQuery.data.map(
-      ({
-        status,
-        validatorKey,
-        validatorIndex,
-        pendingRewardsWei,
-        accumulatedRewardsWei,
-      }) => ({
-        address: validatorKey as `0x${string}`,
-        pending: weiToEth(pendingRewardsWei || 0),
-        accumulated: weiToEth(accumulatedRewardsWei || 0),
-        subscribed: ['active', 'yellowcard', 'redcard'].includes(status),
-        validatorId: validatorIndex,
-        validatorKey: validatorKey as `0x${string}`,
-        warning: setWarning(status),
-        checkbox: false,
-      })
-    )
-  }
+  const memoizedTableData = useMemo(
+    () =>
+      validatorsQuery.data
+        ? validatorsQuery.data.map(
+            ({
+              status,
+              validatorKey,
+              validatorIndex,
+              pendingRewardsWei,
+              accumulatedRewardsWei,
+            }) => ({
+              address: validatorKey as `0x${string}`,
+              pending: weiToEth(pendingRewardsWei || 0),
+              accumulated: weiToEth(accumulatedRewardsWei || 0),
+              subscribed: ['active', 'yellowcard', 'redcard'].includes(status),
+              validatorId: validatorIndex,
+              validatorKey: validatorKey as `0x${string}`,
+              warning: setWarning(status) as Warnings, // Adjust the type here
+              checkbox: false,
+            })
+          )
+        : [],
+    [validatorsQuery.data]
+  )
 
   return (
     <div className="mt-8 grid w-full grid-cols-1 gap-4 sm:grid-cols-3 md:gap-6 lg:grid-cols-4">
       <div className="order-1 col-span-4 sm:order-1 sm:col-span-2 lg:col-span-3">
         <MyValidatorsTable
-          data={tableData}
+          data={memoizedTableData}
           isConnected={isConnected}
           isLoading={validatorsQuery.isLoading}
           serverError={validatorsQuery.isError || !serverStatus.data?.ready}
