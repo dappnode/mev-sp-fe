@@ -1,17 +1,16 @@
 import { MyRewards } from '../cards/MyRewards'
 import { MyValidatorsTable } from '../tables/MyValidatorsTable'
+import { Warnings } from '../tables/MyValidatorsTable/components/WarningIcon'
+import { useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useAccount, useNetwork } from 'wagmi'
 import { weiToEth } from '@/utils/web3'
-import type { Validator } from '@/components/tables/types'
 import {
   fetchOnChainProof,
   fetchStatus,
   fetchValidatorsByDepositor,
   validateServerStatus,
 } from '@/client/api/queryFunctions'
-import { useEffect, useMemo } from 'react'
-import { Warnings } from '../tables/MyValidatorsTable/components/WarningIcon'
 
 export function UserInfo() {
   const { isConnected, address } = useAccount()
@@ -51,28 +50,30 @@ export function UserInfo() {
     }
   }
 
-  const memoizedTableData = useMemo(() => {
-    return validatorsQuery.data
-      ? validatorsQuery.data.map(
-          ({
-            status,
-            validatorKey,
-            validatorIndex,
-            pendingRewardsWei,
-            accumulatedRewardsWei,
-          }) => ({
-            address: validatorKey as `0x${string}`,
-            pending: weiToEth(pendingRewardsWei || 0),
-            accumulated: weiToEth(accumulatedRewardsWei || 0),
-            subscribed: ['active', 'yellowcard', 'redcard'].includes(status),
-            validatorId: validatorIndex,
-            validatorKey: validatorKey as `0x${string}`,
-            warning: setWarning(status) as Warnings, // Adjust the type here
-            checkbox: false,
-          })
-        )
-      : []
-  }, [validatorsQuery.data])
+  const memoizedTableData = useMemo(
+    () =>
+      validatorsQuery.data
+        ? validatorsQuery.data.map(
+            ({
+              status,
+              validatorKey,
+              validatorIndex,
+              pendingRewardsWei,
+              accumulatedRewardsWei,
+            }) => ({
+              address: validatorKey as `0x${string}`,
+              pending: weiToEth(pendingRewardsWei || 0),
+              accumulated: weiToEth(accumulatedRewardsWei || 0),
+              subscribed: ['active', 'yellowcard', 'redcard'].includes(status),
+              validatorId: validatorIndex,
+              validatorKey: validatorKey as `0x${string}`,
+              warning: setWarning(status) as Warnings, // Adjust the type here
+              checkbox: false,
+            })
+          )
+        : [],
+    [validatorsQuery.data]
+  )
 
   return (
     <div className="mt-8 grid w-full grid-cols-1 gap-4 sm:grid-cols-3 md:gap-6 lg:grid-cols-4">
