@@ -17,7 +17,7 @@ export default function HowTo() {
             width={728}
           />
           <div className="mx-auto">
-            <h1 className="mt-12 text-center text-5xl font-bold text-DAppDeep xl:text-left">
+            <h1 className="mt-12 text-center text-5xl font-bold text-DAppDeep dark:text-DAppDarkText xl:text-left">
               Smooth
             </h1>
             <h3 className="mt-7 text-center text-base font-normal leading-8 xl:text-left">

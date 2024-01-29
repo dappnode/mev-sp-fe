@@ -1,10 +1,13 @@
 import Image from 'next/image'
 import { useAccount } from 'wagmi'
+import { useTheme } from 'next-themes'
 import { Head } from '@/components/layout/Head'
 import { DonateDialog } from '@/components/dialogs/DonateDialog'
 
 export default function Donate() {
   const { isConnected } = useAccount()
+  const { systemTheme, theme } = useTheme()
+  const currentTheme = theme === 'system' ? systemTheme : theme
   return (
     <>
       <Head title="Support Solo Stakers" />
@@ -14,15 +17,19 @@ export default function Donate() {
             alt="ETH Circle"
             className="absolute bottom-14 left-36"
             height={230}
-            src="images/eth-circle.svg"
             width={230}
+            src={`images/eth-circle${
+              currentTheme === 'light' ? '' : '-dark'
+            }.svg`}
           />
           <Image
             alt="ETH Circle"
             className="absolute -left-10 bottom-32 "
             height={180}
-            src="images/eth-circle.svg"
             width={180}
+            src={`images/eth-circle${
+              currentTheme === 'light' ? '' : '-dark'
+            }.svg`}
           />
           <Image
             alt="ETH Circle"
@@ -89,13 +96,13 @@ export default function Donate() {
           />
         </div>
         <article className="mx-auto mt-14 flex max-w-fit flex-col text-center lg:mt-0 lg:text-left">
-          <h1 className="mt-2 text-5xl font-bold leading-[56px] text-DAppDeep">
+          <h1 className="mt-2 text-5xl font-bold leading-[56px] text-DAppDeep dark:text-DAppDarkText">
             Support Solo Stakers
           </h1>
           <h2 className="order-first text-base font-normal tracking-wider text-DAppBlue">
-          Fund decentralization directly to Solo Stakers&apos; wallets
+            Fund decentralization directly to Solo Stakers&apos; wallets
           </h2>
-          <p className="mt-2 max-w-md text-lg font-normal leading-8 text-DAppDeep">
+          <p className="mt-2 max-w-md text-lg font-normal leading-8 text-DAppDeep dark:text-DAppDarkText">
             {`You can support Solo Stakers and increase their revenue by donating directly into the pool. It's a great way of supporting the true decentralized Node Runners that keep Ethereum decentralized at scale.`}
           </p>
           <div className="mx-auto mt-8 w-[220px] lg:mx-0">

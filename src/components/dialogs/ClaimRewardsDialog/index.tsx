@@ -32,7 +32,7 @@ export function ClaimRewardsDialog({
       open={open}
       subtitle="Claim rewards"
       triggerText="Claim All">
-      <div className="flex h-[320px] flex-col justify-between text-DAppDeep sm:h-[280px]">
+      <div className="flex h-[320px] flex-col justify-between text-DAppDeep dark:text-DAppDarkText sm:h-[280px]">
         {dialogState === 'initial' ? (
           <InitialDialog
             handleChangeDialogState={setDialogState}

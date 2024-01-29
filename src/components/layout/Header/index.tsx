@@ -5,18 +5,17 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useTheme } from 'next-themes'
 import clsx from 'clsx'
 import { RxExternalLink } from 'react-icons/rx'
 import { PAGES } from '@/utils/config'
 import { MobileMenuDialog } from '@/components/dialogs/MobileMenuDialog'
-import { Button } from '@/components/common/Button'
+import { ToggleThemeBtn } from '@/components/common/ToggleThemeBtn'
 
 export function Header() {
   const router = useRouter()
 
   return (
-    <header className="flex h-24 items-center justify-between border-b bg-white p-4 md:p-6">
+    <header className="flex h-24 items-center justify-between border-b bg-white p-4 dark:border-DAppDarkSurface/400 dark:bg-DAppDarkSurface/200 md:p-6">
       <Link className="flex items-center" href="/">
         <Image
           alt="Dappnode logo"
@@ -24,8 +23,8 @@ export function Header() {
           src="/images/dappnode-logo.svg"
           width={50}
         />
-        <h2 className="ml-4 hidden font-urbanist text-2xl font-bold text-DAppGray lg:inline lg:text-3xl">
-          <span className="text-DAppDeep">Smooth</span>
+        <h2 className="ml-4 hidden font-urbanist text-2xl font-bold text-DAppDeep dark:text-DAppDarkText lg:inline lg:text-3xl">
+          <span className="">Smooth</span>
         </h2>
       </Link>
       <nav className="hidden md:flex md:gap-x-5">
@@ -39,11 +38,11 @@ export function Header() {
                 router.pathname === path ? 'bg-DApppurple-linear' : 'bg-none'
               )}>
               <Link
-                className="flex h-[92px] min-w-full items-center bg-white px-3 font-inter text-base leading-7 text-DAppDeep transition duration-300 hover:text-DAppPurple/900"
+                className="group flex h-[92px] min-w-full items-center bg-white px-3 font-inter text-base leading-7 text-DAppDeep   dark:bg-DAppDarkSurface/200 dark:text-DAppDarkText "
                 href={path}
                 rel={isExternalLink ? 'noopener noreferrer' : ''}
                 target={isExternalLink ? '_blank' : '_self'}>
-                <h3 className="flex items-center">
+                <h3 className="flex items-center transition duration-300 group-hover:text-DAppPurple/900 group-hover:dark:text-DAppDarkPrimary">
                   {name}
                   {isExternalLink && <RxExternalLink className="ml-2 inline" />}
                 </h3>
@@ -52,36 +51,13 @@ export function Header() {
           )
         })}
       </nav>
-      <div className="flex items-center gap-3">
-        <div className="w-1/5">
-          <ToggleThemeBtn />
-        </div>
-
+      <div className="flex items-center justify-between gap-5">
+        <ToggleThemeBtn />
         <w3m-button balance="hide" />
         <div className="md:hidden">
           <MobileMenuDialog />
         </div>
       </div>
     </header>
-  )
-}
-
-function ToggleThemeBtn() {
-  const { systemTheme, theme, setTheme } = useTheme()
-  const currentTheme = theme === 'system' ? systemTheme : theme
-  return (
-    <Button
-      buttonType="secondary"
-      size="sm"
-      onPress={() =>
-        currentTheme === 'dark' ? setTheme('light') : setTheme('dark')
-      }>
-      <Image
-        alt="logo"
-        height={50}
-        src={`/images/${currentTheme === 'dark' ? 'sun' : 'moon'}.svg`}
-        width={50}
-      />
-    </Button>
   )
 }

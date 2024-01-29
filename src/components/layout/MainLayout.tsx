@@ -17,8 +17,8 @@ export function MainLayout({ children, className }: MainLayoutProps) {
       className={clsx(
         'min-h-screen bg-cover',
         router.pathname === '/' || router.pathname === '/how-to'
-          ? 'bg-wave-pattern bg-cover'
-          : 'bg-DAppBackgroundLight',
+          ? '-ml-2 bg-wave-pattern dark:bg-wave-pattern-dark '
+          : 'bg-DAppBackgroundLight dark:bg-DAppDarkSurface',
         className
       )}>
       <Header />

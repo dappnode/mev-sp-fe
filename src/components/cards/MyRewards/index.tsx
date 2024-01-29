@@ -13,7 +13,7 @@ interface MyRewardsProps {
   claimableRewards: number
   isDisabled?: boolean
   isLoading?: boolean
-  nextCheckpoint: number | undefined,
+  nextCheckpoint: number | undefined
   pendingRewards: number
   totalAccumulatedRewards: number
 }
@@ -32,11 +32,12 @@ export function MyRewards({
         <Skeleton />
       ) : (
         <>
-          <h3 className=" text-2xl font-bold leading-8 text-DAppDeep sm:mb-4">
+          <h3 className=" text-2xl font-bold leading-8 text-DAppDeep dark:text-DAppDarkText sm:mb-4">
             My Rewards
           </h3>
-          <p className="pb-4 font-light leading-6 text-sm text-DAppDeep sm:mb-4 sm:border-b sm:border-DAppGray/20"> 
-          {`Updates in: ${formatTime(nextCheckpoint)}`} </p>
+          <p className="pb-4 text-sm font-light leading-6 text-DAppDeep dark:text-DAppDarkText sm:mb-4 sm:border-b sm:border-DAppGray/20">
+            {`Updates in: ${formatTime(nextCheckpoint)}`}{' '}
+          </p>
           <MyRewardsSection
             className="pb-2 sm:border-none sm:pb-0"
             icon={<ClaimableRewardsIcon />}

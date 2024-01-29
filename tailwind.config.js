@@ -12,7 +12,8 @@ module.exports = {
         sm: '500px',
       },
       boxShadow: {
-        card: '0px 4px 8px rgba(224, 224, 224, 0.3)',
+        'card-light': '0px 4px 8px rgba(224, 224, 224, 0.3)',
+        'card-dark': '0px 4px 8px rgba(63, 63, 63, 0.3)',
       },
       colors: {
         DAppBlue: '#007DFC',
@@ -29,6 +30,14 @@ module.exports = {
         'DAppOrange/800': '#FFAE43',
         DAppRed: '#FB2047',
         SkeletonGray: '#EEE',
+        DAppDarkSurface: '#121212',
+        'DAppDarkSurface/200': '#282828',
+        'DAppDarkSurface/300': '#3f3f3f',
+        'DAppDarkSurface/400': '#575757',
+        'DAppDarkSurface/500': '#717171',
+        'DAppDarkSurface/600': '#8b8b8b',
+        DAppDarkText: '#F8F8F8',
+        DAppDarkPrimary: '#7A27D3',
       },
       fontFamily: {
         inter: ['var(--font-inter)', ...fontFamily.sans],
@@ -37,6 +46,7 @@ module.exports = {
       backgroundImage: {
         'DApppurple-linear': 'linear-gradient(to right, #9731dd ,#c237ea)',
         'wave-pattern': "url('/images/wave-pattern.svg')",
+        'wave-pattern-dark': "url('/images/wave-pattern-dark.svg')",
       },
       fontSize: {
         '2xl': '1.375rem',

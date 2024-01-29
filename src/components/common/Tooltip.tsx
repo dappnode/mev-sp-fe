@@ -20,18 +20,24 @@ export function Tooltip({
           <button type="button">
             {iconType === 'info' ? (
               <AiOutlineInfoCircle
-                className={clsx('h-[17px] w-[17px] text-DAppDeep', className)}
+                className={clsx(
+                  'h-[17px] w-[17px] text-DAppDeep dark:text-DAppDarkSurface/600',
+                  className
+                )}
               />
             ) : (
               <AiOutlineQuestionCircle
-                className={clsx('h-[17px] w-[17px] text-DAppDeep', className)}
+                className={clsx(
+                  'h-[17px] w-[17px] text-DAppDeep dark:text-DAppDarkSurface/600',
+                  className
+                )}
               />
             )}
           </button>
         </RadixTooltip.Trigger>
         <RadixTooltip.Portal>
           <RadixTooltip.Content
-            className="max-w-[140px] rounded-lg bg-white p-3 shadow"
+            className="max-w-[140px] rounded-lg bg-white p-3 shadow dark:bg-DAppDarkSurface/300"
             sideOffset={5}>
             {tooltip}
           </RadixTooltip.Content>
