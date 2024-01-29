@@ -6,6 +6,7 @@ import {
   DonationSchema,
   StatusSchema,
   StatisticsSchema,
+  singleValidatorByIndexSchema,
   ValidatorSchema,
   onChainProofSchema,
   registeredRelaysSchema,
@@ -52,7 +53,7 @@ export const fetchValidatorsByDepositor = async (
 
 export const fetchValidatorByIndex = async (index: number) => {
   const response = await apiClient.get(endpoints.memoryValidator(index))
-  return ValidatorSchema.parse(convertKeysToCamelCase(response.data))
+  return singleValidatorByIndexSchema.parse(convertKeysToCamelCase(response.data))
 }
 
 export const fetchAllBlocks = async () => {
