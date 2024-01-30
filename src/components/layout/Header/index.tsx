@@ -52,7 +52,9 @@ export function Header() {
         })}
       </nav>
       <div className="flex items-center justify-between gap-5">
-        <ToggleThemeBtn />
+        <div className="hidden md:block">
+          <ToggleThemeBtn />
+        </div>
         <w3m-button balance="hide" />
         <div className="md:hidden">
           <MobileMenuDialog />
