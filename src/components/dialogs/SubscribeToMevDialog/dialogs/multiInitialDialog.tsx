@@ -13,7 +13,7 @@ interface MultiInitialDialogProps extends DialogProps {
 
 interface ValidatorListProps {
   validatorKeys: string[]
-  handleClose: () => void // Add handleClose as a function type
+  handleClose: () => void
 }
 
 function NotRegisteredValidators({
@@ -110,9 +110,28 @@ function Loading(): JSX.Element {
       />
 
       <p className="text-center mt-2 bg-gray-200 rounded-lg p-4">
-        Please wait while we are checking all your selected validator&#39;s fee
-        recipients. This may take up to few minutes.
+        Please wait while we check all your selected validator&#39;s fee
+        recipients. This may take up to a few minutes. Do not close this window or navigate away.
       </p>
+    </div>
+  )
+}
+
+interface ErrorProps {
+  handleClose: () => void
+}
+
+function Error({ handleClose }: ErrorProps): JSX.Element {
+  return (
+    <div className="validator-info bg-red-200 rounded-lg mb-20 p-4 mt-6">
+      <p>
+        Error! Something went wrong while checking your validators Fee
+        Recipient. Please try again later.
+      </p>
+
+      <Button className="mt-4" onPress={handleClose}>
+        Go Back
+      </Button>
     </div>
   )
 }
@@ -124,8 +143,9 @@ export function MultiInitialDialog({
   validatorKeys,
 }: MultiInitialDialogProps) {
   const registeredRelaysQuery = useQuery({
-    queryKey: ['multiregistered-relays'],
+    queryKey: ['multiregistered-relays', validatorKeys],
     queryFn: () => fetchMultiValidatorRegisteredRelays(validatorKeys),
+    enabled: validatorKeys.length > 0, // Only run the query if validatorKeys are provided
   })
 
   const [notRegisteredValidatorKeys, setNotRegisteredValidatorKeys] = useState<string[]>([])
@@ -159,30 +179,33 @@ export function MultiInitialDialog({
     validatorKeys,
   ])
 
-  // Inside MultiInitialDialog component
   let content
-  if (registeredRelaysQuery.isLoading) {
+  if (registeredRelaysQuery.isLoading || registeredRelaysQuery.isFetching) {
     content = <Loading />
-  } else if (notRegisteredValidatorKeys.length > 0) {
-    content = (
-      <NotRegisteredValidators
-        handleClose={handleClose}
-        validatorKeys={notRegisteredValidatorKeys}
-      />
-    )
-  } else if (notCorrectlyRegisteredValidatorKeys.length > 0) {
-    content = (
-      <NotCorrectlyRegisteredValidators
-        handleClose={handleClose}
-        validatorKeys={notCorrectlyRegisteredValidatorKeys}
-      />
-    )
-  } else {
-    content = (
-      <AllValidatorsRegistered
-        handleChangeDialogState={handleChangeDialogState}
-      />
-    )
+  } else if (registeredRelaysQuery.isError) {
+    content = <Error handleClose={handleClose} />
+  } else if (registeredRelaysQuery.isSuccess) {
+    if (notRegisteredValidatorKeys.length > 0) {
+      content = (
+        <NotRegisteredValidators
+          handleClose={handleClose}
+          validatorKeys={notRegisteredValidatorKeys}
+        />
+      )
+    } else if (notCorrectlyRegisteredValidatorKeys.length > 0) {
+      content = (
+        <NotCorrectlyRegisteredValidators
+          handleClose={handleClose}
+          validatorKeys={notCorrectlyRegisteredValidatorKeys}
+        />
+      )
+    } else {
+      content = (
+        <AllValidatorsRegistered
+          handleChangeDialogState={handleChangeDialogState}
+        />
+      )
+    }
   }
 
   return (
