@@ -62,6 +62,10 @@ export const PAGES = [
     name: 'Documentation',
     path: 'https://docs.dappnode.io/docs/smooth',
   },
+  {
+    name: 'Landing',
+    path: '/landing',
+  },
 ]
 
 export const SOCIALS = [

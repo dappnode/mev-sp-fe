@@ -59,7 +59,7 @@ export function TableLayout<T extends TableDataTypes>({
           )}
         </div>
       </div>
-      <div className={clsx('overflow-y-hidden overflow-x-scroll', className)}>
+      <div className={clsx('overflow-x-scroll', className)}>
         <table className="w-full table-auto">
           <thead className="w-full border-t-[0.5px] border-DAppNeutral/100 bg-DAppNeutral/50 px-[20px]">
             {table.getHeaderGroups().map((headerGroup) => (
