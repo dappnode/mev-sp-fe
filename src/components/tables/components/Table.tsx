@@ -39,7 +39,7 @@ export function TableLayout<T extends TableDataTypes>({
 }: TableProps<T>) {
   return (
     <div className="w-full overflow-hidden rounded-lg bg-white">
-      <div className="flex items-center justify-between py-6 px-8">
+      <div className="flex items-center justify-between border-b border-DAppNeutral/100 px-8 py-6">
         <h3 className="text-2xl font-bold leading-8 text-DAppDeep">{title}</h3>
         <div className="flex items-center gap-x-11">
           <div className="max-w-xs">
@@ -59,7 +59,7 @@ export function TableLayout<T extends TableDataTypes>({
           )}
         </div>
       </div>
-      <div className={clsx('overflow-y-hidden overflow-x-scroll', className)}>
+      <div className={clsx('overflow-x-scroll', className)}>
         <table className="w-full table-auto">
           <thead className="w-full border-t-[0.5px] border-DAppNeutral/100 bg-DAppNeutral/50 px-[20px]">
             {table.getHeaderGroups().map((headerGroup) => (
@@ -87,7 +87,7 @@ export function TableLayout<T extends TableDataTypes>({
                 {row.getVisibleCells().map((cell) => (
                   <td
                     key={cell.id}
-                    className="py-3 px-4 text-sm font-normal text-DAppDeep">
+                    className="px-4 py-3 text-sm font-normal text-DAppDeep">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}
