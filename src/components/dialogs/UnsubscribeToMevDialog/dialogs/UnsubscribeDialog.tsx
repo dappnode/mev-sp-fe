@@ -56,7 +56,7 @@ export function UnsubscribeDialog({
 
   return (
     <>
-      <div className="-mt-2 text-DAppDeep">
+      <div className="-mt-2 text-DAppDeep dark:text-DAppDarkText">
         <h3 className="mb-6 text-left text-2xl font-bold">Unsubscribe</h3>
         <StepProgressBar currentStep={3} steps={steps} />
       </div>

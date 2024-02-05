@@ -40,7 +40,7 @@ export function InitialDialog({
     registeredRelaysQuery.data?.correctFeeRelayers === null &&
     registeredRelaysQuery.data?.wrongFeeRelayers === null
 
-  const noCorrectFeeRelayers = 
+  const noCorrectFeeRelayers =
     registeredRelaysQuery.data?.correctFeeRelayers === null ||
     registeredRelaysQuery.data?.correctFeeRelayers === undefined
 
@@ -62,18 +62,14 @@ export function InitialDialog({
       )
     }
     if (registeredRelaysQuery.isError) {
-      return (
-        <div>Error when trying to fetch validator&#39;s Fee recipient</div>
-      )
+      return <div>Error when trying to fetch validator&#39;s Fee recipient</div>
     }
     return null
   }
 
   const renderMevOpportunitiesSection = () => {
     if (registeredRelaysQuery.isError) {
-      return (
-        <div>Error when trying to fetch validator&#39;s Fee recipient</div>
-      )
+      return <div>Error when trying to fetch validator&#39;s Fee recipient</div>
     }
     const relays = isCorrectFeeRecipient
       ? registeredRelaysQuery.data?.correctFeeRelayers
@@ -118,26 +114,27 @@ export function InitialDialog({
         </div>
       )
     }
-    
+
     if (!registeredRelaysQuery.isLoading && noCorrectFeeRelayers === true) {
       return (
         <div className="mt-6 overflow-auto text-center text-base text-red-500">
           <AiOutlineInfoCircle className="mx-auto h-8 w-8" />
           <h4 className="font-bold mt-2">
-            Alert: This validator&#39;s fee recipient is not set to Smooth! Please update your fee recipient.
+            Alert: This validator&#39;s fee recipient is not set to Smooth!
+            Please update your fee recipient.
             <br />
             <br />
-            Check out {' '}
+            Check out{' '}
             <Link
-                className="inline font-medium underline-offset-2 hover:underline"
-                href="https://docs.dappnode.io/docs/smooth"
-                rel="noopener noreferrer"
-                target="_blank">
-                Smooth Docs ↗
-              </Link>{' '}
+              className="inline font-medium underline-offset-2 hover:underline"
+              href="https://docs.dappnode.io/docs/smooth"
+              rel="noopener noreferrer"
+              target="_blank">
+              Smooth Docs ↗
+            </Link>{' '}
           </h4>
         </div>
-      );
+      )
     }
     if (!registeredRelaysQuery.isLoading && !isCorrectFeeRecipient) {
       return (
@@ -173,10 +170,13 @@ export function InitialDialog({
                 Staking Brain ↗
               </Link>{' '}
               for this validator and try again, or make sure you&#39;re not
-              using these relays anymore. Your validator will be <strong>BANNED</strong> from Smooth if it uses a relay with an incorrect fee recipient.
+              using these relays anymore. Your validator will be{' '}
+              <strong>BANNED</strong> from Smooth if it uses a relay with an
+              incorrect fee recipient.
             </p>
             <p className="mt-6 text-sm">
-              If you have already changed your fee recipient and this warning is still appearing,{' '}
+              If you have already changed your fee recipient and this warning is
+              still appearing,{' '}
               <Link
                 className="underline hover:text-blue-600"
                 href="https://docs.dappnode.io/docs/smooth/subscribe-to-smooth/manual" // Replace with dappnode docs fee recipient section
@@ -204,7 +204,7 @@ export function InitialDialog({
   return (
     <>
       <Toaster />
-      <div className="-mt-2 text-DAppDeep">
+      <div className="-mt-2 text-DAppDeep dark:text-DAppDarkText">
         <h3 className="mb-6 text-left text-2xl font-bold">
           Fee Recipient Check
         </h3>
@@ -212,7 +212,9 @@ export function InitialDialog({
       </div>
       <div className="sm:px-6">
         <div>
-          <h4 className="mb-2 text-DAppNeutral/500">Your Validator</h4>
+          <h4 className="mb-2 text-DAppNeutral/500 dark:text-DAppDarkText">
+            Your Validator
+          </h4>
           <p className="h-8">{shortenEthAddress(validatorKey, 16, 16)}</p>
         </div>
         {renderLoadingOrError() || renderRelayStatus()}
@@ -250,9 +252,7 @@ export function InitialDialog({
         </div>
       ) : (
         <div className="flex justify-between mt-4 ">
-          <Button
-            className="h-17 px-4 ml-2"
-            onPress={handleClose}>
+          <Button className="h-17 px-4 ml-2" onPress={handleClose}>
             I will change my Fee Recipient
           </Button>
           <Button

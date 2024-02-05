@@ -5,7 +5,7 @@ import {
   DepositDialog,
   MultiDepositDialog,
   SuccessDialog,
-  MultiSuccessDialog
+  MultiSuccessDialog,
 } from './dialogs'
 import { BaseDialog } from '../BaseDialog'
 import { useState } from 'react'
@@ -23,7 +23,7 @@ interface SubscribeToMevDialogProps {
 }
 
 interface MultiSubscribeToMevDialogProps {
-  validatorIds: number[],
+  validatorIds: number[]
   validatorKeys: `0x${string}`[]
 }
 
@@ -56,7 +56,9 @@ export function SubscribeToMevDialog({
       triggerButtonProp="outline"
       triggerText="Subscribe">
       <AnimatePresence>
-      <div className="flex h-[550px] flex-col justify-between text-DAppDeep sm:h-[680px]"> {/* Adjusted height */}
+        <div className="flex h-[550px] flex-col justify-between text-DAppDeep dark:text-DAppDarkText sm:h-[680px]">
+          {' '}
+          {/* Adjusted height */}
           {dialogState === 'initial' ? (
             <InitialDialog
               handleChangeDialogState={setDialogState}
@@ -121,16 +123,16 @@ export function MultiSubscribeToMevDialog({
       triggerButtonProp="outline"
       triggerText="Subscribe selected Validators">
       <AnimatePresence>
-        <div className="flex h-[550px] flex-col justify-between text-DAppDeep sm:h-[480px]">
+        <div className="flex h-[550px] flex-col justify-between text-DAppDeep opacity-80 dark:text-DAppDarkText sm:h-[480px]">
           {dialogState === 'initial' ? (
             <MultiInitialDialog
-            handleChangeDialogState={setDialogState}
-            handleClose={handleCloseDialog}
-            steps={stepsMulti}
-            validatorKeys={validatorKeys}
-          />
-          ) : dialogState === 'confirm' ? ( 
-             <MultiDepositDialog
+              handleChangeDialogState={setDialogState}
+              handleClose={handleCloseDialog}
+              steps={stepsMulti}
+              validatorKeys={validatorKeys}
+            />
+          ) : dialogState === 'confirm' ? (
+            <MultiDepositDialog
               handleChangeDialogState={setDialogState}
               handleClose={handleCloseDialog}
               setShowCloseButton={setShowCloseButton}

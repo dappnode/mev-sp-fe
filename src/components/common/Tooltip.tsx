@@ -37,7 +37,7 @@ export function Tooltip({
         </RadixTooltip.Trigger>
         <RadixTooltip.Portal>
           <RadixTooltip.Content
-            className="max-w-[140px] rounded-lg bg-white p-3 shadow dark:bg-DAppDarkSurface/300"
+            className="max-w-[140px] rounded-lg bg-white p-3 shadow dark:bg-DAppDarkSurface/400"
             sideOffset={5}>
             {tooltip}
           </RadixTooltip.Content>

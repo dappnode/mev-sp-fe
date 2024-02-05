@@ -148,8 +148,13 @@ export function MultiInitialDialog({
     enabled: validatorKeys.length > 0, // Only run the query if validatorKeys are provided
   })
 
-  const [notRegisteredValidatorKeys, setNotRegisteredValidatorKeys] = useState<string[]>([])
-  const [notCorrectlyRegisteredValidatorKeys,setNotCorrectlyRegisteredValidatorKeys] = useState<string[]>([])
+  const [notRegisteredValidatorKeys, setNotRegisteredValidatorKeys] = useState<
+    string[]
+  >([])
+  const [
+    notCorrectlyRegisteredValidatorKeys,
+    setNotCorrectlyRegisteredValidatorKeys,
+  ] = useState<string[]>([])
 
   useEffect(() => {
     if (registeredRelaysQuery.isSuccess && registeredRelaysQuery.data) {
@@ -211,7 +216,7 @@ export function MultiInitialDialog({
   return (
     <>
       <Toaster />
-      <div className="-mt-2 text-DAppDeep">
+      <div className="-mt-2 text-DAppDeep dark:text-DAppDarkText">
         <h3 className="mb-6 text-left text-2xl font-bold">
           Fee Recipient Check
         </h3>
