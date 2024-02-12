@@ -43,6 +43,10 @@ export const SOCIAL_LINKEDIN = 'dappnode'
 
 export const PAGES = [
   {
+    name: 'Home',
+    path: '/home',
+  },
+  {
     name: 'Dashboard',
     path: '/',
   },
@@ -61,10 +65,6 @@ export const PAGES = [
   {
     name: 'Documentation',
     path: 'https://docs.dappnode.io/docs/smooth',
-  },
-  {
-    name: 'Landing',
-    path: '/landing',
   },
 ]
 
