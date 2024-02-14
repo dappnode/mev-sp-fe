@@ -1,99 +1,50 @@
-import Image from 'next/image'
 import { useAccount } from 'wagmi'
-import { useTheme } from 'next-themes'
 import { Head } from '@/components/layout/Head'
 import { DonateDialog } from '@/components/dialogs/DonateDialog'
+import DonateCircle from '@/components/icons/DonateCircle'
 
 export default function Donate() {
   const { isConnected } = useAccount()
-  const { systemTheme, theme } = useTheme()
-  const currentTheme = theme === 'system' ? systemTheme : theme
+
   return (
     <>
       <Head title="Support Solo Stakers" />
       <main className="mx-auto flex max-w-5xl items-center justify-between pt-6">
         <div className="relative mt-20 hidden h-[520px] w-[490px] lg:block">
-          <Image
-            alt="ETH Circle"
-            className="absolute bottom-14 left-36"
-            height={230}
-            width={230}
-            src={`images/eth-circle${
-              currentTheme === 'light' ? '' : '-dark'
-            }.svg`}
-          />
-          <Image
-            alt="ETH Circle"
-            className="absolute -left-10 bottom-32 "
-            height={180}
-            width={180}
-            src={`images/eth-circle${
-              currentTheme === 'light' ? '' : '-dark'
-            }.svg`}
-          />
-          <Image
-            alt="ETH Circle"
-            className="absolute -bottom-14 right-20"
-            height={180}
-            src="images/eth-circle.svg"
-            width={180}
-          />
-          <Image
-            alt="ETH Circle"
-            className="absolute -top-5 left-20"
-            height={176}
-            src="images/eth-circle.svg"
-            width={176}
-          />
-          <Image
-            alt="ETH Circle"
-            className="absolute right-28 top-6"
-            height={136}
-            src="images/eth-circle.svg"
-            width={136}
-          />
-          <Image
-            alt="ETH Circle"
-            className="absolute -right-10 top-8"
-            height={170}
-            src="images/eth-circle.svg"
-            width={170}
-          />
-          <Image
-            alt="Circle"
-            className="absolute bottom-4 left-14"
-            height={120}
-            src="images/currency-circle.svg"
-            width={120}
-          />
-          <Image
-            alt="Circle"
-            className="absolute left-14 top-28"
-            height={110}
-            src="images/currency-circle.svg"
-            width={110}
-          />
-          <Image
-            alt="Circle"
-            className="absolute left-48 top-36"
-            height={90}
-            src="images/currency-circle.svg"
-            width={90}
-          />
-          <Image
-            alt="Circle"
-            className="absolute right-12 top-40"
-            height={124}
-            src="images/currency-circle.svg"
-            width={124}
-          />
-          <Image
-            alt="Circle"
-            className="absolute -right-7 bottom-20"
-            height={160}
-            src="images/currency-circle.svg"
-            width={160}
-          />
+          <div className="absolute bottom-40 left-48">
+            <DonateCircle hasEth size={110} />
+          </div>
+          <div className="absolute  -left-2 bottom-52">
+            <DonateCircle hasEth size={85} />
+          </div>
+          <div className="absolute bottom-4 right-36">
+            <DonateCircle hasEth size={85} />
+          </div>
+          <div className="absolute  left-28">
+            <DonateCircle hasEth size={85} />
+          </div>
+          <div className="absolute right-40 top-10">
+            <DonateCircle hasEth size={65} />
+          </div>
+          <div className="absolute right-4 top-12">
+            <DonateCircle hasEth size={85} />
+          </div>
+
+          <div className="absolute bottom-16 left-20">
+            <DonateCircle size={60} />
+          </div>
+          <div className="absolute left-20 top-32">
+            <DonateCircle size={60} />
+          </div>
+          <div className="absolute left-52 top-40">
+            <DonateCircle size={45} />
+          </div>
+          <div className="absolute right-20 top-44">
+            <DonateCircle size={60} />
+          </div>
+          <div className="absolute right-3 bottom-36">
+            <DonateCircle size={85} />
+          </div>
         </div>
         <article className="mx-auto mt-14 flex max-w-fit flex-col text-center lg:mt-0 lg:text-left">
           <h1 className="mt-2 text-5xl font-bold leading-[56px] text-DAppDeep dark:text-DAppDarkText">
