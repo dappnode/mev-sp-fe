@@ -57,7 +57,7 @@ export function InitialDialog({
       return (
         <div>
           <h4 className="text-center">Checking MevBoost relays...</h4>
-          <div className="mx-auto mt-8 h-10 w-80 animate-pulse rounded bg-SkeletonGray" />
+          <div className="mx-auto mt-8 h-10 w-80 animate-pulse rounded bg-SkeletonGray dark:bg-DAppDarkSurface/300" />
         </div>
       )
     }

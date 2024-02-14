@@ -38,7 +38,7 @@ export function TableLayout<T extends TableDataTypes>({
   title,
 }: TableProps<T>) {
   return (
-    <div className="w-full overflow-hidden rounded-lg bg-white opacity-80 dark:bg-DAppDarkSurface/200">
+    <div className="w-full overflow-hidden rounded-lg bg-white bg-opacity-80 dark:bg-DAppDarkSurface/200 dark:bg-opacity-80">
       <div className="flex items-center justify-between px-8 py-6">
         <h3 className="text-2xl font-bold leading-8 text-DAppDeep dark:text-DAppDarkText">
           {title}

@@ -6,7 +6,7 @@ interface SkeletonProps {
 
 export function Skeleton({ title }: SkeletonProps) {
   return (
-    <div className="h-[580px] w-full overflow-hidden rounded-lg bg-white dark:bg-DAppDarkSurface/200">
+    <div className="h-[580px] w-full overflow-hidden rounded-lg bg-white bg-opacity-80 dark:bg-DAppDarkSurface/200 dark:bg-opacity-80">
       <h3 className="p-6 text-2xl font-bold leading-8 text-DAppDeep dark:text-DAppDarkText">
         {title}
       </h3>
