@@ -76,7 +76,7 @@ export function UserInfo() {
   )
 
   return (
-    <div className="mt-8 grid w-full grid-cols-1 gap-4 sm:grid-cols-3 md:gap-6 lg:grid-cols-4">
+    <div className="mt-8 grid w-full grid-cols-1 gap-4 overflow-hidden sm:grid-cols-3 md:gap-6 lg:grid-cols-4">
       <div className="order-1 col-span-4 sm:order-1 sm:col-span-2 lg:col-span-3">
         <MyValidatorsTable
           data={memoizedTableData}
