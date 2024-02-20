@@ -21,12 +21,12 @@ function NotRegisteredValidators({
   handleClose,
 }: ValidatorListProps): JSX.Element {
   return (
-    <div className="validator-info mb-20 mt-6 rounded-lg bg-orange-200 p-4 dark:bg-orange-700">
+    <div className="validator-info mb-20 mt-6 rounded-lg bg-orange-200 p-4 dark:bg-DAppDarkSurface/300 dark:border-orange-700 dark:border-4">
       <p>The following validator(s) are not subscribed to any MEV relays:</p>
       <div className="mt-2 h-32 overflow-y-auto">
         <ul>
           {validatorKeys.map((key) => (
-            <li key={key} className="font-bold text-gray-500">
+            <li key={key} className="font-bold text-gray-500 dark:text-DAppDarkText">
               {shortenEthAddress(key)}
             </li>
           ))}
@@ -44,7 +44,7 @@ function NotCorrectlyRegisteredValidators({
   handleClose,
 }: ValidatorListProps): JSX.Element {
   return (
-    <div className="validator-info mb-20 mt-6 rounded-lg bg-red-200 dark:bg-red-700 p-4">
+    <div className="validator-info mb-20 mt-6 rounded-lg bg-orange-200 p-4 dark:bg-DAppDarkSurface/300 dark:border-red-700 dark:border-4">
       <p>
         For the following validator(s), the fee recipient is not correctly set
         to Smooth:
@@ -72,7 +72,7 @@ function AllValidatorsRegistered({
   handleChangeDialogState: Function
 }): JSX.Element {
   return (
-    <div className="validator-info mb-20 mt-6 rounded-lg bg-green-200 p-4 dark:bg-green-700">
+    <div className="validator-info mb-20 mt-6 rounded-lg bg-orange-200 p-4 dark:bg-DAppDarkSurface/300 dark:border-green-700 dark:border-4">
       <p>
         Great! All your validators are registered to MEV relays and their fee
         recipient is set to Smooth!

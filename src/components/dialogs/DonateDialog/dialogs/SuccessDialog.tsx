@@ -5,7 +5,7 @@ export function SuccessDialog({ handleClose }: DialogProps) {
   return (
     <>
       <div className="px-6 text-center text-DAppDeep dark:text-DAppDarkText">
-        <h3 className="text-lg font-normal">Congratulations!</h3>
+        <h3 className="text-lg font-normal">Thanks!</h3>
         <div className="mt-4 text-lg font-normal tracking-wide">
           <p>Your contribution goes a long way, we really appreciate it.</p>
         </div>
