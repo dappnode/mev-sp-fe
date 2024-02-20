@@ -1,7 +1,6 @@
 import { Footer } from './Footer'
 import { Header } from './Header'
 import { ReactNode } from 'react'
-import { useRouter } from 'next/router'
 import clsx from 'clsx'
 
 interface MainLayoutProps {
@@ -10,15 +9,10 @@ interface MainLayoutProps {
 }
 
 export function MainLayout({ children, className }: MainLayoutProps) {
-  const router = useRouter()
-
   return (
     <div
       className={clsx(
-        'min-h-screen bg-cover',
-        router.pathname === '/' || router.pathname === '/how-to'
-          ? '-ml-2 bg-wave-pattern dark:bg-wave-pattern-dark '
-          : 'bg-DAppBackgroundLight dark:bg-DAppDarkSurface',
+        '-ml-2 min-h-screen bg-wave-pattern bg-cover dark:bg-wave-pattern-dark',
         className
       )}>
       <Header />
