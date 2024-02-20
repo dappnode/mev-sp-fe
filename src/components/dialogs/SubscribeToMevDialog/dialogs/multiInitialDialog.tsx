@@ -52,7 +52,7 @@ function NotCorrectlyRegisteredValidators({
       <div className="mt-2 h-32 overflow-y-auto">
         <ul>
           {validatorKeys.map((key) => (
-            <li key={key} className="font-bold text-gray-500">
+            <li key={key} className="font-bold text-gray-500 dark:text-DAppDarkText">
               {shortenEthAddress(key)}
             </li>
           ))}
