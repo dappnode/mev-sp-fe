@@ -7,7 +7,11 @@ interface BaseCardProps {
 
 export function BaseCard({ children, className }: BaseCardProps) {
   return (
-    <article className={clsx('rounded-lg bg-white p-6', className)}>
+    <article
+      className={clsx(
+        'rounded-lg bg-white p-6 dark:bg-DAppDarkSurface/200',
+        className
+      )}>
       {children}
     </article>
   )

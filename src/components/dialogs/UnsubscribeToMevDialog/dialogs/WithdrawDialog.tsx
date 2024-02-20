@@ -57,12 +57,12 @@ export function WithdrawDialog({
 
   return (
     <>
-      <div className="-mt-2 text-DAppDeep">
+      <div className="-mt-2 text-DAppDeep dark:text-DAppDarkText">
         <h3 className="mb-6 text-left text-2xl font-bold">Withdraw</h3>
         <StepProgressBar currentStep={2} steps={steps} />
       </div>
       {!waitForTransaction.isError ? (
-        <div className="text-center">
+        <div className="text-center text-DAppDeep dark:text-DAppDarkText">
           <h4 className="text-lg font-normal">You are withdrawing</h4>
           <p className="mt-4 text-2xl font-bold">
             {toFixedNoTrailingZeros(
@@ -75,7 +75,7 @@ export function WithdrawDialog({
             to your recipient wallet address
           </p>
           {waitForTransaction.isLoading && (
-            <div className="mt-6 w-full rounded-lg bg-violet-50 px-4 py-8 text-sm font-normal text-DAppDeep">
+            <div className="mt-6 w-full rounded-lg bg-violet-50 px-4 py-8 text-sm font-normal text-DAppDeep dark:bg-DAppDarkSurface/300 dark:text-DAppDarkText">
               <div className="mx-auto mb-2 flex w-fit flex-col items-center sm:flex-row">
                 <AiOutlineInfoCircle />
                 <p className="ml-2 mt-1 sm:mt-0">
@@ -84,7 +84,7 @@ export function WithdrawDialog({
               </div>
               <div className="mx-auto mt-2 max-w-fit">
                 <Link
-                  className=" text-violet-500 underline"
+                  className=" text-violet-500 dark:text-violet-200 underline"
                   href={`${chain?.blockExplorers?.default.url}/tx/${contractWrite.data?.hash}`}
                   target="_blank">
                   Check the transaction on block explorer

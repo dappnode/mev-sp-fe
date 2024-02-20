@@ -14,7 +14,7 @@ const socialIcons = {
 
 export function Footer() {
   return (
-    <footer className="flex h-36 flex-col items-center justify-center gap-y-4 border-t bg-white px-4 sm:h-20 sm:flex-row sm:justify-between md:px-12">
+    <footer className="flex h-36 flex-col items-center justify-center gap-y-4 border-t bg-white px-4 dark:border-DAppDarkSurface/400 dark:bg-DAppDarkSurface/200 sm:h-20 sm:flex-row sm:justify-between md:px-12">
       <div className="flex flex-col items-center justify-between sm:flex-row">
         {/* Link with logo and text */}
         <div className="flex flex-col items-center gap-y-4 hover:underline sm:flex-row">
@@ -45,11 +45,11 @@ export function Footer() {
           return (
             <Link
               key={name}
-              className="flex items-center"
+              className="flex items-center "
               href={path}
               rel="noopener noreferrer"
               target="_blank">
-              <Icon className="h-5 w-5 text-DAppDeep" />
+              <Icon className="h-5 w-5 text-DAppDeep dark:text-DAppDarkText" />
             </Link>
           )
         })}

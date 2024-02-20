@@ -56,17 +56,17 @@ export function UnsubscribeDialog({
 
   return (
     <>
-      <div className="-mt-2 text-DAppDeep">
+      <div className="-mt-2 text-DAppDeep dark:text-DAppDarkText">
         <h3 className="mb-6 text-left text-2xl font-bold">Unsubscribe</h3>
         <StepProgressBar currentStep={3} steps={steps} />
       </div>
       {!waitForTransaction.isError ? (
-        <div className="text-center">
+        <div className="text-center text-DAppDeep dark:text-DAppDarkText">
           <h4 className="text-lg font-normal">
             You are unsubscribing from Smooth
           </h4>
           {waitForTransaction.isLoading && (
-            <div className="mt-6 w-full rounded-lg bg-violet-50 px-4 py-8 text-sm font-normal text-DAppDeep">
+            <div className="mt-6 w-full rounded-lg bg-violet-50 px-4 py-8 text-sm font-normal dark:bg-DAppDarkSurface/300 dark:text-DAppDarkText">
               <div className="mx-auto mb-2 flex w-fit flex-col items-center sm:flex-row">
                 <AiOutlineInfoCircle />
                 <p className="ml-2 mt-1 sm:mt-0">
@@ -75,7 +75,7 @@ export function UnsubscribeDialog({
               </div>
               <div className="mx-auto mt-2 max-w-fit">
                 <Link
-                  className=" text-violet-500 underline"
+                  className=" text-violet-500 dark:text-violet-200 underline"
                   href={`${chain?.blockExplorers?.default.url}/tx/${contractWrite.data?.hash}`}
                   target="_blank">
                   Check the transaction on block explorer

@@ -42,11 +42,11 @@ export function ClaimableRewardsDialog({
 
   return (
     <>
-      <div className="-mt-2 text-DAppDeep">
+      <div className="-mt-2 text-DAppDeep dark:text-DAppDarkText">
         <h3 className="mb-6 text-left text-2xl font-bold">Claimable rewards</h3>
         <StepProgressBar currentStep={1} steps={steps} />
       </div>
-      <div>
+      <div className="text-DAppDeep dark:text-DAppDarkText">
         {onChainProofQuery.isError ? (
           <div className="text-center text-red-500">
             <h4 className="font-bold">An Error has occurred</h4>
@@ -57,12 +57,12 @@ export function ClaimableRewardsDialog({
             <h4 className="text-center">
               Checking Validator for your rewards...
             </h4>
-            <div className="mx-auto mt-8 h-10 w-80 max-w-full animate-pulse rounded bg-SkeletonGray" />
+            <div className="mx-auto mt-8 h-10 w-80 max-w-full animate-pulse rounded bg-SkeletonGray dark:bg-DAppDarkSurface/300" />
           </>
         ) : (
           <>
             <h4 className="mb-4 text-center text-lg font-semibold">Rewards</h4>
-            <div className=" flex w-full flex-col gap-y-8 rounded-lg bg-violet-50  p-6 text-sm font-normal text-DAppDeep sm:text-base">
+            <div className=" flex w-full flex-col gap-y-8 rounded-lg bg-violet-50  p-6 text-sm font-normal text-DAppDeep dark:bg-DAppDarkSurface/300 dark:text-DAppDarkText sm:text-base">
               <div className="flex items-center justify-between">
                 <p>Claimable Rewards</p>
                 <p>

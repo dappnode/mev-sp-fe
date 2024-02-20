@@ -29,7 +29,7 @@ export function MyRewardsSection({
       )}>
       <div className="flex items-center">
         <div className="hidden md:block">{icon}</div>
-        <h3 className="max-w-fit text-sm sm:text-xs md:ml-3 md:mr-2 md:text-sm">
+        <h3 className="max-w-fit text-sm dark:text-DAppDarkText sm:text-xs md:ml-3 md:mr-2 md:text-sm">
           {title}
         </h3>
         <Tooltip
@@ -38,7 +38,7 @@ export function MyRewardsSection({
           tooltip={tooltip}
         />
       </div>
-      <p className="text-lg font-bold leading-8 sm:mt-5 sm:text-base md:text-2xl">
+      <p className="text-lg font-bold leading-8 dark:text-DAppDarkText sm:mt-5 sm:text-base md:text-2xl ">
         {type === 'pending' ? (
           <span className="text-green-600/80">+{trimmedReward}</span>
         ) : (

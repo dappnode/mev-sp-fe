@@ -7,7 +7,7 @@ export function ConfirmDialog({
 }: DialogProps) {
   return (
     <>
-      <div className="px-10 text-center text-DAppDeep">
+      <div className="px-10 text-center text-DAppDeep dark:text-DAppDarkText">
         <h3 className="text-lg font-normal">You are donating</h3>
         <p className="mt-4 text-2xl font-bold">0.0578 ETH ~ 245.50 USD </p>
         <p className="mt-4 text-lg font-normal tracking-wide">to DAppNode </p>

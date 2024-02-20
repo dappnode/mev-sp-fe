@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import clsx from 'clsx'
 
 interface HowToStepProps {
@@ -6,7 +5,7 @@ interface HowToStepProps {
   title: string
   side: 'left' | 'right'
   description: string
-  imageSrc: string
+  imageComponent: JSX.Element
 }
 
 export function HowToStep({
@@ -14,7 +13,7 @@ export function HowToStep({
   title,
   side,
   description,
-  imageSrc,
+  imageComponent,
 }: HowToStepProps) {
   return (
     <div className="mx-auto flex w-full max-w-4xl items-center justify-between text-center sm:text-left">
@@ -23,7 +22,7 @@ export function HowToStep({
           'mx-4 flex w-full max-w-lg flex-col justify-between sm:flex-row',
           side === 'right' && 'order-last'
         )}>
-        <div className="my-4 mx-auto flex h-[80px] w-[80px] items-center justify-center rounded-full border sm:my-0 sm:mx-8 sm:min-w-[80px]">
+        <div className="mx-auto my-4 flex h-[80px] w-[80px] items-center justify-center rounded-full border sm:mx-8 sm:my-0 sm:min-w-[80px]">
           <h4 className="bg-DApppurple-linear bg-clip-text text-4xl text-transparent">
             {step}
           </h4>
@@ -33,8 +32,8 @@ export function HowToStep({
           <p className="mt-2 sm:mt-3">{description}</p>
         </div>
       </div>
-      <div className="mx-8 hidden h-[260px] min-w-[260px] items-center justify-center rounded-full bg-white drop-shadow-xl md:flex">
-        <Image alt={`step ${step}`} height="180" src={imageSrc} width="180" />
+      <div className="mx-8 hidden h-[260px] min-w-[260px] items-center justify-center rounded-full bg-white drop-shadow-xl dark:bg-DAppDarkSurface/300 md:flex">
+        {imageComponent}
       </div>
     </div>
   )

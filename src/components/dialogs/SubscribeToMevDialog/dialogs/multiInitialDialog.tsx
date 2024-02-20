@@ -21,12 +21,12 @@ function NotRegisteredValidators({
   handleClose,
 }: ValidatorListProps): JSX.Element {
   return (
-    <div className="validator-info bg-orange-200 rounded-lg mb-20 p-4 mt-6">
+    <div className="validator-info mb-20 mt-6 rounded-lg bg-orange-200 p-4 dark:bg-DAppDarkSurface/300 dark:border-orange-700 dark:border-4">
       <p>The following validator(s) are not subscribed to any MEV relays:</p>
       <div className="mt-2 h-32 overflow-y-auto">
         <ul>
           {validatorKeys.map((key) => (
-            <li key={key} className="text-gray-500 font-bold">
+            <li key={key} className="font-bold text-gray-500 dark:text-DAppDarkText">
               {shortenEthAddress(key)}
             </li>
           ))}
@@ -44,7 +44,7 @@ function NotCorrectlyRegisteredValidators({
   handleClose,
 }: ValidatorListProps): JSX.Element {
   return (
-    <div className="validator-info bg-red-200 rounded-lg mb-20 p-4 mt-6">
+    <div className="validator-info mb-20 mt-6 rounded-lg bg-orange-200 p-4 dark:bg-DAppDarkSurface/300 dark:border-red-700 dark:border-4">
       <p>
         For the following validator(s), the fee recipient is not correctly set
         to Smooth:
@@ -52,7 +52,7 @@ function NotCorrectlyRegisteredValidators({
       <div className="mt-2 h-32 overflow-y-auto">
         <ul>
           {validatorKeys.map((key) => (
-            <li key={key} className="text-gray-500 font-bold">
+            <li key={key} className="font-bold text-gray-500 dark:text-DAppDarkText">
               {shortenEthAddress(key)}
             </li>
           ))}
@@ -72,7 +72,7 @@ function AllValidatorsRegistered({
   handleChangeDialogState: Function
 }): JSX.Element {
   return (
-    <div className="validator-info bg-green-200 rounded-lg mb-20 p-4 mt-6">
+    <div className="validator-info mb-20 mt-6 rounded-lg bg-orange-200 p-4 dark:bg-DAppDarkSurface/300 dark:border-green-700 dark:border-4">
       <p>
         Great! All your validators are registered to MEV relays and their fee
         recipient is set to Smooth!
@@ -88,7 +88,7 @@ function AllValidatorsRegistered({
 
 function Loading(): JSX.Element {
   return (
-    <div className="flex flex-col items-center justify-center mb-20">
+    <div className="mb-20 flex flex-col items-center justify-center">
       <style>
         {`
           @keyframes spin {
@@ -109,8 +109,8 @@ function Loading(): JSX.Element {
         }}
       />
 
-      <p className="text-center mt-2 bg-gray-200 rounded-lg p-4">
-        Please wait while we check all your selected validator&#39;s fee
+      <p className="mt-2 rounded-lg bg-gray-200 p-4 text-center dark:bg-DAppDarkSurface/300">
+      Please wait while we check all your selected validator&#39;s fee
         recipients. This may take up to a few minutes. Do not close this window or navigate away.
       </p>
     </div>
@@ -148,8 +148,13 @@ export function MultiInitialDialog({
     enabled: validatorKeys.length > 0, // Only run the query if validatorKeys are provided
   })
 
-  const [notRegisteredValidatorKeys, setNotRegisteredValidatorKeys] = useState<string[]>([])
-  const [notCorrectlyRegisteredValidatorKeys,setNotCorrectlyRegisteredValidatorKeys] = useState<string[]>([])
+  const [notRegisteredValidatorKeys, setNotRegisteredValidatorKeys] = useState<
+    string[]
+  >([])
+  const [
+    notCorrectlyRegisteredValidatorKeys,
+    setNotCorrectlyRegisteredValidatorKeys,
+  ] = useState<string[]>([])
 
   useEffect(() => {
     if (registeredRelaysQuery.isSuccess && registeredRelaysQuery.data) {
@@ -211,7 +216,7 @@ export function MultiInitialDialog({
   return (
     <>
       <Toaster />
-      <div className="-mt-2 text-DAppDeep">
+      <div className="-mt-2 text-DAppDeep dark:text-DAppDarkText">
         <h3 className="mb-6 text-left text-2xl font-bold">
           Fee Recipient Check
         </h3>

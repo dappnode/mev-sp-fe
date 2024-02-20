@@ -1,7 +1,14 @@
-import Image from 'next/image'
 import { Head } from '@/components/layout/Head'
 import { FeaturesIcon, WalletIcon } from '@/components/icons'
 import { HowToFeature, HowToStep } from '@/components/how-to'
+import {
+  HowToBanner,
+  HowToStep1,
+  HowToStep2,
+  HowToStep3,
+  HowToStep4,
+  HowToStep5,
+} from '@/components/images/how-to-images/how-to-images'
 
 export default function HowTo() {
   return (
@@ -9,15 +16,12 @@ export default function HowTo() {
       <Head title="How to use" />
       <main className="px-3">
         <section className="mt-8 flex w-full justify-between gap-x-14">
-          <Image
-            alt="How to use"
-            className="hidden xl:block"
-            height={643}
-            src="images/how-to-banner.svg"
-            width={728}
-          />
-          <div className="mx-auto">
-            <h1 className="mt-12 text-center text-5xl font-bold text-DAppDeep xl:text-left">
+          <div className="hidden xl:block">
+            <HowToBanner />
+          </div>
+
+          <div className="mx-auto w-1/2">
+            <h1 className="mt-12 text-center text-5xl font-bold text-DAppDeep dark:text-DAppDarkText xl:text-left">
               Smooth
             </h1>
             <h3 className="mt-7 text-center text-base font-normal leading-8 xl:text-left">
@@ -54,7 +58,7 @@ export default function HowTo() {
               <HowToStep
                 key={step.title}
                 description={step.description}
-                imageSrc={step.imageSrc}
+                imageComponent={step.imageComponent}
                 side={index % 2 === 0 ? 'left' : 'right'}
                 step={index + 1}
                 title={step.title}
@@ -87,28 +91,28 @@ const howToSteps = [
     title: 'Subscribe to the Pool',
     description:
       "Update your fee recipient address to Smooth's and connect to the Dashboard using the withdrawal address of your validators. Register them to start accumulating rewards. If you opt to wait until your next block proposal, you can easily set your Fee Recipient Address to the Smoothing Pool. Your validator will automatically be subscribed when you send your next block proposal EL rewards!",
-    imageSrc: 'images/how-to-step-1.svg',
+    imageComponent: <HowToStep1 />,
   },
   {
     title: 'Claim Rewards',
     description: `After every sucessful block proposal, you will be able to claim the accumulated rewards for that validator. You won't depend on the MEV of that particular block, and you will get an average of all successfully proposed blocks in the pool!`,
-    imageSrc: 'images/how-to-step-2.svg',
+    imageComponent: <HowToStep2 />,
   },
   {
     title: 'No cheating possible',
     description: `You start accumulating rewards since registration, but rewards can only be claimed after successfully proposing a block. This prevents anyone stealing rewards without sending their MEV rewards to the pool. If you miss a block, no problem! We have a "card system" and you'll get a Yellow card for a missed block -you will still accumulate rewards but won't be able to withdraw until your next proposal-, a Red one for two misses -you will stop accumulating rewards until you propose a block to the pool- and a Ban if you send your MEV rewards from the block somewhere else -all your accumulated rewards will be divided among the rest of participants`,
-    imageSrc: 'images/how-to-step-3.svg',
+    imageComponent: <HowToStep3 />,
   },
   {
     title: 'Check your rewards at any time',
     description:
       'Look at the dashboard to see  total subscribers, avg rewards, total rewards, etc; and Log in to see specific metrics about your validators',
-    imageSrc: 'images/how-to-step-4.svg',
+    imageComponent: <HowToStep4 />,
   },
   {
     title: 'Transparency: Keep Track of all the blocks coming into Smooth',
     description:
       'You can see all blocks that are sent to Smooth. See if they have MEV, if they missed and who proposed them.',
-    imageSrc: 'images/how-to-step-5.svg',
+    imageComponent: <HowToStep5 />,
   },
 ]
