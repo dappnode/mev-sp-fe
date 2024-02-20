@@ -23,7 +23,7 @@ export function CheckMevBoostDialog({
 
   return (
     <>
-      <div className="-mt-2 text-DAppDeep">
+      <div className="-mt-2 text-DAppDeep dark:text-DAppDarkText">
         <h3 className="mb-6 text-left text-2xl font-bold">MEV Blocks check</h3>
         <StepProgressBar currentStep={1} steps={steps} />
       </div>

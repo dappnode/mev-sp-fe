@@ -13,7 +13,7 @@ export default function DonateCircle({ hasEth = false, size }: EthCircleProps) {
         className="absolute left-2 top-2 rounded-full bg-yellow-300 opacity-20 blur-lg"
         style={{ width: `${size}px`, height: `${size}px` }}
       />
-      <div className="relative z-10 ">
+      <div className="relative">
         {hasEth ? <EthCircle size={size} /> : <CurrencyCircle size={size} />}
       </div>
     </div>

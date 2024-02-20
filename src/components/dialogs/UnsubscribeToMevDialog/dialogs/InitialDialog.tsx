@@ -10,7 +10,7 @@ export function InitialDialog({
 }: DialogProps) {
   return (
     <>
-      <div className="-mt-2 text-DAppDeep">
+      <div className="-mt-2 text-DAppDeep dark:text-DAppDarkText">
         <h3 className="mb-6 text-left text-2xl font-bold">Warning</h3>
         <StepProgressBar currentStep={0} steps={steps} />
       </div>

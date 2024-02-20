@@ -57,7 +57,7 @@ export function WithdrawDialog({
 
   return (
     <>
-      <div className="-mt-2 text-DAppDeep">
+      <div className="-mt-2 text-DAppDeep dark:text-DAppDarkText">
         <h3 className="mb-6 text-left text-2xl font-bold">Withdraw</h3>
         <StepProgressBar currentStep={2} steps={steps} />
       </div>
@@ -75,7 +75,7 @@ export function WithdrawDialog({
             to your recipient wallet address
           </p>
           {waitForTransaction.isLoading && (
-            <div className="mt-6 w-full rounded-lg bg-violet-50 px-4 py-8 text-sm font-normal text-DAppDeep">
+            <div className="mt-6 w-full rounded-lg bg-violet-50 px-4 py-8 text-sm font-normal text-DAppDeep dark:bg-DAppDarkSurface/300 dark:text-DAppDarkText">
               <div className="mx-auto mb-2 flex w-fit flex-col items-center sm:flex-row">
                 <AiOutlineInfoCircle />
                 <p className="ml-2 mt-1 sm:mt-0">
