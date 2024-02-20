@@ -62,7 +62,7 @@ export function WithdrawDialog({
         <StepProgressBar currentStep={2} steps={steps} />
       </div>
       {!waitForTransaction.isError ? (
-        <div className="text-center">
+        <div className="text-center text-DAppDeep dark:text-DAppDarkText">
           <h4 className="text-lg font-normal">You are withdrawing</h4>
           <p className="mt-4 text-2xl font-bold">
             {toFixedNoTrailingZeros(

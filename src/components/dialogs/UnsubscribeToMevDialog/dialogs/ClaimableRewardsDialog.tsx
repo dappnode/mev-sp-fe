@@ -46,7 +46,7 @@ export function ClaimableRewardsDialog({
         <h3 className="mb-6 text-left text-2xl font-bold">Claimable rewards</h3>
         <StepProgressBar currentStep={1} steps={steps} />
       </div>
-      <div>
+      <div className="text-DAppDeep dark:text-DAppDarkText">
         {onChainProofQuery.isError ? (
           <div className="text-center text-red-500">
             <h4 className="font-bold">An Error has occurred</h4>

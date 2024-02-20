@@ -14,7 +14,7 @@ export function InitialDialog({
         <h3 className="mb-6 text-left text-2xl font-bold">Warning</h3>
         <StepProgressBar currentStep={0} steps={steps} />
       </div>
-      <div>
+      <div className="text-DAppDeep dark:text-DAppDarkText">
         <h4 className="mt-1 flex items-center justify-center text-center text-lg font-bold">
           <AlertIcon />
           <span className="ml-2">Attention</span>
