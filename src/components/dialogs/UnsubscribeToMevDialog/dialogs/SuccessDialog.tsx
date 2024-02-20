@@ -18,7 +18,7 @@ export function SuccessDialog({ steps, handleClose }: DialogProps) {
 
   return (
     <>
-      <div className="-mt-2 text-DAppDeep">
+      <div className="-mt-2 text-DAppDeep dark:text-DAppDarkText">
         <h3 className="mb-6 text-left text-2xl font-bold">Success!</h3>
         <StepProgressBar currentStep={4} steps={steps} />
       </div>
@@ -31,7 +31,7 @@ export function SuccessDialog({ steps, handleClose }: DialogProps) {
         </p>
         <p className="font-bold">
           {isLoading || isError ? (
-            <div className="h-8 w-24 animate-pulse rounded bg-SkeletonGray" />
+            <div className="h-8 w-24 animate-pulse rounded bg-SkeletonGray dark:bg-DAppDarkSurface/300" />
           ) : (
             <p className="h-8">
               {toFixedNoTrailingZeros(
