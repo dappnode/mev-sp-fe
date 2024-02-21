@@ -8,7 +8,7 @@ import {
   useNetwork,
 } from 'wagmi'
 import { AiOutlineInfoCircle } from 'react-icons/ai'
-import { utils } from 'ethers';
+import { utils } from 'ethers'
 import { fetchConfig } from '@/client/api/queryFunctions'
 import { StepProgressBar } from '@/components/common/StepProgressBar'
 import { Button } from '@/components/common/Button'
@@ -67,7 +67,7 @@ export function DepositDialog({
 
   return (
     <>
-      <div className="-mt-2 text-DAppDeep">
+      <div className="-mt-2 text-DAppDeep dark:text-DAppDarkText">
         <h3 className="mb-6 text-left text-2xl font-bold">Deposit</h3>
         <StepProgressBar currentStep={2} steps={steps} />
       </div>
@@ -77,7 +77,7 @@ export function DepositDialog({
             To subscribe and start earning rewards, please deposit
           </h4>
           {configQuery.isLoading ? (
-            <div className="mx-auto h-8 w-20 animate-pulse rounded bg-SkeletonGray" />
+            <div className="mx-auto h-8 w-20 animate-pulse rounded bg-SkeletonGray dark:bg-DAppDarkSurface/300" />
           ) : (
             <p className="text-2xl font-bold">
               {weiToEth(configQuery.data?.collateralInWei)} ETH
@@ -97,7 +97,7 @@ export function DepositDialog({
             </Link>
           </div>
           {waitForTransaction.isLoading && (
-            <div className="mt-6 w-full rounded-lg bg-violet-50 px-4 py-7 text-sm font-normal text-DAppDeep">
+            <div className="mt-6 w-full rounded-lg bg-violet-50 px-4 py-7 text-sm font-normal text-DAppDeep dark:bg-DAppDarkSurface/300 dark:text-DAppDarkText">
               <div className="mx-auto mb-2 flex w-fit flex-col items-center sm:flex-row">
                 <AiOutlineInfoCircle />
                 <p className="ml-2 mt-1 sm:mt-0">
@@ -105,7 +105,7 @@ export function DepositDialog({
                 </p>
               </div>
               <Link
-                className="text-violet-500 underline"
+                className="text-violet-500 dark:text-violet-200 underline"
                 href={`${chain?.blockExplorers?.default.url}/tx/${contractWrite.data?.hash}`}
                 target="_blank">
                 Check the transaction on block explorer

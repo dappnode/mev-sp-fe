@@ -38,9 +38,11 @@ export function TableLayout<T extends TableDataTypes>({
   title,
 }: TableProps<T>) {
   return (
-    <div className="w-full overflow-hidden rounded-lg bg-white">
-      <div className="flex items-center justify-between py-6 px-8">
-        <h3 className="text-2xl font-bold leading-8 text-DAppDeep">{title}</h3>
+    <div className="w-full overflow-hidden rounded-lg bg-white bg-opacity-80 dark:bg-DAppDarkSurface/200 dark:bg-opacity-80">
+      <div className="flex items-center justify-between px-8 py-6">
+        <h3 className="text-2xl font-bold leading-8 text-DAppDeep dark:text-DAppDarkText">
+          {title}
+        </h3>
         <div className="flex items-center gap-x-11">
           <div className="max-w-xs">
             <SearchInput
@@ -61,7 +63,7 @@ export function TableLayout<T extends TableDataTypes>({
       </div>
       <div className={clsx('overflow-x-scroll', className)}>
         <table className="w-full table-auto">
-          <thead className="w-full border-t-[0.5px] border-DAppNeutral/100 bg-DAppNeutral/50 px-[20px]">
+          <thead className="w-full border-t-[0.5px] border-DAppNeutral/100 bg-DAppNeutral/50 px-[20px] dark:border-DAppDarkSurface/300 dark:bg-DAppDarkSurface/300">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
@@ -81,13 +83,15 @@ export function TableLayout<T extends TableDataTypes>({
               </tr>
             ))}
           </thead>
-          <tbody className="border-t-[0.5px] border-DAppNeutral/100">
+          <tbody className="border-t-[0.5px] border-DAppNeutral/100 dark:border-DAppDarkSurface/300">
             {table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className="border-b-[0.5px]">
+              <tr
+                key={row.id}
+                className="border-b-[0.5px] dark:border-DAppDarkSurface/300">
                 {row.getVisibleCells().map((cell) => (
                   <td
                     key={cell.id}
-                    className="py-3 px-4 text-sm font-normal text-DAppDeep">
+                    className="px-4 py-3 text-sm font-normal text-DAppDeep dark:text-DAppDarkText">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}

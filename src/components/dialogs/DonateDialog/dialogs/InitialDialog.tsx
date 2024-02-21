@@ -51,18 +51,18 @@ export function InitialDialog({
   return (
     <>
       <input
-        className="min-h-full w-full rounded-md border bg-DAppLight p-2 pl-4 [appearance:textfield] focus:outline-none"
+        className="min-h-full w-full rounded-md border bg-DAppLight p-2 pl-4 [appearance:textfield] focus:outline-none dark:border-DAppDarkSurface/300 dark:bg-DAppDarkSurface/300"
         min={0}
         placeholder="0.00"
         type="number"
         value={ethAmount}
         onChange={handleChangeInput}
       />
-      <div className="mt-3 flex w-full items-center justify-between px-2 text-xs text-DAppDeep">
+      <div className="mt-3 flex w-full items-center justify-between px-2 text-xs text-DAppDeep dark:text-DAppDarkText">
         <p className="flex items-center">
           Available:{' '}
           {isLoading ? (
-            <span className="ml-2 inline-block h-4 w-16 animate-pulse rounded-md bg-gray-200 opacity-90" />
+            <span className="ml-2 inline-block h-4 w-16 animate-pulse rounded-md bg-gray-200 opacity-90 dark:bg-DAppDarkSurface/300" />
           ) : (
             <>
               {data?.formatted} {data?.symbol}
@@ -77,7 +77,7 @@ export function InitialDialog({
           Max
         </button>
       </div>
-      <div className="mt-6 flex w-full flex-col gap-y-5 rounded-lg bg-violet-50 p-4 text-sm font-normal text-DAppDeep">
+      <div className="mt-6 flex w-full flex-col gap-y-5 rounded-lg bg-violet-50 p-4 text-sm font-normal text-DAppDeep dark:bg-DAppDarkSurface/300 dark:text-DAppDarkText">
         <div className="flex items-center justify-between">
           <p>Donation to Solo Stakers</p>
           <p>
@@ -86,14 +86,14 @@ export function InitialDialog({
         </div>
       </div>
       {waitForTransaction.isLoading ? (
-        <div className="mt-6 w-full rounded-lg bg-violet-50 px-4 py-8 text-sm font-normal text-DAppDeep">
+        <div className="mt-6 w-full rounded-lg bg-violet-50 px-4 py-8 text-sm font-normal text-DAppDeep dark:bg-DAppDarkSurface/300 dark:text-DAppDarkText">
           <div className="mx-auto flex w-fit items-center">
             <AiOutlineInfoCircle />
             <p className="ml-2">Your donation is being processed.</p>
           </div>
           <div className="mx-auto mt-2 max-w-fit">
             <Link
-              className=" text-violet-500 underline"
+              className=" text-violet-500 dark:text-violet-200 underline"
               href={`${chain?.blockExplorers?.default.url}/tx/${contractWrite.data?.hash}`}
               target="_blank">
               Check the transaction on block explorer

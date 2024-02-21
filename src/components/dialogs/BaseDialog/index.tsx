@@ -31,32 +31,30 @@ export function BaseDialog({
         {triggerButtonProp === 'regular' ? (
           <Button isDisabled={disabledTrigger}>{triggerText}</Button>
         ) : (
-          <Button
-            buttonType="secondary"
-            color="blue"
-            isDisabled={disabledTrigger}
-            size="sm">
+          <Button buttonType="primary" isDisabled={disabledTrigger} size="sm">
             {triggerText}
           </Button>
         )}
       </Dialog.Trigger>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 h-full w-full bg-gray-600 opacity-30" />
-        <Dialog.Content className="fixed left-[50%] top-[50%] w-[500px] max-w-[95%] translate-x-[-50%] translate-y-[-50%] rounded-lg bg-white p-6 md:max-w-[85%]">
+        <Dialog.Overlay className="fixed inset-0 h-full w-full bg-gray-600 opacity-30 " />
+        <Dialog.Content className="fixed left-[50%] top-[50%] w-[500px] max-w-[95%] translate-x-[-50%] translate-y-[-50%] rounded-lg bg-white p-6 dark:bg-DAppDarkSurface/200 md:max-w-[85%]">
           <div className="flex w-full justify-between">
-            <h4 className="text-lg font-normal text-DAppDeep">{subtitle}</h4>
+            <h4 className="text-lg font-normal text-DAppDeep dark:text-DAppDarkText ">
+              {subtitle}
+            </h4>
             {showCloseButton && (
               <Dialog.Close asChild>
                 <button
                   aria-label="Close"
                   className="focus:outline-none"
                   type="button">
-                  <IoClose className="h-6 w-6 text-DAppDeep" />
+                  <IoClose className="h-6 w-6 text-DAppDeep dark:text-DAppDarkText" />
                 </button>
               </Dialog.Close>
             )}
           </div>
-          <Dialog.Title className="mt-8 text-2xl font-bold leading-8 text-DAppDeep">
+          <Dialog.Title className="mt-8 text-2xl font-bold leading-8 text-DAppDeep dark:text-DAppDarkText">
             {title}
           </Dialog.Title>
           {children}

@@ -5,6 +5,7 @@ import { MainLayout } from '@/components/layout/MainLayout'
 import { Seo } from '@/components/layout/Seo'
 import { ReactQueryProvider } from '@/providers/ReactQuery'
 import { ConnectWallet } from '@/providers/ConnectWallet'
+import { NextThemeProvider } from '@/providers/ThemeProvider'
 import type { AppProps } from 'next/app'
 
 const inter = Inter({
@@ -25,10 +26,12 @@ export default function App({ Component, pageProps }: AppProps) {
       <ConnectWallet>
         <ReactQueryProvider>
           {isMounted && (
-            <MainLayout
-              className={`${inter.variable} ${urbanist.variable} font-inter`}>
-              <Component {...pageProps} />
-            </MainLayout>
+            <NextThemeProvider>
+              <MainLayout
+                className={`${inter.variable} ${urbanist.variable} font-inter`}>
+                <Component {...pageProps} />
+              </MainLayout>
+            </NextThemeProvider>
           )}
         </ReactQueryProvider>
       </ConnectWallet>

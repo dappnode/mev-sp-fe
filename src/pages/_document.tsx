@@ -1,15 +1,29 @@
 import { Html, Head, Main, NextScript } from 'next/document'
-import { GoogleAnalytics } from '@next/third-parties/google'
 
 export default function Document() {
   return (
     <Html lang="en">
-      <Head />
+      <Head>
+        {/* Google Analytics */}
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-ZVTNF3JNXV"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-ZVTNF3JNXV');
+        `,
+          }}
+        />
+      </Head>
       <body>
         <Main />
         <NextScript />
       </body>
-      <GoogleAnalytics gaId="G-C7R9Y6T56G" />
     </Html>
   )
 }

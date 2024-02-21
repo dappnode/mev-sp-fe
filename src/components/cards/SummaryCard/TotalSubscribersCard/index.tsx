@@ -27,11 +27,14 @@ export function TotalSubscribersCard({
   return (
     <SummaryCard
       bottomLeftText="Smooth Fee"
-      bottomRightText={`${toFixedNoTrailingZeros(adjustedPoolFeesPercent || NaN, 4)}%`}
       isError={isError}
       isLoading={isLoading}
-      title="Total Subscribers">
-      <div className="flex items-center text-DAppDeep">
+      title="Total Subscribers"
+      bottomRightText={`${toFixedNoTrailingZeros(
+        adjustedPoolFeesPercent || NaN,
+        4
+      )}%`}>
+      <div className="flex items-center text-DAppDeep dark:text-DAppDarkText">
         <BsFillPersonFill className="mr-2 h-[28px] w-[24px]" />
         <h4 className="text-2xl font-bold leading-8">{subscribers}</h4>
       </div>

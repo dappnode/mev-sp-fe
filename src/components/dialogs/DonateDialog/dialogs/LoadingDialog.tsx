@@ -21,7 +21,7 @@ export function LoadingDialog({
         <p className="mt-4 text-2xl font-bold">0.0578 ETH ~ 245.50 USD </p>
         <p className="mt-4 text-lg font-normal tracking-wide">to DAppNode </p>
       </div>
-      <div className="mt-6 w-full rounded-lg bg-violet-50 px-4 py-8 text-sm font-normal text-DAppDeep">
+      <div className="mt-6 w-full rounded-lg bg-violet-50 px-4 py-8 text-sm font-normal text-DAppDeep dark:bg-DAppDarkSurface/300 dark:text-DAppDarkText">
         <div className="mx-auto flex w-fit items-center">
           <AiOutlineInfoCircle />
           <p className="ml-2">Your donation is being processed.</p>

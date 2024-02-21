@@ -8,6 +8,7 @@ import Link from 'next/link'
 import clsx from 'clsx'
 import { Button } from '@/components/common/Button'
 import { PAGES } from '@/utils/config'
+import { ToggleThemeBtn } from '@/components/common/ToggleThemeBtn'
 
 export function MobileMenuDialog() {
   const router = useRouter()
@@ -24,7 +25,7 @@ export function MobileMenuDialog() {
         <AnimatePresence>
           <Dialog.Content>
             <motion.div
-              className="fixed top-0 right-0 h-screen w-[300px] max-w-[75%] border bg-white p-6"
+              className="fixed right-0 top-0 h-screen w-[300px] max-w-[75%] border bg-white p-6 dark:border-0 dark:bg-DAppDarkSurface/200"
               animate={{
                 // opacity: 1,
                 x: 0,
@@ -45,12 +46,12 @@ export function MobileMenuDialog() {
                 <Button
                   aria-label="Close"
                   buttonType="unstyled"
-                  className="fixed top-6 right-6 max-w-fit"
+                  className="fixed right-6 top-6 max-w-fit"
                   size="none">
-                  <IoClose className="h-6 w-6 text-DAppDeep" />
+                  <IoClose className="h-6 w-6 text-DAppDeep dark:text-DAppDarkText" />
                 </Button>
               </Dialog.Close>
-              <Link className="mt-10 mb-5 flex items-center" href="/">
+              <Link className="mb-5 mt-10 flex items-center" href="/">
                 <Image
                   alt="Dappnode logo"
                   height={50}
@@ -58,25 +59,26 @@ export function MobileMenuDialog() {
                   width={50}
                 />
                 <h2 className="ml-4 font-urbanist text-base font-bold text-DAppGray">
-                  <span className="text-DAppDeep">Smooth</span>
+                  <span className="text-DAppDeep dark:text-DAppDarkText">
+                    Smooth
+                  </span>
                 </h2>
               </Link>
-              <nav className="flex flex-col gap-y-4">
+              <nav className="flex flex-col gap-y-4 border-y pt-4 dark:border-DAppDarkSurface/300">
                 {PAGES.map(({ name, path }) => {
                   const isExternalLink = path.includes('http')
                   return (
                     <Link
                       key={name}
+                      className="rounded-lg p-3 text-DAppDeep transition duration-300 hover:bg-DAppLight hover:text-DAppPurple/900 dark:text-DAppDarkText dark:hover:bg-DAppDarkSurface/300"
                       href={path}
                       rel={isExternalLink ? 'noopener noreferrer' : ''}
-                      target={isExternalLink ? '_blank' : '_self'}
-                      className={clsx(
-                        'rounded-lg p-3 text-DAppDeep transition duration-300 hover:bg-DAppLight hover:text-DAppPurple/900',
-                        router.pathname === path
-                          ? 'text-DAppPurple/900'
-                          : 'bg-none'
-                      )}>
-                      <h3 className="flex items-center">
+                      target={isExternalLink ? '_blank' : '_self'}>
+                      <h3
+                        className={clsx(
+                          'flex items-center',
+                          router.pathname === path && 'text-DAppPurple/900'
+                        )}>
                         {name}
                         {isExternalLink && (
                           <RxExternalLink className="ml-2 inline" />
@@ -85,6 +87,11 @@ export function MobileMenuDialog() {
                     </Link>
                   )
                 })}
+
+                <div className="ml-2 flex flex-row items-center gap-2 border-t py-3 dark:border-DAppDarkSurface/300">
+                  <span>Switch theme:</span>
+                  <ToggleThemeBtn />
+                </div>
               </nav>
             </motion.div>
           </Dialog.Content>
