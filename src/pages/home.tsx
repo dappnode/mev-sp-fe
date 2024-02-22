@@ -7,7 +7,8 @@ import {
   FingerPrintIcon,
   LockClosedIcon,
 } from '@heroicons/react/24/outline'
-import Image from 'next/image'
+import { useAccount } from 'wagmi'
+import { DonateDialog } from '@/components/dialogs/DonateDialog'
 
 const features = [
   {
@@ -83,11 +84,32 @@ const stats = [
   { id: 3, name: 'Total Rewards', value: '28.4 ETH' },
 ]
 
+const whySmooth = [
+  {
+    name: '🎰 Stop Depending on Luck!',
+    description:
+      'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendis suscipit eaque, iste dolor cupiditate blanditiis ratione.',
+    icon: CloudArrowUpIcon,
+  },
+  {
+    name: '🚀 Dont miss high fee seasons!',
+    description: 'Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo.',
+    icon: LockClosedIcon,
+  },
+  {
+    name: '💰 Hitting MEV Lottery Blocks',
+    description: 'Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.',
+
+  },
+]
+
 export default function Landing() {
+  const { isConnected } = useAccount()
+
   return (
     <>
       {/* Hero section */}
-      <div className="relative pt-14 isolate">
+      <div className="relative pt-14">
         <div
           aria-hidden="true"
           className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
@@ -110,7 +132,7 @@ export default function Landing() {
               </p>
               <div className="mt-10 flex items-center justify-center gap-x-6">
                 <a
-                  className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  className="rounded-md bg-purple-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600"
                   href="#">
                   Join Now
                 </a>
@@ -141,17 +163,6 @@ export default function Landing() {
               </div>
             </div>
 
-            <div className="mt-16 ">
-              <div className="">
-                <Image
-                  alt="App screenshot"
-                  className=""
-                  height={1442}
-                  src="images/how-to-banner.svg"
-                  width={2432}
-                />
-              </div>
-            </div>
           </div>
         </div>
         <div
@@ -167,24 +178,59 @@ export default function Landing() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mt-16 flex justify-center">
-          <p className="relative rounded-full px-4 py-1.5 text-sm leading-6 text-gray-600 ring-1 ring-inset ring-gray-900/10 hover:ring-gray-900/20">
-            <span className="hidden md:inline">
-              Win more rewards 0.1 per year
-            </span>
-            <a className="font-semibold text-indigo-600" href="#">
-              <span aria-hidden="true" className="absolute inset-0" /> Read our
-              case docs <span aria-hidden="true">&rarr;</span>
-            </a>
-          </p>
+      {/* why smooth */}
+      <div className="overflow-hidden">
+        <div className="mx-auto max-w-7xl md:px-6 lg:px-8">
+          <div className="grid grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:grid-cols-2 lg:items-start">
+            <div className="px-6 lg:px-0 lg:pr-4 lg:pt-4">
+              <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-lg">
+                <h2 className="text-base font-semibold leading-7 text-purple-600">Smooth</h2>
+                <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Why Smooth</p>
+                <p className="mt-6 text-lg leading-8 text-gray-600">
+                  Get higher MEV revenue by joining forces with other stakers
+                </p>
+                <dl className="mt-10 max-w-xl space-y-8 text-base leading-7 text-gray-600 lg:max-w-none">
+                  {whySmooth.map((feature) => (
+                    <div key={feature.name} className="relative pl-9">
+                      <dt className="inline font-semibold text-gray-900">
+
+                        {feature.name}
+                      </dt>{' '}
+                      <dd className="inline">{feature.description}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            </div>
+            <div className="sm:px-6 lg:px-0">
+              <div className="relative isolate overflow-hidden bg-purple-500 px-6 pt-8 sm:mx-auto sm:max-w-2xl sm:rounded-3xl sm:pl-16 sm:pr-0 sm:pt-16 lg:mx-0 lg:max-w-none">
+                <div
+                  aria-hidden="true"
+                  className="absolute -inset-y-px -left-3 -z-10 w-full origin-bottom-left skew-x-[-30deg] bg-purple-100 opacity-20 ring-1 ring-inset ring-white"
+                />
+                <div className="mx-auto max-w-2xl sm:mx-0 sm:max-w-none">
+                  <img
+                    alt="Product screenshot"
+                    className="-mb-12 w-[57rem] max-w-none rounded-tl-xl bg-gray-800 ring-1 ring-white/10"
+                    height={1442}
+                    src="https://tailwindui.com/img/component-images/project-app-screenshot.png"
+                    width={2432}
+                  />
+                </div>
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-black/10 sm:rounded-3xl"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Feature section */}
       <div className="mx-auto mt-32 max-w-7xl px-6 sm:mt-56 lg:px-8">
         <div className="mx-auto max-w-2xl lg:text-center">
-          <h2 className="text-base font-semibold leading-7 text-indigo-600">
+          <h2 className="text-base font-semibold leading-7 text-purple-600">
             How to subscribe
           </h2>
           <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
@@ -201,7 +247,7 @@ export default function Landing() {
             {features.map((feature) => (
               <div key={feature.name} className="relative pl-16">
                 <dt className="text-base font-semibold leading-7 text-gray-900">
-                  <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600">
+                  <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-purple-600">
                     <feature.icon
                       aria-hidden="true"
                       className="h-6 w-6 text-white"
@@ -218,28 +264,22 @@ export default function Landing() {
         </div>
       </div>
 
+
+
       {/* Call to action */}
       <div>
         <div className="mx-auto max-w-7xl py-24 sm:px-6 sm:py-32 lg:px-8">
           <div className="relative isolate overflow-hidden bg-gray-900 px-6 py-24 text-center shadow-2xl sm:rounded-3xl sm:px-16">
             <h2 className="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
-              Ready to dive in?
+              Support Solo Stakers
             </h2>
             <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-gray-300">
-              Incididunt sint fugiat pariatur cupidatat consectetur sit cillum
-              anim id veniam aliqua proident excepteur commodo do ea.
+              You can support Solo Stakers and increase their revenue by donating directly into the pool. It&apos;s a great way of supporting the true decentralized Node Runners that keep Ethereum decentralized at scale.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
-              <a
-                className="rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                href="#">
-                Get started
-              </a>
-              <a
-                className="text-sm font-semibold leading-6 text-white"
-                href="#">
-                Learn more <span aria-hidden="true">→</span>
-              </a>
+
+              {isConnected ? <DonateDialog /> : <w3m-button label="Donate to Smooth" />}
+
             </div>
             <svg
               aria-hidden="true"
