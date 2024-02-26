@@ -9,24 +9,3 @@
     margin: 0;
   }
 }
-
-/* Banner */
-
-.rotating-text {
-  display: flex;
-  width: 100%; 
-  animation: marquee 18s linear infinite;
-}
-
-.rotating-text div {
-  white-space: nowrap;
-}
-
-@keyframes marquee {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
-}
