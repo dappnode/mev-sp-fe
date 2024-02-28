@@ -1,60 +1,17 @@
 /* eslint-disable jsx-a11y/no-redundant-roles */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-
 import {
-  ArrowPathIcon,
+
   CloudArrowUpIcon,
-  FingerPrintIcon,
+
   LockClosedIcon,
+  MinusSmallIcon, PlusSmallIcon
 } from '@heroicons/react/24/outline'
 import { useAccount } from 'wagmi'
+import { Disclosure } from '@headlessui/react'
+import { CheckIcon } from '@heroicons/react/20/solid'
 import { DonateDialog } from '@/components/dialogs/DonateDialog'
 
-const features = [
-  {
-    name: '1. Register',
-    description: 'Register to at least one MEV relay (the more, the better)',
-    icon: CloudArrowUpIcon,
-  },
-  {
-    name: '2. Fee recipient',
-    description:
-      'Change your fee recipient to Smooth (brain for dappnode users).',
-    icon: LockClosedIcon,
-  },
-  {
-    name: '3. Subscribe',
-    description: (
-      <a
-        href="https://smooth.dappnode.io/"
-        rel="noreferrer"
-        style={{ textDecoration: 'none' }}
-        target="_blank">
-        Subscribe at{' '}
-        <span style={{ textDecoration: 'underline', color: 'black' }}>
-          https://smooth.dappnode.io/
-        </span>
-      </a>
-    ),
-    icon: ArrowPathIcon,
-  },
-  {
-    name: '4. Manage validators',
-    description: (
-      <a
-        href="https://smooth.dappnode.io/"
-        rel="noreferrer"
-        style={{ textDecoration: 'none' }}
-        target="_blank">
-        Everything done at{' '}
-        <span style={{ textDecoration: 'underline', color: 'black' }}>
-          https://smooth.dappnode.io/
-        </span>
-      </a>
-    ),
-    icon: FingerPrintIcon,
-  },
-]
 
 const faqs = [
   {
@@ -103,13 +60,30 @@ const whySmooth = [
   },
 ]
 
+const steps = [
+  { name: '1. Register', description: 'Register to at least one MEV relay (the more, the better)', href: '#', status: 'complete' },
+  {
+    name: '2. Fee recipient',
+    description: 'Change your fee recipient to Smooth (brain for dappnode users).',
+    href: '#',
+    status: 'complete',
+  },
+  { name: '3. Subscribe', description: 'Penatibus eu quis ante.', href: '#', status: 'complete' },
+  { name: '4. Manage validators', description: 'Faucibus nec enim leo et.', href: '#', status: 'complete' },
+]
+
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(' ')
+}
+
+
 export default function Landing() {
   const { isConnected } = useAccount()
 
   return (
     <>
       {/* Hero section */}
-      <div className="relative pt-14">
+      <div className=" pt-6">
         <div
           aria-hidden="true"
           className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
@@ -123,6 +97,15 @@ export default function Landing() {
         </div>
         <div className="py-24 sm:py-32">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="hidden sm:mb-8 sm:flex sm:justify-center">
+              <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+                Find out more on our docs{' '}
+                <a className="font-semibold text-purple-600" href="#">
+                  <span aria-hidden="true" className="absolute inset-0" />
+                  Read more <span aria-hidden="true">&rarr;</span>
+                </a>
+              </div>
+            </div>
             <div className="mx-auto max-w-4xl text-center">
               <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
                 Earn more rewards by pooling MEV rewards together
@@ -143,26 +126,6 @@ export default function Landing() {
                 </a>
               </div>
             </div>
-
-            <div className="py-24 sm:py-32">
-              <div className="mx-auto max-w-7xl px-6 lg:px-8">
-                <dl className="grid grid-cols-1 gap-x-8 gap-y-16 text-center lg:grid-cols-3">
-                  {stats.map((stat) => (
-                    <div
-                      key={stat.id}
-                      className="mx-auto flex max-w-xs flex-col gap-y-4">
-                      <dt className="text-base leading-7 text-gray-600">
-                        {stat.name}
-                      </dt>
-                      <dd className="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
-                        {stat.value}
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
-              </div>
-            </div>
-
           </div>
         </div>
         <div
@@ -178,9 +141,33 @@ export default function Landing() {
         </div>
       </div>
 
+      {/* stats */}
+      <div className="mb-24 py-24 sm:py-32">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl lg:max-w-none">
+            <div className="text-center">
+              <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                Smooth Stats
+              </h2>
+              <p className="mt-4 text-lg leading-8 text-gray-600">
+                Lorem ipsum dolor sit amet consect adipisicing possimus.
+              </p>
+            </div>
+            <dl className="mt-16 grid grid-cols-1 gap-0.5 overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-3">
+              {stats.map((stat) => (
+                <div key={stat.id} className="flex flex-col bg-gray-400/5 p-8">
+                  <dt className="text-sm font-semibold leading-6  text-gray-900">{stat.name}</dt>
+                  <dd className="order-first text-3xl font-semibold tracking-tight text-purple-600">{stat.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </div>
+      </div>
+
       {/* why smooth */}
       <div className="overflow-hidden">
-        <div className="mx-auto max-w-7xl md:px-6 lg:px-8">
+        <div className="mx-auto mt-16 max-w-7xl md:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:grid-cols-2 lg:items-start">
             <div className="px-6 lg:px-0 lg:pr-4 lg:pt-4">
               <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-lg">
@@ -234,7 +221,7 @@ export default function Landing() {
             How to subscribe
           </h2>
           <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            Everything you need to know about Smooth
+            Follow the steps to subcribe to Smooth
           </p>
           <p className="mt-6 text-lg leading-8 text-gray-600">
             Quis tellus eget adipiscing convallis sit sit eget aliquet quis.
@@ -242,31 +229,72 @@ export default function Landing() {
             In mi viverra elit nunc.
           </p>
         </div>
-        <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
-          <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
-            {features.map((feature) => (
-              <div key={feature.name} className="relative pl-16">
-                <dt className="text-base font-semibold leading-7 text-gray-900">
-                  <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-purple-600">
-                    <feature.icon
-                      aria-hidden="true"
-                      className="h-6 w-6 text-white"
-                    />
-                  </div>
-                  {feature.name}
-                </dt>
-                <dd className="mt-2 text-base leading-7 text-gray-600">
-                  {feature.description}
-                </dd>
-              </div>
-            ))}
-          </dl>
+
+        <div className="flex items-center justify-center py-14">
+          <nav aria-label="Progress">
+            <ol className="overflow-hidden" role="list">
+              {steps.map((step, stepIdx) => (
+                <li key={step.name} className={classNames(stepIdx !== steps.length - 1 ? 'pb-10' : '', 'relative')}>
+                  {step.status === 'complete' ? (
+                    <>
+                      {stepIdx !== steps.length - 1 ? (
+                        <div aria-hidden="true" className="absolute left-4 top-4 -ml-px mt-0.5 h-full w-0.5 bg-purple-600" />
+                      ) : null}
+                      <a className="group relative flex items-start" href={step.href}>
+                        <span className="flex h-9 items-center">
+                          <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-purple-600 group-hover:bg-purple-800">
+                            <CheckIcon aria-hidden="true" className="h-5 w-5 text-white" />
+                          </span>
+                        </span>
+                        <span className="ml-4 flex min-w-0 flex-col">
+                          <span className="text-sm font-medium">{step.name}</span>
+                          <span className="text-sm text-gray-500">{step.description}</span>
+                        </span>
+                      </a>
+                    </>
+                  ) : step.status === 'current' ? (
+                    <>
+                      {stepIdx !== steps.length - 1 ? (
+                        <div aria-hidden="true" className="absolute left-4 top-4 -ml-px mt-0.5 h-full w-0.5 bg-gray-300" />
+                      ) : null}
+                      <a aria-current="step" className="group relative flex items-start" href={step.href}>
+                        <span aria-hidden="true" className="flex h-9 items-center">
+                          <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full border-2 border-purple-600 bg-white">
+                            <span className="h-2.5 w-2.5 rounded-full bg-purple-600" />
+                          </span>
+                        </span>
+                        <span className="ml-4 flex min-w-0 flex-col">
+                          <span className="text-sm font-medium text-purple-600">{step.name}</span>
+                          <span className="text-sm text-gray-500">{step.description}</span>
+                        </span>
+                      </a>
+                    </>
+                  ) : (
+                    <>
+                      {stepIdx !== steps.length - 1 ? (
+                        <div aria-hidden="true" className="absolute left-4 top-4 -ml-px mt-0.5 h-full w-0.5 bg-gray-300" />
+                      ) : null}
+                      <a className="group relative flex items-start" href={step.href}>
+                        <span aria-hidden="true" className="flex h-9 items-center">
+                          <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full border-2 border-gray-300 bg-white group-hover:border-gray-400">
+                            <span className="h-2.5 w-2.5 rounded-full bg-transparent group-hover:bg-gray-300" />
+                          </span>
+                        </span>
+                        <span className="ml-4 flex min-w-0 flex-col">
+                          <span className="text-sm font-medium text-gray-500">{step.name}</span>
+                          <span className="text-sm text-gray-500">{step.description}</span>
+                        </span>
+                      </a>
+                    </>
+                  )}
+                </li>
+              ))}
+            </ol>
+          </nav>
         </div>
       </div>
 
-
-
-      {/* Call to action */}
+      {/* Call to action donate */}
       <div>
         <div className="mx-auto max-w-7xl py-24 sm:px-6 sm:py-32 lg:px-8">
           <div className="relative isolate overflow-hidden bg-gray-900 px-6 py-24 text-center shadow-2xl sm:rounded-3xl sm:px-16">
@@ -303,36 +331,36 @@ export default function Landing() {
         </div>
       </div>
 
-      {/*  <div className="mx-auto mt-32 max-w-7xl sm:mt-56 sm:px-6 lg:px-8">
-        <div className="relative overflow-hidden  px-6 py-20 shadow-xl sm:rounded-3xl sm:px-10 sm:py-24 md:px-12 lg:px-20 h-80">
-          <Image
-            fill
-            alt="How to use"
-            className="absolute inset-0 h-full w-full object-cover"
-            src="/images/Smooth_cover.png"
-          />
-        </div>
-      </div> */}
-
       {/* FAQs */}
-      <div className="mx-auto max-w-2xl divide-y divide-gray-900/10 px-6 pb-8 sm:pb-24 sm:pt-12 lg:max-w-7xl lg:px-8 lg:pb-32">
-        <h2 className="text-2xl font-bold leading-10 tracking-tight text-gray-900">
-          Frequently asked questions
-        </h2>
-        <dl className="mt-10 space-y-8 divide-y divide-gray-900/10">
-          {faqs.map((faq) => (
-            <div key={faq.id} className="pt-8 lg:grid lg:grid-cols-12 lg:gap-8">
-              <dt className="text-base font-semibold leading-7 text-gray-900 lg:col-span-5">
-                {faq.question}
-              </dt>
-              <dd className="mt-4 lg:col-span-7 lg:mt-0">
-                <p className="text-base leading-7 text-gray-600">
-                  {faq.answer}
-                </p>
-              </dd>
-            </div>
-          ))}
-        </dl>
+      <div className="mx-auto max-w-7xl px-6 sm:py-32 lg:px-8 lg:py-10 mb-16">
+        <div className="mx-auto max-w-4xl divide-y divide-gray-900/10">
+          <h2 className="text-2xl font-bold leading-10 tracking-tight text-gray-900">Frequently asked questions</h2>
+          <dl className="mt-10 space-y-6 divide-y divide-gray-900/10">
+            {faqs.map((faq) => (
+              <Disclosure key={faq.question} as="div" className="pt-6">
+                {({ open }) => (
+                  <>
+                    <dt>
+                      <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
+                        <span className="text-base font-semibold leading-7">{faq.question}</span>
+                        <span className="ml-6 flex h-7 items-center">
+                          {open ? (
+                            <MinusSmallIcon aria-hidden="true" className="h-6 w-6" />
+                          ) : (
+                            <PlusSmallIcon aria-hidden="true" className="h-6 w-6" />
+                          )}
+                        </span>
+                      </Disclosure.Button>
+                    </dt>
+                    <Disclosure.Panel as="dd" className="mt-2 pr-12">
+                      <p className="text-base leading-7 text-gray-600">{faq.answer}</p>
+                    </Disclosure.Panel>
+                  </>
+                )}
+              </Disclosure>
+            ))}
+          </dl>
+        </div>
       </div>
     </>
   )
