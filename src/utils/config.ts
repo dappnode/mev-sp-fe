@@ -43,6 +43,10 @@ export const SOCIAL_LINKEDIN = 'dappnode'
 
 export const PAGES = [
   {
+    name: 'Home',
+    path: '/landing',
+  },
+  {
     name: 'Dashboard',
     path: '/',
   },

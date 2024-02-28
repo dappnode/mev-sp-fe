@@ -38,6 +38,11 @@ module.exports = {
         'DAppDarkSurface/600': '#8b8b8b',
         DAppDarkText: '#F8F8F8',
         DAppDarkPrimary: '#7A27D3',
+        LandingPurple: '#7F27FF',
+        'LandingPurple/500': '#9147FF',
+        'LandingPurple/400': '#B685FF',
+        'LandingPurple/300': '#CEADFF',
+        'LandingPurple/200': '#E7D6FF',
       },
       fontFamily: {
         inter: ['var(--font-inter)', ...fontFamily.sans],

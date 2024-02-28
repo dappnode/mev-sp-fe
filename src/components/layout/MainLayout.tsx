@@ -1,6 +1,7 @@
 import { Footer } from './Footer'
 import { Header } from './Header'
 import { ReactNode } from 'react'
+import { useRouter } from 'next/router'
 import clsx from 'clsx'
 
 interface MainLayoutProps {
@@ -9,6 +10,7 @@ interface MainLayoutProps {
 }
 
 export function MainLayout({ children, className }: MainLayoutProps) {
+  const router = useRouter()
   return (
     <div
       className={clsx(
@@ -16,7 +18,10 @@ export function MainLayout({ children, className }: MainLayoutProps) {
         className
       )}>
       <Header />
-      <div className="mx-auto min-h-screen-content max-w-7xl p-4 md:p-8">
+      <div
+        className={`mx-auto min-h-screen-content ${
+          router.pathname !== '/landing' && 'max-w-7xl p-4 md:p-8'
+        }`}>
         {children}
       </div>
       <Footer />
