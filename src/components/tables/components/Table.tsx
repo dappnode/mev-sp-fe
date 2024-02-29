@@ -88,7 +88,7 @@ export function TableLayout<T extends TableDataTypes>({
           </thead>
           {/* Table body */}
           <tbody className="border-t-[0.5px] border-DAppNeutral/100 dark:border-DAppDarkSurface/300">
-            {data.length === 0 && showEmptyMessage ? ( // Only show if data is empty and showEmptyMessage is true
+               {data.length === 0 && showEmptyMessage ? ( // Only show if data is empty and showEmptyMessage is true
               <tr>
                 <td
                   className="p-6 text-center"
