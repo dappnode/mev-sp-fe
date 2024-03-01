@@ -200,7 +200,7 @@ export default function Landing() {
                     alt="Product screenshot"
                     className="-mb-12 w-[57rem] max-w-none rounded-tl-xl bg-gray-800 ring-1 ring-white/10"
                     height={1442}
-                    src="https://tailwindui.com/img/component-images/project-app-screenshot.png"
+                    src="https://images.unsplash.com/photo-1498747946579-bde604cb8f44?q=80&w=2832&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                     width={2432}
                   />
                 </div>
@@ -214,7 +214,7 @@ export default function Landing() {
         </div>
       </div>
 
-      {/* Feature section */}
+      {/* How to subscribe */}
       <div className="mx-auto mt-32 max-w-7xl px-6 sm:mt-56 lg:px-8">
         <div className="mx-auto max-w-2xl lg:text-center">
           <h2 className="text-base font-semibold leading-7 text-purple-600">
@@ -229,7 +229,6 @@ export default function Landing() {
             In mi viverra elit nunc.
           </p>
         </div>
-
         <div className="flex items-center justify-center py-14">
           <nav aria-label="Progress">
             <ol className="overflow-hidden" role="list">
@@ -304,10 +303,8 @@ export default function Landing() {
             <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-gray-300">
               You can support Solo Stakers and increase their revenue by donating directly into the pool. It&apos;s a great way of supporting the true decentralized Node Runners that keep Ethereum decentralized at scale.
             </p>
-            <div className="mt-10 flex items-center justify-center gap-x-6">
-
+            <div className="mt-8 w-[220px] pt-10 lg:mx-0" style={{ margin: "auto" }}>
               {isConnected ? <DonateDialog /> : <w3m-button label="Donate to Smooth" />}
-
             </div>
             <svg
               aria-hidden="true"
@@ -332,7 +329,7 @@ export default function Landing() {
       </div>
 
       {/* FAQs */}
-      <div className="mx-auto max-w-7xl px-6 sm:py-32 lg:px-8 lg:py-10 mb-16">
+      <div className="mx-auto mb-16 max-w-7xl px-6 sm:py-32 lg:px-8 lg:py-10">
         <div className="mx-auto max-w-4xl divide-y divide-gray-900/10">
           <h2 className="text-2xl font-bold leading-10 tracking-tight text-gray-900">Frequently asked questions</h2>
           <dl className="mt-10 space-y-6 divide-y divide-gray-900/10">
