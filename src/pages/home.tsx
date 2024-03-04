@@ -98,7 +98,7 @@ export default function Landing() {
         <div className="py-24 sm:py-32">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="hidden sm:mb-8 sm:flex sm:justify-center">
-              <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+              <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-DAppDeep ring-1 ring-gray-900/10 hover:ring-gray-900/20 dark:text-DAppDarkText">
                 Find out more on our docs{' '}
                 <a className="font-semibold text-purple-600" href="#">
                   <span aria-hidden="true" className="absolute inset-0" />
@@ -107,10 +107,10 @@ export default function Landing() {
               </div>
             </div>
             <div className="mx-auto max-w-4xl text-center">
-              <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+              <h1 className="text-4xl font-bold tracking-tight text-DAppDeep dark:text-DAppDarkText sm:text-6xl">
                 Earn more rewards by pooling MEV rewards together
               </h1>
-              <p className="mt-6 text-lg leading-8 text-gray-600">
+              <p className="mt-6 text-lg leading-8 text-DAppDeep dark:text-DAppDarkText">
                 It is a product by Dappnode, fight centralitzation
               </p>
               <div className="mt-10 flex items-center justify-center gap-x-6">
@@ -120,7 +120,7 @@ export default function Landing() {
                   Join Now
                 </a>
                 <a
-                  className="text-sm font-semibold leading-6 text-gray-900"
+                  className="text-sm font-semibold leading-6 text-DAppDeep dark:text-DAppDarkText"
                   href="#">
                   Learn more <span aria-hidden="true">→</span>
                 </a>
@@ -146,17 +146,17 @@ export default function Landing() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:max-w-none">
             <div className="text-center">
-              <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              <h2 className="text-3xl font-bold tracking-tight text-DAppDeep dark:text-DAppDarkText sm:text-4xl">
                 Smooth Stats
               </h2>
-              <p className="mt-4 text-lg leading-8 text-gray-600">
+              <p className="mt-4 text-lg leading-8 text-DAppDeep dark:text-DAppDarkText">
                 Lorem ipsum dolor sit amet consect adipisicing possimus.
               </p>
             </div>
             <dl className="mt-16 grid grid-cols-1 gap-0.5 overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-3">
               {stats.map((stat) => (
                 <div key={stat.id} className="flex flex-col bg-gray-400/5 p-8">
-                  <dt className="text-sm font-semibold leading-6  text-gray-900">{stat.name}</dt>
+                  <dt className="text-sm font-semibold leading-6  text-DAppDeep dark:text-DAppDarkText">{stat.name}</dt>
                   <dd className="order-first text-3xl font-semibold tracking-tight text-purple-600">{stat.value}</dd>
                 </div>
               ))}
@@ -172,15 +172,14 @@ export default function Landing() {
             <div className="px-6 lg:px-0 lg:pr-4 lg:pt-4">
               <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-lg">
                 <h2 className="text-base font-semibold leading-7 text-purple-600">Smooth</h2>
-                <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Why Smooth</p>
-                <p className="mt-6 text-lg leading-8 text-gray-600">
+                <p className="mt-2 text-3xl font-bold tracking-tight text-DAppDeep dark:text-DAppDarkText sm:text-4xl">Why Smooth</p>
+                <p className="mt-6 text-lg leading-8 text-DAppDeep dark:text-DAppDarkText">
                   Get higher MEV revenue by joining forces with other stakers
                 </p>
-                <dl className="mt-10 max-w-xl space-y-8 text-base leading-7 text-gray-600 lg:max-w-none">
+                <dl className="mt-10 max-w-xl space-y-8 text-base leading-7 text-DAppDeep dark:text-DAppDarkText lg:max-w-none">
                   {whySmooth.map((feature) => (
                     <div key={feature.name} className="relative pl-9">
-                      <dt className="inline font-semibold text-gray-900">
-
+                      <dt className="inline font-semibold text-DAppDeep dark:text-DAppDarkText">
                         {feature.name}
                       </dt>{' '}
                       <dd className="inline">{feature.description}</dd>
@@ -220,10 +219,10 @@ export default function Landing() {
           <h2 className="text-base font-semibold leading-7 text-purple-600">
             How to subscribe
           </h2>
-          <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+          <p className="mt-2 text-3xl font-bold tracking-tight text-DAppDeep dark:text-DAppDarkText sm:text-4xl">
             Follow the steps to subcribe to Smooth
           </p>
-          <p className="mt-6 text-lg leading-8 text-gray-600">
+          <p className="mt-6 text-lg leading-8 text-DAppDeep dark:text-DAppDarkText">
             Quis tellus eget adipiscing convallis sit sit eget aliquet quis.
             Suspendisse eget egestas a elementum pulvinar et feugiat blandit at.
             In mi viverra elit nunc.
@@ -294,51 +293,32 @@ export default function Landing() {
       </div>
 
       {/* Call to action donate */}
-      <div>
-        <div className="mx-auto max-w-7xl py-24 sm:px-6 sm:py-32 lg:px-8">
-          <div className="relative isolate overflow-hidden bg-gray-900 px-6 py-24 text-center shadow-2xl sm:rounded-3xl sm:px-16">
-            <h2 className="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
-              Support Solo Stakers
-            </h2>
-            <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-gray-300">
-              You can support Solo Stakers and increase their revenue by donating directly into the pool. It&apos;s a great way of supporting the true decentralized Node Runners that keep Ethereum decentralized at scale.
-            </p>
-            <div className="mt-8 w-[220px] pt-10 lg:mx-0" style={{ margin: "auto" }}>
-              {isConnected ? <DonateDialog /> : <w3m-button label="Donate to Smooth" />}
-            </div>
-            <svg
-              aria-hidden="true"
-              className="absolute left-1/2 top-1/2 -z-10 h-[64rem] w-[64rem] -translate-x-1/2 [mask-image:radial-gradient(closest-side,white,transparent)]"
-              viewBox="0 0 1024 1024">
-              <circle
-                cx={512}
-                cy={512}
-                fill="url(#827591b1-ce8c-4110-b064-7cb85a0b1217)"
-                fillOpacity="0.7"
-                r={512}
-              />
-              <defs>
-                <radialGradient id="827591b1-ce8c-4110-b064-7cb85a0b1217">
-                  <stop stopColor="#7775D6" />
-                  <stop offset={1} stopColor="#E935C1" />
-                </radialGradient>
-              </defs>
-            </svg>
+      <div className="mt-16 bg-gradient-to-br from-DAppPurple/900 to-DAppBlue text-center sm:rounded-3xl">
+        <div className="mx-auto max-w-7xl py-12 sm:px-6 sm:py-20 lg:px-8">
+          <h2 className="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-DAppDeep dark:text-DAppDarkText sm:text-4xl">
+            Support Solo Stakers
+          </h2>
+          <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-gray-300">
+            You can support Solo Stakers and increase their revenue by donating directly into the pool. It&apos;s a great way of supporting the true decentralized Node Runners that keep Ethereum decentralized at scale.
+          </p>
+          <div className="mt-8 w-[220px] pt-10 lg:mx-0" style={{ margin: "auto" }}>
+            {isConnected ? <DonateDialog /> : <w3m-button label="Donate to Smooth" />}
           </div>
         </div>
       </div>
 
+
       {/* FAQs */}
-      <div className="mx-auto mb-16 max-w-7xl px-6 sm:py-32 lg:px-8 lg:py-10">
+      <div className="mx-auto my-16 max-w-7xl px-6 sm:py-32 lg:px-8 lg:py-10">
         <div className="mx-auto max-w-4xl divide-y divide-gray-900/10">
-          <h2 className="text-2xl font-bold leading-10 tracking-tight text-gray-900">Frequently asked questions</h2>
+          <h2 className="text-2xl font-bold leading-10 tracking-tight text-DAppDeep dark:text-DAppDarkText">Frequently asked questions</h2>
           <dl className="mt-10 space-y-6 divide-y divide-gray-900/10">
             {faqs.map((faq) => (
               <Disclosure key={faq.question} as="div" className="pt-6">
                 {({ open }) => (
                   <>
                     <dt>
-                      <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
+                      <Disclosure.Button className="flex w-full items-start justify-between text-left text-DAppDeep dark:text-DAppDarkText">
                         <span className="text-base font-semibold leading-7">{faq.question}</span>
                         <span className="ml-6 flex h-7 items-center">
                           {open ? (
@@ -350,7 +330,7 @@ export default function Landing() {
                       </Disclosure.Button>
                     </dt>
                     <Disclosure.Panel as="dd" className="mt-2 pr-12">
-                      <p className="text-base leading-7 text-gray-600">{faq.answer}</p>
+                      <p className="text-base leading-7 text-DAppDeep dark:text-DAppDarkText">{faq.answer}</p>
                     </Disclosure.Panel>
                   </>
                 )}
