@@ -1,10 +1,6 @@
 /* eslint-disable jsx-a11y/no-redundant-roles */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import {
-
-  CloudArrowUpIcon,
-
-  LockClosedIcon,
   MinusSmallIcon, PlusSmallIcon
 } from '@heroicons/react/24/outline'
 import { useAccount } from 'wagmi'
@@ -16,21 +12,15 @@ import { DonateDialog } from '@/components/dialogs/DonateDialog'
 const faqs = [
   {
     id: 1,
-    question: "What's the best thing about Switzerland?",
+    question: "What do I need to claim my rewards?",
     answer:
-      "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+      "Once your pending rewards are transformed into accumulated rewards after your block proposal, a small claim transaction will be required from the withdrawal address to send the ETH rewards to your wallet.",
   },
   {
     id: 2,
-    question: "What's the best thing about Switzerland?",
+    question: "Does Smooth take my Consensus Layer (CL) rewards?",
     answer:
-      "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
-  },
-  {
-    id: 3,
-    question: "What's the best thing about Switzerland?",
-    answer:
-      "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+      "No, Smooth does not take your CL rewards. CL rewards are always sent directly to your withdrawal address. Smooth only takes the execution layer rewards, which are the fees or MEV of the blocks you propose.",
   },
   // More questions...
 ]
@@ -43,20 +33,21 @@ const stats = [
 
 const whySmooth = [
   {
-    name: '🎰 Stop Depending on Luck!',
+    name: '🚀 Boost your MEV earnings',
     description:
-      'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendis suscipit eaque, iste dolor cupiditate blanditiis ratione.',
-    icon: CloudArrowUpIcon,
+      'Pool rewards with other stakers and share profits from every block.',
   },
   {
-    name: '🚀 Dont miss high fee seasons!',
-    description: 'Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo.',
-    icon: LockClosedIcon,
+    name: '🎰 No luck involved',
+    description: 'Earn an average of all pool rewards, not just your individual blocks.',
   },
   {
-    name: '💰 Hitting MEV Lottery Blocks',
-    description: 'Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.',
-
+    name: '🔍 Full transparency',
+    description: 'Track all blocks, MEV, and validator performance on the dashboard.',
+  },
+  {
+    name: '✅ Get started easily',
+    description: 'Just update your fee recipient and claim rewards after proposals. Simple and secure.',
   },
 ]
 
@@ -108,10 +99,10 @@ export default function Landing() {
             </div>
             <div className="mx-auto max-w-4xl text-center">
               <h1 className="text-4xl font-bold tracking-tight text-DAppDeep dark:text-DAppDarkText sm:text-6xl">
-                Earn more rewards by pooling MEV rewards together
+                Join Smooth, the MEV Smoothing Pool by Dappnode
               </h1>
               <p className="mt-6 text-lg leading-8 text-DAppDeep dark:text-DAppDarkText">
-                It is a product by Dappnode, fight centralitzation
+                Earn consistent rewards by pooling MEV with other solo stakers. Fight centralization and strengthen the Ethereum network.
               </p>
               <div className="mt-10 flex items-center justify-center gap-x-6">
                 <a
@@ -147,11 +138,8 @@ export default function Landing() {
           <div className="mx-auto max-w-2xl lg:max-w-none">
             <div className="text-center">
               <h2 className="text-3xl font-bold tracking-tight text-DAppDeep dark:text-DAppDarkText sm:text-4xl">
-                Smooth Stats
+                Solo Staking Vs Solo Staking with Smooth
               </h2>
-              <p className="mt-4 text-lg leading-8 text-DAppDeep dark:text-DAppDarkText">
-                Lorem ipsum dolor sit amet consect adipisicing possimus.
-              </p>
             </div>
             <dl className="mt-16 grid grid-cols-1 gap-0.5 overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-3">
               {stats.map((stat) => (
@@ -174,7 +162,7 @@ export default function Landing() {
                 <h2 className="text-base font-semibold leading-7 text-purple-600">Smooth</h2>
                 <p className="mt-2 text-3xl font-bold tracking-tight text-DAppDeep dark:text-DAppDarkText sm:text-4xl">Why Smooth</p>
                 <p className="mt-6 text-lg leading-8 text-DAppDeep dark:text-DAppDarkText">
-                  Get higher MEV revenue by joining forces with other stakers
+                  Get higher MEV rewards by joining forces with other stakers
                 </p>
                 <dl className="mt-10 max-w-xl space-y-8 text-base leading-7 text-DAppDeep dark:text-DAppDarkText lg:max-w-none">
                   {whySmooth.map((feature) => (
@@ -220,7 +208,7 @@ export default function Landing() {
             How to subscribe
           </h2>
           <p className="mt-2 text-3xl font-bold tracking-tight text-DAppDeep dark:text-DAppDarkText sm:text-4xl">
-            Follow the steps to subcribe to Smooth
+            Subscribe your validator today in just a few steps!
           </p>
           <p className="mt-6 text-lg leading-8 text-DAppDeep dark:text-DAppDarkText">
             Quis tellus eget adipiscing convallis sit sit eget aliquet quis.
@@ -296,13 +284,12 @@ export default function Landing() {
       <div className="mt-16 bg-gradient-to-br from-DAppPurple/900 to-DAppBlue text-center sm:rounded-3xl">
         <div className="mx-auto max-w-7xl py-12 sm:px-6 sm:py-20 lg:px-8">
           <h2 className="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-DAppDeep dark:text-DAppDarkText sm:text-4xl">
-            Support Solo Stakers
+            Donate to the Pool and Support Ethereum Decentralization
           </h2>
           <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-gray-300">
-            You can support Solo Stakers and increase their revenue by donating directly into the pool. It&apos;s a great way of supporting the true decentralized Node Runners that keep Ethereum decentralized at scale.
-          </p>
+            Contribute to the pool and increase solo staker&apos;s revenue. It&apos;s a great way of supporting the true decentralized node runners that keep Ethereum decentralized at scale.</p>
           <div className="mt-8 w-[220px] pt-10 lg:mx-0" style={{ margin: "auto" }}>
-            {isConnected ? <DonateDialog /> : <w3m-button label="Donate to Smooth" />}
+            {isConnected ? <DonateDialog /> : <w3m-button label="Donate now" />}
           </div>
         </div>
       </div>
@@ -337,6 +324,27 @@ export default function Landing() {
               </Disclosure>
             ))}
           </dl>
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div>
+        <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:flex lg:items-center lg:justify-between lg:px-8">
+          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            Ready to dive in?
+          </h2>
+          <div className="mt-10 flex items-center gap-x-6 lg:mt-0 lg:shrink-0">
+            <a
+              className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              href="https://docs.dappnode.io/docs/smooth/faq-glossary"
+              rel="noreferrer" target="_blank"
+            >
+              Read our docs
+            </a>
+            <a className="text-sm font-semibold leading-6 text-gray-900" href="#https://discord.gg/dappnode" target="_blank">
+              Join Discord Community <span aria-hidden="true">→</span>
+            </a>
+          </div>
         </div>
       </div>
     </>
