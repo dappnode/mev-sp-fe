@@ -12,7 +12,7 @@ export default function WaveSeparator({
   rotated = false,
 }: WaveSeparatorProps) {
   return (
-    <div className="absolute left-0 top-0 w-full overflow-hidden leading-none ">
+    <div className="absolute left-0 top-0 -mt-[1px] w-full overflow-hidden leading-none">
       <SeparatorSvg color={color} number={number} rotated={rotated} />
     </div>
   )

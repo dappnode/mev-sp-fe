@@ -11,6 +11,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@heroicons/react": "^2.1.1",
     "@next/font": "13.1.6",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-select": "^1.2.2",
