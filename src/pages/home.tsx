@@ -330,7 +330,7 @@ export default function Landing() {
       {/* CTA */}
       <div>
         <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:flex lg:items-center lg:justify-between lg:px-8">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+          <h2 className="text-3xl font-bold tracking-tight text-DAppDeep dark:text-DAppDarkText sm:text-4xl">
             Ready to dive in?
           </h2>
           <div className="mt-10 flex items-center gap-x-6 lg:mt-0 lg:shrink-0">
@@ -341,7 +341,7 @@ export default function Landing() {
             >
               Read our docs
             </a>
-            <a className="text-sm font-semibold leading-6 text-gray-900" href="#https://discord.gg/dappnode" target="_blank">
+            <a className="text-sm font-semibold leading-6 text-DAppDeep dark:text-DAppDarkText" href="#https://discord.gg/dappnode" target="_blank">
               Join Discord Community <span aria-hidden="true">→</span>
             </a>
           </div>
