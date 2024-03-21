@@ -40,30 +40,20 @@ export default function Landing() {
       : ['#121212', '#282828', '#3f3f3f', '#575757', '#717171']
   return (
     <div className="overflow-hidden">
-      <LandingSection color={sectionColors[3]}>
-        <Hero />
-      </LandingSection>
-
-      <LandingSection color={sectionColors[4]}>
-        <WaveSeparator color={sectionColors[3]} number={0} />
-        <div className="group-hover:scale-90 transition-all duration-1000 ease-in-out">
-          <Stats />
+      <LandingSection hasBg color={sectionColors[3]}>
+        <div className="transition-all duration-1000 ease-in-out group-hover:scale-90">
+          <Hero />
         </div>
       </LandingSection>
 
-      <LandingSection color={sectionColors[1]}>
-        <WaveSeparator color={sectionColors[4]} number={1} />
+      <LandingSection color={sectionColors[4]}>
+        <WaveSeparator hasBg color={sectionColors[3]} number={0} />
+        <div className="transition-all duration-1000 ease-in-out group-hover:scale-90">
+          <Stats />
+          <WhySmooth />
+          <HowToSubscribe />
+        </div>
 
-        <WhySmooth />
-      </LandingSection>
-      <LandingSection color={sectionColors[2]}>
-        <WaveSeparator rotated color={sectionColors[1]} number={1} />
-
-        <HowToSubscribe />
-      </LandingSection>
-
-      <LandingSection color={sectionColors[3]}>
-        <WaveSeparator rotated color={sectionColors[2]} number={0} />
         {/* Call to action */}
         <div>
           <div className="mx-auto max-w-7xl py-24 sm:px-6 sm:py-32 lg:px-8">
@@ -110,8 +100,8 @@ export default function Landing() {
         </div>
       </LandingSection>
 
-      <LandingSection color={sectionColors[4]}>
-        <WaveSeparator rotated color={sectionColors[3]} number={1} />
+      <LandingSection hasBg color={sectionColors[2]}>
+        <WaveSeparator hasBg rotated color="#f7f7f7" number={1} />
         {/* FAQs */}
         <div className="mx-auto max-w-2xl divide-y divide-gray-900/10 px-6 pb-8 sm:pb-24 sm:pt-12 lg:max-w-7xl lg:px-8 lg:pb-32">
           <h2 className="text-2xl font-bold leading-10 tracking-tight text-gray-900">
