@@ -51,16 +51,8 @@ export const PAGES = [
     path: '/',
   },
   {
-    name: 'Why Smooth',
-    path: '/how-to',
-  },
-  {
     name: 'Donate',
     path: '/donate',
-  },
-  {
-    name: 'How to use',
-    path: 'https://docs.dappnode.io/docs/smooth/subscribe-to-smooth/manual',
   },
   {
     name: 'Documentation',

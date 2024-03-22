@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable jsx-a11y/no-redundant-roles */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import {
@@ -6,8 +7,8 @@ import {
 import { useAccount } from 'wagmi'
 import { Disclosure } from '@headlessui/react'
 import { CheckIcon } from '@heroicons/react/20/solid'
+import { useEffect } from 'react'
 import { DonateDialog } from '@/components/dialogs/DonateDialog'
-
 
 const faqs = [
   {
@@ -22,13 +23,18 @@ const faqs = [
     answer:
       "No, Smooth does not take your CL rewards. CL rewards are always sent directly to your withdrawal address. Smooth only takes the execution layer rewards, which are the fees or MEV of the blocks you propose.",
   },
+  {
+    id: 3,
+    question: "If I want to unsubscribe my validator from Smooth, when is the best time to do it?",
+    answer: "Unsubscribing a validator from Smooth causes it to lose all its pending rewards. Hence, the ideal moment to exit Smooth is just after your last successful block proposal is reflected in Smooth's Smart Contract. A successful block proposal transfers all pending rewards claimable, allowing you to claim them before unsubscribing. This approach minimizes the pending rewards lost when unsubscribing."
+  }
   // More questions...
 ]
 
 const stats = [
-  { id: 1, name: 'Total Subscribers', value: '550' },
-  { id: 2, name: 'Expected Monthly Rewards', value: '0.0297 ETH' },
-  { id: 3, name: 'Total Rewards', value: '28.4 ETH' },
+  { id: 1, value: '~0.15 ETH', name: 'Solo Stakers earn an average annually of' },
+  { id: 2, value: '~0.29 ETH', name: 'Smooth Solo Stakers earn an average annually of', },
+  { id: 3, value: '~93%', name: 'More rewards', },
 ]
 
 const whySmooth = [
@@ -71,6 +77,19 @@ function classNames(...classes: string[]) {
 export default function Landing() {
   const { isConnected } = useAccount()
 
+  useEffect(() => {
+    const handleClick = (event: MouseEvent) => {
+      event.preventDefault();
+      const targetElement = document.getElementById('target-section');
+      targetElement?.scrollIntoView({ behavior: 'smooth' });
+    };
+    const learnMoreLink = document.getElementById('learn-more-link');
+    learnMoreLink?.addEventListener('click', handleClick);
+    return () => {
+      learnMoreLink?.removeEventListener('click', handleClick);
+    };
+  }, []);
+
   return (
     <>
       {/* Hero section */}
@@ -88,15 +107,7 @@ export default function Landing() {
         </div>
         <div className="py-24 sm:py-32">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="hidden sm:mb-8 sm:flex sm:justify-center">
-              <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-DAppDeep ring-1 ring-gray-900/10 hover:ring-gray-900/20 dark:text-DAppDarkText">
-                Find out more on our docs{' '}
-                <a className="font-semibold text-purple-600" href="#">
-                  <span aria-hidden="true" className="absolute inset-0" />
-                  Read more <span aria-hidden="true">&rarr;</span>
-                </a>
-              </div>
-            </div>
+
             <div className="mx-auto max-w-4xl text-center">
               <h1 className="text-4xl font-bold tracking-tight text-DAppDeep dark:text-DAppDarkText sm:text-6xl">
                 Join Smooth, the MEV Smoothing Pool by Dappnode
@@ -112,8 +123,9 @@ export default function Landing() {
                 </a>
                 <a
                   className="text-sm font-semibold leading-6 text-DAppDeep dark:text-DAppDarkText"
-                  href="#">
-                  Learn more <span aria-hidden="true">→</span>
+                  href="#"
+                  id="learn-more-link">
+                  Should I join? <span aria-hidden="true">→</span>
                 </a>
               </div>
             </div>
@@ -294,7 +306,6 @@ export default function Landing() {
         </div>
       </div>
 
-
       {/* FAQs */}
       <div className="mx-auto my-16 max-w-7xl px-6 sm:py-32 lg:px-8 lg:py-10">
         <div className="mx-auto max-w-4xl divide-y divide-gray-900/10">
@@ -328,7 +339,7 @@ export default function Landing() {
       </div>
 
       {/* CTA */}
-      <div>
+      {/*  <div>
         <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:flex lg:items-center lg:justify-between lg:px-8">
           <h2 className="text-3xl font-bold tracking-tight text-DAppDeep dark:text-DAppDarkText sm:text-4xl">
             Ready to dive in?
@@ -344,6 +355,56 @@ export default function Landing() {
             <a className="text-sm font-semibold leading-6 text-DAppDeep dark:text-DAppDarkText" href="#https://discord.gg/dappnode" target="_blank">
               Join Discord Community <span aria-hidden="true">→</span>
             </a>
+          </div>
+        </div>
+      </div> */}
+
+      {/* Should I join smooth? */}
+      <div className="py-16 sm:py-24" id="target-section">
+        <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <div className="relative overflow-hidden px-6 py-24 sm:rounded-3xl sm:px-24 xl:py-32">
+            <h2 className="mx-auto max-w-2xl text-center text-3xl font-bold tracking-tight text-DAppDeep dark:text-DAppDarkText sm:text-4xl">
+              Should you join Smooth?
+            </h2>
+            <p className="mx-auto mt-2 max-w-xl text-center text-lg leading-8 text-gray-500">
+              How many validators do you have?            </p>
+            <form className="mx-auto mt-10 flex max-w-md gap-x-4">
+              <input
+                required
+                autoComplete="email"
+                className="block w-full rounded-md border-0 p-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                id="validators"
+                name="email"
+                placeholder="Number of validators"
+                type="email"
+              />
+              <button
+                className="flex-none rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                type="submit"
+              >
+                Should you?
+              </button>
+            </form>
+            <svg
+              aria-hidden="true"
+              className="absolute left-1/2 top-1/2 -z-10 h-[64rem] w-[64rem] -translate-x-1/2"
+              viewBox="0 0 1024 1024"
+            >
+              <circle cx={512} cy={512} fill="url(#759c1415-0410-454c-8f7c-9a820de03641)" fillOpacity="0.7" r={512} />
+              <defs>
+                <radialGradient
+                  cx={0}
+                  cy={0}
+                  gradientTransform="translate(512 512) rotate(90) scale(512)"
+                  gradientUnits="userSpaceOnUse"
+                  id="759c1415-0410-454c-8f7c-9a820de03641"
+                  r={1}
+                >
+                  <stop stopColor="#7775D6" />
+                  <stop offset={1} stopColor="#E935C1" stopOpacity={0} />
+                </radialGradient>
+              </defs>
+            </svg>
           </div>
         </div>
       </div>
