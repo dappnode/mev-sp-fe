@@ -12,7 +12,7 @@ export default function Donate() {
                 </h2>
                 <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-gray-300">
                     Contribute to the pool and increase solo staker&apos;s revenue. It&apos;s a great way of supporting the true decentralized node runners that keep Ethereum decentralized at scale.</p>
-                <div className="mt-8 w-[220px] pt-10 lg:mx-0" style={{ margin: "auto" }}>
+                <div className="mt-8 flex w-[220px] items-center justify-center pt-10 lg:mx-0" style={{ margin: "auto" }}>
                     {isConnected ? <DonateDialog /> : <w3m-button label="Donate now" />}
                 </div>
             </div>
