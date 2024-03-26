@@ -1,63 +1,76 @@
 /* eslint-disable jsx-a11y/no-redundant-roles */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { CheckIcon } from '@heroicons/react/20/solid'
+import { useState } from 'react';
 
 const smoothAddress = '0xAdFb8D27671F14f297eE94135e266aAFf8752e35';
 
-
-const handleCopyAddress = (e: React.MouseEvent<HTMLSpanElement> | React.KeyboardEvent<HTMLSpanElement>): void => {
-    e.preventDefault();
-    navigator.clipboard.writeText(smoothAddress);
-    // TO DO - add some alert feedback
-};
-
-const steps: { name: string, description: JSX.Element | string, href: string, status: string }[] = [
-    {
-        name: '1. Fee recipient',
-        description: (
-            <span
-                role="button"
-                style={{ cursor: 'pointer', textDecoration: 'underline' }}
-                tabIndex={0}
-                onClick={(e) => handleCopyAddress(e)}
-                onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        handleCopyAddress(e);
-                    }
-                }}
-            >
-                Change your validator&apos;s fee recipient to {' '}
-                {smoothAddress}
-            </span>
-        ),
-        href: '#',
-        status: 'complete'
-    },
-    {
-        name: '2. Subscribe on Next Proposal',
-        description: 'You will subscribe to Smooth the next time your validator proposes a block and sends its execution rewards to the pool',
-        href: '#',
-        status: 'complete',
-    },
-    {
-        name: '3. Start Accumulating Rewards Today!',
-        description: 'Or you can also add a colateral of 0.01 ETH per validator to start accumulating rewards today!',
-        href: '#',
-        status: 'complete'
-    },
-    {
-        name: '4. More Information',
-        description: 'Refer to the documentation for detailed information',
-        href: 'https://docs.dappnode.io/docs/smooth/subscribe-to-smooth/manual/',
-        status: 'complete'
-    },
-];
-
-function classNames(...classes: string[]) {
-    return classes.filter(Boolean).join(' ')
-}
-
 export default function HowToSubscribe() {
+    const [copied, setCopied] = useState(false);
+
+    const handleCopyAddress = (e: React.MouseEvent<HTMLSpanElement, MouseEvent> | React.KeyboardEvent<HTMLSpanElement>): void => {
+        e.preventDefault();
+        if (e.type === 'click' || (e.type === 'keydown' && (e as React.KeyboardEvent<HTMLSpanElement>).key === 'Enter')) {
+            navigator.clipboard.writeText(smoothAddress);
+            setCopied(true);
+            setTimeout(() => {
+                setCopied(false);
+            }, 2000);
+        }
+    };
+
+    const steps: { name: string, description: JSX.Element | string, href: string, status: string }[] = [
+        {
+            name: '1. Fee recipient',
+            description: (
+                <span
+                    role="button"
+                    style={{ cursor: 'pointer' }}
+                    tabIndex={0}
+                    onClick={handleCopyAddress}
+                    onMouseEnter={() => setCopied(false)}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.stopPropagation();
+                            handleCopyAddress(e);
+                        }
+                    }}
+                >
+                    Change your validator&apos;s fee recipient to {' '}
+                    <dl style={{ cursor: 'pointer', textDecoration: 'underline' }}>
+                        {smoothAddress} {' '}
+                        {copied && (
+                            <span className="ml-2 text-sm text-green-600">Copied!</span>
+                        )}
+                    </dl>
+                </span>
+            ),
+            href: '#',
+            status: 'complete'
+        },
+        {
+            name: '2. Subscribe on Next Proposal',
+            description: 'You will subscribe to Smooth the next time your validator proposes a block and sends its execution rewards to the pool',
+            href: '#',
+            status: 'complete',
+        },
+        {
+            name: '3. Start Accumulating Rewards Today!',
+            description: 'Or you can also add a colateral of 0.01 ETH per validator to start accumulating rewards today!',
+            href: '#',
+            status: 'complete'
+        },
+        {
+            name: '4. More Information',
+            description: 'Refer to the documentation for detailed information',
+            href: 'https://docs.dappnode.io/docs/smooth/subscribe-to-smooth/manual/',
+            status: 'complete'
+        },
+    ];
+
+    function classNames(...classes: string[]) {
+        return classes.filter(Boolean).join(' ')
+    }
 
     return (
         <div className="mx-auto mt-32 max-w-7xl px-6 sm:mt-56 lg:px-8">

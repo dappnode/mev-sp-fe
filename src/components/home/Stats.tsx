@@ -26,10 +26,10 @@ const Stats: React.FC = () => {
 
     useEffect(() => {
         if (avgBlockRewardWei) {
-            const soloStakerRewardPerBlock = 0.05; // Hardcoded solo staker reward per block
-            const smoothStakerRewardPerBlock = parseFloat(avgBlockRewardWei) * (1 - 0.07); // Assuming 7% DAppNode fee
-            const soloStakerRewardPerYear = soloStakerRewardPerBlock * 3; // Assuming 3 blocks per year
-            const smoothStakerRewardPerYear = smoothStakerRewardPerBlock * 3; // Assuming 3 blocks per year
+            const soloStakerRewardPerBlock = 0.05;
+            const smoothStakerRewardPerBlock = parseFloat(avgBlockRewardWei) * (1 - 0.07);
+            const soloStakerRewardPerYear = soloStakerRewardPerBlock * 3;
+            const smoothStakerRewardPerYear = smoothStakerRewardPerBlock * 3;
 
             setCalculatedSoloStakerReward(`${soloStakerRewardPerYear.toFixed(2)}`);
             setCalculatedSmoothStakerReward(`${(smoothStakerRewardPerYear / 1000000000000000000).toFixed(5)}`);
@@ -45,7 +45,7 @@ const Stats: React.FC = () => {
                             Solo Staking Vs Solo Staking with Smooth
                         </h2>
                     </div>
-                    <dl className="mt-16 grid grid-cols-1 gap-0.5 overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-3">
+                    <dl className="mt-16 grid grid-cols-1 gap-5 overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-3">
                         <div key={1} className="flex flex-col bg-gray-400/5 p-8">
                             <dt className="text-sm font-semibold leading-6  text-DAppDeep dark:text-DAppDarkText">Average Yearly Earnings for <strong>Solo Stakers</strong></dt>
                             <dd className="order-first text-3xl font-semibold tracking-tight text-purple-600">~{calculatedSoloStakerReward} ETH</dd>
