@@ -1,12 +1,41 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable react/function-component-definition */
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
-const stats = [
-    { id: 1, value: '~0.15 ETH', name: 'Solo Stakers earn an average annually of' },
-    { id: 2, value: '~0.29 ETH', name: 'Smooth Solo Stakers earn an average annually of', },
-    { id: 3, value: '~93%', name: 'More rewards', },
-]
+const Stats: React.FC = () => {
+    const [avgBlockRewardWei, setAvgBlockRewardWei] = useState<string | undefined>(undefined);
+    const [calculatedSoloStakerReward, setCalculatedSoloStakerReward] = useState<string>('');
+    const [calculatedSmoothStakerReward, setCalculatedSmoothStakerReward] = useState<string>('');
 
-export default function Stats() {
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const response = await axios.get('https://sp-api.dappnode.io/memory/statistics');
+                const data = response.data;
+                if ('avg_block_reward_wei' in data) {
+                    setAvgBlockRewardWei(data.avg_block_reward_wei);
+                } else {
+                    console.error('avg_block_reward_wei not found in data object.');
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        if (avgBlockRewardWei) {
+            const soloStakerRewardPerBlock = 0.05; // Hardcoded solo staker reward per block
+            const smoothStakerRewardPerBlock = parseFloat(avgBlockRewardWei) * (1 - 0.07); // Assuming 7% DAppNode fee
+            const soloStakerRewardPerYear = soloStakerRewardPerBlock * 3; // Assuming 3 blocks per year
+            const smoothStakerRewardPerYear = smoothStakerRewardPerBlock * 3; // Assuming 3 blocks per year
+
+            setCalculatedSoloStakerReward(`${soloStakerRewardPerYear.toFixed(2)}`);
+            setCalculatedSmoothStakerReward(`${(smoothStakerRewardPerYear / 1000000000000000000).toFixed(5)}`);
+        }
+    }, [avgBlockRewardWei]);
+
     return (
         <div className="mb-24 py-24 sm:py-32">
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -17,15 +46,23 @@ export default function Stats() {
                         </h2>
                     </div>
                     <dl className="mt-16 grid grid-cols-1 gap-0.5 overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-3">
-                        {stats.map((stat) => (
-                            <div key={stat.id} className="flex flex-col bg-gray-400/5 p-8">
-                                <dt className="text-sm font-semibold leading-6  text-DAppDeep dark:text-DAppDarkText">{stat.name}</dt>
-                                <dd className="order-first text-3xl font-semibold tracking-tight text-purple-600">{stat.value}</dd>
-                            </div>
-                        ))}
+                        <div key={1} className="flex flex-col bg-gray-400/5 p-8">
+                            <dt className="text-sm font-semibold leading-6  text-DAppDeep dark:text-DAppDarkText">Average Yearly Earnings for <strong>Solo Stakers</strong></dt>
+                            <dd className="order-first text-3xl font-semibold tracking-tight text-purple-600">~{calculatedSoloStakerReward} ETH</dd>
+                        </div>
+                        <div key={2} className="flex flex-col bg-gray-400/5 p-8">
+                            <dt className="text-sm font-semibold leading-6  text-DAppDeep dark:text-DAppDarkText"> Average Yearly Earnings for <strong>Smooth Solo Stakers</strong></dt>
+                            <dd className="order-first text-3xl font-semibold tracking-tight text-purple-600">~{calculatedSmoothStakerReward} ETH</dd>
+                        </div>
+                        <div key={3} className="flex flex-col bg-gray-400/5 p-8">
+                            <dt className="text-sm font-semibold leading-6  text-DAppDeep dark:text-DAppDarkText">More Rewards Await Smooth Stakers!</dt>
+                            <dd className="order-first text-3xl font-semibold tracking-tight text-purple-600">~120%</dd>
+                        </div>
                     </dl>
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
+
+export default Stats;
