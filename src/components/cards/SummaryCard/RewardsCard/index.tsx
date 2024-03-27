@@ -65,11 +65,7 @@ export function AverageCard({
   tooltip,
   ethRewardWei,
 }: AverageCardProps) {
-  console.log('ethRewardWei:', ethRewardWei); // Log the ethRewardWei value
-
-  const ethReward = weiToEth(ethRewardWei);
-  const formattedEthReward = toFixedNoTrailingZeros(ethReward, 4);
-  console.log('formattedEthReward:', formattedEthReward);
+  const ethReward = weiToEth(ethRewardWei)
   return (
     <SummaryCard
       isError={isError}
