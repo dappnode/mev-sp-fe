@@ -6,6 +6,7 @@ const Stats: React.FC = () => {
     const [avgBlockRewardWei, setAvgBlockRewardWei] = useState<string | undefined>(undefined);
     const [calculatedSoloStakerReward, setCalculatedSoloStakerReward] = useState<string>('');
     const [calculatedSmoothStakerReward, setCalculatedSmoothStakerReward] = useState<string>('');
+    const [percentageIncrease, setPercentageIncrease] = useState<number | undefined>(undefined);
 
     useEffect(() => {
         async function fetchData() {
@@ -31,8 +32,12 @@ const Stats: React.FC = () => {
             const soloStakerRewardPerYear = soloStakerRewardPerBlock * 3;
             const smoothStakerRewardPerYear = smoothStakerRewardPerBlock * 3;
 
+            const soloStakerRewardPerYearRounded = parseFloat(soloStakerRewardPerYear.toFixed(2));
+            const percentageIncreaseValue = ((smoothStakerRewardPerYear - soloStakerRewardPerYearRounded) / soloStakerRewardPerYearRounded) * 100;
+
             setCalculatedSoloStakerReward(`${soloStakerRewardPerYear.toFixed(2)}`);
             setCalculatedSmoothStakerReward(`${(smoothStakerRewardPerYear / 1000000000000000000).toFixed(5)}`);
+            setPercentageIncrease(percentageIncreaseValue);
         }
     }, [avgBlockRewardWei]);
 
@@ -56,7 +61,9 @@ const Stats: React.FC = () => {
                         </div>
                         <div key={3} className="flex flex-col bg-gray-400/5 p-8">
                             <dt className="text-sm font-semibold leading-6  text-DAppDeep dark:text-DAppDarkText">More Rewards Await Smooth Stakers!</dt>
-                            <dd className="order-first text-3xl font-semibold tracking-tight text-purple-600">~120%</dd>
+                            <dd className="order-first text-3xl font-semibold tracking-tight text-purple-600">
+                                {percentageIncrease !== undefined ? `${(percentageIncrease / 1e18).toFixed(2)}%` : 'Calculating...'}
+                            </dd>
                         </div>
                     </dl>
                 </div>
