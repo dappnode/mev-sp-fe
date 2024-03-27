@@ -4,20 +4,20 @@ import Image from "next/image"
 
 const whySmooth = [
     {
-        name: '🚀 Boost your MEV earnings',
+        name: '🚀 Boost your MEV earnings:',
         description:
             'Pool rewards with other stakers and share profits from every block.',
     },
     {
-        name: '🎰 No luck involved',
+        name: '🎰 No luck involved:',
         description: 'Earn an average of all pool rewards, not just your individual blocks.',
     },
     {
-        name: '🔍 Full transparency',
+        name: '🔍 Full transparency:',
         description: 'Track all blocks, MEV, and validator performance on the dashboard.',
     },
     {
-        name: '✅ Get started easily',
+        name: '✅ Get started easily:',
         description: 'Just update your fee recipient and claim rewards after proposals. Simple and secure.',
     },
 ]
@@ -29,7 +29,7 @@ export default function WhySmooth() {
                 <div className="grid grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:grid-cols-2 lg:items-start">
                     <div className="px-6 lg:px-0 lg:pr-4 lg:pt-4">
                         <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-lg">
-                            <p className="mt-2 text-3xl font-bold tracking-tight text-DAppDeep dark:text-DAppDarkText sm:text-4xl">Why Smooth</p>
+                            <p className="mt-2 text-3xl font-bold tracking-tight text-DAppDeep dark:text-DAppDarkText sm:text-4xl">Why Smooth?</p>
                             <p className="mt-6 text-lg leading-8 text-DAppDeep dark:text-DAppDarkText">
                                 Get higher MEV rewards by joining forces with other stakers
                             </p>
