@@ -1,7 +1,5 @@
-import { Disclosure } from '@headlessui/react'
-import {
-    MinusSmallIcon, PlusSmallIcon
-} from '@heroicons/react/24/outline'
+import { Disclosure, Transition } from '@headlessui/react'
+import { MinusSmallIcon, PlusSmallIcon } from '@heroicons/react/24/outline'
 
 const faqs = [
     {
@@ -25,7 +23,6 @@ const faqs = [
 ]
 
 export default function FAQs() {
-
     return (
         <div className="mx-auto my-16 max-w-7xl px-6 sm:py-32 lg:px-8 lg:py-10">
             <div className="mx-auto max-w-4xl divide-y divide-gray-900/10">
@@ -47,9 +44,19 @@ export default function FAQs() {
                                             </span>
                                         </Disclosure.Button>
                                     </dt>
-                                    <Disclosure.Panel as="dd" className="mt-2 pr-12">
-                                        <p className="text-base leading-7 text-DAppDeep dark:text-DAppDarkText">{faq.answer}</p>
-                                    </Disclosure.Panel>
+                                    <Transition
+                                        enter="transition ease-out duration-200"
+                                        enterFrom="opacity-0 -translate-y-1"
+                                        enterTo="opacity-100 translate-y-0"
+                                        leave="transition ease-in duration-150"
+                                        leaveFrom="opacity-100 translate-y-0"
+                                        leaveTo="opacity-0 -translate-y-1"
+                                        show={open}
+                                    >
+                                        <Disclosure.Panel as="dd" className="mt-2 pr-12">
+                                            <p className="text-base leading-7 text-DAppDeep dark:text-DAppDarkText">{faq.answer}</p>
+                                        </Disclosure.Panel>
+                                    </Transition>
                                 </>
                             )}
                         </Disclosure>
@@ -57,5 +64,5 @@ export default function FAQs() {
                 </dl>
             </div>
         </div>
-    )
+    );
 }

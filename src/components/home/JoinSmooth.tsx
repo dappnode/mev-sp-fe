@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { CheckIcon } from '@heroicons/react/20/solid'
 import { useAccount } from 'wagmi';
+import { Transition } from '@headlessui/react';
 import { DonateDialog } from '@/components/dialogs/DonateDialog'
 
 interface ApiData {
@@ -105,67 +106,77 @@ export default function JoinSmooth() {
                     {errorMessage && <p className="mt-6 text-center text-sm text-red-500">{errorMessage}</p>}
 
                     {result &&
-                        <div className="py-24 sm:py-32">
-                            <div className="mx-auto max-w-7xl px-6 lg:px-8">
-                                <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-                                    {result === 'Yes' ? (
-                                        <>
-                                            <div>
-                                                <p className="text-base leading-7 text-DAppDeep dark:text-DAppDarkText">
-                                                    Yes! It makes sense to join Smooth if you control less than 50% of the pool&apos;s validators. <br />
-                                                    You have {validators} validators, and there are {apiData?.total_subscribed_validators} validators in the pool<br />
-                                                    <br />
-                                                    <a
-                                                        className="rounded-md bg-purple-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600"
-                                                        href="https://smooth.dappnode.io/">
-                                                        Join Now!
-                                                    </a>
-                                                    <br />
-                                                </p>
-                                            </div>
-                                            <dl className="col-span-2 grid gap-x-8 gap-y-10 text-base leading-7 text-gray-600 sm:grid-cols-1 lg:grid-cols-2 lg:gap-y-16">
-                                                {features.map((feature) => (
-                                                    <div key={feature.name} className="relative pl-9">
-                                                        <dt className="font-semibold text-DAppDeep dark:text-DAppDarkText">
-                                                            <a href={feature.href} rel="noopener noreferrer" target="_blank">
-                                                                <CheckIcon aria-hidden="true" className="absolute left-0 top-1 h-5 w-5 text-purple-600" />
-                                                                {feature.name}
-                                                            </a>
-                                                        </dt>
-                                                    </div>
-                                                ))}
-                                            </dl>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <div>
-                                                <p className="text-base leading-7 text-DAppDeep dark:text-DAppDarkText">
-                                                    Smooth is expected to provide smoothing benefits to participants with less than 50% of the validators in the pool <br />
-                                                    You have {validators} validators, and there are {apiData?.total_subscribed_validators} validators in the pool.<br />
-                                                    <br />
-                                                    You can consider donating to the pool and incentivize Solo Stakers by literally bumping their APR, making it more attractive! <br />
-                                                    <br />
-                                                    {isConnected ? <DonateDialog /> : <w3m-button label="Donate now" />}
-                                                    <br />
-                                                </p>
-                                            </div>
-                                            <dl className="col-span-2 grid gap-x-8 gap-y-10 text-base leading-7 text-gray-600 sm:grid-cols-1 lg:grid-cols-2 lg:gap-y-16">
-                                                {features.map((feature) => (
-                                                    <div key={feature.name} className="relative pl-9">
-                                                        <dt className="font-semibold text-DAppDeep dark:text-DAppDarkText">
-                                                            <a href={feature.href} rel="noopener noreferrer" target="_blank">
-                                                                <CheckIcon aria-hidden="true" className="absolute left-0 top-1 h-5 w-5 text-purple-600" />
-                                                                {feature.name}
-                                                            </a>
-                                                        </dt>
-                                                    </div>
-                                                ))}
-                                            </dl>
-                                        </>
-                                    )}
+                        <Transition
+                            show
+                            enter="transition ease-out duration-500"
+                            enterFrom="opacity-0 -translate-y-4"
+                            enterTo="opacity-100 translate-y-0"
+                            leave="transition ease-in duration-300"
+                            leaveFrom="opacity-100 translate-y-0"
+                            leaveTo="opacity-0 -translate-y-4"
+                        >
+                            <div className="py-24 sm:py-32">
+                                <div className="mx-auto max-w-7xl px-6 lg:px-8">
+                                    <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+                                        {result === 'Yes' ? (
+                                            <>
+                                                <div>
+                                                    <p className="text-base leading-7 text-DAppDeep dark:text-DAppDarkText">
+                                                        Yes! It makes sense to join Smooth if you control less than 50% of the pool&apos;s validators. <br />
+                                                        You have {validators} validators, and there are {apiData?.total_subscribed_validators} validators in the pool<br />
+                                                        <br />
+                                                        <a
+                                                            className="rounded-md bg-purple-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600"
+                                                            href="https://smooth.dappnode.io/">
+                                                            Join Now!
+                                                        </a>
+                                                        <br />
+                                                    </p>
+                                                </div>
+                                                <dl className="col-span-2 grid gap-x-8 gap-y-10 text-base leading-7 text-gray-600 sm:grid-cols-1 lg:grid-cols-2 lg:gap-y-16">
+                                                    {features.map((feature) => (
+                                                        <div key={feature.name} className="relative pl-9">
+                                                            <dt className="font-semibold text-DAppDeep dark:text-DAppDarkText">
+                                                                <a href={feature.href} rel="noopener noreferrer" target="_blank">
+                                                                    <CheckIcon aria-hidden="true" className="absolute left-0 top-1 h-5 w-5 text-purple-600" />
+                                                                    {feature.name}
+                                                                </a>
+                                                            </dt>
+                                                        </div>
+                                                    ))}
+                                                </dl>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <div>
+                                                    <p className="text-base leading-7 text-DAppDeep dark:text-DAppDarkText">
+                                                        Smooth is expected to provide smoothing benefits to participants with less than 50% of the validators in the pool <br />
+                                                        You have {validators} validators, and there are {apiData?.total_subscribed_validators} validators in the pool.<br />
+                                                        <br />
+                                                        You can consider donating to the pool and incentivize Solo Stakers by literally bumping their APR, making it more attractive! <br />
+                                                        <br />
+                                                        {isConnected ? <DonateDialog /> : <w3m-button label="Donate now" />}
+                                                        <br />
+                                                    </p>
+                                                </div>
+                                                <dl className="col-span-2 grid gap-x-8 gap-y-10 text-base leading-7 text-gray-600 sm:grid-cols-1 lg:grid-cols-2 lg:gap-y-16">
+                                                    {features.map((feature) => (
+                                                        <div key={feature.name} className="relative pl-9">
+                                                            <dt className="font-semibold text-DAppDeep dark:text-DAppDarkText">
+                                                                <a href={feature.href} rel="noopener noreferrer" target="_blank">
+                                                                    <CheckIcon aria-hidden="true" className="absolute left-0 top-1 h-5 w-5 text-purple-600" />
+                                                                    {feature.name}
+                                                                </a>
+                                                            </dt>
+                                                        </div>
+                                                    ))}
+                                                </dl>
+                                            </>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </Transition>
                     }
                     <svg
                         aria-hidden="true"
