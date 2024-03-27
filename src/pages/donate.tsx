@@ -42,7 +42,7 @@ export default function Donate() {
           <div className="absolute right-20 top-44">
             <DonateCircle size={60} />
           </div>
-          <div className="absolute right-3 bottom-36">
+          <div className="absolute bottom-36 right-3">
             <DonateCircle size={85} />
           </div>
         </div>

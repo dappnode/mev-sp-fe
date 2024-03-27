@@ -43,20 +43,16 @@ export const SOCIAL_LINKEDIN = 'dappnode'
 
 export const PAGES = [
   {
+    name: 'Home',
+    path: '/home',
+  },
+  {
     name: 'Dashboard',
     path: '/',
   },
   {
-    name: 'Why Smooth',
-    path: '/how-to',
-  },
-  {
     name: 'Donate',
     path: '/donate',
-  },
-  {
-    name: 'How to use',
-    path: 'https://docs.dappnode.io/docs/smooth/subscribe-to-smooth/manual',
   },
   {
     name: 'Documentation',
