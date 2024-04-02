@@ -76,7 +76,7 @@ export default function JoinSmooth() {
                         Should I join Smooth?
                     </h2>
                     <p className="mx-auto mt-2 max-w-xl text-center text-lg leading-8 text-gray-400">
-                        Type how many validators do you have
+                        Type how many validators you have
                     </p>
                     <form className="mx-auto mt-10 flex max-w-md gap-x-4" onSubmit={checkValidators}>
                         <input
@@ -126,7 +126,7 @@ export default function JoinSmooth() {
                                                 <Confetti
                                                     height={600}
                                                     recycle={false}
-                                                    width={800}
+                                                    width={1200}
                                                 />
                                                 <div>
                                                     <p className="text-base leading-7 text-DAppDeep dark:text-DAppDarkText">

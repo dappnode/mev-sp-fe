@@ -18,15 +18,19 @@ const faqs = [
         id: 3,
         question: "If I want to unsubscribe my validator from Smooth, when is the best time to do it?",
         answer: "Unsubscribing a validator from Smooth causes it to lose all its pending rewards. Hence, the ideal moment to exit Smooth is just after your last successful block proposal is reflected in Smooth's Smart Contract. A successful block proposal transfers all pending rewards claimable, allowing you to claim them before unsubscribing. This approach minimizes the pending rewards lost when unsubscribing."
+    },
+    {
+        id: 4,
+        question: "Does Smooth take my Consensus Layer (CL) rewards?",
+        answer: "No, Smooth does not take your CL rewards. CL rewards are always sent directly to your withdrawal address. Smooth only takes the execution layer rewards, which are the fees or MEV of the blocks you propose. These are the rewards that are sent to the fee recipient."
     }
-    // More questions...
 ]
 
 export default function FAQs() {
     return (
-        <div className="mx-auto my-16 max-w-7xl px-6 sm:py-32 lg:px-8 lg:py-10">
+        <div className="mx-auto my-16 mt-32 max-w-7xl px-6 sm:py-32 lg:px-8 lg:py-10">
             <div className="mx-auto max-w-4xl divide-y divide-gray-900/10">
-                <h2 className="text-2xl font-bold leading-10 tracking-tight text-DAppDeep dark:text-DAppDarkText">Frequently asked questions</h2>
+                <h2 className="text-3xl font-bold leading-10 tracking-tight text-DAppDeep dark:text-DAppDarkText">Frequently asked questions</h2>
                 <dl className="mt-10 space-y-6 divide-y divide-gray-900/10">
                     {faqs.map((faq) => (
                         <Disclosure key={faq.question} as="div" className="pt-6">

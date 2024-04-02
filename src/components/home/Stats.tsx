@@ -42,30 +42,33 @@ const Stats: React.FC = () => {
     }, [avgBlockRewardWei]);
 
     return (
-        <div className="mb-24 py-24 sm:py-32">
+
+        <div className="py-24 sm:py-32">
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
                 <div className="mx-auto max-w-2xl lg:max-w-none">
                     <div className="text-center">
                         <h2 className="text-3xl font-bold tracking-tight text-DAppDeep dark:text-DAppDarkText sm:text-4xl">
-                            Solo Staking Vs Solo Staking with Smooth
+                            Solo Staking <span className="text-purple-600">Vs</span> Solo Staking with Smooth
                         </h2>
                     </div>
-                    <dl className="mt-16 grid grid-cols-1 gap-5 overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-3">
-                        <div key={1} className="flex flex-col bg-gray-400/5 p-8">
-                            <dt className="text-sm font-semibold leading-6  text-DAppDeep dark:text-DAppDarkText">Average Yearly Earnings for <strong>Solo Stakers</strong></dt>
-                            <dd className="order-first text-3xl font-semibold tracking-tight text-purple-600">~{calculatedSoloStakerReward} ETH</dd>
-                        </div>
-                        <div key={2} className="flex flex-col bg-gray-400/5 p-8">
-                            <dt className="text-sm font-semibold leading-6  text-DAppDeep dark:text-DAppDarkText"> Average Yearly Earnings for <strong>Smooth Solo Stakers</strong></dt>
-                            <dd className="order-first text-3xl font-semibold tracking-tight text-purple-600">~{calculatedSmoothStakerReward} ETH</dd>
-                        </div>
-                        <div key={3} className="flex flex-col bg-gray-400/5 p-8">
-                            <dt className="text-sm font-semibold leading-6  text-DAppDeep dark:text-DAppDarkText">More Rewards Await Smooth Stakers!</dt>
-                            <dd className="order-first text-3xl font-semibold tracking-tight text-purple-600">
-                                {percentageIncrease !== undefined ? `${(percentageIncrease / 1e18).toFixed(2)}%` : 'Calculating...'}
-                            </dd>
-                        </div>
-                    </dl>
+                    <div>
+                        <dl className="mt-10 grid grid-cols-1 gap-5 text-center sm:grid-cols-1 md:grid-cols-2">
+                            <div className="overflow-hidden rounded-lg bg-gray-400/5 px-4 py-5 shadow sm:p-8">
+                                <dd className="text-3xl font-semibold tracking-tight text-purple-600">~{calculatedSoloStakerReward} ETH</dd>
+                                <dt className="mt-2 text-base font-medium leading-6 text-DAppDeep dark:text-DAppDarkText">Average Yearly Earnings for <strong>Solo Stakers</strong></dt>
+                            </div>
+                            <div className="relative overflow-visible rounded-lg bg-gray-400/5 px-4 py-5 shadow sm:p-8">
+                                <span className="absolute right-0 top-0 z-10 -mr-4 -mt-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-purple-600 text-xs font-extralight text-white sm:h-24 sm:w-24 sm:text-sm sm:font-bold">
+                                    {percentageIncrease !== undefined ? `${(percentageIncrease / 1e18).toFixed(2)}%` : 'Calculating...'}
+                                    <br />
+                                    More ETH!
+                                </span>
+
+                                <dd className="text-3xl font-semibold tracking-tight text-purple-600">~{calculatedSmoothStakerReward} ETH</dd>
+                                <dt className="mt-2 text-base font-medium leading-6 text-DAppDeep dark:text-DAppDarkText">Average Yearly Earnings for <strong>Smooth Solo Stakers</strong></dt>
+                            </div>
+                        </dl>
+                    </div>
                 </div>
             </div>
         </div>

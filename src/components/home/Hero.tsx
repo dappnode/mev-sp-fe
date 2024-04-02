@@ -19,19 +19,18 @@ export default function Hero() {
 
                     <div className="mx-auto max-w-4xl text-center">
                         <h1 className="text-4xl font-bold tracking-tight text-DAppDeep dark:text-DAppDarkText sm:text-6xl">
-                            Join Smooth, the MEV Smoothing Pool by Dappnode
+                            Join <span className="text-purple-600">Smooth</span>, the MEV Smoothing Pool by Dappnode
                         </h1>
                         <p className="mt-6 text-lg leading-8 text-DAppDeep dark:text-DAppDarkText">
-                            Earn consistent rewards by pooling MEV with other solo stakers. Fight centralization and strengthen the Ethereum network.
-                        </p>
+                            Earn higher rewards consistently by pooling MEV with other solo stakers, reducing reliance on luck and maximizing the potential of every staked ether.                        </p>
                         <div className="mt-10 flex items-center justify-center gap-x-6">
                             <a
-                                className="rounded-md bg-purple-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600"
+                                className="rounded-md bg-purple-600 px-3.5 py-2.5 text-base font-semibold text-white shadow-sm transition duration-300 hover:scale-110 hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600"
                                 href="#">
                                 Join Now
                             </a>
                             <a
-                                className="text-sm font-semibold leading-6 text-DAppDeep dark:text-DAppDarkText"
+                                className="text-base font-semibold leading-6 text-DAppDeep dark:text-DAppDarkText"
                                 href="#"
                                 id="learn-more-link">
                                 Should I join? <span aria-hidden="true">→</span>

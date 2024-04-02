@@ -1,6 +1,5 @@
+/* eslint-disable jsx-a11y/no-redundant-roles */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-
-import Image from "next/image"
 
 const whySmooth = [
     {
@@ -24,38 +23,66 @@ const whySmooth = [
 
 export default function WhySmooth() {
     return (
-        <div className="overflow-hidden">
-            <div className="mx-auto mt-16 max-w-7xl md:px-6 lg:px-8">
-                <div className="grid grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:grid-cols-2 lg:items-start">
-                    <div className="px-6 lg:px-0 lg:pr-4 lg:pt-4">
-                        <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-lg">
-                            <p className="mt-2 text-3xl font-bold tracking-tight text-DAppDeep dark:text-DAppDarkText sm:text-4xl">Why Smooth?</p>
-                            <p className="mt-6 text-lg leading-8 text-DAppDeep dark:text-DAppDarkText">
-                                Get higher MEV rewards by joining forces with other stakers
+        <div className="py-24 sm:py-32">
+            <div className="relative">
+                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                    <div className="mx-auto flex max-w-2xl flex-col gap-16 bg-gray-400/5 px-6 py-16 shadow sm:rounded-2xl sm:p-8 lg:mx-0 lg:max-w-none lg:flex-row lg:items-center lg:py-20 xl:gap-x-20 xl:px-20">
+                        <div style={{ width: '100%', height: '450px', overflow: 'hidden', display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: '10px', }}>
+                            <div
+                                style={{
+                                    width: '100%',
+                                    height: '100%',
+                                    background: `url('/images/SMOOTH_STILL_POOLPARTY.png')`,
+                                    backgroundSize: 'cover',
+                                    backgroundPosition: 'center',
+                                    transform: 'scale(1.5)',
+                                }}
+                            />
+                        </div>
+
+                        <div className="w-full flex-auto">
+                            <h2 className="text-3xl font-bold tracking-tight text-DAppDeep dark:text-DAppDarkText sm:text-4xl">Why <span className="text-purple-600">Smooth</span>?</h2>
+                            <p className="mt-6 text-lg leading-8 text-DAppDeep dark:text-DAppDarkText ">
+                                Get higher MEV rewards by joining forces with other stakers.
                             </p>
-                            <dl className="mt-10 max-w-xl space-y-8 text-base leading-7 text-DAppDeep dark:text-DAppDarkText lg:max-w-none">
+                            <ul
+                                className="mt-10 grid grid-cols-1 gap-x-8 gap-y-3 text-base leading-7 text-DAppDeep dark:text-DAppDarkText sm:grid-cols-2"
+                                role="list"
+                            >
                                 {whySmooth.map((feature) => (
-                                    <div key={feature.name} className="relative pl-9">
-                                        <dt className="inline font-semibold text-DAppDeep dark:text-DAppDarkText">
-                                            {feature.name}
-                                        </dt>{' '}
-                                        <dd className="inline">{feature.description}</dd>
-                                    </div>
+                                    <li key={feature.name} className="flex cursor-pointer gap-x-3 rounded-md p-2 transition duration-300 hover:scale-110 hover:text-purple-600 dark:hover:bg-purple-600">
+                                        <p className="text-sm">
+                                            <strong className="text-base">{feature.name}</strong>{' '}
+                                            {feature.description}
+                                        </p>
+                                    </li>
                                 ))}
-                            </dl>
+                            </ul>
+                            <div className="mt-10 flex">
+                                <a className="text-sm font-semibold leading-6 text-purple-600" href="#">
+                                    Go to dashboard <span aria-hidden="true">&rarr;</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
-                    <div className="mx-auto mt-8 max-w-2xl sm:mx-0 sm:max-w-none">
-                        <Image
-                            alt="Product screenshot"
-                            className="-mb-12 w-[57rem] rounded-xl bg-gray-800 ring-1 ring-white/10"
-                            height={800}
-                            src="/images/poolv5.png"
-                            width={800}
-                        />
-                    </div>
+                </div>
+                <div
+                    aria-hidden="true"
+                    className="absolute inset-x-0 -top-16 -z-10 flex transform-gpu justify-center overflow-hidden blur-3xl"
+                >
+                    <div
+                        className="aspect-[1318/752] w-[82.375rem] flex-none bg-gradient-to-r from-[#80caff] to-[#4f46e5] opacity-25"
+                        style={{
+                            clipPath:
+                                'polygon(73.6% 51.7%, 91.7% 11.8%, 100% 46.4%, 97.4% 82.2%, 92.5% 84.9%, 75.7% 64%, 55.3% 47.5%, 46.5% 49.4%, 45% 62.9%, 50.3% 87.2%, 21.3% 64.1%, 0.1% 100%, 5.4% 51.1%, 21.4% 63.9%, 58.9% 0.2%, 73.6% 51.7%)',
+                        }}
+                    />
                 </div>
             </div>
         </div>
     )
 }
+
+
+
+

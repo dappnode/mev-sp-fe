@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-html-link-for-pages */
 import { CheckIcon } from '@heroicons/react/20/solid';
 import { useState } from 'react';
 
@@ -36,16 +37,22 @@ export default function HowToSubscribe() {
                     }}
                 >
                     Change your validator&apos;s fee recipient to{' '}
-                    <dl style={{ cursor: 'pointer', textDecoration: 'underline' }}>
-                        {smoothAddress}{' '}
+                    <dl style={{ display: 'flex', justifyContent: 'space-between', cursor: 'pointer', textDecoration: 'underline' }}>
+                        <dt>{smoothAddress}</dt>
+                        <dd>
+                            <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.057 1.123-.08M15.75 18H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08M15.75 18.75v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5A3.375 3.375 0 0 0 6.375 7.5H5.25m11.9-3.664A2.251 2.251 0 0 0 15 2.25h-1.5a2.251 2.251 0 0 0-2.15 1.586m5.8 0c.065.21.1.433.1.664v.75h-6V4.5c0-.231.035-.454.1-.664M6.75 7.5H4.875c-.621 0-1.125.504-1.125 1.125v12c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V16.5a9 9 0 0 0-9-9Z" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                        </dd>
                         {copied && (
-                            <span className="ml-2 text-sm text-green-600">Copied!</span>
+                            <span className="ml-2 text-base text-green-600">Copied!</span>
                         )}
                     </dl>
+
                 </span>
             ),
             status: 'complete',
-            isLink: true,
+            isLink: false,
             href: '',
         },
         {
@@ -57,17 +64,31 @@ export default function HowToSubscribe() {
         },
         {
             name: '3. Start Accumulating Rewards Today!',
-            description: 'Or you can also add a colateral of 0.01 ETH per validator to start accumulating rewards today!',
+            description: (
+                <span>
+                    Or you can also add a colateral of 0.01 ETH per validator on the <u>dashboard</u> to start accumulating rewards today!
+                </span>
+            ),
             status: 'complete',
-            isLink: false,
-            href: '',
+            isLink: true,
+            href: '/',
         },
         {
             name: '4. More Information',
-            description: 'Read more on our documentation for detailed information',
+            description: (
+                <div className="flex items-center justify-center">
+                    <span>
+                        Read more on our documentation for detailed information{' '}
+                    </span>
+                    <svg className="ml-1 inline-block h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                </div>
+            ),
             status: 'complete',
             isLink: true,
             href: 'https://docs.dappnode.io/docs/smooth/subscribe-to-smooth/manual/',
+            target: '_blank',
         },
     ];
 
@@ -76,7 +97,7 @@ export default function HowToSubscribe() {
     }
 
     return (
-        <div className="mx-auto mt-32 max-w-7xl px-6 sm:mt-56 lg:px-8">
+        <div className="sm:mt-46 mx-auto mt-32 max-w-7xl px-6 lg:px-8">
             <div className="mx-auto max-w-2xl lg:text-center">
                 <h2 className="text-base font-semibold leading-7 text-purple-600">
                     How to subscribe
@@ -121,8 +142,8 @@ export default function HowToSubscribe() {
                                                     </span>
                                                 </span>
                                                 <span className="ml-4 flex min-w-0 flex-col">
-                                                    <span className="text-sm font-medium">{step.name}</span>
-                                                    <span className="text-sm text-gray-500">{step.description}</span>
+                                                    <span className="text-base font-medium">{step.name}</span>
+                                                    <span className="text-base text-gray-600">{step.description}</span>
                                                 </span>
                                             </a>
                                         ) : (
@@ -136,8 +157,8 @@ export default function HowToSubscribe() {
                                                     </span>
                                                 </span>
                                                 <span className="ml-4 flex min-w-0 flex-col">
-                                                    <span className="text-sm font-medium">{step.name}</span>
-                                                    <span className="text-sm text-gray-500">{step.description}</span>
+                                                    <span className="text-base font-medium">{step.name}</span>
+                                                    <span className="text-base text-gray-600">{step.description}</span>
                                                 </span>
                                             </div>
                                         )}
@@ -147,6 +168,14 @@ export default function HowToSubscribe() {
                         ))}
                     </ol>
                 </nav>
+            </div>
+            <div className="mt-10 flex items-center justify-center gap-x-6">
+                <a
+                    className="rounded-md bg-purple-600 px-3.5 py-2.5 text-base font-semibold text-white shadow-sm transition duration-300 hover:scale-110 hover:bg-purple-800"
+                    href="/"
+                >
+                    Join Now
+                </a>
             </div>
         </div>
     );
