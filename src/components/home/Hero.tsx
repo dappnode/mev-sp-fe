@@ -1,5 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 
+import Link from "next/link";
+
 export default function Hero() {
     return (
         <div className=" pt-6">
@@ -24,11 +26,11 @@ export default function Hero() {
                         <p className="mt-6 text-lg leading-8 text-DAppDeep dark:text-DAppDarkText">
                             Earn higher rewards consistently by pooling MEV with other solo stakers, reducing reliance on luck and maximizing the potential of every staked ether.                        </p>
                         <div className="mt-10 flex items-center justify-center gap-x-6">
-                            <a
+                            <Link
                                 className="rounded-md bg-purple-600 px-3.5 py-2.5 text-base font-semibold text-white shadow-sm transition duration-300 hover:scale-110 hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600"
-                                href="#">
+                                href="/">
                                 Join Now
-                            </a>
+                            </Link>
                             <a
                                 className="text-base font-semibold leading-6 text-DAppDeep dark:text-DAppDarkText"
                                 href="#"

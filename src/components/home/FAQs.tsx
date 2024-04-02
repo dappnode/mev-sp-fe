@@ -6,7 +6,7 @@ const faqs = [
         id: 1,
         question: "What do I need to claim my rewards?",
         answer:
-            "Once your pending rewards are transformed into accumulated rewards after your block proposal, a small claim transaction will be required from the withdrawal address to send the ETH rewards to your wallet.",
+            "Once your pending rewards are transformed into accumulated rewards after your block proposal, a claim transaction will be required from the withdrawal address to send the ETH rewards to your wallet.",
     },
     {
         id: 2,
