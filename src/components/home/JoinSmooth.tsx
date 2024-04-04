@@ -4,19 +4,44 @@ import { useAccount } from 'wagmi';
 import { Transition } from '@headlessui/react';
 import Confetti from 'react-confetti';
 import Link from 'next/link';
+import { useQuery } from '@tanstack/react-query'
 import { DonateDialog } from '@/components/dialogs/DonateDialog'
+import {
+    fetchStatistics,
+} from '@/client/api/queryFunctions'
 
-interface ApiData {
-    total_subscribed_validators: number;
-}
 export default function JoinSmooth() {
     const [validators, setValidators] = useState('');
     const [result, setResult] = useState<string | null>('');
-    const [apiData, setApiData] = useState<ApiData | null>(null);
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
+
     const { isConnected } = useAccount()
+
+    const statisticsQuery = useQuery(['statistics'], fetchStatistics);
+    const totalSubscribedValidators = statisticsQuery.data?.totalSubscribedValidators;
+
+    const checkValidators = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        if (errorMessage || isSubmitted) {
+            setValidators('');
+            setResult(null);
+            setIsSubmitted(false);
+        } else if (totalSubscribedValidators !== undefined) {
+            const validatorsNumber = parseFloat(validators);
+            if (!Number.isNaN(validatorsNumber)) {
+                if (validatorsNumber > totalSubscribedValidators) {
+                    setResult('No');
+                } else {
+                    setResult('Yes');
+                }
+            } else {
+                setErrorMessage('Please enter a valid number');
+            }
+            setIsSubmitted(true);
+        }
+    }
 
     const features = [
         {
@@ -40,40 +65,6 @@ export default function JoinSmooth() {
             blank: true
         }
     ];
-
-    const checkValidators = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-
-        if (errorMessage) {
-            return;
-        }
-
-        if (isSubmitted) {
-            setValidators('');
-            setResult(null);
-            setApiData(null);
-            setIsSubmitted(false);
-        }
-        else {
-            try {
-                setIsLoading(true);
-                const response = await fetch('https://smooth.dappnode.io/api/memory/statistics');
-                const data = await response.json();
-                setApiData(data);
-
-                if (validators > data.total_subscribed_validators) {
-                    setResult('No');
-                } else {
-                    setResult('Yes');
-                }
-                setIsSubmitted(true);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            } finally {
-                setIsLoading(false);
-            }
-        }
-    }
 
     return (
         <div id="target-section">
@@ -107,12 +98,15 @@ export default function JoinSmooth() {
                         />
                         <button
                             className="flex-none rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                            disabled={isLoading}
+                            disabled={statisticsQuery.isLoading}
                             type="submit"
                         >
-                            {isLoading ? 'Loading...' : (isSubmitted ? 'Restart' : 'Should you?')}
+                            {statisticsQuery.isLoading ? 'Loading...' : (isSubmitted ? 'Restart' : 'Should you?')}
                         </button>
                     </form>
+                    {statisticsQuery.isError && (
+                        <p className="text-xs text-red-500">Error fetching statistics. Please try again later.</p>
+                    )}
                     {errorMessage && <p className="mt-6 text-center text-sm text-red-500">{errorMessage}</p>}
 
                     {result &&
@@ -139,7 +133,7 @@ export default function JoinSmooth() {
                                                     <span className='text-3xl font-bold'>YES!</span>
                                                     <br />
                                                     It makes sense to join Smooth if you control less than 50% of the pool&apos;s validators. <br />
-                                                    You have <strong>{validators}</strong> validators, and there are <strong>{apiData?.total_subscribed_validators}</strong> validators in the pool
+                                                    You have <strong>{validators}</strong> validators, and there are <strong>{totalSubscribedValidators}</strong> validators in the pool
                                                 </p>
                                                 <br />
                                                 <Link
@@ -181,7 +175,7 @@ export default function JoinSmooth() {
                                                     <span className='text-3xl font-bold'>Not yet...</span>
                                                     <br />
                                                     Smooth is expected to provide smoothing benefits to participants with less than 50% of the validators in the pool.
-                                                    You have <strong>{validators}</strong> validators, and there are <strong>{apiData?.total_subscribed_validators}</strong> validators in the pool.<br />
+                                                    You have <strong>{validators}</strong> validators, and there are <strong>{totalSubscribedValidators}</strong> validators in the pool.<br />
                                                     <br />
                                                     You can consider donating to the pool and incentivize Solo Stakers by literally bumping their APR, making it more attractive! <br />
                                                     <div className="mt-4 flex justify-center">
@@ -221,26 +215,6 @@ export default function JoinSmooth() {
                             </div>
                         </Transition>
                     }
-                    <svg
-                        aria-hidden="true"
-                        className="absolute left-1/2 top-1/2 -z-10 h-[64rem] w-[64rem] -translate-x-1/2"
-                        viewBox="0 0 1024 1024"
-                    >
-                        <circle cx={512} cy={512} fill="url(#759c1415-0410-454c-8f7c-9a820de03641)" fillOpacity="0.7" r={512} />
-                        <defs>
-                            <radialGradient
-                                cx={0}
-                                cy={0}
-                                gradientTransform="translate(512 512) rotate(90) scale(512)"
-                                gradientUnits="userSpaceOnUse"
-                                id="759c1415-0410-454c-8f7c-9a820de03641"
-                                r={1}
-                            >
-                                <stop stopColor="#7775D6" />
-                                <stop offset={1} stopColor="#E935C1" stopOpacity={0} />
-                            </radialGradient>
-                        </defs>
-                    </svg>
                 </div>
             </div>
         </div>
