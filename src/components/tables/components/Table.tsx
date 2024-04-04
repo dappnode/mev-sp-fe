@@ -21,6 +21,7 @@ interface TableProps<T> {
   searchPlaceholder?: string
   table: TableType<T>
   title: string
+  showEmptyMessage?: boolean;
 }
 
 export function TableLayout<T extends TableDataTypes>({
@@ -36,6 +37,7 @@ export function TableLayout<T extends TableDataTypes>({
   searchPlaceholder,
   table,
   title,
+  showEmptyMessage,
 }: TableProps<T>) {
   return (
     <div className="w-full overflow-hidden rounded-lg bg-white bg-opacity-80 dark:bg-DAppDarkSurface/200 dark:bg-opacity-80">
@@ -63,6 +65,7 @@ export function TableLayout<T extends TableDataTypes>({
       </div>
       <div className={clsx('overflow-x-scroll', className)}>
         <table className="w-full table-auto">
+          {/* Table headers */}
           <thead className="w-full border-t-[0.5px] border-DAppNeutral/100 bg-DAppNeutral/50 px-[20px] dark:border-DAppDarkSurface/300 dark:bg-DAppDarkSurface/300">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
@@ -83,20 +86,48 @@ export function TableLayout<T extends TableDataTypes>({
               </tr>
             ))}
           </thead>
+          {/* Table body */}
           <tbody className="border-t-[0.5px] border-DAppNeutral/100 dark:border-DAppDarkSurface/300">
-            {table.getRowModel().rows.map((row) => (
-              <tr
-                key={row.id}
-                className="border-b-[0.5px] dark:border-DAppDarkSurface/300">
-                {row.getVisibleCells().map((cell) => (
-                  <td
-                    key={cell.id}
-                    className="px-4 py-3 text-sm font-normal text-DAppDeep dark:text-DAppDarkText">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
+               {data.length === 0 && showEmptyMessage ? ( // Only show if data is empty and showEmptyMessage is true
+              <tr>
+                <td
+                  className="p-6 text-center"
+                  colSpan={table.getHeaderGroups()[0].headers.length}
+                >
+                  <div className="rounded-md bg-yellow-50 p-4">
+                    <div className="flex">
+                      <div className="ml-3">
+                        <h3 className="text-sm font-medium text-yellow-800">
+                          Heads Up!
+                        </h3>
+                        <div className="mt-2 text-sm text-yellow-700">
+                          <p>
+                            Don&apos;t see any validators? Make sure you
+                            connect with your Withdrawal Address to see
+                            your validators listed here.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
               </tr>
-            ))}
+            ) : (
+              // Render table rows if data is available
+              table.getRowModel().rows.map((row) => (
+                <tr
+                  key={row.id}
+                  className="border-b-[0.5px] dark:border-DAppDarkSurface/300">
+                  {row.getVisibleCells().map((cell) => (
+                    <td
+                      key={cell.id}
+                      className="px-4 py-3 text-sm font-normal text-DAppDeep dark:text-DAppDarkText">
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </td>
+                  ))}
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
@@ -108,5 +139,6 @@ export function TableLayout<T extends TableDataTypes>({
         totalPages={table.getPageCount()}
       />
     </div>
-  )
+  );
 }
+

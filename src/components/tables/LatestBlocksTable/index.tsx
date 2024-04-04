@@ -9,6 +9,8 @@ import {
   getCoreRowModel,
   getPaginationRowModel,
   useReactTable,
+  getSortedRowModel,
+  SortingState,
 } from '@tanstack/react-table';
 import { useSearchInput } from '@/hooks/useSearchInput';
 import { addEthSuffix, shortenEthAddress } from '@/utils/web3';
@@ -77,7 +79,7 @@ const getAbsoluteTimeFromSlot = (slot: number) => {
 
 const getColumns = (blackExplorerUrl?: string) => [
   columnHelper.accessor('slot', {
-    header: () => <HeaderTooltip header="Slot" tooltip={headerTooltip.slot} />,
+    header: ({ column }) => <HeaderTooltip column={column} header="Slot" tooltip={headerTooltip.slot} />,
     cell: (info) => {
       const slot = info.getValue();
       return (
@@ -90,6 +92,7 @@ const getColumns = (blackExplorerUrl?: string) => [
         </Link>
       );
     },
+    enableSorting: true,
   }),
   columnHelper.accessor('date', {
     // Adding the 'date' column
@@ -122,9 +125,7 @@ const getColumns = (blackExplorerUrl?: string) => [
     },
   }),
   columnHelper.accessor('rewardType', {
-    header: () => (
-      <HeaderTooltip header="Reward Type" tooltip={headerTooltip.rewardType} />
-    ),
+    header: () => (<HeaderTooltip header="Reward Type" tooltip={headerTooltip.rewardType} />),
     cell: (info) => {
       const rewardType = info.getValue();
       let modifiedRewardType: string = rewardType;
@@ -138,9 +139,7 @@ const getColumns = (blackExplorerUrl?: string) => [
   }),
 
   columnHelper.accessor('reward', {
-    header: () => (
-      <HeaderTooltip header="Reward" tooltip={headerTooltip.reward} />
-    ),
+    header: ({ column }) => (<HeaderTooltip column={column} header="Reward" tooltip={headerTooltip.reward} />),
     cell: (info) => addEthSuffix(toFixedNoTrailingZeros(info.getValue(), 4)),
   }),
   columnHelper.accessor('blockType', {
@@ -157,6 +156,7 @@ const getColumns = (blackExplorerUrl?: string) => [
           : 'Wrong Fee';
       return formattedBlockType;
     },
+    enableSorting: true,
   }),
 ];
 
@@ -174,6 +174,8 @@ export function LatestBlocksTable({
   const [filterValue, setFilterValue] = useState<string>(
     filterOptions[0].value
   );
+  const [sorting, setSorting] = useState<SortingState>([]);
+
   const { searchInput, setSearchInput, debouncedSearchInput } =
     useSearchInput();
 
@@ -200,8 +202,13 @@ export function LatestBlocksTable({
         pageSize: PAGE_SIZE,
       },
     },
+    state: {
+      sorting,
+    },
+    onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(), 
   });
 
   if (isLoading) return <Skeleton title="Latest Smooth Blocks" />;

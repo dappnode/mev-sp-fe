@@ -27,7 +27,7 @@ import type { Validator } from '../types'
 
 const columnHelper = createColumnHelper<Validator>()
 
-const useTableColumns = (table: { getIsAllRowsSelected: () => boolean | undefined; getToggleAllRowsSelectedHandler: () => ChangeEventHandler<HTMLInputElement> | undefined }) => 
+const useTableColumns = (table: { getIsAllRowsSelected: () => boolean | undefined; getToggleAllRowsSelectedHandler: () => ChangeEventHandler<HTMLInputElement> | undefined }) =>
   useMemo(() => [
     columnHelper.accessor('checkbox', {
       header: () => (
@@ -52,7 +52,7 @@ const useTableColumns = (table: { getIsAllRowsSelected: () => boolean | undefine
       cell: (info) => {
         const address = info.getValue()
         const shortAddress = shortenEthAddress(address, 22, 0)
-  
+
         return (
           <Link
             className="font-medium underline"
@@ -172,10 +172,10 @@ export function MyValidatorsTable({
     const validatorKeys = selectedRowsData.map(validator => validator.validatorKey);
     setSelectedValidatorKeys(validatorKeys);
     setSelectedValidatorIds(validatorIds);
-  
+
     // Show the dialog only if two or more validators are selected
     setShowMultiSubscribeDialog(validatorIds.length >= 2);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [table, table.getSelectedRowModel()]);
 
   if (!isConnected) {
@@ -199,6 +199,7 @@ export function MyValidatorsTable({
         />
       )}
       <TableLayout
+        showEmptyMessage
         className="h-[440px]"
         data={data ?? []}
         searchInput={searchInput}
