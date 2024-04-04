@@ -178,7 +178,7 @@ export default function JoinSmooth() {
                                         <>
                                             <div className="mx-auto mb-14 max-w-xl text-center">
                                                 <p className="text-lg leading-8 text-DAppDeep dark:text-DAppDarkText">
-                                                    <span className='text-3xl font-bold'>NO!</span>
+                                                    <span className='text-3xl font-bold'>Not yet...</span>
                                                     <br />
                                                     Smooth is expected to provide smoothing benefits to participants with less than 50% of the validators in the pool.
                                                     You have <strong>{validators}</strong> validators, and there are <strong>{apiData?.total_subscribed_validators}</strong> validators in the pool.<br />
