@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
 import { CheckIcon } from '@heroicons/react/20/solid';
+import Link from 'next/link';
 import { useState } from 'react';
 
 const smoothAddress = '0xAdFb8D27671F14f297eE94135e266aAFf8752e35';
@@ -64,13 +65,12 @@ export default function HowToSubscribe() {
         {
             name: '3. Start Accumulating Rewards Today!',
             description: (
-                <span>
+                <Link className="cursor-pointer" href="/dashboard">
                     Or you can also add a colateral of 0.01 ETH per validator on the <u>dashboard</u> to start accumulating rewards today!
-                </span>
+                </Link>
             ),
             status: 'complete',
             isLink: true,
-            href: '/',
         },
         {
             name: '4. More Information',
