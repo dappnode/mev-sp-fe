@@ -48,7 +48,7 @@ const Stats: React.FC = () => {
                 <div className="mx-auto max-w-2xl lg:max-w-none">
                     <div className="text-center">
                         <h2 className="text-3xl font-bold tracking-tight text-DAppDeep dark:text-DAppDarkText sm:text-4xl">
-                            <span className="staking-solo-stats">Solo Staking</span> Vs <span className="text-purple-600">Solo Staking</span> with Smooth
+                            <span className="staking-solo-stats">Solo Staking</span> Vs <span className="text-purple-600">Solo Staking with Smooth</span>
                         </h2>
                     </div>
                     <div>
