@@ -7,7 +7,6 @@ const smoothAddress = '0xAdFb8D27671F14f297eE94135e266aAFf8752e35';
 export default function HowToSubscribe() {
     const [copied, setCopied] = useState(false);
 
-
     const handleCopyAddress = (e: React.MouseEvent<HTMLSpanElement, MouseEvent> | React.KeyboardEvent<HTMLSpanElement>): void => {
         e.preventDefault();
         if (e.type === 'click' || (e.type === 'keydown' && (e as React.KeyboardEvent<HTMLSpanElement>).key === 'Enter')) {

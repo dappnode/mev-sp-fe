@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const Stats: React.FC = () => {
+export default function Stats() {
     const [avgBlockRewardWei, setAvgBlockRewardWei] = useState<string | undefined>(undefined);
     const [calculatedSoloStakerReward, setCalculatedSoloStakerReward] = useState<string>('');
     const [calculatedSmoothStakerReward, setCalculatedSmoothStakerReward] = useState<string>('');
@@ -73,6 +73,4 @@ const Stats: React.FC = () => {
             </div>
         </div>
     );
-};
-
-export default Stats;
+}

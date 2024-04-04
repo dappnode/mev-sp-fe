@@ -7,7 +7,6 @@ import Stats from '@/components/home/Stats'
 import WhySmooth from '@/components/home/WhySmooth'
 
 export default function Home() {
-
   return (
     <>
       <Hero />

@@ -6,11 +6,9 @@ import Confetti from 'react-confetti';
 import Link from 'next/link';
 import { DonateDialog } from '@/components/dialogs/DonateDialog'
 
-
 interface ApiData {
     total_subscribed_validators: number;
 }
-
 export default function JoinSmooth() {
     const [validators, setValidators] = useState('');
     const [result, setResult] = useState<string | null>('');

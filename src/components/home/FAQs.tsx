@@ -25,7 +25,6 @@ const faqs = [
         answer: "No, Smooth does not take your CL rewards. CL rewards are always sent directly to your withdrawal address. Smooth only takes the execution layer rewards, which are the fees or MEV of the blocks you propose. These are the rewards that are sent to the fee recipient."
     }
 ]
-
 export default function FAQs() {
     return (
         <div className="mx-auto my-16 mt-32 max-w-7xl px-6 sm:py-32 lg:px-8 lg:py-10">

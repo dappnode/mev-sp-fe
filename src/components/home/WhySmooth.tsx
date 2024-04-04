@@ -22,7 +22,6 @@ const whySmooth = [
         description: 'Just update your fee recipient and claim rewards after proposals. Simple and secure.',
     },
 ]
-
 export default function WhySmooth() {
     return (
         <div className="py-24 sm:py-32">
@@ -83,7 +82,3 @@ export default function WhySmooth() {
         </div>
     )
 }
-
-
-
-
