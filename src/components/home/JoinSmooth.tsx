@@ -76,7 +76,7 @@ export default function JoinSmooth() {
     return (
         <div id="target-section">
             <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <div className="relative overflow-hidden px-6 py-24 sm:rounded-3xl sm:px-24 xl:py-32">
+                <div className="relative overflow-hidden px-6 py-24 sm:rounded-3xl xl:py-32">
                     <h2 className="mx-auto max-w-2xl text-center text-3xl font-bold tracking-tight text-DAppDeep dark:text-DAppDarkText sm:text-4xl">
                         Should I join Smooth?
                     </h2>
