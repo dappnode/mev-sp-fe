@@ -34,7 +34,7 @@ export default function WhySmooth() {
                                 style={{
                                     width: '100%',
                                     height: '100%',
-                                    background: `url('/images/SMOOTH_STILL_POOLPARTY.png')`,
+                                    background: `url('/images/smooth_poolparty.png')`,
                                     backgroundSize: 'cover',
                                     backgroundPosition: 'center',
                                     transform: 'scale(1.5)',
