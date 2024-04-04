@@ -28,7 +28,7 @@ export default function Hero() {
                         <div className="mt-10 flex items-center justify-center gap-x-6">
                             <Link
                                 className="rounded-md bg-purple-600 px-3.5 py-2.5 text-base font-semibold text-white shadow-sm transition duration-300 hover:scale-110 hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600"
-                                href="/">
+                                href="/dashboard">
                                 Join Now
                             </Link>
                             <a

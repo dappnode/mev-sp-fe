@@ -172,7 +172,7 @@ export default function HowToSubscribe() {
             <div className="mt-10 flex items-center justify-center gap-x-6">
                 <a
                     className="rounded-md bg-purple-600 px-3.5 py-2.5 text-base font-semibold text-white shadow-sm transition duration-300 hover:scale-110 hover:bg-purple-800"
-                    href="/"
+                    href="/dashboard"
                 >
                     Join Now
                 </a>

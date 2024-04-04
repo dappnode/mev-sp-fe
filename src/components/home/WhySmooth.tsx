@@ -1,6 +1,8 @@
 /* eslint-disable jsx-a11y/no-redundant-roles */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 
+import Link from "next/link"
+
 const whySmooth = [
     {
         name: '🚀 Boost your MEV earnings:',
@@ -58,9 +60,9 @@ export default function WhySmooth() {
                                 ))}
                             </ul>
                             <div className="mt-10 flex">
-                                <a className="text-sm font-semibold leading-6 text-purple-600" href="#">
+                                <Link className="text-sm font-semibold leading-6 text-purple-600" href="/dashboard">
                                     Go to dashboard <span aria-hidden="true">&rarr;</span>
-                                </a>
+                                </Link>
                             </div>
                         </div>
                     </div>
