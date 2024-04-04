@@ -44,11 +44,11 @@ export const SOCIAL_LINKEDIN = 'dappnode'
 export const PAGES = [
   {
     name: 'Home',
-    path: '/home',
+    path: '/',
   },
   {
     name: 'Dashboard',
-    path: '/',
+    path: '/dashboard',
   },
   {
     name: 'Donate',
