@@ -1,7 +1,22 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
+import { useEffect } from 'react';
 import Link from "next/link";
 
 export default function Hero() {
+    useEffect(() => {
+        // Function to handle smooth scrolling when clicking on the "Should I join?" link
+        const handleClick = (event: MouseEvent) => {
+            event.preventDefault();
+            const targetElement = document.getElementById('target-section');
+            targetElement?.scrollIntoView({ behavior: 'smooth' });
+        };
+        const learnMoreLink = document.getElementById('join-smooth');
+        learnMoreLink?.addEventListener('click', handleClick);
+        return () => {
+            learnMoreLink?.removeEventListener('click', handleClick);
+        };
+    }, []);
+
     return (
         <div className=" pt-6">
             <div
@@ -23,7 +38,8 @@ export default function Hero() {
                             Join <span className="text-purple-600">Smooth</span>, the MEV Smoothing Pool by Dappnode
                         </h1>
                         <p className="mt-6 text-lg leading-8 text-DAppDeep dark:text-DAppDarkText">
-                            Earn higher rewards consistently by pooling MEV with other solo stakers, reducing reliance on luck and maximizing the potential of every staked ether.                        </p>
+                            Earn higher rewards consistently by pooling MEV with other solo stakers, reducing reliance on luck and maximizing the potential of every staked ether.
+                        </p>
                         <div className="mt-10 flex items-center justify-center gap-x-6">
                             <Link
                                 className="rounded-md bg-purple-600 px-3.5 py-2.5 text-base font-semibold text-white shadow-sm transition duration-300 hover:scale-110 hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600"
@@ -33,7 +49,7 @@ export default function Hero() {
                             <a
                                 className="text-base font-semibold leading-6 text-DAppDeep dark:text-DAppDarkText"
                                 href="#"
-                                id="learn-more-link">
+                                id="join-smooth">
                                 Should I join? <span aria-hidden="true">→</span>
                             </a>
                         </div>
@@ -52,5 +68,5 @@ export default function Hero() {
                 />
             </div>
         </div>
-    )
+    );
 }
