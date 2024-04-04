@@ -13,10 +13,11 @@ interface ApiData {
 
 export default function JoinSmooth() {
     const [validators, setValidators] = useState('');
-    const [result, setResult] = useState('');
+    const [result, setResult] = useState<string | null>('');
     const [apiData, setApiData] = useState<ApiData | null>(null);
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const { isConnected } = useAccount()
 
     const features = [
@@ -51,12 +52,13 @@ export default function JoinSmooth() {
 
         if (isSubmitted) {
             setValidators('');
-            setResult('');
+            setResult(null);
             setApiData(null);
             setIsSubmitted(false);
         }
         else {
             try {
+                setIsLoading(true);
                 const response = await fetch('https://smooth.dappnode.io/api/memory/statistics');
                 const data = await response.json();
                 setApiData(data);
@@ -69,6 +71,8 @@ export default function JoinSmooth() {
                 setIsSubmitted(true);
             } catch (error) {
                 console.error('Error fetching data:', error);
+            } finally {
+                setIsLoading(false);
             }
         }
     }
@@ -105,9 +109,10 @@ export default function JoinSmooth() {
                         />
                         <button
                             className="flex-none rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                            disabled={isLoading}
                             type="submit"
                         >
-                            {isSubmitted ? 'Restart' : 'Should you?'}
+                            {isLoading ? 'Loading...' : (isSubmitted ? 'Restart' : 'Should you?')}
                         </button>
                     </form>
                     {errorMessage && <p className="mt-6 text-center text-sm text-red-500">{errorMessage}</p>}
