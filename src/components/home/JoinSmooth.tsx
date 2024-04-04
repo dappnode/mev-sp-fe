@@ -132,7 +132,7 @@ export default function JoinSmooth() {
                                                 width={1200}
                                             />
                                             <div className="mb-14 text-center">
-                                                <p className="text-base leading-7 text-DAppDeep dark:text-DAppDarkText">
+                                                <p className="text-lg leading-8 text-DAppDeep dark:text-DAppDarkText">
                                                     <span className='text-3xl font-bold'>YES!</span>
                                                     <br />
                                                     It makes sense to join Smooth if you control less than 50% of the pool&apos;s validators. <br />
@@ -144,47 +144,14 @@ export default function JoinSmooth() {
                                                     href="/">
                                                     Join Now
                                                 </Link>
-                                                <div className="mt-10 flex items-center justify-center text-center text-lg font-bold">
+                                            </div>
+                                            <div className="mx-auto bg-gray-400/5 shadow sm:rounded-2xl sm:p-8 lg:mx-0 lg:max-w-none lg:flex-row lg:items-center lg:py-20 xl:gap-x-20 xl:px-20">
+                                                <div className="mb-16 flex items-center justify-center text-center text-lg font-bold">
                                                     <span>More resources to learn about Smooth</span>
-                                                    <svg className="ml-2 h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                    <svg className="icon-learn-smooth ml-2 h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                                         <path d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" strokeLinecap="round" strokeLinejoin="round" />
                                                     </svg>
                                                 </div>
-                                            </div>
-                                            <dl className="col-span-2 grid gap-x-8 gap-y-10 text-base leading-7 text-gray-600 sm:grid-cols-1 lg:grid-cols-2 lg:gap-y-16">
-                                                {features.map((feature) => (
-                                                    <div key={feature.name} className="relative pl-9">
-                                                        <dt className="font-semibold text-DAppDeep dark:text-DAppDarkText">
-                                                            <a
-                                                                className="group transition-colors duration-300 hover:text-purple-600"
-                                                                href={feature.href}
-                                                                rel="noopener noreferrer"
-                                                                target="_blank"
-                                                            >
-                                                                <CheckIcon aria-hidden="true" className="absolute left-0 top-1 h-5 w-5 text-purple-600" />
-                                                                {feature.name}
-                                                            </a>
-                                                        </dt>
-                                                    </div>
-                                                ))}
-                                            </dl>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <div className="mb-14 text-center">
-                                                <p className="text-base leading-7 text-DAppDeep dark:text-DAppDarkText">
-                                                    <span className='text-3xl font-bold'>NO!</span>
-                                                    <br />
-                                                    Smooth is expected to provide smoothing benefits to participants with less than 50% of the validators in the pool <br />
-                                                    You have <strong>{validators}</strong> validators, and there are <strong>{apiData?.total_subscribed_validators}</strong> validators in the pool.<br />
-                                                    <br />
-                                                    You can consider donating to the pool and incentivize Solo Stakers by literally bumping their APR, making it more attractive! <br />
-                                                    <div className="mt-4 flex justify-center">
-                                                        {isConnected ? <DonateDialog /> : <w3m-button label="Donate now" />}
-                                                    </div>
-                                                </p>
-                                            </div>
-                                            <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
                                                 <dl className="col-span-2 grid gap-x-8 gap-y-10 text-base leading-7 text-gray-600 sm:grid-cols-1 lg:grid-cols-2 lg:gap-y-16">
                                                     {features.map((feature) => (
                                                         <div key={feature.name} className="relative pl-9">
@@ -193,7 +160,8 @@ export default function JoinSmooth() {
                                                                     className="group transition-colors duration-300 hover:text-purple-600"
                                                                     href={feature.href}
                                                                     rel="noopener noreferrer"
-                                                                    target="_blank">
+                                                                    target="_blank"
+                                                                >
                                                                     <CheckIcon aria-hidden="true" className="absolute left-0 top-1 h-5 w-5 text-purple-600" />
                                                                     {feature.name}
                                                                 </a>
@@ -201,6 +169,49 @@ export default function JoinSmooth() {
                                                         </div>
                                                     ))}
                                                 </dl>
+                                            </div>
+
+                                        </>
+                                    ) : (
+                                        <>
+                                            <div className="mx-auto mb-14 max-w-xl text-center">
+                                                <p className="text-lg leading-8 text-DAppDeep dark:text-DAppDarkText">
+                                                    <span className='text-3xl font-bold'>NO!</span>
+                                                    <br />
+                                                    Smooth is expected to provide smoothing benefits to participants with less than 50% of the validators in the pool.
+                                                    You have <strong>{validators}</strong> validators, and there are <strong>{apiData?.total_subscribed_validators}</strong> validators in the pool.<br />
+                                                    <br />
+                                                    You can consider donating to the pool and incentivize Solo Stakers by literally bumping their APR, making it more attractive! <br />
+                                                    <div className="mt-4 flex justify-center">
+                                                        {isConnected ? <DonateDialog /> : <w3m-button label="Donate now" />}
+                                                    </div>
+                                                </p>
+                                            </div>
+                                            <div className="mx-auto bg-gray-400/5 shadow sm:rounded-2xl sm:p-8 lg:mx-0 lg:max-w-none lg:flex-row lg:items-center lg:py-20 xl:gap-x-20 xl:px-20">
+                                                <div className="mb-16 flex items-center justify-center text-center text-lg font-bold">
+                                                    <span>More resources to learn about Smooth</span>
+                                                    <svg className="icon-learn-smooth ml-2 h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" strokeLinecap="round" strokeLinejoin="round" />
+                                                    </svg>
+                                                </div>
+                                                <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
+                                                    <dl className="col-span-2 grid gap-x-8 gap-y-10 text-base leading-7 text-gray-600 sm:grid-cols-1 lg:grid-cols-2 lg:gap-y-16">
+                                                        {features.map((feature) => (
+                                                            <div key={feature.name} className="relative pl-9">
+                                                                <dt className="font-semibold text-DAppDeep dark:text-DAppDarkText">
+                                                                    <a
+                                                                        className="group transition-colors duration-300 hover:text-purple-600"
+                                                                        href={feature.href}
+                                                                        rel="noopener noreferrer"
+                                                                        target="_blank">
+                                                                        <CheckIcon aria-hidden="true" className="absolute left-0 top-1 h-5 w-5 text-purple-600" />
+                                                                        {feature.name}
+                                                                    </a>
+                                                                </dt>
+                                                            </div>
+                                                        ))}
+                                                    </dl>
+                                                </div>
                                             </div>
                                         </>
                                     )}

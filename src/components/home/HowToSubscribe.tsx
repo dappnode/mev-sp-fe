@@ -78,9 +78,9 @@ export default function HowToSubscribe() {
             description: (
                 <div className="flex items-center justify-center">
                     <span>
-                        Read more on our documentation for detailed information{' '}
+                        <span style={{ textDecoration: 'underline' }}>Read more</span> on our documentation for detailed information{' '}
                     </span>
-                    <svg className="ml-1 inline-block h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <svg className="icon-learn-smooth ml-1 inline-block h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                 </div>

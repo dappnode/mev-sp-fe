@@ -30,3 +30,17 @@
     transform: translateX(-100%);
   }
 }
+
+/* Landing page */
+
+.staking-solo-stats {
+  color: #00B1F4;
+}
+
+/* Hide the icon on screens smaller than 640px */
+@media (max-width: 640px) {
+  .icon-learn-smooth {
+    display: none;
+  }
+}
+
