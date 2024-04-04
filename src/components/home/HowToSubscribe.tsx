@@ -96,7 +96,7 @@ export default function HowToSubscribe() {
     }
 
     return (
-        <div className="mx-auto mt-20 max-w-7xl px-16 lg:px-8">
+        <div className="mx-auto mt-20 max-w-7xl px-16">
             <div className="mx-auto max-w-2xl lg:text-center">
                 <h2 className="text-base font-semibold leading-7 text-purple-600">
                     How to subscribe
