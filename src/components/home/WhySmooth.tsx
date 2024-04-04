@@ -26,7 +26,7 @@ export default function WhySmooth() {
         <div className="py-24 sm:py-32">
             <div className="relative">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="mx-auto flex max-w-2xl flex-col gap-16 bg-gray-400/5 px-6 py-16 shadow sm:rounded-2xl sm:p-8 lg:mx-0 lg:max-w-none lg:flex-row lg:items-center lg:py-20 xl:gap-x-20 xl:px-20">
+                    <div className="mx-auto flex max-w-2xl flex-col gap-16 rounded-2xl bg-gray-400/5 px-6 py-16 shadow sm:p-8 lg:mx-0 lg:max-w-none lg:flex-row lg:items-center lg:py-20 xl:gap-x-20 xl:px-20">
                         <div style={{ width: '100%', height: '450px', overflow: 'hidden', display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: '10px', }}>
                             <div
                                 style={{
@@ -39,7 +39,6 @@ export default function WhySmooth() {
                                 }}
                             />
                         </div>
-
                         <div className="w-full flex-auto">
                             <h2 className="text-3xl font-bold tracking-tight text-DAppDeep dark:text-DAppDarkText sm:text-4xl">Why <span className="text-purple-600">Smooth</span>?</h2>
                             <p className="mt-6 text-lg leading-8 text-DAppDeep dark:text-DAppDarkText ">
@@ -50,7 +49,7 @@ export default function WhySmooth() {
                                 role="list"
                             >
                                 {whySmooth.map((feature) => (
-                                    <li key={feature.name} className="flex cursor-pointer gap-x-3 rounded-md p-2 transition duration-300 hover:scale-110 hover:text-purple-600 dark:hover:bg-purple-600">
+                                    <li key={feature.name} className="flex cursor-pointer gap-x-3 rounded-md p-2 transition duration-300 hover:scale-110 hover:text-purple-600">
                                         <p className="text-sm">
                                             <strong className="text-base">{feature.name}</strong>{' '}
                                             {feature.description}

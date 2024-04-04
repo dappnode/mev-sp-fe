@@ -58,7 +58,7 @@ export default function FAQs() {
                                         show={open}
                                     >
                                         <Disclosure.Panel as="dd" className="mt-2 pr-12">
-                                            <p className="text-base leading-7 text-DAppDeep dark:text-DAppDarkText">{faq.answer}</p>
+                                            <p className="text-base leading-7 text-DAppDeep dark:text-DAppGray">{faq.answer}</p>
                                         </Disclosure.Panel>
                                     </Transition>
                                 </>

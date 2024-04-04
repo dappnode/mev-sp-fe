@@ -97,7 +97,7 @@ export default function HowToSubscribe() {
     }
 
     return (
-        <div className="sm:mt-46 mx-auto mt-32 max-w-7xl px-6 lg:px-8">
+        <div className="mx-auto mt-20 max-w-7xl px-16 lg:px-8">
             <div className="mx-auto max-w-2xl lg:text-center">
                 <h2 className="text-base font-semibold leading-7 text-purple-600">
                     How to subscribe
@@ -106,7 +106,7 @@ export default function HowToSubscribe() {
                     Subscribe your validator today in just a few steps!
                 </p>
             </div>
-            <div className="flex items-center justify-center py-14">
+            <div className="items-center justify-center py-14">
                 <nav aria-label="Progress">
                     <ol className="overflow-hidden">
                         {steps.map((step, stepIdx) => (
@@ -143,7 +143,7 @@ export default function HowToSubscribe() {
                                                 </span>
                                                 <span className="ml-4 flex min-w-0 flex-col">
                                                     <span className="text-base font-medium">{step.name}</span>
-                                                    <span className="text-base text-gray-600">{step.description}</span>
+                                                    <span className="text-base text-DAppDeep dark:text-DAppGray">{step.description}</span>
                                                 </span>
                                             </a>
                                         ) : (
@@ -158,7 +158,7 @@ export default function HowToSubscribe() {
                                                 </span>
                                                 <span className="ml-4 flex min-w-0 flex-col">
                                                     <span className="text-base font-medium">{step.name}</span>
-                                                    <span className="text-base text-gray-600">{step.description}</span>
+                                                    <span className="text-base text-DAppDeep dark:text-DAppGray">{step.description}</span>
                                                 </span>
                                             </div>
                                         )}

@@ -145,7 +145,7 @@ export default function JoinSmooth() {
                                                     Join Now
                                                 </Link>
                                             </div>
-                                            <div className="mx-auto bg-gray-400/5 shadow sm:rounded-2xl sm:p-8 lg:mx-0 lg:max-w-none lg:flex-row lg:items-center lg:py-20 xl:gap-x-20 xl:px-20">
+                                            <div className="mx-auto rounded-2xl bg-gray-400/5 p-4 shadow-sm sm:p-8 lg:p-12 xl:p-16">
                                                 <div className="mb-16 flex items-center justify-center text-center text-lg font-bold">
                                                     <span>More resources to learn about Smooth</span>
                                                     <svg className="icon-learn-smooth ml-2 h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -170,7 +170,6 @@ export default function JoinSmooth() {
                                                     ))}
                                                 </dl>
                                             </div>
-
                                         </>
                                     ) : (
                                         <>
@@ -187,7 +186,7 @@ export default function JoinSmooth() {
                                                     </div>
                                                 </p>
                                             </div>
-                                            <div className="mx-auto bg-gray-400/5 shadow sm:rounded-2xl sm:p-8 lg:mx-0 lg:max-w-none lg:flex-row lg:items-center lg:py-20 xl:gap-x-20 xl:px-20">
+                                            <div className="mx-auto rounded-2xl bg-gray-400/5 p-4 shadow-sm sm:p-8 lg:p-12 xl:p-16">
                                                 <div className="mb-16 flex items-center justify-center text-center text-lg font-bold">
                                                     <span>More resources to learn about Smooth</span>
                                                     <svg className="icon-learn-smooth ml-2 h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
