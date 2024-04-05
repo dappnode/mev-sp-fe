@@ -97,11 +97,11 @@ export default function JoinSmooth() {
                             }}
                         />
                         <button
-                            className="flex-none rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                            className="flex-none rounded-md bg-white px-3.5 py-2.5 text-base font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                             disabled={statisticsQuery.isLoading}
                             type="submit"
                         >
-                            {statisticsQuery.isLoading ? 'Loading...' : (isSubmitted ? 'Restart' : 'Should you?')}
+                            {statisticsQuery.isLoading ? 'Loading...' : (isSubmitted ? 'Restart' : 'Should you? 😏')}
                         </button>
                     </form>
                     {statisticsQuery.isError && (
