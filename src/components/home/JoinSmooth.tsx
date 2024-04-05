@@ -84,12 +84,12 @@ export default function JoinSmooth() {
                             id="validators"
                             name="validators"
                             placeholder="Number of validators"
-                            type="number"
+                            type="text"
                             value={validators}
                             onChange={(event) => {
-                                const val = parseFloat(event.target.value);
-                                if (!Number.isNaN(val) && val.toString().length <= 8) {
-                                    setValidators(val.toString());
+                                const input = event.target.value.trim();
+                                if (input === '' || /^[0-9]*$/.test(input)) {
+                                    setValidators(input);
                                     setErrorMessage('');
                                 } else {
                                     setErrorMessage('Please enter a valid number');
