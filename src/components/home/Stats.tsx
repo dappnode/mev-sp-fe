@@ -34,7 +34,7 @@ export default function Stats() {
                         <dl className="mt-10 grid grid-cols-1 gap-5 text-center sm:grid-cols-1 md:grid-cols-2">
                             <div className="overflow-hidden rounded-lg bg-gray-400/5 px-4 py-5 shadow sm:p-8">
                                 <dd className="staking-solo-stats text-3xl font-semibold tracking-tight">
-                                    {averageSolo !== undefined ? `${averageSolo.toFixed(2)} ETH` : 'Loading...'}
+                                    {averageSolo !== undefined ? `~ ${averageSolo.toFixed(2)} ETH` : 'Loading...'}
                                 </dd>
                                 <dt className="mt-2 text-base font-medium leading-6 text-DAppDeep dark:text-DAppDarkText">Average Yearly Earnings for <strong className="staking-solo-stats">Solo Stakers</strong></dt>
                             </div>
@@ -49,7 +49,7 @@ export default function Stats() {
                                     ) : 'Loading...'}
                                 </span>
                                 <dd className="text-3xl font-semibold tracking-tight text-purple-600">
-                                    {averagePool !== undefined ? `${toFixedNoTrailingZeros(weiToEth(averagePool), 4)} ETH` : 'Loading...'}
+                                    {averagePool !== undefined ? `~ ${toFixedNoTrailingZeros(weiToEth(averagePool), 4)} ETH` : 'Loading...'}
                                 </dd>
                                 <dt className="mt-2 text-base font-medium leading-6 text-DAppDeep dark:text-DAppDarkText">Average Yearly Earnings for <strong className="text-purple-600">Smooth Solo Stakers</strong></dt>
                             </div>
