@@ -1,24 +1,25 @@
 /* eslint-disable react/function-component-definition */
 import { useQuery } from '@tanstack/react-query';
-import { fetchStatistics } from '@/client/api/queryFunctions';
+import { fetchConfig, fetchStatistics } from '@/client/api/queryFunctions';
+import { BigNumber } from 'ethers';
+import { weiToEth } from '@/utils/web3';
+import { toFixedNoTrailingZeros } from '@/utils/decimals';
 
 export default function Stats() {
     const statisticsQuery = useQuery(['statistics'], fetchStatistics);
-    const totalAvgBlockRewardWei = statisticsQuery.data?.avgBlockRewardWei;
+    const configQuery = useQuery(['config'], fetchConfig);
+    const avgBlockRewardWei = statisticsQuery.data?.avgBlockRewardWei;
+    const poolFeesPercent = configQuery.data?.poolFeesPercent;
+    const averageSolo = 0.15 // TODO: make this dynamic or more accurate
+    let averagePool;
+    let percentageIncrease;
 
-    // Perform calculations if data is available
-    const soloStakerRewardPerBlock = 0.05;
-    const smoothStakerRewardPerBlock = totalAvgBlockRewardWei ? parseFloat(totalAvgBlockRewardWei) * (1 - 0.07) : 0;
-    const soloStakerRewardPerYear = soloStakerRewardPerBlock * 3;
-    const smoothStakerRewardPerYear = smoothStakerRewardPerBlock * 3;
-
-    const soloStakerRewardPerYearRounded = parseFloat(soloStakerRewardPerYear.toFixed(2));
-    const percentageIncreaseValue = totalAvgBlockRewardWei ? ((smoothStakerRewardPerYear - soloStakerRewardPerYearRounded) / soloStakerRewardPerYearRounded) * 100 : 0;
-
-    // Perform calculations and update state variables synchronously
-    const calculatedSoloStakerReward = `${soloStakerRewardPerYear.toFixed(2)}`;
-    const calculatedSmoothStakerReward = `${(smoothStakerRewardPerYear / 1000000000000000000).toFixed(5)}`;
-    const percentageIncrease = percentageIncreaseValue;
+    if (avgBlockRewardWei !== undefined && poolFeesPercent !== undefined) {
+        const feesPoolFraction = BigNumber.from(poolFeesPercent).div(100);
+        const feeAmount = BigNumber.from(avgBlockRewardWei).mul(feesPoolFraction).div(100);
+        averagePool = BigNumber.from(avgBlockRewardWei).sub(feeAmount).mul(3).toString();
+        percentageIncrease = ((parseFloat(averagePool) - averageSolo) / averageSolo) * 100;
+    }
 
     return (
         <div className="py-24 sm:py-32">
@@ -32,7 +33,7 @@ export default function Stats() {
                     <div>
                         <dl className="mt-10 grid grid-cols-1 gap-5 text-center sm:grid-cols-1 md:grid-cols-2">
                             <div className="overflow-hidden rounded-lg bg-gray-400/5 px-4 py-5 shadow sm:p-8">
-                                <dd className="staking-solo-stats text-3xl font-semibold tracking-tight">~{calculatedSoloStakerReward} ETH</dd>
+                                <dd className="staking-solo-stats text-3xl font-semibold tracking-tight">~{averageSolo} ETH</dd>
                                 <dt className="mt-2 text-base font-medium leading-6 text-DAppDeep dark:text-DAppDarkText">Average Yearly Earnings for <strong className="staking-solo-stats">Solo Stakers</strong></dt>
                             </div>
                             <div className="relative overflow-visible rounded-lg bg-gray-400/5 px-4 py-5 shadow sm:p-8">
@@ -41,7 +42,7 @@ export default function Stats() {
                                     <br />
                                     More ETH!
                                 </span>
-                                <dd className="text-3xl font-semibold tracking-tight text-purple-600">~{calculatedSmoothStakerReward} ETH</dd>
+                                <dd className="text-3xl font-semibold tracking-tight text-purple-600">~{toFixedNoTrailingZeros(weiToEth(averagePool), 4)} ETH</dd>
                                 <dt className="mt-2 text-base font-medium leading-6 text-DAppDeep dark:text-DAppDarkText">Average Yearly Earnings for <strong className="text-purple-600">Smooth Solo Stakers</strong></dt>
                             </div>
                         </dl>
