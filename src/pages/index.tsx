@@ -1,19 +1,21 @@
-import { Head } from '@/components/layout/Head'
-import { UserInfo } from '@/components/views/UserInfo'
-import { Statistics } from '@/components/views/Statistics'
-import { LatestBlocksSP } from '@/components/views/LatestBlocksSP'
-import { LatestDonationsSP } from '@/components/views/LatestDonationsSP'
+import Hero from '@/components/home/Hero'
+import HowToSubscribe from '@/components/home/HowToSubscribe'
+import Donate from '@/components/home/Donate'
+import FAQs from '@/components/home/FAQs'
+import JoinSmooth from '@/components/home/JoinSmooth'
+import Stats from '@/components/home/Stats'
+import WhySmooth from '@/components/home/WhySmooth'
 
 export default function Home() {
   return (
     <>
-      <Head />
-      <main>
-        <Statistics />
-        <UserInfo />
-        <LatestBlocksSP />
-        <LatestDonationsSP />
-      </main>
+      <Hero />
+      <Stats />
+      <WhySmooth />
+      <HowToSubscribe />
+      <Donate />
+      <FAQs />
+      <JoinSmooth />
     </>
   )
 }

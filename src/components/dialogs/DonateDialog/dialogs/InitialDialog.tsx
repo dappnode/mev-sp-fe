@@ -93,7 +93,7 @@ export function InitialDialog({
           </div>
           <div className="mx-auto mt-2 max-w-fit">
             <Link
-              className=" text-violet-500 dark:text-violet-200 underline"
+              className="text-violet-500 underline dark:text-violet-200"
               href={`${chain?.blockExplorers?.default.url}/tx/${contractWrite.data?.hash}`}
               target="_blank">
               Check the transaction on block explorer
