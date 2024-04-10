@@ -1,9 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { useQuery } from '@tanstack/react-query'
-import {
-  fetchProposedBlocks,
-  fetchStatistics,
-} from '@/client/api/queryFunctions'
 import {
   BarChart,
   Bar,
@@ -17,13 +12,18 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from 'recharts'
+import { useQuery } from '@tanstack/react-query'
+import {
+  fetchProposedBlocks,
+  fetchStatistics,
+} from '@/client/api/queryFunctions'
 import { weiToEth } from '@/utils/web3' // Ensure this import is correct
 import styles from '@/styles/stats.module.css'
 import { toFixedNoTrailingZeros } from '@/utils/decimals'
 import { SELECTED_CHAIN } from '@/utils/config'
 
 // Utility to get Unix time for a slot
-const getSlotUnixTime = (slot: number, SELECTED_CHAIN: string) => {
+const getSlotUnixTime = (slot: number) => {
   const genesisUnixTime = SELECTED_CHAIN === 'goerli' ? 1616508000 : 1606824023
   return genesisUnixTime + slot * 12 // Each slot represents 12 seconds
 }
@@ -33,7 +33,7 @@ export default function Stats() {
     queryKey: ['statistics'],
     queryFn: fetchStatistics,
   })
-  const { data: proposedBlocks, isLoading: isLoadingProposedBLocks } = useQuery(
+  const { data: proposedBlocks, isLoading: isLoadingProposedBlocks } = useQuery(
     {
       queryKey: ['proposedblocks'],
       queryFn: fetchProposedBlocks,
@@ -50,9 +50,9 @@ export default function Stats() {
   useEffect(() => {
     if (proposedBlocks) {
       const now = new Date()
-      let dateLabels = Array.from({ length: 7 }).map((_, index) => {
+      const dateLabels = Array.from({ length: 7 }).map((_, index) => {
         // Calculate the date for each of the last 7 days, including today
-        let day = new Date(
+        const day = new Date(
           now.getFullYear(),
           now.getMonth(),
           now.getDate() - (6 - index)
@@ -64,9 +64,9 @@ export default function Stats() {
         }).format(day)
       })
 
-      let rewardsPerDay = Array.from({ length: 7 }, () => 0) // Initialize array for 7 days
+      const rewardsPerDay = Array.from({ length: 7 }, () => 0) // Initialize array for 7 days
       proposedBlocks.forEach((block) => {
-        const blockTime = getSlotUnixTime(block.slot, SELECTED_CHAIN)
+        const blockTime = getSlotUnixTime(block.slot)
         const blockDate = new Date(blockTime * 1000)
         const blockLabel = new Intl.DateTimeFormat('en-US', {
           month: '2-digit',
@@ -111,9 +111,7 @@ export default function Stats() {
         ).getTime() / 1000
 
       const last7DaysBlocks = proposedBlocks
-        .filter(
-          (block) => getSlotUnixTime(block.slot, SELECTED_CHAIN) >= sevenDaysAgo
-        )
+        .filter((block) => getSlotUnixTime(block.slot) >= sevenDaysAgo)
         .map((block) => ({
           ...block,
           rewardEth: weiToEth(block.rewardWei),
@@ -133,15 +131,15 @@ export default function Stats() {
 
   const renderBarChart = () => {
     const data = [
-      { name: 'Proposed', blocks: stats?.totalProposedBlocks ?? 0 },
-      { name: 'Wrong Fee', blocks: stats?.totalWrongfeeBlocks ?? 0 },
-      { name: 'Missed', blocks: stats?.totalMissedBlocks ?? 0 },
+      { blocks: stats?.totalProposedBlocks ?? 0, name: 'Proposed' },
+      { blocks: stats?.totalWrongfeeBlocks ?? 0, name: 'Wrong Fee' },
+      { blocks: stats?.totalMissedBlocks ?? 0, name: 'Missed' },
     ]
 
     return (
       <div>
         <h2 className={styles.chartTitle}>Block Statistics</h2>
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer height={300} width="100%">
           <BarChart data={data}>
             <XAxis dataKey="name" />
             <YAxis />
@@ -178,20 +176,20 @@ export default function Stats() {
     return (
       <div>
         <h2 className={styles.chartTitle}>Rewards Distribution</h2>
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer height={300} width="100%">
           <PieChart>
             <Pie
-              data={data}
-              dataKey="value"
-              nameKey="name"
               cx="50%"
               cy="50%"
-              outerRadius={100}
-              fill="#8884d8">
-              {data.map((entry, index) => (
+              data={data}
+              dataKey="value"
+              fill="#8884d8"
+              nameKey="name"
+              outerRadius={100}>
+              {data.map((entry) => (
                 <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
+                  key={entry.name} // Use a unique identifier (name) as the key
+                  fill={COLORS[data.indexOf(entry) % COLORS.length]}
                 />
               ))}
             </Pie>
@@ -204,26 +202,25 @@ export default function Stats() {
   }
 
   // Example function to render "Total Smooth Rewards Last 7 Days"
-  const renderRewardsLast7DaysChart = () => {
-    return (
-      <div>
-        <h2 className={styles.chartTitle}>Rewards Last 7 Days</h2>
-        <ResponsiveContainer width="100%" height={400}>
-          <BarChart data={rewardsLast7Days}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="day" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="reward" fill="#82ca9d" name="ETH" />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
-    )
-  }
+  const renderRewardsLast7DaysChart = () => (
+    <div>
+      <h2 className={styles.chartTitle}>Rewards Last 7 Days</h2>
+      <ResponsiveContainer height={400} width="100%">
+        <BarChart data={rewardsLast7Days}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="day" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="reward" fill="#82ca9d" name="ETH" />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  )
+
   const renderTopBlocksLast7DaysChart = () => {
     // This function is called when a bar is clicked.
-    const handleBarClick = (data: { blockNumber: any }) => {
+    const handleBarClick = (data: { blockNumber: number }) => {
       // Ensure data.blockNumber is correctly populated.
       if (data.blockNumber) {
         window.open(`https://beaconcha.in/block/${data.blockNumber}`, '_blank')
@@ -233,19 +230,18 @@ export default function Stats() {
     return (
       <div>
         <h2 className={styles.chartTitle}>Top 10 Blocks Last 7 Days</h2>
-        <ResponsiveContainer width="100%" height={400}>
+        <ResponsiveContainer height={400} width="100%">
           <BarChart
-            layout="vertical" // For horizontal bars
             data={topBlocksLast7Days}
+            layout="vertical" // For horizontal bars
             margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis type="number" />
             <YAxis
-              type="category"
               dataKey="name"
-              tick={{ fontSize: 10 }}
-              // Use custom style to make ticks look clickable.
               style={{ cursor: 'pointer' }}
+              tick={{ fontSize: 10 }}
+              type="category"
             />
             <Tooltip cursor={{ fill: 'transparent' }} />
             <Legend />
@@ -253,9 +249,8 @@ export default function Stats() {
               dataKey="reward"
               fill="#82ca9d"
               name="ETH Reward"
-              onClick={handleBarClick}
-              // Apply a cursor style to indicate the bars are clickable
               style={{ cursor: 'pointer' }}
+              onClick={handleBarClick}
             />
           </BarChart>
         </ResponsiveContainer>
@@ -263,7 +258,7 @@ export default function Stats() {
     )
   }
 
-  if (isLoadingStats || isLoadingProposedBLocks) return <div>Loading...</div>
+  if (isLoadingStats || isLoadingProposedBlocks) return <div>Loading...</div>
 
   return (
     <div className={styles.statsContainer}>
