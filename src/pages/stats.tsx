@@ -12,7 +12,6 @@ import {
   CartesianGrid,
   ComposedChart,
   Line,
-  ReferenceLine,
 } from 'recharts'
 import { useTheme } from 'next-themes'
 import { useQuery } from '@tanstack/react-query'
@@ -303,7 +302,7 @@ export default function Stats() {
           <ComposedChart
             data={data}
             margin={{
-              bottom: 25,
+              bottom: 35,
               left: 5,
             }}>
             <XAxis
@@ -313,7 +312,7 @@ export default function Stats() {
                 value: `MEV reward range`,
                 style: { textAnchor: 'middle' },
                 position: 'bottom',
-                offset: 8,
+                offset: 10,
               }}
             />
             <YAxis
@@ -341,12 +340,11 @@ export default function Stats() {
               }}
             />
             <Tooltip content={<CustomTooltip {...{ resolvedTheme }} />} />{' '}
-            {/* <Legend /> */}
-            <Bar dataKey="blocks" fill={resolvedTheme === 'dark' ? '#581C87' : '#C084FC'} yAxisId="left" />
-            {/* <Scatter dataKey="sum" fill="red" yAxisId="right" /> */}
-            <ReferenceLine label="Max" stroke="red" y={9800} yAxisId="right" />
+            <Legend height={20} verticalAlign="top"/>
+            <Bar dataKey="blocks" fill={resolvedTheme === 'dark' ? '#581C87' : '#C084FC'} name="Amount of blocks" yAxisId="left" />
             <Line
               dataKey="sum"
+              name="Total ETH"
               stroke="#ff7300"
               type="monotone"
               yAxisId="right"
