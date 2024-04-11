@@ -11,6 +11,9 @@ import {
   Cell,
   ResponsiveContainer,
   CartesianGrid,
+  ComposedChart,
+  Line,
+  ReferenceLine,
 } from 'recharts'
 import { useQuery } from '@tanstack/react-query'
 import {
@@ -258,6 +261,78 @@ export default function Stats() {
     )
   }
 
+  const renderRewardDistributionChart = () => {
+    // Define reward value buckets
+    const rewardValueBuckets = [
+      { range: '> 10 ETH', min: 10, max: Infinity },
+      { range: '10-1 ETH', min: 1, max: 10 },
+      { range: '1-0.5 ETH', min: 0.5, max: 1 },
+      { range: '0.5-0.1 ETH', min: 0.1, max: 0.5 },
+      { range: '< 0.1 ETH', min: 0, max: 0.1 },
+    ]
+
+    // Initialize counts and sums for each bucket
+    const bucketCounts = rewardValueBuckets.map(() => 0)
+    const bucketSums = rewardValueBuckets.map(() => 0)
+
+    if (!proposedBlocks) {
+      return null // Render nothing if proposedBlocks is undefined
+    }
+
+    // Categorize blocks into buckets and calculate the sum of rewards for each bucket
+    proposedBlocks.forEach((block) => {
+      const rewardEth = toFixedNoTrailingZeros(weiToEth(block.rewardWei), 2)
+      for (let i = 0; i < rewardValueBuckets.length; i += 1) {
+        const { min, max } = rewardValueBuckets[i]
+        if (rewardEth >= min && rewardEth <= max) {
+          bucketCounts[i] += 1
+          bucketSums[i] += toFixedNoTrailingZeros(weiToEth(block.rewardWei), 2)
+          break
+        }
+      }
+    })
+
+    // Prepare data for Scatter graph
+    const data = rewardValueBuckets.map((bucket, index) => ({
+      range: bucket.range,
+      blocks: bucketCounts[index],
+      sum: bucketSums[index],
+    }))
+
+    // Determine the maximum sum to set the domain of the right Y-axis
+    const maxSum = Math.max(...bucketSums)
+
+    return (
+      <div>
+        <h2 className={styles.chartTitle}>Reward Distribution</h2>
+        <ResponsiveContainer height={300} width="100%">
+          <ComposedChart data={data}>
+            <XAxis dataKey="range" dy={5} />
+            <YAxis yAxisId="left" />
+            <YAxis
+              domain={[0, Math.ceil(maxSum)]}
+              orientation="right"
+              stroke="#ff7300"
+              tickFormatter={(value) => `${value} ETH`}
+              yAxisId="right"
+            />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="blocks" fill="#8884d8" yAxisId="left" />
+            {/* <Scatter dataKey="sum" fill="red" yAxisId="right" /> */}
+            <ReferenceLine label="Max" stroke="red" y={9800} yAxisId="right" />
+            <Line
+              dataKey="sum"
+              stroke="#ff7300"
+              type="monotone"
+              yAxisId="right"
+            />
+          </ComposedChart>
+        </ResponsiveContainer>
+      </div>
+    )
+  }
+
   if (isLoadingStats || isLoadingProposedBlocks) return <div>Loading...</div>
 
   return (
@@ -269,6 +344,9 @@ export default function Stats() {
       <div className={styles.row}>
         <div className={styles.column}>{renderRewardsLast7DaysChart()}</div>
         <div className={styles.column}>{renderTopBlocksLast7DaysChart()}</div>
+      </div>
+      <div className={styles.fullWidthGraph}>
+        {renderRewardDistributionChart()}
       </div>
     </div>
   )
