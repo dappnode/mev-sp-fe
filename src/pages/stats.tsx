@@ -55,7 +55,7 @@ export default function Stats() {
 
     return (
       <div>
-        <h2 className={styles.chartTitle}>Block Statistics</h2>
+        <h2 className={styles.chartTitle}>Pool Block Types</h2>
         <ResponsiveContainer height={300} width="100%">
           <BarChart data={data}>
             <XAxis dataKey="name" />
@@ -69,8 +69,7 @@ export default function Stats() {
               }}
             />
             <Tooltip content={<CustomTooltip {...{ resolvedTheme }} />} />{' '}
-            <Legend />
-            <Bar dataKey="blocks" fill="#8884d8" />
+            <Bar dataKey="blocks"   fill={resolvedTheme === 'dark' ? '#581C87' : '#C084FC'} />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -100,7 +99,7 @@ export default function Stats() {
 
     return (
       <div>
-        <h2 className={styles.chartTitle}>Rewards Distribution</h2>
+        <h2 className={styles.chartTitle}>Total Rewards source Distribution</h2>
         <ResponsiveContainer height={300} width="100%">
           <PieChart>
             <Pie
@@ -108,7 +107,7 @@ export default function Stats() {
               cy="50%"
               data={data}
               dataKey="value"
-              fill="#8884d8"
+              fill={resolvedTheme === 'dark' ? '#581C87' : '#C084FC'}
               nameKey="name"
               outerRadius={100}>
               {data.map((entry) => (
@@ -167,15 +166,21 @@ export default function Stats() {
 
     return (
       <div>
-        <h2 className={styles.chartTitle}>Rewards Last 7 Days</h2>
+        <h2 className={styles.chartTitle}>Total Rewards last 7 Days</h2>
         <ResponsiveContainer height={400} width="100%">
           <BarChart data={formattedData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="day" />
-            <YAxis />
+            <YAxis 
+            label={{
+              value: `Total ETH`,
+              style: { textAnchor: 'middle' },
+              angle: -90,
+              position: 'left',
+              offset: -5,
+            }}/>
             <Tooltip content={<CustomTooltip {...{ resolvedTheme }} />} />{' '}
-            <Legend />
-            <Bar dataKey="reward" fill="#82ca9d" name="ETH" />
+            <Bar dataKey="reward" fill={resolvedTheme === 'dark' ? '#581C87' : '#C084FC'} name="ETH" />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -214,14 +219,21 @@ export default function Stats() {
 
     return (
       <div>
-        <h2 className={styles.chartTitle}>Top 10 Blocks Last 7 Days</h2>
+        <h2 className={styles.chartTitle}>Biggest 10 Blocks Last 7 Days</h2>
         <ResponsiveContainer height={400} width="100%">
           <BarChart
             data={formattedBlocks}
             layout="vertical" // For horizontal bars
-            margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+            margin={{ top: 20, right: 30, left: 20, bottom: 16 }}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis type="number" />
+            <XAxis 
+            type="number"
+            label={{
+              value: `number of blocks`,
+              style: { textAnchor: 'middle' },
+              position: 'bottom',
+              offset: 0,
+            }} />
             <YAxis
               dataKey="name"
               style={{ cursor: 'pointer' }}
@@ -229,10 +241,9 @@ export default function Stats() {
               type="category"
             />
             <Tooltip content={<CustomTooltip {...{ resolvedTheme }} />} />{' '}
-            <Legend />
             <Bar
               dataKey="reward"
-              fill="#82ca9d"
+              fill="#0284C7"
               name="ETH Reward"
               style={{ cursor: 'pointer' }}
               onClick={handleBarClick}
@@ -331,7 +342,7 @@ export default function Stats() {
             />
             <Tooltip content={<CustomTooltip {...{ resolvedTheme }} />} />{' '}
             {/* <Legend /> */}
-            <Bar dataKey="blocks" fill="#8884d8" yAxisId="left" />
+            <Bar dataKey="blocks" fill={resolvedTheme === 'dark' ? '#581C87' : '#C084FC'} yAxisId="left" />
             {/* <Scatter dataKey="sum" fill="red" yAxisId="right" /> */}
             <ReferenceLine label="Max" stroke="red" y={9800} yAxisId="right" />
             <Line
