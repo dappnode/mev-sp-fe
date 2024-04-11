@@ -24,7 +24,7 @@ import { weiToEth } from '@/utils/web3' // Ensure this import is correct
 import styles from '@/styles/stats.module.css'
 import { toFixedNoTrailingZeros } from '@/utils/decimals'
 import { SELECTED_CHAIN } from '@/utils/config'
-import CustomTooltip from "@/components/common/ChartsTooltip"
+import CustomTooltip from '@/components/common/ChartsTooltip'
 
 // Utility to get Unix time for a slot
 const getSlotUnixTime = (slot: number) => {
@@ -60,14 +60,15 @@ export default function Stats() {
           <BarChart data={data}>
             <XAxis dataKey="name" />
             <YAxis
-            label={{
-              value: `number of blocks`,
-              style: { textAnchor: 'middle' },
-              angle: -90,
-              position: 'left',
-              offset: 0,
-            }} />
-            <Tooltip content={<CustomTooltip {...{resolvedTheme}} />} /> {/* Use custom tooltip */}
+              label={{
+                value: `number of blocks`,
+                style: { textAnchor: 'middle' },
+                angle: -90,
+                position: 'left',
+                offset: 0,
+              }}
+            />
+            <Tooltip content={<CustomTooltip {...{ resolvedTheme }} />} />{' '}
             <Legend />
             <Bar dataKey="blocks" fill="#8884d8" />
           </BarChart>
@@ -117,7 +118,7 @@ export default function Stats() {
                 />
               ))}
             </Pie>
-            <Tooltip content={<CustomTooltip {...{resolvedTheme}} />} /> {/* Use custom tooltip */}
+            <Tooltip content={<CustomTooltip {...{ resolvedTheme }} />} />{' '}
             <Legend />
           </PieChart>
         </ResponsiveContainer>
@@ -126,45 +127,44 @@ export default function Stats() {
   }
 
   const renderRewardsLast7DaysChart = () => {
-    if (!proposedBlocks) return null; // Return early if proposedBlocks is not available
-  
-    const now = new Date();
+    if (!proposedBlocks) return null // Return early if proposedBlocks is not available
+    const now = new Date()
     const dateLabels = Array.from({ length: 7 }).map((_, index) => {
       // Calculate the date for each of the last 7 days, including today
       const day = new Date(
         now.getFullYear(),
         now.getMonth(),
         now.getDate() - (6 - index)
-      );
+      )
       return new Intl.DateTimeFormat('en-US', {
         month: '2-digit',
         day: '2-digit',
         year: 'numeric',
-      }).format(day);
-    });
-  
-    const rewardsPerDay = Array.from({ length: 7 }, () => 0); // Initialize array for 7 days
+      }).format(day)
+    })
+
+    const rewardsPerDay = Array.from({ length: 7 }, () => 0) // Initialize array for 7 days
     proposedBlocks.forEach((block) => {
-      const blockTime = getSlotUnixTime(block.slot);
-      const blockDate = new Date(blockTime * 1000);
+      const blockTime = getSlotUnixTime(block.slot)
+      const blockDate = new Date(blockTime * 1000)
       const blockLabel = new Intl.DateTimeFormat('en-US', {
         month: '2-digit',
         day: '2-digit',
         year: 'numeric',
-      }).format(blockDate);
-  
-      const dayIndex = dateLabels.indexOf(blockLabel);
+      }).format(blockDate)
+
+      const dayIndex = dateLabels.indexOf(blockLabel)
       if (dayIndex !== -1) {
         // Only add rewards for the last 7 days
-        rewardsPerDay[dayIndex] += weiToEth(block.rewardWei);
+        rewardsPerDay[dayIndex] += weiToEth(block.rewardWei)
       }
-    });
-  
+    })
+
     const formattedData = rewardsPerDay.map((reward, index) => ({
       day: dateLabels[index], // Use the calculated date label
       reward: toFixedNoTrailingZeros(reward, 4),
-    }));
-  
+    }))
+
     return (
       <div>
         <h2 className={styles.chartTitle}>Rewards Last 7 Days</h2>
@@ -173,20 +173,22 @@ export default function Stats() {
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="day" />
             <YAxis />
-            <Tooltip content={<CustomTooltip {...{resolvedTheme}} />} /> {/* Use custom tooltip */}
+            <Tooltip content={<CustomTooltip {...{ resolvedTheme }} />} />{' '}
             <Legend />
             <Bar dataKey="reward" fill="#82ca9d" name="ETH" />
           </BarChart>
         </ResponsiveContainer>
       </div>
-    );
+    )
   }
 
   const renderTopBlocksLast7DaysChart = () => {
     // Calculate top blocks directly here
     const now = new Date()
-    const sevenDaysAgo = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7).getTime() / 1000
-  
+    const sevenDaysAgo =
+      new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7).getTime() /
+      1000
+
     const last7DaysBlocks = proposedBlocks
       ?.filter((block) => getSlotUnixTime(block.slot) >= sevenDaysAgo)
       .map((block) => ({
@@ -195,13 +197,13 @@ export default function Stats() {
       }))
       .sort((a, b) => b.rewardEth - a.rewardEth) // Sort blocks by reward in descending order
       .slice(0, 10) // Keep only top 10
-  
+
     const formattedBlocks = last7DaysBlocks?.map((block) => ({
       name: `${block.block}`, // Assuming `block.number` holds the block number
       reward: toFixedNoTrailingZeros(block.rewardEth, 4),
       blockNumber: block.block, // Store the actual block number for redirection
     }))
-  
+
     // This function is called when a bar is clicked.
     const handleBarClick = (data: { blockNumber: number }) => {
       // Ensure data.blockNumber is correctly populated.
@@ -209,7 +211,7 @@ export default function Stats() {
         window.open(`https://beaconcha.in/block/${data.blockNumber}`, '_blank')
       }
     }
-  
+
     return (
       <div>
         <h2 className={styles.chartTitle}>Top 10 Blocks Last 7 Days</h2>
@@ -226,7 +228,7 @@ export default function Stats() {
               tick={{ fontSize: 10 }}
               type="category"
             />
-            <Tooltip content={<CustomTooltip {...{resolvedTheme}} />} /> {/* Use custom tooltip */}
+            <Tooltip content={<CustomTooltip {...{ resolvedTheme }} />} />{' '}
             <Legend />
             <Bar
               dataKey="reward"
@@ -240,7 +242,7 @@ export default function Stats() {
       </div>
     )
   }
-  
+
   const renderRewardDistributionChart = () => {
     // Define reward value buckets
     const rewardValueBuckets = [
@@ -261,12 +263,12 @@ export default function Stats() {
 
     // Categorize blocks into buckets and calculate the sum of rewards for each bucket
     proposedBlocks.forEach((block) => {
-      const rewardEth = toFixedNoTrailingZeros(weiToEth(block.rewardWei), 2)
+      const rewardEth = weiToEth(block.rewardWei)
       for (let i = 0; i < rewardValueBuckets.length; i += 1) {
         const { min, max } = rewardValueBuckets[i]
         if (rewardEth >= min && rewardEth <= max) {
           bucketCounts[i] += 1
-          bucketSums[i] += toFixedNoTrailingZeros(weiToEth(block.rewardWei), 2)
+          bucketSums[i] += rewardEth // Accumulate sum within the range
           break
         }
       }
@@ -276,32 +278,35 @@ export default function Stats() {
     const data = rewardValueBuckets.map((bucket, index) => ({
       range: bucket.range,
       blocks: bucketCounts[index],
-      sum: bucketSums[index],
+      sum: toFixedNoTrailingZeros(bucketSums[index], 4), // Round the sum within each range
     }))
-
     // Determine the maximum sum to set the domain of the right Y-axis
     const maxSum = Math.max(...bucketSums)
 
     return (
       <div>
-        <h2 className={styles.chartTitle}>MEV Reward Distribution by Ranges</h2>
+        <h2 className={styles.chartTitle}>
+          Proposed MEV Block Distribution by Ranges
+        </h2>
         <ResponsiveContainer height={350} width="100%">
           <ComposedChart
-           data={data}
-           margin={{
-            bottom: 25,
-            left: 5,
-          }}>
-            <XAxis 
-            dataKey="range" dy={5}
-            label={{
-              value: `MEV reward range`,
-              style: { textAnchor: 'middle' },
-              position: 'bottom',
-              offset: 8,
-            }} 
-             />
-            <YAxis 
+            data={data}
+            margin={{
+              bottom: 25,
+              left: 5,
+            }}>
+            <XAxis
+              dataKey="range"
+              dy={5}
+              label={{
+                value: `MEV reward range`,
+                style: { textAnchor: 'middle' },
+                position: 'bottom',
+                offset: 8,
+              }}
+            />
+            <YAxis
+              yAxisId="left"
               label={{
                 value: `number of blocks`,
                 style: { textAnchor: 'middle' },
@@ -309,23 +314,22 @@ export default function Stats() {
                 position: 'left',
                 offset: 0,
               }}
-              yAxisId="left"
             />
             <YAxis
               domain={[0, Math.ceil(maxSum)]}
+              orientation="right"
+              stroke="#ff7300"
+              tickFormatter={(value) => `${value} `}
+              yAxisId="right"
               label={{
                 value: `total ETH`,
                 style: { textAnchor: 'middle' },
                 angle: -90,
                 position: 'right',
                 offset: -10,
-              }} 
-              orientation="right"
-              stroke="#ff7300"
-              tickFormatter={(value) => `${value} `}
-              yAxisId="right"
+              }}
             />
-            <Tooltip content={<CustomTooltip {...{resolvedTheme}} />} /> {/* Use custom tooltip */}
+            <Tooltip content={<CustomTooltip {...{ resolvedTheme }} />} />{' '}
             {/* <Legend /> */}
             <Bar dataKey="blocks" fill="#8884d8" yAxisId="left" />
             {/* <Scatter dataKey="sum" fill="red" yAxisId="right" /> */}
