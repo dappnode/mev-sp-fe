@@ -45,6 +45,6 @@
 .dark .column,
 .dark .fullWidthGraph,
 .dark .chartTitle {
-  background-color: rgba(10, 0, 10, 0.8); /* Darker background color for dark mode */
+  background-color: rgba(20, 20, 20, 0.8); /* Darker background color for dark mode */
   color: #fff; /* Adjust the text color for dark mode */
 }

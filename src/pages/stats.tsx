@@ -59,7 +59,14 @@ export default function Stats() {
         <ResponsiveContainer height={300} width="100%">
           <BarChart data={data}>
             <XAxis dataKey="name" />
-            <YAxis />
+            <YAxis
+            label={{
+              value: `number of blocks`,
+              style: { textAnchor: 'middle' },
+              angle: -90,
+              position: 'left',
+              offset: 0,
+            }} />
             <Tooltip content={<CustomTooltip {...{resolvedTheme}} />} /> {/* Use custom tooltip */}
             <Legend />
             <Bar dataKey="blocks" fill="#8884d8" />
@@ -277,20 +284,49 @@ export default function Stats() {
 
     return (
       <div>
-        <h2 className={styles.chartTitle}>Reward Distribution</h2>
-        <ResponsiveContainer height={300} width="100%">
-          <ComposedChart data={data}>
-            <XAxis dataKey="range" dy={5} />
-            <YAxis yAxisId="left" />
+        <h2 className={styles.chartTitle}>MEV Reward Distribution by Ranges</h2>
+        <ResponsiveContainer height={350} width="100%">
+          <ComposedChart
+           data={data}
+           margin={{
+            bottom: 25,
+            left: 5,
+          }}>
+            <XAxis 
+            dataKey="range" dy={5}
+            label={{
+              value: `MEV reward range`,
+              style: { textAnchor: 'middle' },
+              position: 'bottom',
+              offset: 8,
+            }} 
+             />
+            <YAxis 
+              label={{
+                value: `number of blocks`,
+                style: { textAnchor: 'middle' },
+                angle: -90,
+                position: 'left',
+                offset: 0,
+              }}
+              yAxisId="left"
+            />
             <YAxis
               domain={[0, Math.ceil(maxSum)]}
+              label={{
+                value: `total ETH`,
+                style: { textAnchor: 'middle' },
+                angle: -90,
+                position: 'right',
+                offset: -10,
+              }} 
               orientation="right"
               stroke="#ff7300"
-              tickFormatter={(value) => `${value} ETH`}
+              tickFormatter={(value) => `${value} `}
               yAxisId="right"
             />
             <Tooltip content={<CustomTooltip {...{resolvedTheme}} />} /> {/* Use custom tooltip */}
-            <Legend />
+            {/* <Legend /> */}
             <Bar dataKey="blocks" fill="#8884d8" yAxisId="left" />
             {/* <Scatter dataKey="sum" fill="red" yAxisId="right" /> */}
             <ReferenceLine label="Max" stroke="red" y={9800} yAxisId="right" />
