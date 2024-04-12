@@ -13,10 +13,11 @@ import {
   ComposedChart,
   Line,
 } from 'recharts'
-import { useMemo } from 'react';
+import { useMemo } from 'react'
 import { useTheme } from 'next-themes'
 import { useQuery } from '@tanstack/react-query'
 import {
+  fetchAllValidators,
   fetchProposedBlocks,
   fetchStatistics,
 } from '@/client/api/queryFunctions'
@@ -38,101 +39,203 @@ export default function Stats() {
   const { data: stats, isLoading: isLoadingStats } = useQuery({
     queryKey: ['statistics'],
     queryFn: fetchStatistics,
-  });
+  })
 
-  const { data: proposedBlocks, isLoading: isLoadingProposedBlocks } = useQuery({
-    queryKey: ['proposedblocks'],
-    queryFn: fetchProposedBlocks,
-  });
+  const { data: proposedBlocks, isLoading: isLoadingProposedBlocks } = useQuery(
+    {
+      queryKey: ['proposedblocks'],
+      queryFn: fetchProposedBlocks,
+    }
+  )
 
-  // Centralize computations with useMemo
+  const { data: validatorsData, isLoading: isLoadingValidatorsData } = useQuery(
+    {
+      queryKey: ['validators'],
+      queryFn: fetchAllValidators,
+    }
+  )
+
+  interface ValidatorStats {
+    [index: number]: {
+      totalRewards: bigint
+      blockCount: number
+    }
+  }
+
+  interface ValidatorData {
+    validatorIndex: number
+    totalRewardsEth: number
+    blockCount: number
+  }
+
   const { sortedBlocks, medianReward, averageReward } = useMemo(() => {
-    if (!proposedBlocks || !stats) return { sortedBlocks: [], medianReward: 0, averageReward: 0 };
+    if (!proposedBlocks || !stats)
+      return { sortedBlocks: [], medianReward: 0, averageReward: 0 }
 
-    const rewardsInEth = proposedBlocks.map(block => weiToEth(block.rewardWei));
-    const sortedRewards = [...rewardsInEth].sort((a, b) => a - b);
-    const mid = Math.floor(sortedRewards.length / 2);
-    const median = sortedRewards.length % 2 !== 0 ? sortedRewards[mid] : (sortedRewards[mid - 1] + sortedRewards[mid]) / 2;
-    const average = weiToEth(stats.avgBlockRewardWei);
+    const rewardsInEth = proposedBlocks.map((block) =>
+      weiToEth(block.rewardWei)
+    )
+    const sortedRewards = [...rewardsInEth].sort((a, b) => a - b)
+    const mid = Math.floor(sortedRewards.length / 2)
+    const median =
+      sortedRewards.length % 2 !== 0
+        ? sortedRewards[mid]
+        : (sortedRewards[mid - 1] + sortedRewards[mid]) / 2
+    const average = weiToEth(stats.avgBlockRewardWei)
 
-    const sortedBlocksData = [...proposedBlocks].sort((a, b) => parseFloat(b.rewardWei) - parseFloat(a.rewardWei))
-      .map(block => ({
+    const sortedBlocksData = [...proposedBlocks]
+      .sort((a, b) => parseFloat(b.rewardWei) - parseFloat(a.rewardWei))
+      .map((block) => ({
         blockNumber: block.block,
-        rewardEth: toFixedNoTrailingZeros(weiToEth(block.rewardWei), 4)
-      }));
+        rewardEth: toFixedNoTrailingZeros(weiToEth(block.rewardWei), 4),
+      }))
 
     return {
       sortedBlocks: sortedBlocksData,
       medianReward: toFixedNoTrailingZeros(median, 4),
-      averageReward: toFixedNoTrailingZeros(average, 4)
-    };
-  }, [proposedBlocks, stats]);
+      averageReward: toFixedNoTrailingZeros(average, 4),
+    }
+  }, [proposedBlocks, stats])
+
+  const { validatorData } = useMemo(() => {
+    if (!proposedBlocks) return { validatorData: [] }
+
+    const validatorStats: ValidatorStats = {}
+
+    proposedBlocks.forEach((block) => {
+      const index = block.validatorIndex
+      if (validatorStats[index]) {
+        validatorStats[index].totalRewards += BigInt(block.rewardWei)
+        validatorStats[index].blockCount += 1
+      } else {
+        validatorStats[index] = {
+          totalRewards: BigInt(block.rewardWei),
+          blockCount: 1,
+        }
+      }
+    })
+
+    const sortedValidators: ValidatorData[] = Object.keys(validatorStats)
+      .map((key) => {
+        const index = parseInt(key, 10) // Ensure key is treated as a number
+        return {
+          validatorIndex: index,
+          totalRewardsEth: toFixedNoTrailingZeros(
+            weiToEth(validatorStats[index].totalRewards.toString()),
+            4
+          ),
+          blockCount: validatorStats[index].blockCount,
+        }
+      })
+      .sort((a, b) => b.totalRewardsEth - a.totalRewardsEth)
+      .slice(0, 10) // Get top 10
+
+    return { validatorData: sortedValidators }
+  }, [proposedBlocks])
+
+  // Parse and prepare data
+  const chartData = useMemo(() => {
+    if (!validatorsData) return []
+
+    let yellowCard = 0
+    let redCard = 0
+    let banned = 0
+
+    validatorsData.forEach((validator) => {
+      if (validator.status === 'yellowcard') {
+        yellowCard += 1
+      } else if (validator.status === 'redcard') {
+        redCard += 1
+      } else if (validator.status === 'banned') {
+        banned += 1
+      }
+    })
+
+    return [
+      { name: 'Yellow Card', count: yellowCard },
+      { name: 'Red Card', count: redCard },
+      { name: 'Banned', count: banned },
+    ]
+  }, [validatorsData])
 
   const renderMedianVsAverageBarChart = () => {
-    if (!sortedBlocks.length) return null;
-  
+    if (!sortedBlocks.length) return null
+
     // Data for the bar chart
     const data = [
       { name: 'Median', value: medianReward },
-      { name: 'Average', value: averageReward }
-    ];
-  
+      { name: 'Average', value: averageReward },
+    ]
+
     return (
       <div>
-        <h2 className={styles.chartTitle}>Smooth&#39;s Median vs Average Block Rewards (ETH)</h2>
+        <h2 className={styles.chartTitle}>
+          Smooth&#39;s Median vs Average Block Rewards (ETH)
+        </h2>
         <ResponsiveContainer height={250} width="100%">
           <BarChart data={data}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
-            <YAxis label={{ value: 'ETH', angle: -90, position: 'insideLeft' }} />
+            <YAxis
+              label={{ value: 'ETH', angle: -90, position: 'insideLeft' }}
+            />
             <Tooltip content={<CustomTooltip {...{ resolvedTheme }} />} />
-            <Bar barSize={50} dataKey="value" fill={resolvedTheme === 'dark' ? '#6B21A8' : '#C084FC'} />
+            <Bar
+              barSize={50}
+              dataKey="value"
+              fill={resolvedTheme === 'dark' ? '#6B21A8' : '#C084FC'}
+            />
           </BarChart>
         </ResponsiveContainer>
       </div>
-    );
-  };
-  
+    )
+  }
+
   const renderRewardsByBlockChart = () => {
-    if (!sortedBlocks.length) return null;
-  
+    if (!sortedBlocks.length) return null
+
     return (
       <div>
         <h2 className={styles.chartTitle}>All Blocks sorted by MEV Reward</h2>
-        <ResponsiveContainer  height={400} width="100%">
+        <ResponsiveContainer height={400} width="100%">
           <BarChart
             data={sortedBlocks}
             layout="horizontal"
-            margin={{ top: 20, right: 30, left: 20, bottom: 17 }}
-            
-          >
+            margin={{ top: 20, right: 30, left: 20, bottom: 17 }}>
             <CartesianGrid strokeDasharray="3 3" />
-            <YAxis 
-            type="number"
-            label={{
-              value: `MEV Reward (ETH)`,
-              style: { textAnchor: 'middle' },
-              position: 'left',
-              angle: -90,
-              offset: -10,
-            }} />
-            <XAxis 
-            dataKey="blockNumber"
-            tick={{ fontSize: 0}}
-            tickLine={false}
-            label={{
-              value: `Proposed blocks`,
-              style: { textAnchor: 'middle' },
-              position: 'bottom',
-              offset: 0,
-            }} />
+            <YAxis
+              type="number"
+              label={{
+                value: `MEV Reward (ETH)`,
+                style: { textAnchor: 'middle' },
+                position: 'left',
+                angle: -90,
+                offset: -10,
+              }}
+            />
+            <XAxis
+              dataKey="blockNumber"
+              tick={{ fontSize: 0 }}
+              tickLine={false}
+              label={{
+                value: `Proposed blocks`,
+                style: { textAnchor: 'middle' },
+                position: 'bottom',
+                offset: 0,
+              }}
+            />
             <Tooltip content={<CustomTooltip {...{ resolvedTheme }} />} />
-            <Bar dataKey="rewardEth" fill={resolvedTheme === 'dark' ? '#6B21A8' : '#C084FC'} isAnimationActive={false} name="ETH Reward" />
+            <Bar
+              dataKey="rewardEth"
+              fill={resolvedTheme === 'dark' ? '#6B21A8' : '#C084FC'}
+              isAnimationActive={false}
+              name="ETH Reward"
+            />
           </BarChart>
         </ResponsiveContainer>
       </div>
-    );
-  };
+    )
+  }
 
   const renderBarChart = () => {
     const data = [
@@ -157,7 +260,10 @@ export default function Stats() {
               }}
             />
             <Tooltip content={<CustomTooltip {...{ resolvedTheme }} />} />{' '}
-            <Bar dataKey="blocks"   fill={resolvedTheme === 'dark' ? '#6B21A8' : '#C084FC'} />
+            <Bar
+              dataKey="blocks"
+              fill={resolvedTheme === 'dark' ? '#6B21A8' : '#C084FC'}
+            />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -214,45 +320,45 @@ export default function Stats() {
   }
 
   const renderRewardsLast30DaysChart = () => {
-    if (!proposedBlocks) return null; // Return early if proposedBlocks is not available
-  
-    const now = new Date();
+    if (!proposedBlocks) return null // Return early if proposedBlocks is not available
+
+    const now = new Date()
     const dateLabels = Array.from({ length: 30 }).map((_, index) => {
       // Calculate the date for each of the last 30 days, including today
       const day = new Date(
         now.getFullYear(),
         now.getMonth(),
         now.getDate() - (29 - index) // Adjusted from 6 to 29
-      );
+      )
       return new Intl.DateTimeFormat('en-US', {
         month: '2-digit',
         day: '2-digit',
         year: 'numeric',
-      }).format(day);
-    });
-  
-    const rewardsPerDay = Array.from({ length: 30 }, () => 0); // Adjusted from 7 to 30
+      }).format(day)
+    })
+
+    const rewardsPerDay = Array.from({ length: 30 }, () => 0) // Adjusted from 7 to 30
     proposedBlocks.forEach((block) => {
-      const blockTime = getSlotUnixTime(block.slot);
-      const blockDate = new Date(blockTime * 1000);
+      const blockTime = getSlotUnixTime(block.slot)
+      const blockDate = new Date(blockTime * 1000)
       const blockLabel = new Intl.DateTimeFormat('en-US', {
         month: '2-digit',
         day: '2-digit',
         year: 'numeric',
-      }).format(blockDate);
-  
-      const dayIndex = dateLabels.indexOf(blockLabel);
+      }).format(blockDate)
+
+      const dayIndex = dateLabels.indexOf(blockLabel)
       if (dayIndex !== -1) {
         // Only add rewards for the last 30 days
-        rewardsPerDay[dayIndex] += weiToEth(block.rewardWei);
+        rewardsPerDay[dayIndex] += weiToEth(block.rewardWei)
       }
-    });
-  
+    })
+
     const formattedData = rewardsPerDay.map((reward, index) => ({
       day: dateLabels[index], // Use the calculated date label
       reward: toFixedNoTrailingZeros(reward, 4),
-    }));
-  
+    }))
+
     return (
       <div>
         <h2 className={styles.chartTitle}>Total Rewards Last 30 Days</h2>
@@ -260,7 +366,7 @@ export default function Stats() {
           <BarChart data={formattedData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="day" />
-            <YAxis 
+            <YAxis
               label={{
                 value: `Total ETH`,
                 style: { textAnchor: 'middle' },
@@ -270,13 +376,17 @@ export default function Stats() {
               }}
             />
             <Tooltip content={<CustomTooltip {...{ resolvedTheme }} />} />
-            <Bar dataKey="reward" fill={resolvedTheme === 'dark' ? '#6B21A8' : '#C084FC'} name="ETH" />
+            <Bar
+              dataKey="reward"
+              fill={resolvedTheme === 'dark' ? '#6B21A8' : '#C084FC'}
+              name="ETH"
+            />
           </BarChart>
         </ResponsiveContainer>
       </div>
-    );
+    )
   }
-  
+
   const renderTopBlocksLast7DaysChart = () => {
     // Calculate top blocks directly here
     const now = new Date()
@@ -316,14 +426,15 @@ export default function Stats() {
             layout="vertical" // For horizontal bars
             margin={{ top: 20, right: 30, left: 20, bottom: 16 }}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis 
-            type="number"
-            label={{
-              value: `ETH Reward`,
-              style: { textAnchor: 'middle' },
-              position: 'bottom',
-              offset: 0,
-            }} />
+            <XAxis
+              type="number"
+              label={{
+                value: `ETH Reward`,
+                style: { textAnchor: 'middle' },
+                position: 'bottom',
+                offset: 0,
+              }}
+            />
             <YAxis
               dataKey="name"
               style={{ cursor: 'pointer' }}
@@ -431,8 +542,13 @@ export default function Stats() {
               }}
             />
             <Tooltip content={<CustomTooltip {...{ resolvedTheme }} />} />{' '}
-            <Legend height={20} verticalAlign="top"/>
-            <Bar dataKey="blocks" fill={resolvedTheme === 'dark' ? '#6B21A8' : '#C084FC'} name="Amount of blocks" yAxisId="left" />
+            <Legend height={20} verticalAlign="top" />
+            <Bar
+              dataKey="blocks"
+              fill={resolvedTheme === 'dark' ? '#6B21A8' : '#C084FC'}
+              name="Amount of blocks"
+              yAxisId="left"
+            />
             <Line
               dataKey="sum"
               name="Total ETH"
@@ -446,6 +562,97 @@ export default function Stats() {
     )
   }
 
+  const renderValidatorsPerformanceChart = () => {
+    if (validatorData.length === 0) return null
+
+    return (
+      <div>
+        <h2 className={styles.chartTitle}>
+          Smooth&#39;s Top Validators by Rewards Shared
+        </h2>
+        <ResponsiveContainer height={400} width="100%">
+          <ComposedChart
+            data={validatorData}
+            margin={{
+              bottom: 25,
+              left: 0,
+              right: 0,
+            }}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis
+              dataKey="validatorIndex"
+              name="Validator Index"
+              angle={-45}
+              tick={{ fontSize: 11, dy: 12 }}
+            />
+            <YAxis
+              yAxisId="left"
+              label={{
+                angle: -90,
+                position: 'insideLeft',
+                offset: 15,
+                style: { textAnchor: 'middle' },
+                value: 'Total Rewards Shared (ETH)',
+              }}
+            />
+            <YAxis
+              orientation="right"
+              stroke="#FFB900"
+              yAxisId="right"
+              label={{
+                angle: -90,
+                position: 'insideRight',
+                offset: 20,
+                style: { textAnchor: 'middle' },
+                value: 'Number of Blocks Proposed',
+              }}
+            />
+            <Tooltip content={<CustomTooltip {...{ resolvedTheme }} />} />
+            <Bar
+              yAxisId="left"
+              dataKey="totalRewardsEth"
+              fill={resolvedTheme === 'dark' ? '#6B21A8' : '#C084FC'}
+              name="Total Rewards (ETH)"
+            />
+            <Line
+              yAxisId="right"
+              dataKey="blockCount"
+              stroke="#FFB900"
+              name="Number of Blocks"
+            />
+            <Legend height={30} verticalAlign="top" />
+          </ComposedChart>
+        </ResponsiveContainer>
+      </div>
+    )
+  }
+
+  const renderStatusChart = () => {
+    return (
+      <div>
+        <h2 className={styles.chartTitle}>
+          Total Unhealthy Smooth's Validators
+        </h2>
+        <ResponsiveContainer width="100%" height={400}>
+          <BarChart
+            layout="vertical" // Set the layout to vertical for a horizontal bar chart
+            data={chartData}
+            margin={{ bottom: 5, left: 20, right: 30, top: 5 }}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis type="number" />
+            <YAxis dataKey="name" type="category" />
+            <Tooltip content={<CustomTooltip {...{ resolvedTheme }} />} />
+            <Bar
+              dataKey="count"
+              fill={resolvedTheme === 'dark' ? '#6B21A8' : '#C084FC'}
+              barSize={20}
+            />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    )
+  }
+
   if (isLoadingStats || isLoadingProposedBlocks) return <div>Loading...</div>
 
   return (
@@ -453,7 +660,7 @@ export default function Stats() {
       className={`${styles.statsContainer} ${
         resolvedTheme === 'dark' ? styles.dark : ''
       }`}>
-             <div className={styles.row}>
+      <div className={styles.row}>
         <div className={styles.column}>{renderMedianVsAverageBarChart()}</div>
         <div className={styles.column}>{renderBarChart()}</div>
       </div>
@@ -478,6 +685,12 @@ export default function Stats() {
           resolvedTheme === 'dark' ? styles.dark : ''
         }`}>
         {renderRewardsByBlockChart()}
+      </div>
+      <div className={styles.row}>
+        <div className={styles.column}>
+          {renderValidatorsPerformanceChart()}
+        </div>
+        <div className={styles.column}>{renderStatusChart()}</div>
       </div>
     </div>
   )
