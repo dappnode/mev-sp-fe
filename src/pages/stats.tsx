@@ -60,7 +60,7 @@ export default function Stats() {
             <XAxis dataKey="name" />
             <YAxis
               label={{
-                value: `number of blocks`,
+                value: `Number of blocks`,
                 style: { textAnchor: 'middle' },
                 angle: -90,
                 position: 'left',
@@ -94,7 +94,7 @@ export default function Stats() {
       { name: 'Block Rewards', value: blockRewardsETH },
     ]
 
-    const COLORS = ['#0088FE', '#00C49F']
+    const COLORS = ['#FFB900', resolvedTheme === 'dark' ? '#581C87' : '#C084FC']
 
     return (
       <div>
@@ -228,7 +228,7 @@ export default function Stats() {
             <XAxis 
             type="number"
             label={{
-              value: `number of blocks`,
+              value: `ETH Reward`,
               style: { textAnchor: 'middle' },
               position: 'bottom',
               offset: 0,
@@ -242,7 +242,7 @@ export default function Stats() {
             <Tooltip content={<CustomTooltip {...{ resolvedTheme }} />} />{' '}
             <Bar
               dataKey="reward"
-              fill="#0284C7"
+              fill="#FFB900"
               name="ETH Reward"
               style={{ cursor: 'pointer' }}
               onClick={handleBarClick}
@@ -318,7 +318,7 @@ export default function Stats() {
             <YAxis
               yAxisId="left"
               label={{
-                value: `number of blocks`,
+                value: `Number of blocks`,
                 style: { textAnchor: 'middle' },
                 angle: -90,
                 position: 'left',
@@ -328,11 +328,11 @@ export default function Stats() {
             <YAxis
               domain={[0, Math.ceil(maxSum)]}
               orientation="right"
-              stroke="#ff7300"
+              stroke="#FFB900"
               tickFormatter={(value) => `${value} `}
               yAxisId="right"
               label={{
-                value: `total ETH`,
+                value: `Total ETH`,
                 style: { textAnchor: 'middle' },
                 angle: -90,
                 position: 'right',
@@ -345,7 +345,7 @@ export default function Stats() {
             <Line
               dataKey="sum"
               name="Total ETH"
-              stroke="#ff7300"
+              stroke="#FFB900"
               type="monotone"
               yAxisId="right"
             />
