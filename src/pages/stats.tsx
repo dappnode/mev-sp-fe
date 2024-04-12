@@ -17,6 +17,7 @@ import { useMemo } from 'react'
 import { useTheme } from 'next-themes'
 import { useQuery } from '@tanstack/react-query'
 import {
+  fetchAllBlocks,
   fetchAllValidators,
   fetchProposedBlocks,
   fetchStatistics,
@@ -52,6 +53,13 @@ export default function Stats() {
     {
       queryKey: ['validators'],
       queryFn: fetchAllValidators,
+    }
+  )
+
+  const { data: allBlocks, isLoading: isLoadingAllBlocks } = useQuery(
+    {
+      queryKey: ['allblocks'],
+      queryFn: fetchAllBlocks,
     }
   )
 
@@ -158,6 +166,83 @@ export default function Stats() {
     ]
   }, [validatorsData])
 
+  const poolHealthPercentage = useMemo(() => {
+    if (!allBlocks) return 0;
+  
+    const now = Date.now();
+    const sevenDaysAgo = now - 7 * 24 * 60 * 60 * 1000;  // Calculate timestamp for 7 days ago
+    const lastWeekBlocks = allBlocks.filter(block => {
+      const blockTime = getSlotUnixTime(block.slot) * 1000;  // Convert slot time to milliseconds
+      return blockTime >= sevenDaysAgo;
+    });
+  
+    const okPoolProposals = lastWeekBlocks.filter(block => block.blockType === "okpoolproposal").length;
+    const totalBlocks = lastWeekBlocks.length;
+  
+    const percentage = totalBlocks > 0 ? (okPoolProposals / totalBlocks) * 100 : 0;
+    return toFixedNoTrailingZeros(percentage, 2);  // Format the percentage to 2 decimal places
+  }, [allBlocks]);
+  
+
+  const renderSmoothSubs = () => {
+    if (!stats) return null
+
+    const totalSubs = stats.totalSubscribedValidators
+    return (
+      <div>
+        <h2 className={styles.chartTitle}>Total Subscribed Validators</h2>
+        <div className={styles.numberGraph}>{totalSubs}</div>
+      </div>
+    )
+  }
+
+  const renderPoolHealth = () => {
+    const poolHealthFormatted = toFixedNoTrailingZeros(poolHealthPercentage, 2);
+    const missedOrWrongFormatted = toFixedNoTrailingZeros(100 - poolHealthPercentage, 2);
+  
+    const data = [
+      { name: ' % Successful Proposals', value: poolHealthFormatted },
+      { name: ' % Missed or Wrong proposals', value: missedOrWrongFormatted }
+    ];
+  
+    const COLORS = [resolvedTheme === 'dark' ? '#6B21A8' : '#C084FC', '#FFBB28']; // Color for pool health and the remaining part
+  
+    return (
+      <div>
+        <h2 className={styles.chartTitle}>Smooth Health Last 7 days</h2>
+        <ResponsiveContainer 
+        height={100} 
+        width="100%">
+          <PieChart
+            margin={{ bottom: 0 }}>
+                      
+            <Pie
+              cx="50%"
+              cy="90%"
+              data={data}
+              dataKey="value"
+              endAngle={0}
+              fill={resolvedTheme === 'dark' ? '#6B21A8' : '#C084FC'}
+              innerRadius={47}
+              nameKey="name"
+              outerRadius={70}
+              startAngle={180}>
+              {data.map((entry) => (
+                <Cell
+                  key={entry.name} // Use a unique identifier (name) as the key
+                  fill={COLORS[data.indexOf(entry) % COLORS.length]}
+                />
+              ))}
+            </Pie>
+            <Tooltip content={<CustomTooltip {...{ resolvedTheme }} />} />{' '}
+            <Legend height={20} verticalAlign="bottom" />
+
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
+    )
+  };
+
   const renderMedianVsAverageBarChart = () => {
     if (!sortedBlocks.length) return null
 
@@ -194,6 +279,8 @@ export default function Stats() {
   const renderRewardsByBlockChart = () => {
     if (!sortedBlocks.length) return null
 
+    const maxReward = Math.max(...sortedBlocks.map(block => block.rewardEth));
+    
     return (
       <div>
         <h2 className={styles.chartTitle}>All Blocks sorted by MEV Reward</h2>
@@ -204,6 +291,7 @@ export default function Stats() {
             margin={{ top: 20, right: 30, left: 20, bottom: 17 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <YAxis
+              domain={[0, Math.ceil(maxReward)]} 
               type="number"
               label={{
                 value: `MEV Reward (ETH)`,
@@ -246,7 +334,7 @@ export default function Stats() {
 
     return (
       <div>
-        <h2 className={styles.chartTitle}>Pool Block Types</h2>
+        <h2 className={styles.chartTitle}>Total Smooth Proposals</h2>
         <ResponsiveContainer height={250} width="100%">
           <BarChart data={data}>
             <XAxis dataKey="name" />
@@ -570,7 +658,7 @@ export default function Stats() {
         <h2 className={styles.chartTitle}>
           Smooth&#39;s Top Validators by Rewards Shared
         </h2>
-        <ResponsiveContainer height={400} width="100%">
+        <ResponsiveContainer height={300} width="100%">
           <ComposedChart
             data={validatorData}
             margin={{
@@ -613,7 +701,6 @@ export default function Stats() {
               fill={resolvedTheme === 'dark' ? '#6B21A8' : '#C084FC'}
               name="Total Rewards (ETH)"
               yAxisId="left"
-
             />
             <Line
               dataKey="blockCount"
@@ -635,7 +722,7 @@ export default function Stats() {
         <h2 className={styles.chartTitle}>
           Total Unhealthy Smooth&#39;s Validators
         </h2>
-        <ResponsiveContainer height={400} width="100%">
+        <ResponsiveContainer height={300} width="100%">
           <BarChart
             data={chartData}
             layout="vertical" // Set the layout to vertical for a horizontal bar chart
@@ -655,13 +742,18 @@ export default function Stats() {
     )
   }
 
-  if (isLoadingStats || isLoadingProposedBlocks || isLoadingValidatorsData) return <div>Loading...</div>
+  if (isLoadingStats || isLoadingProposedBlocks || isLoadingValidatorsData || isLoadingAllBlocks)
+    return <div>Loading...</div>
 
   return (
     <div
       className={`${styles.statsContainer} ${
         resolvedTheme === 'dark' ? styles.dark : ''
       }`}>
+      <div className={styles.row}>
+        <div className={styles.column}>{renderSmoothSubs()}</div>
+        <div className={styles.column}>{renderPoolHealth()}</div>
+      </div>
       <div className={styles.row}>
         <div className={styles.column}>{renderMedianVsAverageBarChart()}</div>
         <div className={styles.column}>{renderBarChart()}</div>

@@ -42,9 +42,29 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
+.numberGraph {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px; /* Set a fixed height */
+  font-size: 50px; /* Large font size for visibility */
+  font-weight: bold; /* Make the number bold */
+  color: #C084FC; /* A distinct, eye-catching color */
+  background-color: rgba(255, 255, 255, 0.8); /* A neutral background to enhance readability */
+  border-radius: 8px; /* Consistency with other elements */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  margin-top: 20px; /* Spacing from other content */
+}
+
 .dark .column,
 .dark .fullWidthGraph,
 .dark .chartTitle {
   background-color: rgba(24, 24, 24, 0.8); /* Darker background color for dark mode */
   color: #fff; /* Adjust the text color for dark mode */
+}
+
+/* Dark mode specific styles */
+.dark .numberGraph {
+  background-color: rgba(24, 24, 24, 0.8); /* Darker background for dark mode */
+  color: #6B21A8; /* White text for contrast in dark mode */
 }
