@@ -86,7 +86,7 @@ export default function Stats() {
             <XAxis dataKey="name" />
             <YAxis label={{ value: 'ETH', angle: -90, position: 'insideLeft' }} />
             <Tooltip content={<CustomTooltip {...{ resolvedTheme }} />} />
-            <Bar barSize={50} dataKey="value" fill={resolvedTheme === 'dark' ? '#581C87' : '#C084FC'} />
+            <Bar barSize={50} dataKey="value" fill={resolvedTheme === 'dark' ? '#6B21A8' : '#C084FC'} />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -127,7 +127,7 @@ export default function Stats() {
               offset: 0,
             }} />
             <Tooltip content={<CustomTooltip {...{ resolvedTheme }} />} />
-            <Bar dataKey="rewardEth" fill={resolvedTheme === 'dark' ? '#581C87' : '#C084FC'} isAnimationActive={false} name="ETH Reward" />
+            <Bar dataKey="rewardEth" fill={resolvedTheme === 'dark' ? '#6B21A8' : '#C084FC'} isAnimationActive={false} name="ETH Reward" />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -157,7 +157,7 @@ export default function Stats() {
               }}
             />
             <Tooltip content={<CustomTooltip {...{ resolvedTheme }} />} />{' '}
-            <Bar dataKey="blocks"   fill={resolvedTheme === 'dark' ? '#581C87' : '#C084FC'} />
+            <Bar dataKey="blocks"   fill={resolvedTheme === 'dark' ? '#6B21A8' : '#C084FC'} />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -183,7 +183,7 @@ export default function Stats() {
       { name: 'Block Rewards', value: blockRewardsETH },
     ]
 
-    const COLORS = ['#FFB900', resolvedTheme === 'dark' ? '#581C87' : '#C084FC']
+    const COLORS = ['#FFB900', resolvedTheme === 'dark' ? '#6B21A8' : '#C084FC']
 
     return (
       <div>
@@ -195,7 +195,7 @@ export default function Stats() {
               cy="50%"
               data={data}
               dataKey="value"
-              fill={resolvedTheme === 'dark' ? '#581C87' : '#C084FC'}
+              fill={resolvedTheme === 'dark' ? '#6B21A8' : '#C084FC'}
               nameKey="name"
               outerRadius={100}>
               {data.map((entry) => (
@@ -270,7 +270,7 @@ export default function Stats() {
               }}
             />
             <Tooltip content={<CustomTooltip {...{ resolvedTheme }} />} />
-            <Bar dataKey="reward" fill={resolvedTheme === 'dark' ? '#581C87' : '#C084FC'} name="ETH" />
+            <Bar dataKey="reward" fill={resolvedTheme === 'dark' ? '#6B21A8' : '#C084FC'} name="ETH" />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -432,7 +432,7 @@ export default function Stats() {
             />
             <Tooltip content={<CustomTooltip {...{ resolvedTheme }} />} />{' '}
             <Legend height={20} verticalAlign="top"/>
-            <Bar dataKey="blocks" fill={resolvedTheme === 'dark' ? '#581C87' : '#C084FC'} name="Amount of blocks" yAxisId="left" />
+            <Bar dataKey="blocks" fill={resolvedTheme === 'dark' ? '#6B21A8' : '#C084FC'} name="Amount of blocks" yAxisId="left" />
             <Line
               dataKey="sum"
               name="Total ETH"
