@@ -13,6 +13,7 @@ import {
   ComposedChart,
   Line,
 } from 'recharts'
+import { useMemo } from 'react';
 import { useTheme } from 'next-themes'
 import { useQuery } from '@tanstack/react-query'
 import {
@@ -37,13 +38,101 @@ export default function Stats() {
   const { data: stats, isLoading: isLoadingStats } = useQuery({
     queryKey: ['statistics'],
     queryFn: fetchStatistics,
-  })
-  const { data: proposedBlocks, isLoading: isLoadingProposedBlocks } = useQuery(
-    {
-      queryKey: ['proposedblocks'],
-      queryFn: fetchProposedBlocks,
-    }
-  )
+  });
+
+  const { data: proposedBlocks, isLoading: isLoadingProposedBlocks } = useQuery({
+    queryKey: ['proposedblocks'],
+    queryFn: fetchProposedBlocks,
+  });
+
+  // Centralize computations with useMemo
+  const { sortedBlocks, medianReward, averageReward } = useMemo(() => {
+    if (!proposedBlocks || !stats) return { sortedBlocks: [], medianReward: 0, averageReward: 0 };
+
+    const rewardsInEth = proposedBlocks.map(block => weiToEth(block.rewardWei));
+    const sortedRewards = [...rewardsInEth].sort((a, b) => a - b);
+    const mid = Math.floor(sortedRewards.length / 2);
+    const median = sortedRewards.length % 2 !== 0 ? sortedRewards[mid] : (sortedRewards[mid - 1] + sortedRewards[mid]) / 2;
+    const average = weiToEth(stats.avgBlockRewardWei);
+
+    const sortedBlocksData = [...proposedBlocks].sort((a, b) => parseFloat(b.rewardWei) - parseFloat(a.rewardWei))
+      .map(block => ({
+        blockNumber: block.block,
+        rewardEth: toFixedNoTrailingZeros(weiToEth(block.rewardWei), 4)
+      }));
+
+    return {
+      sortedBlocks: sortedBlocksData,
+      medianReward: toFixedNoTrailingZeros(median, 4),
+      averageReward: toFixedNoTrailingZeros(average, 4)
+    };
+  }, [proposedBlocks, stats]);
+
+  const renderMedianVsAverageBarChart = () => {
+    if (!sortedBlocks.length) return null;
+  
+    // Data for the bar chart
+    const data = [
+      { name: 'Median', value: medianReward },
+      { name: 'Average', value: averageReward }
+    ];
+  
+    return (
+      <div>
+        <h2 className={styles.chartTitle}>Smooth&#39;s Median vs Average Block Rewards (ETH)</h2>
+        <ResponsiveContainer height={250} width="100%">
+          <BarChart data={data}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis label={{ value: 'ETH', angle: -90, position: 'insideLeft' }} />
+            <Tooltip content={<CustomTooltip {...{ resolvedTheme }} />} />
+            <Bar barSize={50} dataKey="value" fill={resolvedTheme === 'dark' ? '#581C87' : '#C084FC'} />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    );
+  };
+  
+  const renderRewardsByBlockChart = () => {
+    if (!sortedBlocks.length) return null;
+  
+    return (
+      <div>
+        <h2 className={styles.chartTitle}>All Blocks sorted by MEV Reward</h2>
+        <ResponsiveContainer  height={400} width="100%">
+          <BarChart
+            data={sortedBlocks}
+            layout="horizontal"
+            margin={{ top: 20, right: 30, left: 20, bottom: 17 }}
+            
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <YAxis 
+            type="number"
+            label={{
+              value: `MEV Reward (ETH)`,
+              style: { textAnchor: 'middle' },
+              position: 'left',
+              angle: -90,
+              offset: -10,
+            }} />
+            <XAxis 
+            dataKey="blockNumber"
+            tick={{ fontSize: 0}}
+            tickLine={false}
+            label={{
+              value: `Proposed blocks`,
+              style: { textAnchor: 'middle' },
+              position: 'bottom',
+              offset: 0,
+            }} />
+            <Tooltip content={<CustomTooltip {...{ resolvedTheme }} />} />
+            <Bar dataKey="rewardEth" fill={resolvedTheme === 'dark' ? '#581C87' : '#C084FC'} isAnimationActive={false} name="ETH Reward" />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    );
+  };
 
   const renderBarChart = () => {
     const data = [
@@ -55,7 +144,7 @@ export default function Stats() {
     return (
       <div>
         <h2 className={styles.chartTitle}>Pool Block Types</h2>
-        <ResponsiveContainer height={300} width="100%">
+        <ResponsiveContainer height={250} width="100%">
           <BarChart data={data}>
             <XAxis dataKey="name" />
             <YAxis
@@ -124,68 +213,70 @@ export default function Stats() {
     )
   }
 
-  const renderRewardsLast7DaysChart = () => {
-    if (!proposedBlocks) return null // Return early if proposedBlocks is not available
-    const now = new Date()
-    const dateLabels = Array.from({ length: 7 }).map((_, index) => {
-      // Calculate the date for each of the last 7 days, including today
+  const renderRewardsLast30DaysChart = () => {
+    if (!proposedBlocks) return null; // Return early if proposedBlocks is not available
+  
+    const now = new Date();
+    const dateLabels = Array.from({ length: 30 }).map((_, index) => {
+      // Calculate the date for each of the last 30 days, including today
       const day = new Date(
         now.getFullYear(),
         now.getMonth(),
-        now.getDate() - (6 - index)
-      )
+        now.getDate() - (29 - index) // Adjusted from 6 to 29
+      );
       return new Intl.DateTimeFormat('en-US', {
         month: '2-digit',
         day: '2-digit',
         year: 'numeric',
-      }).format(day)
-    })
-
-    const rewardsPerDay = Array.from({ length: 7 }, () => 0) // Initialize array for 7 days
+      }).format(day);
+    });
+  
+    const rewardsPerDay = Array.from({ length: 30 }, () => 0); // Adjusted from 7 to 30
     proposedBlocks.forEach((block) => {
-      const blockTime = getSlotUnixTime(block.slot)
-      const blockDate = new Date(blockTime * 1000)
+      const blockTime = getSlotUnixTime(block.slot);
+      const blockDate = new Date(blockTime * 1000);
       const blockLabel = new Intl.DateTimeFormat('en-US', {
         month: '2-digit',
         day: '2-digit',
         year: 'numeric',
-      }).format(blockDate)
-
-      const dayIndex = dateLabels.indexOf(blockLabel)
+      }).format(blockDate);
+  
+      const dayIndex = dateLabels.indexOf(blockLabel);
       if (dayIndex !== -1) {
-        // Only add rewards for the last 7 days
-        rewardsPerDay[dayIndex] += weiToEth(block.rewardWei)
+        // Only add rewards for the last 30 days
+        rewardsPerDay[dayIndex] += weiToEth(block.rewardWei);
       }
-    })
-
+    });
+  
     const formattedData = rewardsPerDay.map((reward, index) => ({
       day: dateLabels[index], // Use the calculated date label
       reward: toFixedNoTrailingZeros(reward, 4),
-    }))
-
+    }));
+  
     return (
       <div>
-        <h2 className={styles.chartTitle}>Total Rewards last 7 Days</h2>
-        <ResponsiveContainer height={400} width="100%">
+        <h2 className={styles.chartTitle}>Total Rewards Last 30 Days</h2>
+        <ResponsiveContainer height={300} width="100%">
           <BarChart data={formattedData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="day" />
             <YAxis 
-            label={{
-              value: `Total ETH`,
-              style: { textAnchor: 'middle' },
-              angle: -90,
-              position: 'left',
-              offset: -5,
-            }}/>
-            <Tooltip content={<CustomTooltip {...{ resolvedTheme }} />} />{' '}
+              label={{
+                value: `Total ETH`,
+                style: { textAnchor: 'middle' },
+                angle: -90,
+                position: 'left',
+                offset: -5,
+              }}
+            />
+            <Tooltip content={<CustomTooltip {...{ resolvedTheme }} />} />
             <Bar dataKey="reward" fill={resolvedTheme === 'dark' ? '#581C87' : '#C084FC'} name="ETH" />
           </BarChart>
         </ResponsiveContainer>
       </div>
-    )
+    );
   }
-
+  
   const renderTopBlocksLast7DaysChart = () => {
     // Calculate top blocks directly here
     const now = new Date()
@@ -362,19 +453,31 @@ export default function Stats() {
       className={`${styles.statsContainer} ${
         resolvedTheme === 'dark' ? styles.dark : ''
       }`}>
-      <div className={styles.row}>
+             <div className={styles.row}>
+        <div className={styles.column}>{renderMedianVsAverageBarChart()}</div>
         <div className={styles.column}>{renderBarChart()}</div>
-        <div className={styles.column}>{renderPieChart()}</div>
+      </div>
+      <div
+        className={`${styles.fullWidthGraph} ${
+          resolvedTheme === 'dark' ? styles.dark : ''
+        }`}>
+        {renderRewardsLast30DaysChart()}
       </div>
       <div className={styles.row}>
-        <div className={styles.column}>{renderRewardsLast7DaysChart()}</div>
         <div className={styles.column}>{renderTopBlocksLast7DaysChart()}</div>
+        <div className={styles.column}>{renderPieChart()}</div>
       </div>
       <div
         className={`${styles.fullWidthGraph} ${
           resolvedTheme === 'dark' ? styles.dark : ''
         }`}>
         {renderRewardDistributionChart()}
+      </div>
+      <div
+        className={`${styles.fullWidthGraph} ${
+          resolvedTheme === 'dark' ? styles.dark : ''
+        }`}>
+        {renderRewardsByBlockChart()}
       </div>
     </div>
   )
