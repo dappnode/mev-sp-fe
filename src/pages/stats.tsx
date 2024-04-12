@@ -294,7 +294,7 @@ export default function Stats() {
     return (
       <div>
         <h2 className={styles.chartTitle}>Total Rewards source Distribution</h2>
-        <ResponsiveContainer height={300} width="100%">
+        <ResponsiveContainer height={370} width="100%">
           <PieChart>
             <Pie
               cx="50%"
