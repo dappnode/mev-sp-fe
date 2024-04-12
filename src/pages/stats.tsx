@@ -580,9 +580,9 @@ export default function Stats() {
             }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
+              angle={-45}
               dataKey="validatorIndex"
               name="Validator Index"
-              angle={-45}
               tick={{ fontSize: 11, dy: 12 }}
             />
             <YAxis
@@ -609,16 +609,17 @@ export default function Stats() {
             />
             <Tooltip content={<CustomTooltip {...{ resolvedTheme }} />} />
             <Bar
-              yAxisId="left"
               dataKey="totalRewardsEth"
               fill={resolvedTheme === 'dark' ? '#6B21A8' : '#C084FC'}
               name="Total Rewards (ETH)"
+              yAxisId="left"
+
             />
             <Line
-              yAxisId="right"
               dataKey="blockCount"
-              stroke="#FFB900"
               name="Number of Blocks"
+              stroke="#FFB900"
+              yAxisId="right"
             />
             <Legend height={30} verticalAlign="top" />
           </ComposedChart>
@@ -628,24 +629,25 @@ export default function Stats() {
   }
 
   const renderStatusChart = () => {
+    if (!validatorData.length) return null
     return (
       <div>
         <h2 className={styles.chartTitle}>
-          Total Unhealthy Smooth's Validators
+          Total Unhealthy Smooth&#39;s Validators
         </h2>
-        <ResponsiveContainer width="100%" height={400}>
+        <ResponsiveContainer height={400} width="100%">
           <BarChart
-            layout="vertical" // Set the layout to vertical for a horizontal bar chart
             data={chartData}
+            layout="vertical" // Set the layout to vertical for a horizontal bar chart
             margin={{ bottom: 5, left: 20, right: 30, top: 5 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis type="number" />
             <YAxis dataKey="name" type="category" />
             <Tooltip content={<CustomTooltip {...{ resolvedTheme }} />} />
             <Bar
+              barSize={20}
               dataKey="count"
               fill={resolvedTheme === 'dark' ? '#6B21A8' : '#C084FC'}
-              barSize={20}
             />
           </BarChart>
         </ResponsiveContainer>
@@ -653,7 +655,7 @@ export default function Stats() {
     )
   }
 
-  if (isLoadingStats || isLoadingProposedBlocks) return <div>Loading...</div>
+  if (isLoadingStats || isLoadingProposedBlocks || isLoadingValidatorsData) return <div>Loading...</div>
 
   return (
     <div
