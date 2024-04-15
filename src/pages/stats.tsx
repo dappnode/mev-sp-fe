@@ -160,9 +160,9 @@ export default function Stats() {
     })
 
     return [
-      { name: 'Yellow Card', count: yellowCard },
-      { name: 'Red Card', count: redCard },
-      { name: 'Banned', count: banned },
+      { name: 'Yellow Card 🟡', count: yellowCard },
+      { name: 'Red Card 🔴', count: redCard },
+      { name: 'Banned 💀', count: banned },
     ]
   }, [validatorsData])
 
