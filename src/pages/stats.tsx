@@ -548,11 +548,11 @@ export default function Stats() {
     const rewardValueBuckets = [
       { range: '> 10 ETH', min: 10, max: Infinity },
       { range: '10 - 1 ETH', min: 1, max: 10 },
-      { range: '1 - 0.5 ETH', min: 0.5, max: 1 },
-      { range: '0.5 - 0.1 ETH', min: 0.1, max: 0.5 },
-      { range: '< 0.1 ETH', min: 0, max: 0.1 },
-    ]
-
+      { range: '1 - 0.1 ETH', min: 0.1, max: 1 },
+      { range: '0.1 - 0.01 ETH', min: 0.01, max: 0.1 },
+      { range: '< 0.01 ETH', min: 0, max: 0.01 },
+    ];
+    
     // Initialize counts and sums for each bucket
     const bucketCounts = rewardValueBuckets.map(() => 0)
     const bucketSums = rewardValueBuckets.map(() => 0)
