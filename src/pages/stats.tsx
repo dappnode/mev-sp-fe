@@ -37,31 +37,41 @@ const getSlotUnixTime = (slot: number) => {
 export default function Stats() {
   const { resolvedTheme } = useTheme()
 
-  const { data: stats, isLoading: isLoadingStats } = useQuery({
+  const {
+    data: stats,
+    isLoading: isLoadingStats,
+    isError: isErrorStats,
+  } = useQuery({
     queryKey: ['statistics'],
     queryFn: fetchStatistics,
   })
 
-  const { data: proposedBlocks, isLoading: isLoadingProposedBlocks } = useQuery(
-    {
-      queryKey: ['proposedblocks'],
-      queryFn: fetchProposedBlocks,
-    }
-  )
+  const {
+    data: proposedBlocks,
+    isLoading: isLoadingProposedBlocks,
+    isError: isErrorProposedBlocks,
+  } = useQuery({
+    queryKey: ['proposedblocks'],
+    queryFn: fetchProposedBlocks,
+  })
 
-  const { data: validatorsData, isLoading: isLoadingValidatorsData } = useQuery(
-    {
-      queryKey: ['validators'],
-      queryFn: fetchAllValidators,
-    }
-  )
+  const {
+    data: validatorsData,
+    isLoading: isLoadingValidatorsData,
+    isError: isErrorValidatorsData,
+  } = useQuery({
+    queryKey: ['validators'],
+    queryFn: fetchAllValidators,
+  })
 
-  const { data: allBlocks, isLoading: isLoadingAllBlocks } = useQuery(
-    {
-      queryKey: ['allblocks'],
-      queryFn: fetchAllBlocks,
-    }
-  )
+  const {
+    data: allBlocks,
+    isLoading: isLoadingAllBlocks,
+    isError: isErrorAllBlocks,
+  } = useQuery({
+    queryKey: ['allblocks'],
+    queryFn: fetchAllBlocks,
+  })
 
   interface ValidatorStats {
     [index: number]: {
@@ -167,25 +177,29 @@ export default function Stats() {
   }, [validatorsData])
 
   const poolHealthPercentage = useMemo(() => {
-    if (!allBlocks) return 0;
-  
-    const now = Date.now();
-    const sevenDaysAgo = now - 7 * 24 * 60 * 60 * 1000;  // Calculate timestamp for 7 days ago
-    const lastWeekBlocks = allBlocks.filter(block => {
-      const blockTime = getSlotUnixTime(block.slot) * 1000;  // Convert slot time to milliseconds
-      return blockTime >= sevenDaysAgo;
-    });
-  
-    const okPoolProposals = lastWeekBlocks.filter(block => block.blockType === "okpoolproposal").length;
-    const totalBlocks = lastWeekBlocks.length;
-  
-    const percentage = totalBlocks > 0 ? (okPoolProposals / totalBlocks) * 100 : 0;
-    return toFixedNoTrailingZeros(percentage, 2);  // Format the percentage to 2 decimal places
-  }, [allBlocks]);
-  
+    if (!allBlocks) return 0
+
+    const now = Date.now()
+    const sevenDaysAgo = now - 7 * 24 * 60 * 60 * 1000 // Calculate timestamp for 7 days ago
+    const lastWeekBlocks = allBlocks.filter((block) => {
+      const blockTime = getSlotUnixTime(block.slot) * 1000 // Convert slot time to milliseconds
+      return blockTime >= sevenDaysAgo
+    })
+
+    const okPoolProposals = lastWeekBlocks.filter(
+      (block) => block.blockType === 'okpoolproposal'
+    ).length
+    const totalBlocks = lastWeekBlocks.length
+
+    const percentage =
+      totalBlocks > 0 ? (okPoolProposals / totalBlocks) * 100 : 0
+    return toFixedNoTrailingZeros(percentage, 2) // Format the percentage to 2 decimal places
+  }, [allBlocks])
 
   const renderSmoothSubs = () => {
-    if (!stats) return null
+    if (isLoadingStats) return <div>Loading...</div>
+    if (isErrorStats) return <div>There was an error loading this chart.</div>
+    if (!stats) return null // Just in case stats are somehow null
 
     const totalSubs = stats.totalSubscribedValidators
     return (
@@ -197,25 +211,29 @@ export default function Stats() {
   }
 
   const renderPoolHealth = () => {
-    const poolHealthFormatted = toFixedNoTrailingZeros(poolHealthPercentage, 2);
-    const missedOrWrongFormatted = toFixedNoTrailingZeros(100 - poolHealthPercentage, 2);
-  
+    if (isLoadingAllBlocks) return <div>Loading...</div>
+    if (isErrorAllBlocks)
+      return <div>There was an error loading this chart.</div>
+    if (!allBlocks) return null
+
+    const poolHealthFormatted = toFixedNoTrailingZeros(poolHealthPercentage, 2)
+    const missedOrWrongFormatted = toFixedNoTrailingZeros(
+      100 - poolHealthPercentage,
+      2
+    )
+
     const data = [
       { name: ' % Successful Proposals', value: poolHealthFormatted },
-      { name: ' % Missed or Wrong proposals', value: missedOrWrongFormatted }
-    ];
-  
-    const COLORS = [resolvedTheme === 'dark' ? '#6B21A8' : '#C084FC', '#FFBB28']; // Color for pool health and the remaining part
-  
+      { name: ' % Missed or Wrong proposals', value: missedOrWrongFormatted },
+    ]
+
+    const COLORS = [resolvedTheme === 'dark' ? '#6B21A8' : '#C084FC', '#FFBB28'] // Color for pool health and the remaining part
+
     return (
       <div>
         <h2 className={styles.chartTitle}>Smooth Health Last 7 days</h2>
-        <ResponsiveContainer 
-        height={100} 
-        width="100%">
-          <PieChart
-            margin={{ bottom: 0 }}>
-                      
+        <ResponsiveContainer height={100} width="100%">
+          <PieChart margin={{ bottom: 0 }}>
             <Pie
               cx="50%"
               cy="90%"
@@ -236,15 +254,17 @@ export default function Stats() {
             </Pie>
             <Tooltip content={<CustomTooltip {...{ resolvedTheme }} />} />{' '}
             <Legend height={20} verticalAlign="bottom" />
-
           </PieChart>
         </ResponsiveContainer>
       </div>
     )
-  };
+  }
 
   const renderMedianVsAverageBarChart = () => {
-    if (!sortedBlocks.length) return null
+    if (isLoadingProposedBlocks || isLoadingStats) return <div>Loading...</div>
+    if (isErrorProposedBlocks || isErrorStats)
+      return <div>There was an error loading this chart.</div>
+    if (sortedBlocks.length === 0) return null
 
     // Data for the bar chart
     const data = [
@@ -277,10 +297,13 @@ export default function Stats() {
   }
 
   const renderRewardsByBlockChart = () => {
+    if (isLoadingProposedBlocks) return <div>Loading...</div>
+    if (isErrorProposedBlocks)
+      return <div>There was an error loading this chart.</div>
     if (!sortedBlocks.length) return null
 
-    const maxReward = Math.max(...sortedBlocks.map(block => block.rewardEth));
-    
+    const maxReward = Math.max(...sortedBlocks.map((block) => block.rewardEth))
+
     return (
       <div>
         <h2 className={styles.chartTitle}>All Blocks sorted by MEV Reward</h2>
@@ -291,7 +314,7 @@ export default function Stats() {
             margin={{ top: 20, right: 30, left: 20, bottom: 17 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <YAxis
-              domain={[0, Math.ceil(maxReward)]} 
+              domain={[0, Math.ceil(maxReward)]}
               type="number"
               label={{
                 value: `MEV Reward (ETH)`,
@@ -326,6 +349,10 @@ export default function Stats() {
   }
 
   const renderBarChart = () => {
+    if (isLoadingStats) return <div>Loading...</div>
+    if (isErrorStats) return <div>There was an error loading this chart.</div>
+    if (!stats) return null
+
     const data = [
       { blocks: stats?.totalProposedBlocks ?? 0, name: 'Proposed' },
       { blocks: stats?.totalWrongfeeBlocks ?? 0, name: 'Wrong Fee' },
@@ -359,6 +386,10 @@ export default function Stats() {
   }
 
   const renderPieChart = () => {
+    if (isLoadingStats) return <div>Loading...</div>
+    if (isErrorStats) return <div>There was an error loading this chart.</div>
+    if (!stats) return null
+
     const totalRewardsETH = toFixedNoTrailingZeros(
       weiToEth(stats?.totalRewardsSentWei),
       4
@@ -408,7 +439,10 @@ export default function Stats() {
   }
 
   const renderRewardsLast30DaysChart = () => {
-    if (!proposedBlocks) return null // Return early if proposedBlocks is not available
+    if (isLoadingProposedBlocks) return <div>Loading...</div>
+    if (isErrorProposedBlocks)
+      return <div>There was an error loading this chart.</div>
+    if (!proposedBlocks) return null
 
     const now = new Date()
     const dateLabels = Array.from({ length: 30 }).map((_, index) => {
@@ -476,6 +510,11 @@ export default function Stats() {
   }
 
   const renderTopBlocksLast7DaysChart = () => {
+    if (isLoadingProposedBlocks) return <div>Loading...</div>
+    if (isErrorProposedBlocks)
+      return <div>There was an error loading this chart.</div>
+    if (!proposedBlocks) return null
+
     // Calculate top blocks directly here
     const now = new Date()
     const sevenDaysAgo =
@@ -544,6 +583,11 @@ export default function Stats() {
   }
 
   const renderRewardDistributionChart = () => {
+    if (isLoadingProposedBlocks) return <div>Loading...</div>
+    if (isErrorProposedBlocks)
+      return <div>There was an error loading this chart.</div>
+    if (!proposedBlocks) return null
+
     // Define reward value buckets
     const rewardValueBuckets = [
       { range: '> 10 ETH', min: 10, max: Infinity },
@@ -551,8 +595,8 @@ export default function Stats() {
       { range: '1 - 0.1 ETH', min: 0.1, max: 1 },
       { range: '0.1 - 0.01 ETH', min: 0.01, max: 0.1 },
       { range: '< 0.01 ETH', min: 0, max: 0.01 },
-    ];
-    
+    ]
+
     // Initialize counts and sums for each bucket
     const bucketCounts = rewardValueBuckets.map(() => 0)
     const bucketSums = rewardValueBuckets.map(() => 0)
@@ -651,7 +695,10 @@ export default function Stats() {
   }
 
   const renderValidatorsPerformanceChart = () => {
-    if (validatorData.length === 0) return null
+    if (isLoadingProposedBlocks) return <div>Loading...</div>
+    if (isErrorProposedBlocks)
+      return <div>There was an error loading this chart.</div>
+    if (!validatorData.length) return null
 
     return (
       <div>
@@ -716,7 +763,11 @@ export default function Stats() {
   }
 
   const renderStatusChart = () => {
+    if (isLoadingValidatorsData) return <div>Loading...</div>
+    if (isErrorValidatorsData)
+      return <div>There was an error loading this chart.</div>
     if (!validatorData.length) return null
+
     return (
       <div>
         <h2 className={styles.chartTitle}>
@@ -741,9 +792,6 @@ export default function Stats() {
       </div>
     )
   }
-
-  if (isLoadingStats || isLoadingProposedBlocks || isLoadingValidatorsData || isLoadingAllBlocks)
-    return <div>Loading...</div>
 
   return (
     <div
