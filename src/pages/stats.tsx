@@ -307,59 +307,7 @@ export default function Stats() {
     )
   }
 
-  const renderRewardsByBlockChart = () => {
-    if (isLoadingProposedBlocks) return <div>Loading...</div>
-    if (isErrorProposedBlocks)
-      return <div>There was an error loading this chart.</div>
-    if (!sortedBlocks.length) return null
-
-    const maxReward = Math.max(...sortedBlocks.map((block) => block.rewardEth))
-
-    return (
-      <div>
-        <h2 className={styles.chartTitle}>All Blocks sorted by MEV Reward</h2>
-        <ResponsiveContainer height={400} width="100%">
-          <BarChart
-            data={sortedBlocks}
-            layout="horizontal"
-            margin={{ top: 20, right: 30, left: 20, bottom: 17 }}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <YAxis
-              domain={[0, Math.ceil(maxReward)]}
-              type="number"
-              label={{
-                value: `MEV Reward (ETH)`,
-                style: { textAnchor: 'middle' },
-                position: 'left',
-                angle: -90,
-                offset: -10,
-              }}
-            />
-            <XAxis
-              dataKey="blockNumber"
-              tick={{ fontSize: 0 }}
-              tickLine={false}
-              label={{
-                value: `Proposed blocks`,
-                style: { textAnchor: 'middle' },
-                position: 'bottom',
-                offset: 0,
-              }}
-            />
-            <Tooltip content={<CustomTooltip {...{ resolvedTheme }} />} />
-            <Bar
-              dataKey="rewardEth"
-              fill={resolvedTheme === 'dark' ? '#6B21A8' : '#C084FC'}
-              isAnimationActive={false}
-              name="ETH Reward"
-            />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
-    )
-  }
-
-  const renderBarChart = () => {
+  const renderTotalSmoothProposals = () => {
     if (isLoadingStats) return <div>Loading...</div>
     if (isErrorStats) return <div>There was an error loading this chart.</div>
     if (!stats) return null
@@ -391,59 +339,6 @@ export default function Stats() {
               fill={resolvedTheme === 'dark' ? '#6B21A8' : '#C084FC'}
             />
           </BarChart>
-        </ResponsiveContainer>
-      </div>
-    )
-  }
-
-  const renderPieChart = () => {
-    if (isLoadingStats) return <div>Loading...</div>
-    if (isErrorStats) return <div>There was an error loading this chart.</div>
-    if (!stats) return null
-
-    const totalRewardsETH = toFixedNoTrailingZeros(
-      weiToEth(stats?.totalRewardsSentWei),
-      4
-    )
-    const donationsETH = toFixedNoTrailingZeros(
-      weiToEth(stats?.totalDonationsWei),
-      4
-    )
-    const blockRewardsETH = toFixedNoTrailingZeros(
-      totalRewardsETH - donationsETH,
-      4
-    )
-
-    const data = [
-      { name: 'Donations', value: donationsETH },
-      { name: 'Block Rewards', value: blockRewardsETH },
-    ]
-
-    const COLORS = ['#FFB900', resolvedTheme === 'dark' ? '#6B21A8' : '#C084FC']
-
-    return (
-      <div>
-        <h2 className={styles.chartTitle}>Total Rewards source Distribution</h2>
-        <ResponsiveContainer height={370} width="100%">
-          <PieChart>
-            <Pie
-              cx="50%"
-              cy="50%"
-              data={data}
-              dataKey="value"
-              fill={resolvedTheme === 'dark' ? '#6B21A8' : '#C084FC'}
-              nameKey="name"
-              outerRadius={100}>
-              {data.map((entry) => (
-                <Cell
-                  key={entry.name} // Use a unique identifier (name) as the key
-                  fill={COLORS[data.indexOf(entry) % COLORS.length]}
-                />
-              ))}
-            </Pie>
-            <Tooltip content={<CustomTooltip {...{ resolvedTheme }} />} />{' '}
-            <Legend />
-          </PieChart>
         </ResponsiveContainer>
       </div>
     )
@@ -494,7 +389,7 @@ export default function Stats() {
 
     return (
       <div>
-        <h2 className={styles.chartTitle}>Total Rewards Last 30 Days</h2>
+        <h2 className={styles.chartTitle}>Total Smooth Rewards Last 30 Days</h2>
         <ResponsiveContainer height={300} width="100%">
           <BarChart data={formattedData}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -593,7 +488,60 @@ export default function Stats() {
     )
   }
 
-  const renderRewardDistributionChart = () => {
+  const renderPieRewardSourceChart = () => {
+    if (isLoadingStats) return <div>Loading...</div>
+    if (isErrorStats) return <div>There was an error loading this chart.</div>
+    if (!stats) return null
+
+    const totalRewardsETH = toFixedNoTrailingZeros(
+      weiToEth(stats?.totalRewardsSentWei),
+      4
+    )
+    const donationsETH = toFixedNoTrailingZeros(
+      weiToEth(stats?.totalDonationsWei),
+      4
+    )
+    const blockRewardsETH = toFixedNoTrailingZeros(
+      totalRewardsETH - donationsETH,
+      4
+    )
+
+    const data = [
+      { name: 'Donations', value: donationsETH },
+      { name: 'Block Rewards', value: blockRewardsETH },
+    ]
+
+    const COLORS = ['#FFB900', resolvedTheme === 'dark' ? '#6B21A8' : '#C084FC']
+
+    return (
+      <div>
+        <h2 className={styles.chartTitle}>Total Rewards source Distribution</h2>
+        <ResponsiveContainer height={370} width="100%">
+          <PieChart>
+            <Pie
+              cx="50%"
+              cy="50%"
+              data={data}
+              dataKey="value"
+              fill={resolvedTheme === 'dark' ? '#6B21A8' : '#C084FC'}
+              nameKey="name"
+              outerRadius={100}>
+              {data.map((entry) => (
+                <Cell
+                  key={entry.name} // Use a unique identifier (name) as the key
+                  fill={COLORS[data.indexOf(entry) % COLORS.length]}
+                />
+              ))}
+            </Pie>
+            <Tooltip content={<CustomTooltip {...{ resolvedTheme }} />} />{' '}
+            <Legend />
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
+    )
+  }
+
+  const renderRewardDistributionBucketChart = () => {
     if (isLoadingProposedBlocks) return <div>Loading...</div>
     if (isErrorProposedBlocks)
       return <div>There was an error loading this chart.</div>
@@ -700,6 +648,58 @@ export default function Stats() {
               yAxisId="right"
             />
           </ComposedChart>
+        </ResponsiveContainer>
+      </div>
+    )
+  }
+
+  const renderAllBlocksSortedByRewardChart = () => {
+    if (isLoadingProposedBlocks) return <div>Loading...</div>
+    if (isErrorProposedBlocks)
+      return <div>There was an error loading this chart.</div>
+    if (!sortedBlocks.length) return null
+
+    const maxReward = Math.max(...sortedBlocks.map((block) => block.rewardEth))
+
+    return (
+      <div>
+        <h2 className={styles.chartTitle}>All Blocks sorted by MEV Reward</h2>
+        <ResponsiveContainer height={400} width="100%">
+          <BarChart
+            data={sortedBlocks}
+            layout="horizontal"
+            margin={{ top: 20, right: 30, left: 20, bottom: 17 }}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <YAxis
+              domain={[0, Math.ceil(maxReward)]}
+              type="number"
+              label={{
+                value: `MEV Reward (ETH)`,
+                style: { textAnchor: 'middle' },
+                position: 'left',
+                angle: -90,
+                offset: -10,
+              }}
+            />
+            <XAxis
+              dataKey="blockNumber"
+              tick={{ fontSize: 0 }}
+              tickLine={false}
+              label={{
+                value: `Proposed blocks`,
+                style: { textAnchor: 'middle' },
+                position: 'bottom',
+                offset: 0,
+              }}
+            />
+            <Tooltip content={<CustomTooltip {...{ resolvedTheme }} />} />
+            <Bar
+              dataKey="rewardEth"
+              fill={resolvedTheme === 'dark' ? '#6B21A8' : '#C084FC'}
+              isAnimationActive={false}
+              name="ETH Reward"
+            />
+          </BarChart>
         </ResponsiveContainer>
       </div>
     )
@@ -815,7 +815,7 @@ export default function Stats() {
       </div>
       <div className={styles.row}>
         <div className={styles.column}>{renderMedianVsAverageBarChart()}</div>
-        <div className={styles.column}>{renderBarChart()}</div>
+        <div className={styles.column}>{renderTotalSmoothProposals()}</div>
       </div>
       <div
         className={`${styles.fullWidthGraph} ${
@@ -825,19 +825,19 @@ export default function Stats() {
       </div>
       <div className={styles.row}>
         <div className={styles.column}>{renderTopBlocksLast7DaysChart()}</div>
-        <div className={styles.column}>{renderPieChart()}</div>
+        <div className={styles.column}>{renderPieRewardSourceChart()}</div>
       </div>
       <div
         className={`${styles.fullWidthGraph} ${
           resolvedTheme === 'dark' ? styles.dark : ''
         }`}>
-        {renderRewardDistributionChart()}
+        {renderRewardDistributionBucketChart()}
       </div>
       <div
         className={`${styles.fullWidthGraph} ${
           resolvedTheme === 'dark' ? styles.dark : ''
         }`}>
-        {renderRewardsByBlockChart()}
+        {renderAllBlocksSortedByRewardChart()}
       </div>
       <div className={styles.row}>
         <div className={styles.column}>
