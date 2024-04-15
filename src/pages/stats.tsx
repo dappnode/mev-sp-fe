@@ -28,7 +28,7 @@ import { toFixedNoTrailingZeros } from '@/utils/decimals'
 import { SELECTED_CHAIN } from '@/utils/config'
 import CustomTooltip from '@/components/common/ChartsTooltip'
 
-// Utility to get Unix time for a slot
+// Helper to calculate Unix time based on blockchain slot (depends on the chain genesis time)
 const getSlotUnixTime = (slot: number) => {
   const genesisUnixTime = SELECTED_CHAIN === 'goerli' ? 1616508000 : 1606824023
   return genesisUnixTime + slot * 12 // Each slot represents 12 seconds
@@ -86,21 +86,27 @@ export default function Stats() {
     blockCount: number
   }
 
+  // useMemo to arrange blocks into sorted blocks by reward and compute median and average rewards
   const { sortedBlocks, medianReward, averageReward } = useMemo(() => {
+    // Guard checks to ensure necessary data is available
     if (!proposedBlocks || !stats)
       return { sortedBlocks: [], medianReward: 0, averageReward: 0 }
 
+    // Transform proposed blocks into rewards in ETH
     const rewardsInEth = proposedBlocks.map((block) =>
       weiToEth(block.rewardWei)
     )
+    // Sort rewards to calculate median
     const sortedRewards = [...rewardsInEth].sort((a, b) => a - b)
     const mid = Math.floor(sortedRewards.length / 2)
     const median =
       sortedRewards.length % 2 !== 0
         ? sortedRewards[mid]
         : (sortedRewards[mid - 1] + sortedRewards[mid]) / 2
+    // Calculate average reward
     const average = weiToEth(stats.avgBlockRewardWei)
 
+    // Map proposed blocks to include only necessary data
     const sortedBlocksData = [...proposedBlocks]
       .sort((a, b) => parseFloat(b.rewardWei) - parseFloat(a.rewardWei))
       .map((block) => ({
@@ -115,11 +121,13 @@ export default function Stats() {
     }
   }, [proposedBlocks, stats])
 
+  // useMemo to prepare data for validators performance chart
   const { validatorData } = useMemo(() => {
+    // Return early if data is not available
     if (!proposedBlocks) return { validatorData: [] }
 
+    // Accumulate rewards and count blocks for each validator
     const validatorStats: ValidatorStats = {}
-
     proposedBlocks.forEach((block) => {
       const index = block.validatorIndex
       if (validatorStats[index]) {
@@ -133,6 +141,7 @@ export default function Stats() {
       }
     })
 
+    // Sort validators by total rewards in descending order
     const sortedValidators: ValidatorData[] = Object.keys(validatorStats)
       .map((key) => {
         const index = parseInt(key, 10) // Ensure key is treated as a number
@@ -151,14 +160,15 @@ export default function Stats() {
     return { validatorData: sortedValidators }
   }, [proposedBlocks])
 
-  // Parse and prepare data
-  const chartData = useMemo(() => {
+  // useMemo to aggregate status data for validators
+  const validatorStatuses = useMemo(() => {
     if (!validatorsData) return []
 
     let yellowCard = 0
     let redCard = 0
     let banned = 0
 
+    // Count the number of validators with each status type
     validatorsData.forEach((validator) => {
       if (validator.status === 'yellowcard') {
         yellowCard += 1
@@ -176,6 +186,7 @@ export default function Stats() {
     ]
   }, [validatorsData])
 
+  // useMemo to calculate pool health based on the percentage of successful proposals
   const poolHealthPercentage = useMemo(() => {
     if (!allBlocks) return 0
 
@@ -775,7 +786,7 @@ export default function Stats() {
         </h2>
         <ResponsiveContainer height={300} width="100%">
           <BarChart
-            data={chartData}
+            data={validatorStatuses}
             layout="vertical" // Set the layout to vertical for a horizontal bar chart
             margin={{ bottom: 5, left: 20, right: 30, top: 5 }}>
             <CartesianGrid strokeDasharray="3 3" />
