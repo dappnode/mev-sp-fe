@@ -58,16 +58,6 @@
         ]
       }
     ],
-    "react/react-in-jsx-scope": "off",
-    "react/jsx-sort-props": [
-      "error",
-      {
-        "ignoreCase": false,
-        "callbacksLast": true,
-        "shorthandFirst": true,
-        "multiline": "last",
-        "reservedFirst": true
-      }
-    ]
+    "react/react-in-jsx-scope": "off"
   }
 }
