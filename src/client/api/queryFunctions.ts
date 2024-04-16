@@ -71,6 +71,11 @@ export const fetchProposedBlocks = async () => {
   return BlockSchema.array().parse(convertKeysToCamelCase(response.data))
 }
 
+export const fetchAllValidators = async () => {
+  const response = await apiClient.get(endpoints.validators)
+  return ValidatorSchema.array().parse(convertKeysToCamelCase(response.data))
+}
+
 export const fetchStatus = async () => {
   const response = await apiClient.get(endpoints.status)
   return StatusSchema.parse(convertKeysToCamelCase(response.data))

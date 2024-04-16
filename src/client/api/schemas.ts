@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 export const BlockSchema = z.object({
+  block: z.number(),
   slot: z.number(),
   validatorIndex: z.number(),
   validatorKey: z.string(),

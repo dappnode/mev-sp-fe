@@ -1,0 +1,70 @@
+/* src/styles/stats.module.css */
+
+.statsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Adds space between columns */
+  width: 100%;
+  justify-content: center;
+}
+
+.column {
+  flex: 1;
+  padding: 20px;
+  min-width: 320px; /* Adjust minimum width for responsiveness */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  border-radius: 8px; /* Rounded corners for a modern look */
+  background-color: rgba(255, 255, 255, 0.8); /* Slight translucency */
+  margin: 10px;
+}
+
+.chartTitle {
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: #333; /* Adjust the color to match your theme */
+}
+
+.fullWidthGraph {
+  flex: 1;
+  padding: 20px;
+  width: calc(100% - 20px); /* Adjust width to account for padding */
+  background-color: rgba(255, 255, 255, 0.8); /* Slight translucency */
+  margin: 10px;
+  border-radius: 8px; /* Rounded corners for a modern look */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.numberGraph {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px; /* Set a fixed height */
+  font-size: 50px; /* Large font size for visibility */
+  font-weight: bold; /* Make the number bold */
+  color: #C084FC; /* A distinct, eye-catching color */
+  background-color: rgba(255, 255, 255, 0.8); /* A neutral background to enhance readability */
+  border-radius: 8px; /* Consistency with other elements */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  margin-top: 20px; /* Spacing from other content */
+}
+
+.dark .column,
+.dark .fullWidthGraph,
+.dark .chartTitle {
+  background-color: rgba(24, 24, 24, 0.8); /* Darker background color for dark mode */
+  color: #fff; /* Adjust the text color for dark mode */
+}
+
+/* Dark mode specific styles */
+.dark .numberGraph {
+  background-color: rgba(24, 24, 24, 0.8); /* Darker background for dark mode */
+  color: #6B21A8; /* White text for contrast in dark mode */
+}
