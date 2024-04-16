@@ -21,8 +21,8 @@ const faqs = [
     },
     {
         id: 4,
-        question: "Does Smooth take my Consensus Layer (CL) rewards?",
-        answer: "No, Smooth does not take your CL rewards. CL rewards are always sent directly to your withdrawal address. Smooth only takes the execution layer rewards, which are the fees or MEV of the blocks you propose. These are the rewards that are sent to the fee recipient."
+        question: "Is there a fee that Dappnode takes for participating in Smooth?",
+        answer: "7% of all the Rewards go to supporting the development of Dappnode and sustainability of Smooth."
     }
 ]
 export default function FAQs() {
