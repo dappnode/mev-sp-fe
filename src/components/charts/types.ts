@@ -1,10 +1,9 @@
-export type ProposedBlock = {
-    slot: number;
-    validatorIndex: number;
-    block: number;
-    validatorKey: string;
-    blockType: "okpoolproposal" | "okpoolproposalblskeys" | "missedproposal" | "wrongfeerecipient";
-    rewardWei: string;
-    rewardType: "" | "vanila" | "mev" | "unknownrewardtype";
-    withdrawalAddress: string;
-};
+import { fetchAllBlocks, fetchProposedBlocks, fetchAllValidators } from '@/client/api/queryFunctions';
+
+export type ProposedBlocks = Awaited<ReturnType<typeof fetchProposedBlocks>>;
+
+export type ProposedBlock = ProposedBlocks[number];
+
+export type AllBlocksData = Awaited<ReturnType<typeof fetchAllBlocks>>;
+
+export type ValidatorsData = Awaited<ReturnType<typeof fetchAllValidators>>;
