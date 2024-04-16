@@ -21,6 +21,8 @@ function TopBlocksLast7DaysChart({ proposedBlocks, isLoading, isError, resolvedT
 
     const now = new Date();
     const sevenDaysAgo = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7).getTime() / 1000;
+
+    // Filter the proposed blocks to only include the last 7 days and sort them by reward
     const last7DaysBlocks = proposedBlocks
         .filter((block) => getSlotUnixTime(block.slot) >= sevenDaysAgo)
         .map((block) => ({

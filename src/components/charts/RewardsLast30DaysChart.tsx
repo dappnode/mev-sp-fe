@@ -19,7 +19,9 @@ function RewardsLast30DaysChart({ proposedBlocks, isLoading, isError, resolvedTh
     if (isError) return <div>There was an error loading this chart.</div>;
     if (!proposedBlocks) return null;
 
+    // Get current date (defaults to local timezone of users browser)
     const now = new Date();
+    // Calculate date labels for the last 30 days (array) in the format MM/DD/YYYY
     const dateLabels = Array.from({ length: 30 }).map((_, index) => {
       const day = new Date(
         now.getFullYear(),
@@ -33,22 +35,30 @@ function RewardsLast30DaysChart({ proposedBlocks, isLoading, isError, resolvedTh
       }).format(day);
     });
 
+    // Initialize array to store rewards per day
     const rewardsPerDay = Array.from({ length: 30 }, () => 0);
+
+    // Loop through proposed blocks and add rewards to the corresponding day
     proposedBlocks.forEach((block) => {
+      // Get UNIX timestamp for the block
       const blockTime = getSlotUnixTime(block.slot);
+      // Convert UNIX timestamp to date object
       const blockDate = new Date(blockTime * 1000);
+      // Format date object to match date labels
       const blockLabel = new Intl.DateTimeFormat('en-US', {
         month: '2-digit',
         day: '2-digit',
         year: 'numeric',
       }).format(blockDate);
 
+      // Find the index of the block date in the date labels array. "indexOf" returns -1 if the date is not found.
       const dayIndex = dateLabels.indexOf(blockLabel);
       if (dayIndex !== -1) {
         rewardsPerDay[dayIndex] += weiToEth(block.rewardWei);
       }
     });
 
+    // Format data for the chart
     const formattedData = rewardsPerDay.map((reward, index) => ({
       day: dateLabels[index],
       reward: toFixedNoTrailingZeros(reward, 4),
