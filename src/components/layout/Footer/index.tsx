@@ -35,7 +35,7 @@ export function Footer() {
 
         {/* Right side text */}
         <h4 className="mt-2 text-center text-xs sm:mx-3 sm:text-left">
-          | Decentralized P2P Networking | © 2023
+          | Decentralized P2P Networking | © 2024
         </h4>
       </div>
 
