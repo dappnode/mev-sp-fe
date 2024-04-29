@@ -11,6 +11,7 @@ import RewardDistributionBucketChart from '@/components/charts/RewardDistributio
 import AllBlocksSortedByRewardChart from '@/components/charts/AllBlocksSortedByRewardChart'
 import ValidatorsPerformanceChart from '@/components/charts/ValidatorsPerformanceChart'
 import ValidatorsStatusChart from '@/components/charts/ValidatorsStatusChart'
+import AccumulatedRewardsChart from '@/components/charts/AccumulatedRewardsChart'
 import { useStatisticsData } from '@/components/charts/hooks/useStatisticsData'
 import { useProposedBlocksData } from '@/components/charts/hooks/useProposedBlocksData'
 import { useAllValidatorsData } from '@/components/charts/hooks/useAllValidatorsData'
@@ -89,6 +90,14 @@ export default function Stats() {
           resolvedTheme === 'dark' ? styles.dark : ''
         }`}>
         <RewardsLast30DaysChart
+          isError={isErrorProposedBlocks}
+          isLoading={isLoadingProposedBlocks}
+          proposedBlocks={proposedBlocks}
+          resolvedTheme={resolvedTheme}
+        />
+      </div>
+      <div className={styles.fullWidthGraph}>
+        <AccumulatedRewardsChart
           isError={isErrorProposedBlocks}
           isLoading={isLoadingProposedBlocks}
           proposedBlocks={proposedBlocks}
