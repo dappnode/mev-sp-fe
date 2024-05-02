@@ -36,22 +36,22 @@ function AccumulatedRewardsChart({
 
   const startDate = new Date(getSlotUnixTime(proposedBlocks[0].slot) * 1000);
   const endDate = new Date(getSlotUnixTime(proposedBlocks[proposedBlocks.length - 1].slot) * 1000);
-  let dateLabels: string[] = [];
-  let rewardsPerDay: Record<string, number> = {};
+  const dateLabels: string[] = [];
+  const rewardsPerDay: Record<string, number> = {};
 
   for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
-    let formattedDate = d.toISOString().slice(0, 10);
+    const formattedDate = d.toISOString().slice(0, 10);
     dateLabels.push(formattedDate);
     rewardsPerDay[formattedDate] = 0;  // Initialize daily rewards to zero
   }
 
   proposedBlocks.forEach((block) => {
-    let blockDate = new Date(getSlotUnixTime(block.slot) * 1000).toISOString().slice(0, 10);
+    const blockDate = new Date(getSlotUnixTime(block.slot) * 1000).toISOString().slice(0, 10);
     rewardsPerDay[blockDate] += weiToEth(block.rewardWei);
   });
 
   let accumulatedRewards = 0;
-  let formattedData = dateLabels.map(date => {
+  const formattedData = dateLabels.map(date => {
     accumulatedRewards += rewardsPerDay[date];
     return {
       date,
