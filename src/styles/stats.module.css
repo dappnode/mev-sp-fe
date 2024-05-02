@@ -69,7 +69,6 @@
   color: #6B21A8; /* White text for contrast in dark mode */
 }
 
-/* src/styles/chartBanner.module.css */
 .banner {
   display: flex;
   justify-content: center;
@@ -90,7 +89,6 @@
   color: #000000; /* Text color for dark theme */
 }
 
-/* Ensure img and a elements have margins to enforce spacing */
 .banner img.logo {
   height: 24px;
   width: auto;
