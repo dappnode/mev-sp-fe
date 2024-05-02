@@ -68,3 +68,32 @@
   background-color: rgba(24, 24, 24, 0.8); /* Darker background for dark mode */
   color: #6B21A8; /* White text for contrast in dark mode */
 }
+
+/* src/styles/chartBanner.module.css */
+.banner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 8px;
+  font-size: 17px;
+  margin-top: 20px;
+  background-color: rgba(255, 185, 0, 0.7); /* Semi-transparent yellow background */
+  color: #333; /* Default text color for light theme */
+  border: 2px solid rgba(255, 185, 0, 1); /* Solid border for better visibility */
+  border-radius: 12px; /* Increased border-radius for rounder corners */
+  text-decoration: none; /* No underline for the link */
+}
+
+.banner.dark {
+  background-color: rgba(255, 185, 0, 0.7); /* Maintaining consistency in dark mode */
+  color: #000000; /* Text color for dark theme */
+}
+
+/* Ensure img and a elements have margins to enforce spacing */
+.banner img.logo {
+  height: 24px;
+  width: auto;
+  margin-right: 5px; /* right margin ensures space after the logo */
+  margin-left: 8px; /* left margin ensures space after the logo */
+}
