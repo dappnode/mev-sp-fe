@@ -90,8 +90,6 @@
 }
 
 .banner img.logo {
-  height: 24px;
-  width: auto;
   margin-right: 5px; /* right margin ensures space after the logo */
   margin-left: 8px; /* left margin ensures space after the logo */
 }

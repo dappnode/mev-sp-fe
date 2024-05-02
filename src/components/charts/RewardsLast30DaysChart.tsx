@@ -11,7 +11,7 @@ import {
 import { weiToEth } from '@/utils/web3'
 import { toFixedNoTrailingZeros } from '@/utils/decimals'
 import CustomTooltip from '@/components/common/ChartsTooltip'
-import ChartBanner from '@/components/banners/ChartBanner';
+import ChartBanner from '@/components/banners/ChartBanner'
 import styles from '@/styles/stats.module.css'
 import { getSlotUnixTime } from '@/utils/slotsTime'
 import type { ProposedBlock } from '@/components/charts/types'
@@ -103,14 +103,12 @@ function RewardsLast30DaysChart({
         </BarChart>
       </ResponsiveContainer>
       <ChartBanner
-  textBeforeLink="Follow "
-  link="https://twitter.com/SmoothAlerts"
-  linkText="@SmoothAlerts"
-  textAfterLink=" on X for real-time information of new blocks!"
-  theme={resolvedTheme || undefined}
-/>
-
-
+        textBeforeLink="Follow "
+        link="https://twitter.com/SmoothAlerts"
+        linkText="@SmoothAlerts"
+        textAfterLink=" on X for real-time information of new blocks!"
+        theme={resolvedTheme || undefined}
+      />
     </div>
   )
 }
