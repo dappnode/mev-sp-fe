@@ -1,7 +1,6 @@
 /* eslint-disable react/function-component-definition */
 import { useQuery } from '@tanstack/react-query'
 import { BigNumber } from 'ethers'
-import Image from 'next/image'
 import { fetchConfig, fetchStatistics } from '@/client/api/queryFunctions'
 import { weiToEth } from '@/utils/web3'
 import { toFixedNoTrailingZeros } from '@/utils/decimals'
@@ -54,11 +53,12 @@ export default function Stats() {
                 </div>
 
                 <div className="flex justify-center pt-3 lg:pt-20">
-                  <Image
+                  {/*  eslint-disable-next-line @next/next/no-img-element */}
+                  <img
                     src="/images/dappnode-box.png"
                     alt="Solo staking dappnode"
-                    width={250}
-                    height={250}
+                    width="250"
+                    height="250"
                   />
                 </div>
               </div>
