@@ -11,6 +11,7 @@ import {
 import { weiToEth } from '@/utils/web3'
 import { toFixedNoTrailingZeros } from '@/utils/decimals'
 import CustomTooltip from '@/components/common/ChartsTooltip'
+import ChartBanner from '@/components/banners/ChartBanner'
 import styles from '@/styles/stats.module.css'
 import { getSlotUnixTime } from '@/utils/slotsTime'
 import type { ProposedBlock } from '@/components/charts/types'
@@ -79,7 +80,7 @@ function RewardsLast30DaysChart({
 
   return (
     <div>
-      <h2 className={styles.chartTitle}>Total Smooth Rewards Last 30 Days</h2>
+      <h2 className={styles.chartTitle}>Smooth Rewards Last 30 Days</h2>
       <ResponsiveContainer height={300} width="100%">
         <BarChart data={formattedData}>
           <CartesianGrid strokeDasharray="3 3" />
@@ -101,6 +102,13 @@ function RewardsLast30DaysChart({
           />
         </BarChart>
       </ResponsiveContainer>
+      <ChartBanner
+        textBeforeLink="Follow "
+        link="https://twitter.com/SmoothAlerts"
+        linkText="@SmoothAlerts"
+        textAfterLink=" on X for real-time information of new blocks!"
+        theme={resolvedTheme || undefined}
+      />
     </div>
   )
 }
