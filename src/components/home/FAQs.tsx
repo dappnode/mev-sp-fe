@@ -27,7 +27,7 @@ const faqs = [
 ]
 export default function FAQs() {
     return (
-        <div className="mx-auto my-16 mt-32 max-w-7xl px-16 sm:py-32 lg:px-16 lg:py-10">
+        <div className="mx-auto my-16 mt-32 max-w-7xl pl-5 pr-2 sm:py-32 md:px-16 lg:px-16 lg:py-10">
             <div className="mx-auto divide-y divide-gray-900/10">
                 <h2 className="text-3xl font-bold leading-10 tracking-tight text-DAppDeep dark:text-DAppDarkText">Frequently asked questions</h2>
                 <dl className="mt-10 space-y-6 divide-y divide-gray-900/10">
