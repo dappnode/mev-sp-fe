@@ -43,14 +43,10 @@ export default function HowToSubscribe() {
             }
           }}>
           Change your validator&apos;s fee recipient to{' '}
-          <dl
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              cursor: 'pointer',
-              textDecoration: 'underline',
-            }}>
-            <dt>{SMOOTHING_POOL_ADDRESS}</dt>
+          <dl className="flex cursor-pointer justify-between underline">
+            <dt className="text-[0.6rem] md:text-sm lg:text-base">
+              {SMOOTHING_POOL_ADDRESS}
+            </dt>
             <dd>
               <svg
                 className="h-6 w-6"
@@ -129,7 +125,7 @@ export default function HowToSubscribe() {
 
   return (
     <div className="mx-auto mt-20 max-w-7xl px-16">
-      <div className="mx-auto max-w-2xl lg:text-center">
+      <div className="mx-auto max-w-2xl text-center">
         <h2 className="text-base font-semibold leading-7 text-purple-600">
           How to subscribe
         </h2>

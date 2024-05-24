@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 import Image from 'next/image'
 import Link from 'next/link'
 import clsx from 'clsx'
+import { useState, useEffect } from 'react'
 import { Button } from '@/components/common/Button'
 import { PAGES } from '@/utils/config'
 import { ToggleThemeBtn } from '@/components/common/ToggleThemeBtn'
@@ -13,8 +14,22 @@ import { ToggleThemeBtn } from '@/components/common/ToggleThemeBtn'
 export function MobileMenuDialog() {
   const router = useRouter()
 
+  const [isOpen, setIsOpen] = useState(false)
+
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setIsOpen(false)
+    }
+
+    router.events.on('routeChangeComplete', handleRouteChange)
+
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange)
+    }
+  }, [router.events])
+
   return (
-    <Dialog.Root>
+    <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
       <Dialog.Trigger asChild>
         <Button buttonType="unstyled" className="ml-4" size="none">
           <RxHamburgerMenu className="h-6 w-6" />
