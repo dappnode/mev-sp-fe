@@ -71,7 +71,7 @@ export default function Stats() {
                       <>
                         {`${(percentageIncrease / 1e18).toFixed(2)}%`}
                         <br />
-                        More ETH!
+                        ETH!
                       </>
                     ) : (
                       'Loading...'
