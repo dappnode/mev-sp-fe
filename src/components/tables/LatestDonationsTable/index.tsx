@@ -19,7 +19,7 @@ import type { Donation } from '../types'
 
 const columnHelper = createColumnHelper<Donation>()
 
-const getDonationColumns = (blackExplorerUrl?: string) => [
+const getDonationColumns = (blockExplorerUrl?: string) => [
     columnHelper.accessor('blockNumber', {
     header: () => <HeaderTooltip header="Block Number" tooltip={headerTooltip.blockNumber} />,
     cell: (info) => {
@@ -27,7 +27,7 @@ const getDonationColumns = (blackExplorerUrl?: string) => [
       return (
         <Link
           className="font-medium underline"
-          href={getBeaconChainExplorer('block', blockNumber)}
+          href={`${blockExplorerUrl}/block/${blockNumber}`}
           rel="noopener noreferrer"
           target="_blank">
           {blockNumber.toLocaleString()}
@@ -42,7 +42,7 @@ const getDonationColumns = (blackExplorerUrl?: string) => [
           return (
             <Link
               className="font-medium underline"
-              href={getBeaconChainExplorer('tx', txHash)}
+              href={`${blockExplorerUrl}/tx/${txHash}`}
               rel="noopener noreferrer"
               target="_blank">
               {shortenEthAddress(txHash)}
@@ -58,7 +58,7 @@ const getDonationColumns = (blackExplorerUrl?: string) => [
           return (
             <Link
               className="font-medium underline"
-              href={`${blackExplorerUrl}/address/${sender}`}
+              href={`${blockExplorerUrl}/address/${sender}`}
               rel="noopener noreferrer"
               target="_blank">
               {shortenEthAddress(sender)}
