@@ -12,7 +12,6 @@ import {
 } from '@tanstack/react-table'
 import { useSearchInput } from '@/hooks/useSearchInput'
 import { toFixedNoTrailingZeros } from '@/utils/decimals'
-import { getBeaconChainExplorer } from '@/utils/config'
 import { shortenEthAddress } from '@/utils/web3'
 import type { Donation } from '../types'
 
