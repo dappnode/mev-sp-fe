@@ -36,8 +36,8 @@ export function LatestDonationsSP() {
         isLoading={isLoading}
         blockExplorerUrl={
           SELECTED_CHAIN === 'mainnet'
-            ? 'https://beaconcha.in'
-            : 'https://prater.beaconcha.in'
+            ? 'https://eth.blockscout.com'
+            : 'https://eth-holesky.blockscout.com'
         }
       />
     </div>
