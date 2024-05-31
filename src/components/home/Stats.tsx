@@ -51,15 +51,14 @@ export default function Stats() {
                     <strong className="staking-solo-stats">Solo Stakers</strong>
                   </dt>
                 </div>
-
-                <div className="flex justify-center pt-3 lg:pt-20">
-                  {/*  eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="/images/dappnode-box.png"
-                    alt="Solo staking dappnode"
-                    width="250"
-                    height="250"
-                  />
+                <div className="flex w-full items-center justify-center">
+                  <video autoPlay muted loop className="w-4/6 md:w-3/5">
+                    <source
+                      src="/videos/solo-staking-animation.webm"
+                      type="video/webm"
+                    />
+                    Your browser does not support the video tag.
+                  </video>
                 </div>
               </div>
               <div className="flex flex-col">
