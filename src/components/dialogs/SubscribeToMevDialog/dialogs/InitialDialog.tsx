@@ -53,7 +53,7 @@ export function InitialDialog({
   }
 
   const renderLoadingOrError = () => {
-    if (registeredRelaysQuery.isLoading) {
+    if (registeredRelaysQuery.isFetching) {
       return (
         <div>
           <h4 className="text-center">Checking MevBoost relays...</h4>
@@ -193,8 +193,8 @@ export function InitialDialog({
     if (!registeredRelaysQuery.isLoading && isCorrectFeeRecipient) {
       return (
         <div className="mt-4 text-lg font-semibold">
-          Great, you are already registered to MEV relays and your
-          validator&#39;s fee recipient is set to Smooth!
+          Great, this validator is already registered to MEV relays 
+          and its fee recipient is set to Smooth!
         </div>
       )
     }
@@ -213,11 +213,11 @@ export function InitialDialog({
       <div className="sm:px-6">
         <div>
           <h4 className="mb-2 text-DAppNeutral/500 dark:text-DAppDarkText">
-            Your Validator
+            Validator
           </h4>
           <p className="h-8">{shortenEthAddress(validatorKey, 16, 16)}</p>
         </div>
-        {renderLoadingOrError() || renderRelayStatus()}
+        {renderLoadingOrError() || renderRelayStatus()} 
       </div>
 
       {noMevRelays ? (
