@@ -82,8 +82,12 @@ export default function HowToSubscribe() {
     },
     {
       name: '3. Start Accumulating Rewards Today!',
-      description: `Or you can also add a colateral of 0.01 ETH per validator on the
-          ${(<u>dashboard</u>)} to start accumulating rewards today!`,
+      description: (
+        <p>
+          Or you can also add a collateral of 0.01 ETH per validator on the{' '}
+          <u>dashboard</u> to start accumulating rewards today!
+        </p>
+      ),
 
       status: 'complete',
       isLink: true,
