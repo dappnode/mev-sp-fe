@@ -10,79 +10,119 @@ import {
 } from 'wagmi'
 import { AiOutlineInfoCircle } from 'react-icons/ai'
 import { utils } from 'ethers'
-import { useState } from 'react'
-import { useDebounce } from 'use-debounce'
+import { useState, useEffect, useCallback } from 'react'
 import { Button } from '@/components/common/Button'
 import { SMOOTHING_POOL_ADDRESS } from '@/utils/config'
+
+const MIN_DONATION = 0.01
 
 export function InitialDialog({
   handleClose,
   handleChangeDialogState,
 }: DialogProps) {
-  const [ethAmount, setEthAmount] = useState<number>(0)
-  const [debouncedEthAmount] = useDebounce(String(ethAmount), 500)
+  const [ethAmount, setEthAmount] = useState<string>('')
+  const [isValueValid, setIsValueValid] = useState<boolean>(false)
+  const [errorMessage, setErrorMessage] = useState<string>('')
 
   const { address } = useAccount()
   const { chain } = useNetwork()
-  const { data, isLoading } = useBalance({
-    address,
-  })
+  const { data, isLoading } = useBalance({ address })
+
+  const availableBalance = data?.value ? parseFloat(utils.formatEther(data.value)) : 0
 
   const { config } = usePrepareSendTransaction({
     to: SMOOTHING_POOL_ADDRESS,
-    value: debouncedEthAmount
-      ? utils.parseEther(debouncedEthAmount).toBigInt()
-      : undefined,
+    value: ethAmount && isValueValid ? utils.parseEther(ethAmount).toBigInt() : undefined,
   })
 
   const contractWrite = useSendTransaction(config)
 
   const waitForTransaction = useWaitForTransaction({
     hash: contractWrite.data?.hash,
-    onSuccess: () => {
-      handleChangeDialogState('success')
-    },
+    onSuccess: () => handleChangeDialogState('success'),
   })
 
+  const sanitizeInput = useCallback((value: string): string => {
+    // Remove non-numeric characters except for the decimal point
+    let sanitizedValue = value.replace(/[^0-9.]/g, '')
+
+    // Remove leading zeros from the integer part
+    sanitizedValue = sanitizedValue.replace(/^0+(?=\d)/, '')
+
+    // Split the input by the decimal point
+    const parts = sanitizedValue.split('.')
+
+    // Reconstruct the sanitized value
+    sanitizedValue = parts.join('.')
+
+    // Ensure only one decimal point is present
+    if (parts.length > 2) {
+      sanitizedValue = `${parts[0]}.${parts.slice(1).join('')}`
+    }
+
+    // Ensure the input starts with a valid number
+    if (sanitizedValue.startsWith('.')) {
+      sanitizedValue = `0${sanitizedValue}`
+    }
+
+    // Limit to 8 characters
+    return sanitizedValue.slice(0, 8)
+  }, [])
+
+  const validateAmount = useCallback((amount: string) => {
+    const numericValue = parseFloat(amount)
+    if (Number.isNaN(numericValue) || amount !== sanitizeInput(amount)) {
+      setIsValueValid(false)
+      setErrorMessage('Please enter a valid amount.')
+    } else if (numericValue < MIN_DONATION) {
+      setIsValueValid(false)
+      setErrorMessage(`Only donations greater than or equal to ${MIN_DONATION} ETH are allowed.`)
+    } else if (numericValue > availableBalance) {
+      setIsValueValid(false)
+      setErrorMessage('Insufficient balance.')
+    } else {
+      setIsValueValid(true)
+      setErrorMessage('')
+    }
+  }, [sanitizeInput, availableBalance])
+
+  useEffect(() => {
+    if (ethAmount) validateAmount(ethAmount)
+  }, [ethAmount, availableBalance, validateAmount])
+
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEthAmount(Number(e.target.value))
+    const sanitizedValue = sanitizeInput(e.target.value)
+    setEthAmount(sanitizedValue)
+    validateAmount(sanitizedValue)
   }
 
   return (
     <>
       <input
-        className="min-h-full w-full rounded-md border bg-DAppLight p-2 pl-4 [appearance:textfield] focus:outline-none dark:border-DAppDarkSurface/300 dark:bg-DAppDarkSurface/300"
+        className={`min-h-full w-full rounded-md border bg-DAppLight p-2 pl-4 [appearance:textfield] focus:outline-none dark:border-DAppDarkSurface/300 dark:bg-DAppDarkSurface/300 ${!isValueValid && 'border-red-500'}`}
+        placeholder="0.01"
         min={0}
-        placeholder="0.00"
-        type="number"
+        type="text"
         value={ethAmount}
         onChange={handleChangeInput}
       />
+      {!isValueValid && (
+        <p className="text-red-500 text-xs mt-1">{errorMessage}</p>
+      )}
       <div className="mt-3 flex w-full items-center justify-between px-2 text-xs text-DAppDeep dark:text-DAppDarkText">
         <p className="flex items-center">
           Available:{' '}
           {isLoading ? (
             <span className="ml-2 inline-block h-4 w-16 animate-pulse rounded-md bg-gray-200 opacity-90 dark:bg-DAppDarkSurface/300" />
           ) : (
-            <>
-              {data?.formatted} {data?.symbol}
-            </>
+            `${data?.formatted} ${data?.symbol}`
           )}
         </p>
-        <button
-          type="button"
-          onClick={() =>
-            setEthAmount(data?.formatted ? Number(data?.formatted) : 0)
-          }>
-          Max
-        </button>
       </div>
       <div className="mt-6 flex w-full flex-col gap-y-5 rounded-lg bg-violet-50 p-4 text-sm font-normal text-DAppDeep dark:bg-DAppDarkSurface/300 dark:text-DAppDarkText">
         <div className="flex items-center justify-between">
           <p>Donation to Solo Stakers</p>
-          <p>
-            {ethAmount} {data?.symbol}
-          </p>
+          <p>{ethAmount || '0'} {data?.symbol}</p>
         </div>
       </div>
       {waitForTransaction.isLoading ? (
@@ -107,8 +147,8 @@ export function InitialDialog({
           <p className="mt-4 font-normal">
             Your donation has failed. Please go back and try again.
           </p>
-          <h4 className="my-2  font-bold">Error:</h4>
-          <div className="mb-4 h-32  overflow-scroll rounded-lg border border-red-400 p-2">
+          <h4 className="my-2 font-bold">Error:</h4>
+          <div className="mb-4 h-32 overflow-scroll rounded-lg border border-red-400 p-2">
             {waitForTransaction.error?.message}
           </div>
         </div>
@@ -117,7 +157,8 @@ export function InitialDialog({
         className="mt-6"
         isDisabled={
           !contractWrite.sendTransaction ||
-          ethAmount === 0 ||
+          ethAmount === '' ||
+          !isValueValid ||
           waitForTransaction.isLoading
         }
         onPress={() => contractWrite.sendTransaction?.()}>
