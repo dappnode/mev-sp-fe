@@ -86,6 +86,19 @@ export default function HowToSubscribe() {
         <p>
           Or you can also add a collateral of 0.01 ETH per validator on the{' '}
           <u>dashboard</u> to start accumulating rewards today!
+          <svg
+            className="icon-learn-smooth inline-block h-4 w-4"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
         </p>
       ),
 
