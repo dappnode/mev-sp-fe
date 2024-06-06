@@ -22,8 +22,8 @@ const columnHelper = createColumnHelper<Block>();
 
 const getRelativeTimeFromSlot = (slot: number) => {
   let genesisUnixTime: number;
-  if (SELECTED_CHAIN === 'goerli') {
-    genesisUnixTime = 1616508000; // Unix time of the genesis block in testnet
+  if (SELECTED_CHAIN === 'holesky') {
+    genesisUnixTime = 1695902400; // Unix time of the genesis block in testnet
   }
   else {
     genesisUnixTime = 1606824023; // Unix time of the genesis block in mainnet
