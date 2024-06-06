@@ -1,6 +1,3 @@
-/* eslint-disable no-else-return */
-/* eslint-disable react/button-has-type */
-
 import { WarningIcon } from './components/WarningIcon'
 import { Skeleton } from './components/Skeleton'
 import { NotConnectedWarning } from './components/NotConnectedWarning'
@@ -16,6 +13,8 @@ import {
   getCoreRowModel,
   getPaginationRowModel,
   useReactTable,
+  getSortedRowModel,
+  SortingState,
 } from '@tanstack/react-table'
 import { SubscribeToMevDialog, MultiSubscribeToMevDialog } from '@/components/dialogs/SubscribeToMevDialog'
 import { UnsubscribeToMevDialog } from '@/components/dialogs/UnsubscribeToMevDialog'
@@ -65,16 +64,24 @@ const useTableColumns = (table: { getIsAllRowsSelected: () => boolean | undefine
       },
     }),
     columnHelper.accessor('pending', {
-      header: () => (
-        <HeaderTooltip header="Pending" tooltip={headerTooltip.pending} />
+      header: ({ column }) => (
+        <div onClick={column.getToggleSortingHandler()} className="cursor-pointer">
+          <HeaderTooltip header="Pending" tooltip={headerTooltip.pending} />
+          {column.getIsSorted() ? (column.getIsSorted() === 'desc' ? ' 🔽' : ' 🔼') : ''}
+        </div>
       ),
       cell: (info) => addEthSuffix(toFixedNoTrailingZeros(info.getValue(), 4)),
+      enableSorting: true,
     }),
     columnHelper.accessor('accumulated', {
-      header: () => (
-        <HeaderTooltip header="Accumulated" tooltip={headerTooltip.accumulated} />
+      header: ({ column }) => (
+        <div onClick={column.getToggleSortingHandler()} className="cursor-pointer">
+          <HeaderTooltip header="Accumulated" tooltip={headerTooltip.accumulated} />
+          {column.getIsSorted() ? (column.getIsSorted() === 'desc' ? ' 🔽' : ' 🔼') : ''}
+        </div>
       ),
       cell: (info) => addEthSuffix(toFixedNoTrailingZeros(info.getValue(), 4)),
+      enableSorting: true,
     }),
     columnHelper.accessor('warning', {
       header: () => (
@@ -98,9 +105,9 @@ const useTableColumns = (table: { getIsAllRowsSelected: () => boolean | undefine
           />
         )
       },
+      enableSorting: true,  // Enable sorting for the subscribed column
     }),
   ], [table])
-
 
 interface MyValidatorsTableProps {
   data?: Validator[]
@@ -119,6 +126,9 @@ export function MyValidatorsTable({
   const [showMultiSubscribeDialog, setShowMultiSubscribeDialog] = useState(false);
   const [selectedValidatorIds, setSelectedValidatorIds] = useState<number[]>([]);
   const [selectedValidatorKeys, setSelectedValidatorKeys] = useState<`0x${string}`[]>([]);
+  const [sorting, setSorting] = useState<SortingState>([
+    { id: 'subscribed', desc: true }, // Default sorting by subscribed
+  ]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [columns, setColumns] = useState<ColumnDef<Validator, any>[]>([]);
@@ -130,20 +140,7 @@ export function MyValidatorsTable({
           const address = row.address.toLowerCase()
           const search = debouncedSearchInput.toLowerCase()
           return address.includes(search)
-        })
-        // Sort by address
-        .sort((a, b) => {
-          if (a.address.toLowerCase() < b.address.toLowerCase()) return -1
-          if (a.address.toLowerCase() > b.address.toLowerCase()) return 1
-          return 0
-        })
-        // Sort by subscribed
-        .sort((a, b) => {
-          if (a.subscribed && !b.subscribed) return -1
-          if (!a.subscribed && b.subscribed) return 1
-          return 0
         }),
-
     [debouncedSearchInput, data]
   )
 
@@ -155,8 +152,13 @@ export function MyValidatorsTable({
         pageSize: PAGE_SIZE,
       },
     },
+    state: {
+      sorting,
+    },
+    onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
   });
 
   const generatedColumns = useTableColumns(table);
