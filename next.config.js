@@ -21,7 +21,7 @@ const nextConfig = {
 
   async headers() {
     const headers = [];
-    if (process.env.NEXT_PUBLIC_SELECTED_CHAIN === 'goerli') {
+    if (process.env.NEXT_PUBLIC_SELECTED_CHAIN === 'holesky') {
       headers.push({
         headers: [
           {
