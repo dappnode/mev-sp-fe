@@ -6,13 +6,12 @@ import {
   usePrepareSendTransaction,
   useSendTransaction,
   useWaitForTransaction,
-  useNetwork,
 } from 'wagmi'
 import { AiOutlineInfoCircle } from 'react-icons/ai'
 import { utils } from 'ethers'
 import { useState, useEffect, useCallback } from 'react'
 import { Button } from '@/components/common/Button'
-import { SMOOTHING_POOL_ADDRESS } from '@/utils/config'
+import { SELECTED_CHAIN, SMOOTHING_POOL_ADDRESS } from '@/utils/config'
 
 const MIN_DONATION = 0.01
 
@@ -25,10 +24,17 @@ export function InitialDialog({
   const [errorMessage, setErrorMessage] = useState<string>('')
 
   const { address } = useAccount()
-  const { chain } = useNetwork()
   const { data, isLoading } = useBalance({ address })
 
   const availableBalance = data?.value ? parseFloat(utils.formatEther(data.value)) : 0
+  
+  let blockExplorerUrl: string
+  if (SELECTED_CHAIN === 'mainnet') {
+    blockExplorerUrl = 'https://etherscan.io'
+  }
+  else {
+    blockExplorerUrl = 'https://holesky.etherscan.io'
+  }
 
   const { config } = usePrepareSendTransaction({
     to: SMOOTHING_POOL_ADDRESS,
@@ -134,7 +140,7 @@ export function InitialDialog({
           <div className="mx-auto mt-2 max-w-fit">
             <Link
               className="text-violet-500 underline dark:text-violet-200"
-              href={`${chain?.blockExplorers?.default.url}/tx/${contractWrite.data?.hash}`}
+              href={`${blockExplorerUrl}/tx/${contractWrite.data?.hash}`}
               target="_blank">
               Check the transaction on block explorer
             </Link>
