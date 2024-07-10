@@ -1,31 +1,51 @@
 /* eslint-disable react/function-component-definition */
 import { useQuery } from '@tanstack/react-query'
-import { BigNumber } from 'ethers'
-import { fetchConfig, fetchStatistics } from '@/client/api/queryFunctions'
+import { BigNumber, utils } from 'ethers'
+import { useMemo } from 'react'
+import { fetchConfig, fetchProposedBlocks, fetchStatistics } from '@/client/api/queryFunctions'
 import { weiToEth } from '@/utils/web3'
 import { toFixedNoTrailingZeros } from '@/utils/decimals'
 
-export default function Stats() {
-  const statisticsQuery = useQuery(['statistics'], fetchStatistics)
-  const configQuery = useQuery(['config'], fetchConfig)
-  const avgBlockRewardWei = statisticsQuery.data?.avgBlockRewardWei
-  const poolFeesPercent = configQuery.data?.poolFeesPercent
-  const averageSolo = 0.15 // TODO: make this dynamic or more accurate
-  let averagePool
-  let percentageIncrease
+const MULTIPLIER = 2.56
 
-  if (avgBlockRewardWei !== undefined && poolFeesPercent !== undefined) {
-    const feesPoolFraction = BigNumber.from(poolFeesPercent).div(100)
-    const feeAmount = BigNumber.from(avgBlockRewardWei)
-      .mul(feesPoolFraction)
-      .div(100)
-    averagePool = BigNumber.from(avgBlockRewardWei)
-      .sub(feeAmount)
-      .mul(3)
-      .toString()
-    percentageIncrease =
-      ((parseFloat(averagePool) - averageSolo) / averageSolo) * 100
-  }
+export default function Stats() {
+  const statisticsQuery = useQuery(['statistics'], fetchStatistics);
+  const configQuery = useQuery(['config'], fetchConfig);
+  const proposedBlocksQuery = useQuery(['proposedblocks'], fetchProposedBlocks);
+
+  const medianSolo = useMemo(() => {
+    const proposedBlocks = proposedBlocksQuery.data;
+    if (!proposedBlocks) return 0; // Handle loading or error states
+
+    const rewards = proposedBlocks.map(block => weiToEth(block.rewardWei));
+    const sortedRewards = rewards.sort((a, b) => a - b);
+    const mid = Math.floor(sortedRewards.length / 2);
+    const median = sortedRewards.length % 2 !== 0
+      ? sortedRewards[mid]
+      : (sortedRewards[mid - 1] + sortedRewards[mid]) / 2;
+
+    return parseFloat(median.toFixed(4)); // Rounds the median to three decimal places
+  }, [proposedBlocksQuery.data]);
+
+  const averageSolo = MULTIPLIER * medianSolo; // Dynamically calculated as 2.56 times the median reward
+
+  const averagePool = useMemo(() => {
+    const avgBlockRewardWei = statisticsQuery.data?.avgBlockRewardWei;
+    const poolFeesPercent = configQuery.data?.poolFeesPercent;
+
+    if (!avgBlockRewardWei || !poolFeesPercent) return 0;
+
+    const rewardWei = BigNumber.from(avgBlockRewardWei);
+    const fees = rewardWei.mul(poolFeesPercent).div(10000);
+    const netRewardWei = rewardWei.sub(fees);
+    const netRewardEth = parseFloat(utils.formatEther(netRewardWei));
+    return netRewardEth * MULTIPLIER;  // Apply multiplier
+  }, [statisticsQuery.data?.avgBlockRewardWei, configQuery.data?.poolFeesPercent]);
+
+  const percentageIncrease = useMemo(() => {
+    if (!averagePool || !averageSolo) return 0;
+    return (averagePool / averageSolo) * 100; // Adjusted calculation
+  }, [averagePool, averageSolo]);
 
   return (
     <div className="pt-24 sm:pt-32">
@@ -43,7 +63,7 @@ export default function Stats() {
                 <div className="overflow-hidden rounded-lg bg-gray-400/5 px-4 py-5 shadow sm:p-8">
                   <dd className="staking-solo-stats text-3xl font-semibold tracking-tight">
                     {averageSolo !== undefined
-                      ? `~ ${averageSolo.toFixed(2)} ETH`
+                      ? `~ ${averageSolo.toFixed(4)} ETH`
                       : 'Loading...'}
                   </dd>
                   <dt className="mt-2 text-base font-medium leading-6 text-DAppDeep dark:text-DAppDarkText">
@@ -68,7 +88,7 @@ export default function Stats() {
                     style={{ transform: 'rotate(-25deg)' }}>
                     {percentageIncrease !== undefined ? (
                       <>
-                        {`${(percentageIncrease / 1e18).toFixed(2)}%`}
+                        {`${(percentageIncrease).toFixed(2)}%`}
                         <br />
                         ETH!
                       </>
@@ -79,7 +99,7 @@ export default function Stats() {
                   <dd className="text-3xl font-semibold tracking-tight text-purple-600">
                     {averagePool !== undefined
                       ? `~ ${toFixedNoTrailingZeros(
-                          weiToEth(averagePool),
+                          averagePool,
                           4
                         )} ETH`
                       : 'Loading...'}
