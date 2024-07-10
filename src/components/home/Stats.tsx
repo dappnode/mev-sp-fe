@@ -1,10 +1,10 @@
 /* eslint-disable react/function-component-definition */
 import { useQuery } from '@tanstack/react-query'
 import { BigNumber, utils } from 'ethers'
+import { useMemo } from 'react'
 import { fetchConfig, fetchProposedBlocks, fetchStatistics } from '@/client/api/queryFunctions'
 import { weiToEth } from '@/utils/web3'
 import { toFixedNoTrailingZeros } from '@/utils/decimals'
-import { useMemo } from 'react'
 
 const MULTIPLIER = 2.56
 
