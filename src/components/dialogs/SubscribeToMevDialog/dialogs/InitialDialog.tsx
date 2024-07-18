@@ -6,6 +6,7 @@ import CopyToClipboard from 'react-copy-to-clipboard'
 import toast, { Toaster } from 'react-hot-toast'
 import { FaCopy } from 'react-icons/fa'
 import { RxDotFilled } from 'react-icons/rx'
+import { useState } from 'react'
 import { StepProgressBar } from '@/components/common/StepProgressBar'
 import { Button } from '@/components/common/Button'
 import {
@@ -14,7 +15,6 @@ import {
 } from '@/client/api/queryFunctions'
 import { shortenEthAddress } from '@/utils/web3'
 import { SMOOTHING_POOL_ADDRESS } from '@/utils/config'
-import { useState } from 'react'
 
 interface InitialDialogProps extends DialogProps {
   validatorKey: `0x${string}`
@@ -103,6 +103,7 @@ export function InitialDialog({
       </div>
     )
   }
+  const [smoothFeeCopied, setSmoothFeeCopied] = useState(false)
 
   const renderRelayStatus = () => {
     if (!registeredRelaysQuery.isLoading && noMevRelays) {
@@ -116,8 +117,6 @@ export function InitialDialog({
         </div>
       )
     }
-
-    const [smoothFeeCopied, setSmoothFeeCopied] = useState(false)
 
     const handleCopyAddress = (
       e:
@@ -140,7 +139,6 @@ export function InitialDialog({
 
     if (!registeredRelaysQuery.isLoading && noCorrectFeeRelayers === true) {
     return (
-      <>
         <div className="mt-6 overflow-auto text-center text-base text-red-500">
           <AiOutlineInfoCircle className="mx-auto h-8 w-8" />
           <h4 className="font-bold mt-2">
@@ -149,15 +147,16 @@ export function InitialDialog({
             <br />
             <br />
             <div className="flex justify-center text-black dark:text-DAppDarkText ">
-              <div
+              <span
+                tabIndex={0}
+                role='button'                
                 className="hover:underline cursor-pointer flex"
+                onKeyDown={handleCopyAddress}
                 onClick={handleCopyAddress}>
                 <span className="text-[0.6rem] md:text-sm lg:text-base">
-                  {SMOOTHING_POOL_ADDRESS.substring(0, 8) +
-                    '...' +
-                    SMOOTHING_POOL_ADDRESS.substring(
+                  {`${SMOOTHING_POOL_ADDRESS.substring(0, 8)}...${SMOOTHING_POOL_ADDRESS.substring(
                       SMOOTHING_POOL_ADDRESS.length - 8
-                    )}
+                    )}`}
                 </span>
 
                 <svg
@@ -176,7 +175,7 @@ export function InitialDialog({
                 {smoothFeeCopied && (
                   <span className="ml-2 text-base text-green-600">Copied!</span>
                 )}
-              </div>
+              </span>
             </div>
             <br />
             Check out{' '}
@@ -189,7 +188,6 @@ export function InitialDialog({
             </Link>{' '}
           </h4>
         </div>
-      </>
     )
     }
     if (!registeredRelaysQuery.isLoading && !isCorrectFeeRecipient) {
