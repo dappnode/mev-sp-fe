@@ -1,7 +1,5 @@
 import {
   InitialDialog,
-  ClaimableRewardsDialog,
-  WithdrawDialog,
   SuccessDialog,
 } from './dialogs'
 import { UnsubscribeDialog } from './dialogs/UnsubscribeDialog'
@@ -14,8 +12,6 @@ import type { IDialogStates } from './types'
 
 const steps = [
   'Confirmation',
-  'Claimable rewards',
-  'Withdraw',
   'Unsubscribe',
   'Done',
 ]
@@ -49,26 +45,13 @@ export function UnsubscribeToMevDialog({
       handleOpenChange={handleOpenChangeDialog}
       open={open}
       showCloseButton={showCloseButton}
-      subtitle="Unsubscribe and Claim rewards"
+      subtitle="Unsubscribe Validator"
       triggerButtonProp="outline"
       triggerText="Unsubscribe">
       <AnimatePresence>
-        <div className="flex h-[550px] flex-col justify-between text-DAppDeep sm:h-[500px]">
+        <div className="flex h-[550px] flex-col justify-between text-DAppDeep sm:h-[550px]">
           {dialogState === 'initial' ? (
             <InitialDialog
-              handleChangeDialogState={setDialogState}
-              handleClose={handleCloseDialog}
-              steps={steps}
-            />
-          ) : dialogState === 'confirm' ? (
-            <ClaimableRewardsDialog
-              handleChangeDialogState={setDialogState}
-              handleClose={handleCloseDialog}
-              steps={steps}
-              validatorId={validatorId}
-            />
-          ) : dialogState === 'withdraw' ? (
-            <WithdrawDialog
               handleChangeDialogState={setDialogState}
               handleClose={handleCloseDialog}
               steps={steps}

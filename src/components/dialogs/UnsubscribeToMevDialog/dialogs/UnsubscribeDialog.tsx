@@ -58,12 +58,12 @@ export function UnsubscribeDialog({
     <>
       <div className="-mt-2 text-DAppDeep dark:text-DAppDarkText">
         <h3 className="mb-6 text-left text-2xl font-bold">Unsubscribe</h3>
-        <StepProgressBar currentStep={3} steps={steps} />
+        <StepProgressBar currentStep={1} steps={steps} />
       </div>
       {!waitForTransaction.isError ? (
         <div className="text-center text-DAppDeep dark:text-DAppDarkText">
           <h4 className="text-lg font-normal">
-            You are unsubscribing from Smooth
+            You are unsubscribing validator <b>{validatorId}</b> from Smooth.
           </h4>
           {waitForTransaction.isLoading && (
             <div className="mt-6 w-full rounded-lg bg-violet-50 px-4 py-8 text-sm font-normal dark:bg-DAppDarkSurface/300 dark:text-DAppDarkText">

@@ -20,7 +20,7 @@ export function SuccessDialog({ steps, handleClose }: DialogProps) {
     <>
       <div className="-mt-2 text-DAppDeep dark:text-DAppDarkText">
         <h3 className="mb-6 text-left text-2xl font-bold">Success!</h3>
-        <StepProgressBar currentStep={4} steps={steps} />
+        <StepProgressBar currentStep={2} steps={steps} />
       </div>
       <div className="mx-auto flex flex-col items-center gap-y-4 text-center text-lg sm:px-4 text-DAppDeep dark:text-DAppDarkText">
         <CongratulationsIcon />
