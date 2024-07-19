@@ -20,15 +20,14 @@ export function InitialDialog({
           <span className="ml-2">Attention</span>
         </h4>
         <p className="mt-1 text-center text-base font-normal leading-7 tracking-wide sm:mt-3 sm:px-2 sm:text-lg">
-          When unsubscribing you will automatically receive all claimable
-          rewards, but will lose all your pending rewards for this validator. We
-          recommend unsubscribing right after a successful proposal so you can
-          confirm pending rewards to available rewards and leave the pool.
+        When unsubscribing a validator, all its pending rewards are redistributed back to the pool.<br />
+  <br />
+  It is recommended to unsubscribe a validator soon after it has proposed a block to minimize lost pending rewards.<br />
         </p>
       </div>
       <div>
-        <Button onPress={() => handleChangeDialogState('confirm')}>
-          Claim my rewards
+        <Button onPress={() => handleChangeDialogState('unsubscribe')}>
+          Next
         </Button>
         <Button buttonType="secondary" className="mt-4" onPress={handleClose}>
           Cancel

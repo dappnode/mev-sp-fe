@@ -2,8 +2,6 @@ import { StepProgressBarProps } from '@/components/common/StepProgressBar'
 
 export type IDialogStates =
   | 'initial'
-  | 'confirm'
-  | 'withdraw'
   | 'unsubscribe'
   | 'success'
 
