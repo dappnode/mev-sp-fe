@@ -69,6 +69,7 @@ export function UnsubscribeToMevDialog({
               handleChangeDialogState={setDialogState}
               handleClose={handleCloseDialog}
               steps={steps}
+              validatorId={validatorId}
             />
           )}
         </div>
