@@ -5,7 +5,6 @@ import {
   useContractWrite,
   useWaitForTransaction,
   useAccount,
-  useNetwork,
 } from 'wagmi'
 import { AiOutlineInfoCircle } from 'react-icons/ai'
 import { utils } from 'ethers'
@@ -30,7 +29,7 @@ export function DepositDialog({
   handleChangeDialogState,
 }: DepositDialogProps) {
   const { address } = useAccount()
-  const { chain } = useNetwork()
+  const { chain } = useAccount()
   const queryClient = useQueryClient()
 
   const configQuery = useQuery({

@@ -4,7 +4,7 @@ import Link from 'next/link'
 import {
   useAccount,
   useNetwork,
-  useContractWrite,
+  useWriteContract,
   useWaitForTransaction,
 } from 'wagmi'
 import { AiOutlineInfoCircle } from 'react-icons/ai'
@@ -35,7 +35,7 @@ export function WithdrawDialog({
 
   const abi = [...contractInterface] as const
 
-  const contractWrite = useContractWrite({
+  const contractWrite = useWriteContract({
     address: SMOOTHING_POOL_ADDRESS,
     abi,
     functionName: 'claimRewards',

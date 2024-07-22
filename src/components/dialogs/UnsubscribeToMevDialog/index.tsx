@@ -5,7 +5,7 @@ import {
 import { UnsubscribeDialog } from './dialogs/UnsubscribeDialog'
 import { BaseDialog } from '../BaseDialog'
 import { useState } from 'react'
-import { useNetwork } from 'wagmi'
+import { useAccount } from 'wagmi'
 import { AnimatePresence } from 'framer-motion'
 import { useDialog } from '@/hooks/useDialog'
 import type { IDialogStates } from './types'
@@ -23,7 +23,7 @@ interface UnsubscribeToMevDialogProps {
 export function UnsubscribeToMevDialog({
   validatorId,
 }: UnsubscribeToMevDialogProps) {
-  const { chain } = useNetwork()
+  const { chain } = useAccount()
   const [dialogState, setDialogState] = useState<IDialogStates>('initial')
   const [showCloseButton, setShowCloseButton] = useState<boolean>(true)
 
@@ -41,7 +41,7 @@ export function UnsubscribeToMevDialog({
 
   return (
     <BaseDialog
-      disabledTrigger={chain?.unsupported}
+      disabledTrigger={chain?.id !== 1}
       handleOpenChange={handleOpenChangeDialog}
       open={open}
       showCloseButton={showCloseButton}
