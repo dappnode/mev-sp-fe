@@ -9,7 +9,7 @@ import {
 } from './dialogs'
 import { BaseDialog } from '../BaseDialog'
 import { useState } from 'react'
-import { useNetwork } from 'wagmi'
+import { useAccount } from 'wagmi'
 import { AnimatePresence } from 'framer-motion'
 import { useDialog } from '@/hooks/useDialog'
 import type { IDialogStates } from './types'
@@ -31,7 +31,7 @@ export function SubscribeToMevDialog({
   validatorId,
   validatorKey,
 }: SubscribeToMevDialogProps) {
-  const { chain } = useNetwork()
+  const { chain } = useAccount()
   const [dialogState, setDialogState] = useState<IDialogStates>('initial')
   const [showCloseButton, setShowCloseButton] = useState<boolean>(true)
   const { open, handleOpenChange, handleClose } = useDialog()
@@ -98,7 +98,7 @@ export function MultiSubscribeToMevDialog({
   validatorIds,
   validatorKeys,
 }: MultiSubscribeToMevDialogProps) {
-  const { chain } = useNetwork()
+  const { chain } = useAccount()
   const [dialogState, setDialogState] = useState<IDialogStates>('initial')
   const [showCloseButton, setShowCloseButton] = useState<boolean>(true)
   const { open, handleOpenChange, handleClose } = useDialog()

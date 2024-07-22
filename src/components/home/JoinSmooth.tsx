@@ -16,8 +16,10 @@ export default function JoinSmooth() {
 
   const { isConnected } = useAccount()
 
-  const statisticsQuery = useQuery(['statistics'], fetchStatistics)
-  const totalSubscribedValidators =
+  const statisticsQuery = useQuery({
+    queryKey: ['statistics'],
+    queryFn: fetchStatistics
+});  const totalSubscribedValidators =
     statisticsQuery.data?.totalSubscribedValidators
 
   const checkValidators = (event: React.FormEvent<HTMLFormElement>) => {

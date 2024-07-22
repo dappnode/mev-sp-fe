@@ -4,8 +4,11 @@ import { useIsMounted } from '@/hooks/useIsMounted'
 import { MainLayout } from '@/components/layout/MainLayout'
 import { Seo } from '@/components/layout/Seo'
 import { ReactQueryProvider } from '@/providers/ReactQuery'
-import { ConnectWallet } from '@/providers/ConnectWallet'
 import { NextThemeProvider } from '@/providers/ThemeProvider'
+import { WagmiProvider, useAccount } from 'wagmi'
+import { config } from '@/providers/ConnectWallet'
+import { Account } from '@/providers/Account'
+import { WalletOptions } from '@/providers/WalletOptions'
 import type { AppProps } from 'next/app'
 
 const inter = Inter({
@@ -18,15 +21,24 @@ const urbanist = Urbanist({
   variable: '--font-urbanist',
 })
 
+function ConnectWallet() {
+  const { isConnected } = useAccount()
+  if (isConnected) return <Account />
+  return <WalletOptions />
+}
+
 export default function App({ Component, pageProps }: AppProps) {
   const isMounted = useIsMounted()
   return (
     <>
       <Seo />
-      <ConnectWallet>
-        <ReactQueryProvider>
+      <WagmiProvider config={config}>
+      <ReactQueryProvider>
+
           {isMounted && (
             <NextThemeProvider>
+                    <ConnectWallet />
+
               <MainLayout
                 className={`${inter.variable} ${urbanist.variable} font-inter`}>
                 <Component {...pageProps} />
@@ -34,7 +46,7 @@ export default function App({ Component, pageProps }: AppProps) {
             </NextThemeProvider>
           )}
         </ReactQueryProvider>
-      </ConnectWallet>
-    </>
+        </WagmiProvider>
+        </>
   )
 }
