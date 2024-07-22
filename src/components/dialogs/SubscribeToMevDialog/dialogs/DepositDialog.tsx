@@ -1,24 +1,24 @@
-import { DialogProps } from '../types'
-import Link from 'next/link'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { DialogProps } from '../types';
+import Link from 'next/link';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import {
-  useContractWrite,
-  useWaitForTransaction,
+  useWriteContract, // Renamed from useContractWrite
+  useWaitForTransactionReceipt, // Renamed from useWaitForTransaction
   useAccount,
-} from 'wagmi'
-import { AiOutlineInfoCircle } from 'react-icons/ai'
-import { utils } from 'ethers'
-import { fetchConfig } from '@/client/api/queryFunctions'
-import { StepProgressBar } from '@/components/common/StepProgressBar'
-import { Button } from '@/components/common/Button'
-import { Tooltip } from '@/components/common/Tooltip'
-import contractInterface from '@/contract/abi.json'
-import { weiToEth } from '@/utils/web3'
-import { SMOOTHING_POOL_ADDRESS } from '@/utils/config'
+} from 'wagmi';
+import { AiOutlineInfoCircle } from 'react-icons/ai';
+import { utils } from 'ethers';
+import { fetchConfig } from '@/client/api/queryFunctions';
+import { StepProgressBar } from '@/components/common/StepProgressBar';
+import { Button } from '@/components/common/Button';
+import { Tooltip } from '@/components/common/Tooltip';
+import contractInterface from '@/contract/abi.json';
+import { weiToEth } from '@/utils/web3';
+import { SMOOTHING_POOL_ADDRESS } from '@/utils/config';
 
 interface DepositDialogProps extends DialogProps {
-  validatorId: number
-  setShowCloseButton: (show: boolean) => void
+  validatorId: number;
+  setShowCloseButton: (show: boolean) => void;
 }
 
 export function DepositDialog({
@@ -28,41 +28,39 @@ export function DepositDialog({
   handleClose,
   handleChangeDialogState,
 }: DepositDialogProps) {
-  const { address } = useAccount()
-  const { chain } = useAccount()
-  const queryClient = useQueryClient()
+  const { address } = useAccount();
+  const { chain } = useAccount();
+  const queryClient = useQueryClient();
 
   const configQuery = useQuery({
     queryKey: ['config'],
     queryFn: fetchConfig,
-  })
+  });
 
-  const abi = [...contractInterface] as const
+  const abi = [...contractInterface] as const;
 
-  const contractWrite = useContractWrite({
-    address: SMOOTHING_POOL_ADDRESS,
-    abi,
+  const contractWrite = useWriteContract({
+    addressOrName: SMOOTHING_POOL_ADDRESS, // changed parameter name
+    contractInterface: abi, // changed parameter name
     functionName: 'subscribeValidator',
     args: [validatorId],
-    value: utils
-      .parseUnits(configQuery.data?.collateralInWei || '0', 'wei')
-      .toBigInt(),
+    value: utils.parseUnits(configQuery.data?.collateralInWei || '0', 'wei').toBigInt(),
     onSuccess: () => {
-      setShowCloseButton(false)
+      setShowCloseButton(false);
     },
-  })
+  });
 
-  const waitForTransaction = useWaitForTransaction({
+  const waitForTransaction = useWaitForTransactionReceipt({
     hash: contractWrite.data?.hash,
     confirmations: 2,
     onSuccess: () => {
-      setShowCloseButton(true)
-      handleChangeDialogState('success')
+      setShowCloseButton(true);
+      handleChangeDialogState('success');
       queryClient.invalidateQueries({
         queryKey: ['validators', address],
-      })
+      });
     },
-  })
+  });
 
   return (
     <>
@@ -130,7 +128,7 @@ export function DepositDialog({
         {!waitForTransaction.isLoading && (
           <>
             <Button
-              isDisabled={contractWrite.isLoading}
+              isDisabled={contractWrite.isPending}
               onPress={() => contractWrite.write?.()}>
               {waitForTransaction.isError ? 'Try again' : 'Deposit'}
             </Button>
@@ -144,5 +142,5 @@ export function DepositDialog({
         )}
       </div>
     </>
-  )
+  );
 }
