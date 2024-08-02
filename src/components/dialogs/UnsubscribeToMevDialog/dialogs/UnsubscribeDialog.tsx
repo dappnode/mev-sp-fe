@@ -101,8 +101,8 @@ export function UnsubscribeDialog({
   })
 
   const handleUnsub = () => {
-    postFeedbackData()
     contractWrite.write?.()
+    postFeedbackData()
   }
 
   return (
