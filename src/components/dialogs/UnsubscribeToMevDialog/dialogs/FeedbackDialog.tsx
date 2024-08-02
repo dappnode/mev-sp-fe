@@ -27,7 +27,7 @@ export function FeedbackDialog({
   setImprovementsFeedback,
 }: FeedbackUnsubscribeDialog) {
   const options = [
-    'I will no longer stake ether',
+    'I will no longer stake ETH',
     'The rewards were not as high as I expected',
     'I am moving to a different pool',
     'The fees are too high',
@@ -103,9 +103,7 @@ export function FeedbackDialog({
             </div>
           </div>
           <div>
-            <div>
-              2. What could we do to improve your experience with Smooth? <br />
-            </div>
+            <div>2. What can we do to improve your experience with Smooth?</div>
             <input
               type="text"
               value={improvementsFeedback}
