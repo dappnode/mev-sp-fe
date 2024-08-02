@@ -1,5 +1,6 @@
 import {
   InitialDialog,
+  FeedbackDialog,
   SuccessDialog,
 } from './dialogs'
 import { UnsubscribeDialog } from './dialogs/UnsubscribeDialog'
@@ -12,6 +13,7 @@ import type { IDialogStates } from './types'
 
 const steps = [
   'Confirmation',
+  'Feedback',
   'Unsubscribe',
   'Done',
 ]
@@ -28,6 +30,12 @@ export function UnsubscribeToMevDialog({
   const [showCloseButton, setShowCloseButton] = useState<boolean>(true)
 
   const { open, handleOpenChange, handleClose } = useDialog()
+
+  // Feedback states. Have to be here since feedback data is sent when submitting the unsub, not when 'Feedback' step is completed
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([])
+  const [otherOption, setOtherOption] = useState<string>('')
+  const [otherOptionSelected, setOtherOptionSelected] = useState<boolean>(false)
+  const [improvementsFeedback, setImprovementsFeedback] = useState<string>('')
 
   const handleCloseDialog = () => {
     setDialogState('initial')
@@ -49,12 +57,26 @@ export function UnsubscribeToMevDialog({
       triggerButtonProp="outline"
       triggerText="Unsubscribe">
       <AnimatePresence>
-        <div className="flex h-[550px] flex-col justify-between text-DAppDeep sm:h-[550px]">
+        <div className="flex h-full flex-col justify-between text-DAppDeep min-h-[550px]">
           {dialogState === 'initial' ? (
             <InitialDialog
               handleChangeDialogState={setDialogState}
               handleClose={handleCloseDialog}
               steps={steps}
+            />
+          ) : dialogState === 'feedback' ? (
+            <FeedbackDialog
+              handleChangeDialogState={setDialogState}
+              handleClose={handleCloseDialog}
+              steps={steps}
+              selectedOptions={selectedOptions}
+              setSelectedOptions={setSelectedOptions}
+              otherOption={otherOption}
+              setOtherOption={setOtherOption}
+              otherOptionSelected={otherOptionSelected}
+              setOtherOptionSelected={setOtherOptionSelected}
+              improvementsFeedback={improvementsFeedback}
+              setImprovementsFeedback={setImprovementsFeedback}
             />
           ) : dialogState === 'unsubscribe' ? (
             <UnsubscribeDialog
@@ -63,6 +85,10 @@ export function UnsubscribeToMevDialog({
               setShowCloseButton={setShowCloseButton}
               steps={steps}
               validatorId={validatorId}
+              selectedOptions={selectedOptions}
+              otherOption={otherOption}
+              otherOptionSelected={otherOptionSelected}
+              improvementsFeedback={improvementsFeedback}
             />
           ) : (
             <SuccessDialog

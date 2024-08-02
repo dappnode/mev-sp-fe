@@ -26,7 +26,7 @@ export function InitialDialog({
         </p>
       </div>
       <div>
-        <Button onPress={() => handleChangeDialogState('unsubscribe')}>
+        <Button onPress={() => handleChangeDialogState('feedback')}>
           Next
         </Button>
         <Button buttonType="secondary" className="mt-4" onPress={handleClose}>
