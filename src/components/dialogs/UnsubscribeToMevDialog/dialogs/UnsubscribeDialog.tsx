@@ -15,6 +15,7 @@ import contractInterface from '@/contract/abi.json'
 import {
   SMOOTHING_POOL_ADDRESS,
   UNSUB_FEEDBACK_SCRIPT_URL,
+  SELECTED_CHAIN
 } from '@/utils/config'
 
 interface UnsubscribeDialogProps extends DialogProps {
@@ -44,6 +45,7 @@ export function UnsubscribeDialog({
   const feedbackScriptURL = UNSUB_FEEDBACK_SCRIPT_URL || ''
   const postFeedbackData = async () => {
     const formData = new FormData()
+    formData.append('network', SELECTED_CHAIN)
     formData.append('validator-id', validatorId.toString())
     formData.append('why-options', selectedOptions.join('\n'))
     formData.append('other-options', otherOptionSelected ? otherOption : '')
@@ -93,17 +95,13 @@ export function UnsubscribeDialog({
     confirmations: 2,
     onSuccess: () => {
       setShowCloseButton(true)
+      postFeedbackData()
       handleChangeDialogState('success')
       queryClient.invalidateQueries({
         queryKey: ['validators', address],
       })
     },
   })
-
-  const handleUnsub = () => {
-    contractWrite.write?.()
-    postFeedbackData()
-  }
 
   return (
     <>
@@ -151,7 +149,7 @@ export function UnsubscribeDialog({
       <div>
         {!waitForTransaction.isLoading && (
           <>
-            <Button isDisabled={contractWrite.isLoading} onPress={handleUnsub}>
+            <Button isDisabled={contractWrite.isLoading} onPress={()=>contractWrite.write?.()}>
               {waitForTransaction.isError ? 'Try again' : 'Unsubscribe'}
             </Button>
             <Button
