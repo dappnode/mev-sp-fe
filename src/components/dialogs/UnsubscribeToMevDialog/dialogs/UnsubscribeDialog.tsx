@@ -12,11 +12,19 @@ import { useQueryClient } from '@tanstack/react-query'
 import { StepProgressBar } from '@/components/common/StepProgressBar'
 import { Button } from '@/components/common/Button'
 import contractInterface from '@/contract/abi.json'
-import { SMOOTHING_POOL_ADDRESS } from '@/utils/config'
+import {
+  SMOOTHING_POOL_ADDRESS,
+  UNSUB_FEEDBACK_SCRIPT_URL,
+  SELECTED_CHAIN
+} from '@/utils/config'
 
 interface UnsubscribeDialogProps extends DialogProps {
   validatorId: number
   setShowCloseButton: (show: boolean) => void
+  selectedOptions: string[]
+  otherOption: string
+  otherOptionSelected: boolean
+  improvementsFeedback: string
 }
 
 export function UnsubscribeDialog({
@@ -25,10 +33,50 @@ export function UnsubscribeDialog({
   setShowCloseButton,
   handleChangeDialogState,
   handleClose,
+  selectedOptions,
+  otherOptionSelected,
+  otherOption,
+  improvementsFeedback,
 }: UnsubscribeDialogProps) {
   const { address } = useAccount()
   const { chain } = useNetwork()
   const queryClient = useQueryClient()
+
+  const feedbackScriptURL = UNSUB_FEEDBACK_SCRIPT_URL || ''
+  const postFeedbackData = async () => {
+    const formData = new FormData()
+    formData.append('network', SELECTED_CHAIN)
+    formData.append('validator-id', validatorId.toString())
+    formData.append('why-options', selectedOptions.join('\n'))
+    formData.append('other-options', otherOptionSelected ? otherOption : '')
+    formData.append(
+      'improvements',
+      improvementsFeedback
+    )
+
+    const timestamp = new Date().toISOString()
+    formData.append('timestamp', timestamp)
+
+    if (feedbackScriptURL) {
+      try {
+        const response = await fetch(feedbackScriptURL, {
+          method: 'POST',
+          body: formData,
+        })
+  
+        if (response.ok) {
+          const result = await response.json()
+          console.log('Feedback send:', result)
+        } else {
+          const errorText = await response.text()
+          console.error('Error sending feedback:', errorText)
+        }
+      } catch (error) {
+        console.error('Error fetching feedback :', error)
+      }
+    }
+    
+  }
 
   const abi = [...contractInterface] as const
 
@@ -47,6 +95,7 @@ export function UnsubscribeDialog({
     confirmations: 2,
     onSuccess: () => {
       setShowCloseButton(true)
+      postFeedbackData()
       handleChangeDialogState('success')
       queryClient.invalidateQueries({
         queryKey: ['validators', address],
@@ -58,7 +107,7 @@ export function UnsubscribeDialog({
     <>
       <div className="-mt-2 text-DAppDeep dark:text-DAppDarkText">
         <h3 className="mb-6 text-left text-2xl font-bold">Unsubscribe</h3>
-        <StepProgressBar currentStep={1} steps={steps} />
+        <StepProgressBar currentStep={2} steps={steps} />
       </div>
       {!waitForTransaction.isError ? (
         <div className="text-center text-DAppDeep dark:text-DAppDarkText">
@@ -100,9 +149,7 @@ export function UnsubscribeDialog({
       <div>
         {!waitForTransaction.isLoading && (
           <>
-            <Button
-              isDisabled={contractWrite.isLoading}
-              onPress={() => contractWrite.write?.()}>
+            <Button isDisabled={contractWrite.isLoading} onPress={()=>contractWrite.write?.()}>
               {waitForTransaction.isError ? 'Try again' : 'Unsubscribe'}
             </Button>
             <Button
