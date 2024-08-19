@@ -1,9 +1,10 @@
 import { MyRewards } from '../cards/MyRewards'
 import { MyValidatorsTable } from '../tables/MyValidatorsTable'
 import { Warnings } from '../tables/MyValidatorsTable/components/WarningIcon'
+import { isWalletConnectedChainOk } from '@/utils/web3'
 import { useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { useAccount, useNetwork } from 'wagmi'
+import { useAccount } from 'wagmi'
 import { weiToEth } from '@/utils/web3'
 import {
   fetchOnChainProof,
@@ -14,7 +15,7 @@ import {
 
 export function UserInfo() {
   const { isConnected, address } = useAccount()
-  const { chain } = useNetwork()
+  const { chain } = useAccount()
 
   const validatorsQuery = useQuery({
     queryKey: ['user-validators', address],
@@ -96,7 +97,7 @@ export function UserInfo() {
             onChainProofQuery.isLoading ||
             onChainProofQuery.isError ||
             onChainProofQuery.data?.claimableRewardsWei === '0' ||
-            chain?.unsupported
+            !isWalletConnectedChainOk(chain)
           }
         />
       </div>

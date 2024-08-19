@@ -2,10 +2,11 @@ import { InitialDialog, FeedbackDialog, SuccessDialog } from './dialogs'
 import { UnsubscribeDialog } from './dialogs/UnsubscribeDialog'
 import { BaseDialog } from '../BaseDialog'
 import { useState } from 'react'
-import { useNetwork } from 'wagmi'
+import { useAccount } from 'wagmi'
 import { AnimatePresence } from 'framer-motion'
 import { useDialog } from '@/hooks/useDialog'
 import type { IDialogStates } from './types'
+import { SELECTED_CHAIN } from '@/utils/config'
 
 const steps = ['Confirmation', 'Feedback', 'Unsubscribe', 'Done']
 
@@ -16,7 +17,7 @@ interface UnsubscribeToMevDialogProps {
 export function UnsubscribeToMevDialog({
   validatorId,
 }: UnsubscribeToMevDialogProps) {
-  const { chain } = useNetwork()
+  const { chain } = useAccount()
   const [dialogState, setDialogState] = useState<IDialogStates>('initial')
   const [showCloseButton, setShowCloseButton] = useState<boolean>(true)
 
@@ -38,9 +39,12 @@ export function UnsubscribeToMevDialog({
     if (!newOpen) setDialogState('initial')
   }
 
+  console.log("SELECTED CHAIN NAME: ", SELECTED_CHAIN)
+  console.log("CHAIN NAME: ", chain?.name)
+
   return (
     <BaseDialog
-      disabledTrigger={chain?.unsupported}
+      disabledTrigger={!isWalletConnectedChainOk(chain)}
       handleOpenChange={handleOpenChangeDialog}
       open={open}
       showCloseButton={showCloseButton}
