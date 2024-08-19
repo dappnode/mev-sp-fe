@@ -55,22 +55,10 @@ export function UnsubscribeDialog({
     formData.append('timestamp', timestamp)
 
     if (feedbackScriptURL) {
-      try {
-        const response = await fetch(feedbackScriptURL, {
-          method: 'POST',
-          body: formData,
-        })
-
-        if (response.ok) {
-          const result = await response.json()
-          console.log('Feedback send:', result)
-        } else {
-          const errorText = await response.text()
-          console.error('Error sending feedback:', errorText)
-        }
-      } catch (error) {
-        console.error('Error fetching feedback :', error)
-      }
+      await fetch(feedbackScriptURL, {
+        method: 'POST',
+        body: formData,
+      })
     }
   }
 

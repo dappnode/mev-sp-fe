@@ -48,11 +48,7 @@ export function FeedbackDialog({
   }
 
   const handleNextStep = () => {
-    try {
-      handleChangeDialogState('unsubscribe')
-    } catch (error) {
-      console.error('Handle Next Step Error:', error)
-    }
+    handleChangeDialogState('unsubscribe')
   }
 
   return (
