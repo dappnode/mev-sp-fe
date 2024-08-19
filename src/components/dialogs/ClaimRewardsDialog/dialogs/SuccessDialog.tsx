@@ -2,12 +2,11 @@ import { DialogProps } from '../types'
 import { Button } from '@/components/common/Button'
 import { CongratulationsIcon } from '@/components/icons'
 
-
 export function SuccessDialog({ handleClose }: DialogProps) {
   return (
     <>
       <div className="px-6 text-center text-DAppDeep dark:text-DAppDarkText">
-      <div className="flex justify-center mb-4"> 
+        <div className="mb-4 flex justify-center">
           <CongratulationsIcon />
         </div>
         <h3 className="text-lg font-normal">Congratulations!</h3>

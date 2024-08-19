@@ -47,8 +47,8 @@ const colors = {
   'linear-purple': {
     primary: 'bg-DApppurple-linear',
     secondary:
-      'border-DAppPurple/900 text-DAppPurple/900 dark:bg-DAppDarkSurface/300 dark:text-white',
-    tertiary: 'text-DAppPurple/900',
+      'border-DAppPurple-900 text-DAppPurple-900 dark:bg-DAppDarkSurface-300 dark:text-white',
+    tertiary: 'text-DAppPurple-900',
   },
   red: {
     primary: 'bg-DAppRed',

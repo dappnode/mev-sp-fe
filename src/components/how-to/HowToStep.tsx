@@ -32,7 +32,7 @@ export function HowToStep({
           <p className="mt-2 sm:mt-3">{description}</p>
         </div>
       </div>
-      <div className="mx-8 hidden h-[260px] min-w-[260px] items-center justify-center rounded-full bg-white drop-shadow-xl dark:bg-DAppDarkSurface/300 md:flex">
+      <div className="mx-8 hidden h-[260px] min-w-[260px] items-center justify-center rounded-full bg-white drop-shadow-xl dark:bg-DAppDarkSurface-300 md:flex">
         {imageComponent}
       </div>
     </div>

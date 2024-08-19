@@ -40,7 +40,7 @@ export function MobileMenuDialog() {
         <AnimatePresence>
           <Dialog.Content>
             <motion.div
-              className="fixed right-0 top-0 h-screen w-[300px] max-w-[75%] border bg-white p-6 dark:border-0 dark:bg-DAppDarkSurface/200"
+              className="fixed right-0 top-0 h-screen w-[300px] max-w-[75%] border bg-white p-6 dark:border-0 dark:bg-DAppDarkSurface-200"
               animate={{
                 // opacity: 1,
                 x: 0,
@@ -79,20 +79,20 @@ export function MobileMenuDialog() {
                   </span>
                 </h2>
               </Link>
-              <nav className="flex flex-col gap-y-4 border-y pt-4 dark:border-DAppDarkSurface/300">
+              <nav className="flex flex-col gap-y-4 border-y pt-4 dark:border-DAppDarkSurface-300">
                 {PAGES.map(({ name, path }) => {
                   const isExternalLink = path.includes('http')
                   return (
                     <Link
                       key={name}
-                      className="rounded-lg p-3 text-DAppDeep transition duration-300 hover:bg-DAppLight hover:text-DAppPurple/900 dark:text-DAppDarkText dark:hover:bg-DAppDarkSurface/300"
+                      className="rounded-lg p-3 text-DAppDeep transition duration-300 hover:bg-DAppLight hover:text-DAppPurple-900 dark:text-DAppDarkText dark:hover:bg-DAppDarkSurface-300"
                       href={path}
                       rel={isExternalLink ? 'noopener noreferrer' : ''}
                       target={isExternalLink ? '_blank' : '_self'}>
                       <h3
                         className={clsx(
                           'flex items-center',
-                          router.pathname === path && 'text-DAppPurple/900'
+                          router.pathname === path && 'text-DAppPurple-900'
                         )}>
                         {name}
                         {isExternalLink && (
@@ -103,7 +103,7 @@ export function MobileMenuDialog() {
                   )
                 })}
 
-                <div className="ml-2 flex flex-row items-center gap-2 border-t py-3 dark:border-DAppDarkSurface/300">
+                <div className="ml-2 flex flex-row items-center gap-2 border-t py-3 dark:border-DAppDarkSurface-300">
                   <span>Switch theme:</span>
                   <ToggleThemeBtn />
                 </div>
