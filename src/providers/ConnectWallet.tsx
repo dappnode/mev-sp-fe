@@ -1,8 +1,9 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/jsx-no-useless-fragment */
-import { WagmiConfig } from 'wagmi'
+import { WagmiProvider } from 'wagmi'
 import { ReactNode, useEffect, useState } from 'react'
-import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react'
+import { createWeb3Modal } from '@web3modal/wagmi/react'
+import { defaultWagmiConfig } from '@web3modal/wagmi/react/config'
 import { mainnet, holesky } from 'wagmi/chains'
 import { SELECTED_CHAIN } from '@/utils/config'
 
@@ -11,8 +12,8 @@ if (!projectId) {
   throw new Error('NEXT_PUBLIC_PROJECT_ID is not set')
 }
 
-const WEB3_CHAINS = [SELECTED_CHAIN === 'mainnet' ? mainnet : holesky]
-const chains = WEB3_CHAINS
+const WEB3_CHAINS = [SELECTED_CHAIN === 'mainnet' ? mainnet : holesky] as const
+const chains = WEB3_CHAINS 
 
 const metadata = {
   name: 'Dappnode Smooth',
@@ -31,15 +32,9 @@ const wagmiConfig = defaultWagmiConfig({
 createWeb3Modal({
   wagmiConfig,
   projectId,
-  chains,
   enableAnalytics: true,
   metadata,
-  defaultChain: mainnet,
-  themeVariables: {
-    '--w3m-accent': 'linear-gradient(to right, #9731dd, #c237ea)',
-    '--w3m-border-radius-master': '1px',
-    '--w3m-z-index': 1000,
-  },
+  defaultChain: SELECTED_CHAIN === 'mainnet' ? mainnet : holesky,
 })
 
 interface Web3ProviderProps {
@@ -56,7 +51,7 @@ export function ConnectWallet({ children }: Web3ProviderProps) {
   return (
     <>
       {ready ? (
-        <WagmiConfig config={wagmiConfig}>{children}</WagmiConfig>
+        <WagmiProvider config={wagmiConfig}>{children}</WagmiProvider>
       ) : null}
     </>
   )
