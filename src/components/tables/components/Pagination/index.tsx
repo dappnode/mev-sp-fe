@@ -4,7 +4,6 @@ import { IoIosArrowForward, IoIosArrowBack } from 'react-icons/io'
 import clsx from 'clsx'
 import { Dispatch, SetStateAction } from 'react'
 import { usePagination } from '@/hooks/usePagination'
-import { PAGE_SIZE } from '../../MyValidatorsTable/config'
 
 interface PaginationProps {
   currentPage: number
@@ -36,7 +35,7 @@ export function Pagination({
   let pageSizeOptions: number[] = []
 
   pageSizeOptions.push(totalItems < itemsPerPage ? totalItems : itemsPerPage)
-  for (let index = 1; index < totalItems / 10; index++) {
+  for (let index = 1; index < totalItems / 10; index += 1) {
     pageSizeOptions.push(index * 10)
   }
   pageSizeOptions.push(totalItems)
@@ -48,7 +47,7 @@ export function Pagination({
       <div className="flex flex-row gap-2 items-center text-sm">
         <p>Showing</p>
         <select
-          className="p-1 rounded-md dark:bg-DAppDarkSurface/400 hover:bg-DAppLight/80 dark:hover:bg-DAppDarkSurface/500 hover:bg-DAppLight focus:outline-none"
+          className="p-1 rounded-md dark:bg-DAppDarkSurface/400 hover:bg-DAppLight/80 dark:hover:bg-DAppDarkSurface/500 bg-DAppLight focus:outline-none"
           value={itemsPerPage}
           onChange={(e) => setPageSize(Number(e.target.value))}>
           {pageSizeOptions.map((option) => (
