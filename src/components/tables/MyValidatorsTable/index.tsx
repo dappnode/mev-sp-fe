@@ -15,7 +15,9 @@ import {
   createColumnHelper,
   getCoreRowModel,
   getPaginationRowModel,
+  SortingState,
   useReactTable,
+  getSortedRowModel,
 } from '@tanstack/react-table'
 import { SubscribeToMevDialog, MultiSubscribeToMevDialog } from '@/components/dialogs/SubscribeToMevDialog'
 import { UnsubscribeToMevDialog } from '@/components/dialogs/UnsubscribeToMevDialog'
@@ -29,76 +31,88 @@ const columnHelper = createColumnHelper<Validator>()
 
 const useTableColumns = (table: { getIsAllRowsSelected: () => boolean | undefined; getToggleAllRowsSelectedHandler: () => ChangeEventHandler<HTMLInputElement> | undefined }) =>
   useMemo(() => [
-    columnHelper.accessor('checkbox', {
-      header: () => (
-        <input
-          checked={table.getIsAllRowsSelected()}
-          type="checkbox"
-          onChange={table.getToggleAllRowsSelectedHandler()}
-        />
-      ),
-      cell: (info) => (
-        <input
-          checked={info.row.getIsSelected()}
-          type="checkbox"
-          onChange={() => info.row.toggleSelected()}
-        />
-      ),
-    }),
-    columnHelper.accessor('address', {
-      header: () => (
-        <HeaderTooltip header="Address" tooltip={headerTooltip.address} />
-      ),
-      cell: (info) => {
-        const address = info.getValue()
-        const shortAddress = shortenEthAddress(address, 22, 0)
-
-        return (
-          <Link
-            className="font-medium underline"
-            href={getBeaconChainExplorer('validator', address)}
-            rel="noopener noreferrer"
-            target="_blank">
-            {shortAddress}
-          </Link>
-        )
-      },
-    }),
-    columnHelper.accessor('pending', {
-      header: () => (
-        <HeaderTooltip header="Pending" tooltip={headerTooltip.pending} />
-      ),
-      cell: (info) => addEthSuffix(toFixedNoTrailingZeros(info.getValue(), 4)),
-    }),
-    columnHelper.accessor('accumulated', {
-      header: () => (
-        <HeaderTooltip header="Accumulated" tooltip={headerTooltip.accumulated} />
-      ),
-      cell: (info) => addEthSuffix(toFixedNoTrailingZeros(info.getValue(), 4)),
-    }),
-    columnHelper.accessor('warning', {
-      header: () => (
-        <HeaderTooltip header="Warning" tooltip={headerTooltip?.warning} />
-      ),
-      cell: (info) => <WarningIcon warning={info.getValue()} />,
-    }),
-    columnHelper.accessor('subscribed', {
-      header: '',
-      cell: (info) => {
-        const isSubscribed = info.getValue()
-        const { validatorKey, validatorId, warning } = info.row.original
-        const isBanned = warning === 'banned'
-        if (isBanned) return null
-        return isSubscribed ? (
-          <UnsubscribeToMevDialog validatorId={validatorId} />
-        ) : (
-          <SubscribeToMevDialog
-            validatorId={validatorId}
-            validatorKey={validatorKey}
+      columnHelper.accessor('checkbox', {
+        header: () => (
+          <input
+            checked={table.getIsAllRowsSelected()}
+            type="checkbox"
+            onChange={table.getToggleAllRowsSelectedHandler()}
           />
-        )
-      },
-    }),
+        ),
+        cell: (info) => (
+          <input
+            checked={info.row.getIsSelected()}
+            type="checkbox"
+            onChange={() => info.row.toggleSelected()}
+          />
+        ),
+      }),
+      columnHelper.accessor('address', {
+        header: () => (
+          <HeaderTooltip header="Address" tooltip={headerTooltip.address} />
+        ),
+        cell: (info) => {
+          const address = info.getValue()
+          const shortAddress = shortenEthAddress(address, 22, 0)
+
+          return (
+            <Link
+              className="font-medium underline"
+              href={getBeaconChainExplorer('validator', address)}
+              rel="noopener noreferrer"
+              target="_blank">
+              {shortAddress}
+            </Link>
+          )
+        },
+      }),
+      columnHelper.accessor('pending', {
+        header: ({ column }) => (
+          <HeaderTooltip
+            column={column}
+            header="Pending"
+            tooltip={headerTooltip.pending}
+          />
+        ),
+        cell: (info) =>
+          addEthSuffix(toFixedNoTrailingZeros(info.getValue(), 4)),
+        enableSorting: true,
+      }),
+      columnHelper.accessor('accumulated', {
+        header: ({ column }) => (
+          <HeaderTooltip
+            column={column}
+            header="Accumulated"
+            tooltip={headerTooltip.accumulated}
+          />
+        ),
+        cell: (info) =>
+          addEthSuffix(toFixedNoTrailingZeros(info.getValue(), 4)),
+        enableSorting: true,
+      }),
+      columnHelper.accessor('warning', {
+        header: () => (
+          <HeaderTooltip header="Warning" tooltip={headerTooltip?.warning} />
+        ),
+        cell: (info) => <WarningIcon warning={info.getValue()} />,
+      }),
+      columnHelper.accessor('subscribed', {
+        header: '',
+        cell: (info) => {
+          const isSubscribed = info.getValue()
+          const { validatorKey, validatorId, warning } = info.row.original
+          const isBanned = warning === 'banned'
+          if (isBanned) return null
+          return isSubscribed ? (
+            <UnsubscribeToMevDialog validatorId={validatorId} />
+          ) : (
+            <SubscribeToMevDialog
+              validatorId={validatorId}
+              validatorKey={validatorKey}
+            />
+          )
+        },
+      }),
   ], [table])
 
 
@@ -121,7 +135,8 @@ export function MyValidatorsTable({
   const [selectedValidatorKeys, setSelectedValidatorKeys] = useState<`0x${string}`[]>([]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [columns, setColumns] = useState<ColumnDef<Validator, any>[]>([]);
+  const [columns, setColumns] = useState<ColumnDef<Validator, any>[]>([])
+  const [sorting, setSorting] = useState<SortingState>([])
 
   const filteredData = useMemo(
     () =>
@@ -155,9 +170,14 @@ export function MyValidatorsTable({
         pageSize: PAGE_SIZE,
       },
     },
+    state: {
+      sorting,
+    },
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-  });
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
+  })
 
   const generatedColumns = useTableColumns(table);
 
@@ -200,7 +220,7 @@ export function MyValidatorsTable({
       )}
       <TableLayout
         showEmptyMessage
-        className="h-[440px]"
+        className="h-full min-h-[440px]"
         data={data ?? []}
         searchInput={searchInput}
         searchPlaceholder="Search Validator"
