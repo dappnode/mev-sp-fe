@@ -15,7 +15,7 @@ import contractInterface from '@/contract/abi.json'
 import {
   SMOOTHING_POOL_ADDRESS,
   UNSUB_FEEDBACK_SCRIPT_URL,
-  SELECTED_CHAIN
+  SELECTED_CHAIN,
 } from '@/utils/config'
 
 interface UnsubscribeDialogProps extends DialogProps {
@@ -49,33 +49,17 @@ export function UnsubscribeDialog({
     formData.append('validator-id', validatorId.toString())
     formData.append('why-options', selectedOptions.join('\n'))
     formData.append('other-options', otherOptionSelected ? otherOption : '')
-    formData.append(
-      'improvements',
-      improvementsFeedback
-    )
+    formData.append('improvements', improvementsFeedback)
 
     const timestamp = new Date().toISOString()
     formData.append('timestamp', timestamp)
 
     if (feedbackScriptURL) {
-      try {
-        const response = await fetch(feedbackScriptURL, {
-          method: 'POST',
-          body: formData,
-        })
-  
-        if (response.ok) {
-          const result = await response.json()
-          console.log('Feedback send:', result)
-        } else {
-          const errorText = await response.text()
-          console.error('Error sending feedback:', errorText)
-        }
-      } catch (error) {
-        console.error('Error fetching feedback :', error)
-      }
+      await fetch(feedbackScriptURL, {
+        method: 'POST',
+        body: formData,
+      })
     }
-    
   }
 
   const abi = [...contractInterface] as const
@@ -115,7 +99,7 @@ export function UnsubscribeDialog({
             You are unsubscribing validator <b>{validatorId}</b> from Smooth.
           </h4>
           {waitForTransaction.isLoading && (
-            <div className="mt-6 w-full rounded-lg bg-violet-50 px-4 py-8 text-sm font-normal dark:bg-DAppDarkSurface/300 dark:text-DAppDarkText">
+            <div className="mt-6 w-full rounded-lg bg-violet-50 px-4 py-8 text-sm font-normal dark:bg-DAppDarkSurface-300 dark:text-DAppDarkText">
               <div className="mx-auto mb-2 flex w-fit flex-col items-center sm:flex-row">
                 <AiOutlineInfoCircle />
                 <p className="ml-2 mt-1 sm:mt-0">
@@ -124,7 +108,7 @@ export function UnsubscribeDialog({
               </div>
               <div className="mx-auto mt-2 max-w-fit">
                 <Link
-                  className=" text-violet-500 dark:text-violet-200 underline"
+                  className=" text-violet-500 underline dark:text-violet-200"
                   href={`${chain?.blockExplorers?.default.url}/tx/${contractWrite.data?.hash}`}
                   target="_blank">
                   Check the transaction on block explorer
@@ -149,7 +133,9 @@ export function UnsubscribeDialog({
       <div>
         {!waitForTransaction.isLoading && (
           <>
-            <Button isDisabled={contractWrite.isLoading} onPress={()=>contractWrite.write?.()}>
+            <Button
+              isDisabled={contractWrite.isLoading}
+              onPress={() => contractWrite.write?.()}>
               {waitForTransaction.isError ? 'Try again' : 'Unsubscribe'}
             </Button>
             <Button

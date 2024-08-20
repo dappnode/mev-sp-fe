@@ -15,7 +15,7 @@ export function Header() {
   const router = useRouter()
 
   return (
-    <header className="flex h-24 items-center justify-between border-b bg-white p-4 dark:border-DAppDarkSurface/400 dark:bg-DAppDarkSurface/200 md:p-6">
+    <header className="flex h-24 items-center justify-between border-b bg-white p-4 dark:border-DAppDarkSurface-400 dark:bg-DAppDarkSurface-200 md:p-6">
       <Link className="flex items-center" href="/">
         <Image
           alt="Dappnode logo"
@@ -38,11 +38,11 @@ export function Header() {
                 router.pathname === path ? 'bg-DApppurple-linear' : 'bg-none'
               )}>
               <Link
-                className="group flex h-[92px] min-w-full items-center bg-white px-3 font-inter text-base leading-7 text-DAppDeep   dark:bg-DAppDarkSurface/200 dark:text-DAppDarkText "
+                className="group flex h-[92px] min-w-full items-center bg-white px-3 font-inter text-base leading-7 text-DAppDeep   dark:bg-DAppDarkSurface-200 dark:text-DAppDarkText "
                 href={path}
                 rel={isExternalLink ? 'noopener noreferrer' : ''}
                 target={isExternalLink ? '_blank' : '_self'}>
-                <h3 className="flex items-center transition duration-300 group-hover:text-DAppPurple/900 group-hover:dark:text-DAppDarkPrimary">
+                <h3 className="flex items-center transition duration-300 group-hover:text-DAppPurple-900 group-hover:dark:text-DAppDarkPrimary">
                   {name}
                   {isExternalLink && <RxExternalLink className="ml-2 inline" />}
                 </h3>

@@ -14,8 +14,8 @@ export function WarningIcon({ warning }: WarningIconProps) {
         <div>💀</div>
       ) : (
         <div
-          className={`h-4 w-4 rounded-full border-2 border-DAppNeutral/50 ${
-            warning === 'yellow' ? 'bg-DAppOrange/800' : 'bg-DAppRed'
+          className={`h-4 w-4 rounded-full border-2 border-DAppNeutral-50 ${
+            warning === 'yellow' ? 'bg-DAppOrange-800' : 'bg-DAppRed'
           }`}
         />
       )}

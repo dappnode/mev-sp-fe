@@ -48,11 +48,7 @@ export function FeedbackDialog({
   }
 
   const handleNextStep = () => {
-    try {
-      handleChangeDialogState('unsubscribe')
-    } catch (error) {
-      console.error('Handle Next Step Error:', error)
-    }
+    handleChangeDialogState('unsubscribe')
   }
 
   return (
@@ -63,18 +59,18 @@ export function FeedbackDialog({
         </h3>
         <StepProgressBar currentStep={1} steps={steps} />
       </div>
-      <div className="mx-auto flex flex-col items-center gap-y-4 text-center text-lg sm:px-4 text-DAppDeep dark:text-DAppDarkText">
+      <div className="mx-auto flex flex-col items-center gap-y-4 text-center text-lg text-DAppDeep dark:text-DAppDarkText sm:px-4">
         <h4 className="font-bold">
           We&#39;re sorry to see you go! Please help us improve by answering a
           few quick questions.
         </h4>
-        <div className="flex flex-col text-left gap-7 w-full py-5">
+        <div className="flex w-full flex-col gap-7 py-5 text-left">
           <div>
             <div>
               1. Why are you unsubscribing from Smooth? <br />
               <span className="text-xs"> (Select all that apply)</span>
             </div>
-            <div className="flex flex-col text-sm ml-5 gap-2">
+            <div className="ml-5 flex flex-col gap-2 text-sm">
               {options.map((option) => (
                 <AnswerOption
                   option={option}
@@ -97,7 +93,7 @@ export function FeedbackDialog({
                   onChange={handleOtherOptionChange}
                   disabled={!otherOptionSelected}
                   placeholder="Please specify"
-                  className="border-b border-gray-300 dark:border-gray-500 pl-1 focus:border-b focus:border-gray-900 dark:focus:border-gray-200 outline-none bg-transparent w-full"
+                  className="w-full border-b border-gray-300 bg-transparent pl-1 outline-none focus:border-b focus:border-gray-900 dark:border-gray-500 dark:focus:border-gray-200"
                 />
               </div>
             </div>
@@ -109,7 +105,7 @@ export function FeedbackDialog({
               value={improvementsFeedback}
               onChange={(e) => setImprovementsFeedback(e.target.value)}
               placeholder="Please specify"
-              className="border-b border-gray-300 dark:border-gray-500 pl-1 focus:border-b focus:border-gray-900 dark:focus:border-gray-200 outline-none bg-transparent w-full text-sm"
+              className="w-full border-b border-gray-300 bg-transparent pl-1 text-sm outline-none focus:border-b focus:border-gray-900 dark:border-gray-500 dark:focus:border-gray-200"
             />
           </div>
         </div>

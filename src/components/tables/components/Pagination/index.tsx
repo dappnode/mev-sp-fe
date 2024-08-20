@@ -31,8 +31,8 @@ export function Pagination({
   })
 
   return (
-    <div className="flex h-[80px] w-full flex-col items-center justify-between bg-white px-4 py-3 dark:bg-DAppDarkSurface/300 md:h-[60px] md:flex-row md:px-8">
-      <p className="mr-2 text-center text-sm font-normal text-DAppNeutral/500 dark:text-DAppDarkText md:text-left ">
+    <div className="flex h-[80px] w-full flex-col items-center justify-between bg-white px-4 py-3 dark:bg-DAppDarkSurface-300 md:h-[60px] md:flex-row md:px-8">
+      <p className="mr-2 text-center text-sm font-normal text-DAppNeutral-500 dark:text-DAppDarkText md:text-left ">
         Showing {Math.min(itemsPerPage, totalItems)} of {totalItems} Results
       </p>
       <div className="flex items-center gap-x-[1px] px-1 text-sm text-DAppDeep dark:text-DAppDarkText md:gap-x-[2px]">
@@ -41,7 +41,7 @@ export function Pagination({
             disabled={isFirstPage}
             type="button"
             className={
-              isFirstPage ? 'text-DAppNeutral/500 dark:text-DAppDarkText' : ''
+              isFirstPage ? 'text-DAppNeutral-500 dark:text-DAppDarkText' : ''
             }
             onClick={() => setCurrentPage(currentPage - 1)}>
             <IoIosArrowBack />
@@ -55,9 +55,9 @@ export function Pagination({
             className={clsx(
               'rounded p-2 md:px-3',
               currentPage === Number(page) - 1 &&
-                'bg-DAppLight text-DAppBlue hover:bg-DAppLight dark:bg-DAppDarkSurface/400 ',
+                'bg-DAppLight text-DAppBlue hover:bg-DAppLight dark:bg-DAppDarkSurface-400 ',
               typeof page === 'number'
-                ? 'cursor-pointer hover:bg-DAppLight/80 dark:hover:bg-DAppDarkSurface/500'
+                ? 'cursor-pointer hover:bg-DAppLight/80 dark:hover:bg-DAppDarkSurface-500'
                 : 'cursor-default'
             )}
             onClick={() => handleSetPage(page)}>
@@ -66,7 +66,7 @@ export function Pagination({
         ))}
         {hamdultiplePages && (
           <button
-            className={isLastPage ? 'text-DAppNeutral/500' : ''}
+            className={isLastPage ? 'text-DAppNeutral-500' : ''}
             disabled={isLastPage}
             type="button"
             onClick={() => setCurrentPage(currentPage + 1)}>

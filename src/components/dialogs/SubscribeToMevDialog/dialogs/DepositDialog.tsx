@@ -77,7 +77,7 @@ export function DepositDialog({
             To subscribe and start earning rewards, please deposit
           </h4>
           {configQuery.isLoading ? (
-            <div className="mx-auto h-8 w-20 animate-pulse rounded bg-SkeletonGray dark:bg-DAppDarkSurface/300" />
+            <div className="mx-auto h-8 w-20 animate-pulse rounded bg-SkeletonGray dark:bg-DAppDarkSurface-300" />
           ) : (
             <p className="text-2xl font-bold">
               {weiToEth(configQuery.data?.collateralInWei)} ETH
@@ -97,7 +97,7 @@ export function DepositDialog({
             </Link>
           </div>
           {waitForTransaction.isLoading && (
-            <div className="mt-6 w-full rounded-lg bg-violet-50 px-4 py-7 text-sm font-normal text-DAppDeep dark:bg-DAppDarkSurface/300 dark:text-DAppDarkText">
+            <div className="mt-6 w-full rounded-lg bg-violet-50 px-4 py-7 text-sm font-normal text-DAppDeep dark:bg-DAppDarkSurface-300 dark:text-DAppDarkText">
               <div className="mx-auto mb-2 flex w-fit flex-col items-center sm:flex-row">
                 <AiOutlineInfoCircle />
                 <p className="ml-2 mt-1 sm:mt-0">
@@ -105,7 +105,7 @@ export function DepositDialog({
                 </p>
               </div>
               <Link
-                className="text-violet-500 dark:text-violet-200 underline"
+                className="text-violet-500 underline dark:text-violet-200"
                 href={`${chain?.blockExplorers?.default.url}/tx/${contractWrite.data?.hash}`}
                 target="_blank">
                 Check the transaction on block explorer

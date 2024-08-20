@@ -26,7 +26,7 @@ export function SuccessDialog({ steps, handleClose }: DialogProps) {
         <p>You have successfully subscribed and deposited an upfront bond of</p>
         <p className="font-bold">
           {isLoading || isError ? (
-            <div className="h-8 w-12 animate-pulse rounded bg-SkeletonGray dark:bg-DAppDarkSurface/300" />
+            <div className="h-8 w-12 animate-pulse rounded bg-SkeletonGray dark:bg-DAppDarkSurface-300" />
           ) : (
             `${toFixedNoTrailingZeros(weiToEth(data?.collateralInWei), 2)} ETH`
           )}
@@ -83,7 +83,7 @@ export function MultiSuccessDialog({
         </p>
         <p className="font-bold">
           {isLoading || isError ? (
-            <div className="h-8 w-12 animate-pulse rounded bg-SkeletonGray dark:bg-DAppDarkSurface/300" />
+            <div className="h-8 w-12 animate-pulse rounded bg-SkeletonGray dark:bg-DAppDarkSurface-300" />
           ) : (
             `${totalDepositInEth} ETH`
           )}

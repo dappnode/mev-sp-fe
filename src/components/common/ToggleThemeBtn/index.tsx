@@ -6,7 +6,7 @@ export function ToggleThemeBtn() {
   const currentTheme = theme === 'system' ? systemTheme : theme
   return (
     <button
-      className="rounded-full p-2 transition-all ease-in-out  hover:bg-SkeletonGray dark:hover:bg-DAppDarkSurface/300"
+      className="rounded-full p-2 transition-all ease-in-out  hover:bg-SkeletonGray dark:hover:bg-DAppDarkSurface-300"
       type="button"
       onClick={() =>
         currentTheme === 'dark' ? setTheme('light') : setTheme('dark')
