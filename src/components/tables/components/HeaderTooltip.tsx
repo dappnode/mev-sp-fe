@@ -4,6 +4,7 @@ import {
   CaretDownIcon,
   CaretUpIcon,
 } from '@radix-ui/react-icons'
+
 import { ReactNode } from 'react'
 import { Tooltip } from '@/components/common/Tooltip'
 import type { Block, Validator } from '../types'
