@@ -32,7 +32,7 @@ export function FilterGroup({
             key={option.value}
             value={option.value}
             className={clsx(
-              'block rounded bg-DAppLight px-3 py-2 text-xs transition duration-200 dark:bg-DAppDarkSurface/300 dark:hover:bg-DAppDarkSurface/400',
+              'block rounded bg-DAppLight px-3 py-2 text-xs transition duration-200 dark:bg-DAppDarkSurface-300 dark:hover:bg-DAppDarkSurface-400',
               value === option.value && 'font-medium text-DAppBlue'
             )}>
             {option.label}

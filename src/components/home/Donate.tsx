@@ -5,7 +5,7 @@ export default function Donate() {
   const { isConnected } = useAccount()
 
   return (
-    <div className="mt-32 rounded-3xl bg-gradient-to-br from-DAppPurple/900 to-DAppBlue text-center transition duration-300 ease-in-out md:hover:scale-105">
+    <div className="mt-32 rounded-3xl bg-gradient-to-br from-DAppPurple-900 to-DAppBlue text-center transition duration-300 ease-in-out md:hover:scale-105">
       <div className="mx-auto max-w-7xl p-6 py-12 sm:py-16 lg:px-8">
         <h2 className="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
           Donate to the Pool and Support Ethereum Decentralization

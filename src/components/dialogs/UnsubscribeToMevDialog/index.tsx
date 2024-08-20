@@ -1,8 +1,4 @@
-import {
-  InitialDialog,
-  FeedbackDialog,
-  SuccessDialog,
-} from './dialogs'
+import { InitialDialog, FeedbackDialog, SuccessDialog } from './dialogs'
 import { UnsubscribeDialog } from './dialogs/UnsubscribeDialog'
 import { BaseDialog } from '../BaseDialog'
 import { useState } from 'react'
@@ -11,12 +7,7 @@ import { AnimatePresence } from 'framer-motion'
 import { useDialog } from '@/hooks/useDialog'
 import type { IDialogStates } from './types'
 
-const steps = [
-  'Confirmation',
-  'Feedback',
-  'Unsubscribe',
-  'Done',
-]
+const steps = ['Confirmation', 'Feedback', 'Unsubscribe', 'Done']
 
 interface UnsubscribeToMevDialogProps {
   validatorId: number
@@ -57,7 +48,7 @@ export function UnsubscribeToMevDialog({
       triggerButtonProp="outline"
       triggerText="Unsubscribe">
       <AnimatePresence>
-        <div className="flex h-full flex-col justify-between text-DAppDeep min-h-[550px]">
+        <div className="flex h-full min-h-[550px] flex-col justify-between text-DAppDeep">
           {dialogState === 'initial' ? (
             <InitialDialog
               handleChangeDialogState={setDialogState}

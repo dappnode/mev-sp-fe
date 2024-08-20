@@ -9,7 +9,7 @@ export function BaseCard({ children, className }: BaseCardProps) {
   return (
     <article
       className={clsx(
-        'rounded-lg bg-white p-6 dark:bg-DAppDarkSurface/200',
+        'rounded-lg bg-white p-6 dark:bg-DAppDarkSurface-200',
         className
       )}>
       {children}

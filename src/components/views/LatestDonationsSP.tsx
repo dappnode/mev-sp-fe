@@ -10,23 +10,15 @@ export function LatestDonationsSP() {
     queryKey: ['latest-donations'],
     queryFn: fetchAllDonations,
   })
-  console.log(data)
   let donations: Donation[] = []
 
   if (data) {
-    donations = data.map(
-      ({
-        amountWei,
-        sender,
-        txHash,
-        blockNumber
-      }) => ({
-        txHash,
-        sender,
-        reward: weiToEth(amountWei),
-        blockNumber
-      })
-    )
+    donations = data.map(({ amountWei, sender, txHash, blockNumber }) => ({
+      txHash,
+      sender,
+      reward: weiToEth(amountWei),
+      blockNumber,
+    }))
   }
 
   return (

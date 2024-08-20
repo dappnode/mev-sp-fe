@@ -27,7 +27,7 @@ export function MyRewards({
   totalAccumulatedRewards,
 }: MyRewardsProps) {
   return (
-    <BaseCard className="mx-auto flex h-[338px] w-full max-w-md flex-col justify-between bg-opacity-80 text-DAppDeep dark:bg-opacity-80 sm:h-[600px] md:h-[580px]">
+    <BaseCard className="mx-auto flex h-[338px] w-full max-w-md flex-col justify-between bg-DAppBackgroundLight/80 text-DAppDeep dark:bg-DAppDarkSurface-200/80 sm:h-[600px] md:h-[580px]">
       {isLoading ? (
         <Skeleton />
       ) : (

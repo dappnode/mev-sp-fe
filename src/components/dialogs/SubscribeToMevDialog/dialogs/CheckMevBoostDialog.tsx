@@ -41,13 +41,13 @@ export function CheckMevBoostDialog({
         ) : (
           <div>
             <div>
-              <h4 className="mb-2 text-DAppNeutral/500">Your Validator</h4>
+              <h4 className="mb-2 text-DAppNeutral-500">Your Validator</h4>
               <p className="h-8 overflow-scroll">
                 {shortenEthAddress(validatorKey, 16, 16)}
               </p>
             </div>
             <div className="mt-3">
-              <h4 className="mb-2 text-DAppNeutral/500">
+              <h4 className="mb-2 text-DAppNeutral-500">
                 Has the correct fee recipient in:
               </h4>
               {registeredRelaysQuery.isLoading ? (

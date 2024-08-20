@@ -69,14 +69,14 @@ export function WithdrawDialog({
             to your recipient wallet address
           </p>
           {waitForTransaction.isLoading && (
-            <div className="mt-6 w-full rounded-lg bg-violet-50 px-4 py-8 text-sm font-normal text-DAppDeep dark:bg-DAppDarkSurface/300 dark:text-DAppDarkText">
+            <div className="mt-6 w-full rounded-lg bg-violet-50 px-4 py-8 text-sm font-normal text-DAppDeep dark:bg-DAppDarkSurface-300 dark:text-DAppDarkText">
               <div className="mx-auto flex w-fit items-center">
                 <AiOutlineInfoCircle />
                 <p className="ml-2">Your withdrawal is being processed.</p>
               </div>
               <div className="mx-auto mt-2 max-w-fit">
                 <Link
-                  className=" text-violet-500 dark:text-violet-200 underline"
+                  className="text-violet-500 underline dark:text-violet-200"
                   href={`${chain?.blockExplorers?.default.url}/tx/${contractWrite.data?.hash}`}
                   target="_blank">
                   Check the transaction on block explorer
