@@ -9,6 +9,7 @@ import { ReactNode } from 'react'
 import { Tooltip } from '@/components/common/Tooltip'
 import type { Block, Validator } from '../types'
 
+
 interface HeaderTooltipProps {
   header: string
   tooltip?: string
