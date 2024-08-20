@@ -135,6 +135,7 @@ export function TableLayout<T extends TableDataTypes>({
         currentPage={table.getState().pagination.pageIndex}
         itemsPerPage={table.getState().pagination.pageSize}
         setCurrentPage={table.setPageIndex}
+        setPageSize={table.setPageSize}
         totalItems={data.length}
         totalPages={table.getPageCount()}
       />
