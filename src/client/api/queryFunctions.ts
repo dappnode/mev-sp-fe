@@ -22,15 +22,11 @@ export const validateServerStatus = async () => {
     const axiosError = error as AxiosError
 
     if (axiosError.response) {
-      console.error(axiosError.response.status, axiosError.response.data)
       if (axiosError.response.status === 503) {
         return { ready: false }
       }
     } else if (axiosError.request) {
-      console.error('No response from server', axiosError.request)
       return { ready: false }
-    } else {
-      console.error('Error', axiosError.message)
     }
 
     return { ready: false }
