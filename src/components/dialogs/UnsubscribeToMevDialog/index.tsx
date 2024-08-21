@@ -1,6 +1,7 @@
 import { InitialDialog, FeedbackDialog, SuccessDialog } from './dialogs'
 import { UnsubscribeDialog } from './dialogs/UnsubscribeDialog'
 import { BaseDialog } from '../BaseDialog'
+import { isWalletConnectedChainOk } from '@/utils/web3'
 import { useState } from 'react'
 import { useAccount } from 'wagmi'
 import { AnimatePresence } from 'framer-motion'
