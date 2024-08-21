@@ -2,6 +2,7 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import { WagmiProvider } from 'wagmi'
 import { ReactNode, useEffect, useState } from 'react'
+import { cookieStorage, createStorage } from 'wagmi'
 import { createWeb3Modal } from '@web3modal/wagmi/react'
 import { defaultWagmiConfig } from '@web3modal/wagmi/react/config'
 import { mainnet, holesky } from 'wagmi/chains'
@@ -23,18 +24,23 @@ const metadata = {
   icons: ['https://avatars.githubusercontent.com/u/37784886'],
 }
 
-const wagmiConfig = defaultWagmiConfig({
+const config = defaultWagmiConfig({
   chains,
   projectId,
   metadata,
+  ssr: true,
+  storage: createStorage({
+    storage: cookieStorage
+  }),
 })
 
 createWeb3Modal({
-  wagmiConfig,
+  wagmiConfig: config,
   projectId,
   enableAnalytics: true,
+  enableOnramp: false,
+  enableSwaps: false,
   metadata,
-  defaultChain: SELECTED_CHAIN === 'mainnet' ? mainnet : holesky,
 })
 
 interface Web3ProviderProps {
@@ -51,7 +57,7 @@ export function ConnectWallet({ children }: Web3ProviderProps) {
   return (
     <>
       {ready ? (
-        <WagmiProvider config={wagmiConfig}>{children}</WagmiProvider>
+        <WagmiProvider config={config}>{children}</WagmiProvider>
       ) : null}
     </>
   )
