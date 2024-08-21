@@ -22,6 +22,7 @@ interface TableProps<T> {
   table: TableType<T>
   title: string
   showEmptyMessage?: boolean
+  isValidatorsTable?: boolean
 }
 
 export function TableLayout<T extends TableDataTypes>({
@@ -38,6 +39,7 @@ export function TableLayout<T extends TableDataTypes>({
   table,
   title,
   showEmptyMessage,
+  isValidatorsTable = false,
 }: TableProps<T>) {
   return (
     <div className="w-full overflow-hidden rounded-lg bg-white/80 dark:bg-DAppDarkSurface-200/80">
@@ -74,7 +76,7 @@ export function TableLayout<T extends TableDataTypes>({
                     key={header.id}
                     className="py-4 text-left text-sm font-medium">
                     {header.isPlaceholder ? null : (
-                      <p className="w-fit px-4 text-left">
+                      <p className="w-fit pl-4 text-left">
                         {flexRender(
                           header.column.columnDef.header,
                           header.getContext()
@@ -120,7 +122,7 @@ export function TableLayout<T extends TableDataTypes>({
                   {row.getVisibleCells().map((cell) => (
                     <td
                       key={cell.id}
-                      className="px-4 py-3 text-sm font-normal text-DAppDeep dark:text-DAppDarkText">
+                      className="py-3 pl-4 text-sm font-normal text-DAppDeep dark:text-DAppDarkText">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -140,6 +142,7 @@ export function TableLayout<T extends TableDataTypes>({
         setPageSize={table.setPageSize}
         totalItems={data.length}
         totalPages={table.getPageCount()}
+        isValidatorsTable={isValidatorsTable}
       />
     </div>
   )

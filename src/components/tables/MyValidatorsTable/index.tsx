@@ -53,7 +53,7 @@ const useTableColumns = (table: { getIsAllRowsSelected: () => boolean | undefine
         ),
         cell: (info) => {
           const address = info.getValue()
-          const shortAddress = shortenEthAddress(address, 22, 0)
+          const shortAddress = shortenEthAddress(address, 7, 7)
 
           return (
             <Link
@@ -90,6 +90,17 @@ const useTableColumns = (table: { getIsAllRowsSelected: () => boolean | undefine
           addEthSuffix(toFixedNoTrailingZeros(info.getValue(), 4)),
         enableSorting: true,
       }),
+      columnHelper.accessor('proposals', {
+        header: ({ column }) => (
+          <HeaderTooltip
+            column={column}
+            header="Proposals"
+            tooltip={headerTooltip.proposals}
+          />
+        ),
+        cell: (info) => info.getValue(),
+        enableSorting: true,
+      }),
       columnHelper.accessor('warning', {
         header: () => (
           <HeaderTooltip header="Warning" tooltip={headerTooltip?.warning} />
@@ -103,13 +114,17 @@ const useTableColumns = (table: { getIsAllRowsSelected: () => boolean | undefine
           const { validatorKey, validatorId, warning } = info.row.original
           const isBanned = warning === 'banned'
           if (isBanned) return null
-          return isSubscribed ? (
-            <UnsubscribeToMevDialog validatorId={validatorId} />
-          ) : (
-            <SubscribeToMevDialog
-              validatorId={validatorId}
-              validatorKey={validatorKey}
-            />
+          return (
+            <div className="mr-3">
+              {isSubscribed ? (
+                <UnsubscribeToMevDialog validatorId={validatorId} />
+              ) : (
+                <SubscribeToMevDialog
+                  validatorId={validatorId}
+                  validatorKey={validatorKey}
+                />
+              )}
+            </div>
           )
         },
       }),
@@ -227,6 +242,7 @@ export function MyValidatorsTable({
         setSearchInput={setSearchInput}
         table={table}
         title="My Validators"
+        isValidatorsTable
       />
     </>
   )
