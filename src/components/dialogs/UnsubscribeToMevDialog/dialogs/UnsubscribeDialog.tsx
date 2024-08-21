@@ -1,29 +1,21 @@
-import { DialogProps } from '../types'
-import Link from 'next/link'
-import {
-  useAccount,
-  useWriteContract,
-  useWaitForTransaction,
-} from 'wagmi'
-import { AiOutlineInfoCircle } from 'react-icons/ai'
-
-import { useQueryClient } from '@tanstack/react-query'
-import { StepProgressBar } from '@/components/common/StepProgressBar'
-import { Button } from '@/components/common/Button'
-import contractInterface from '@/contract/abi.json'
-import {
-  SMOOTHING_POOL_ADDRESS,
-  UNSUB_FEEDBACK_SCRIPT_URL,
-  SELECTED_CHAIN,
-} from '@/utils/config'
+import { DialogProps } from '../types';
+import Link from 'next/link';
+import { type BaseError, useAccount, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
+import { AiOutlineInfoCircle } from 'react-icons/ai';
+import { useQueryClient } from '@tanstack/react-query';
+import { StepProgressBar } from '@/components/common/StepProgressBar';
+import { Button } from '@/components/common/Button';
+import contractInterface from '@/contract/abi.json';
+import { SMOOTHING_POOL_ADDRESS, UNSUB_FEEDBACK_SCRIPT_URL, SELECTED_CHAIN } from '@/utils/config';
+import { useEffect } from 'react';
 
 interface UnsubscribeDialogProps extends DialogProps {
-  validatorId: number
-  setShowCloseButton: (show: boolean) => void
-  selectedOptions: string[]
-  otherOption: string
-  otherOptionSelected: boolean
-  improvementsFeedback: string
+  validatorId: number;
+  setShowCloseButton: (show: boolean) => void;
+  selectedOptions: string[];
+  otherOption: string;
+  otherOptionSelected: boolean;
+  improvementsFeedback: string;
 }
 
 export function UnsubscribeDialog({
@@ -37,54 +29,52 @@ export function UnsubscribeDialog({
   otherOption,
   improvementsFeedback,
 }: UnsubscribeDialogProps) {
-  const { address, chain } = useAccount()
-  const queryClient = useQueryClient()
-  const { writeContract } = useWriteContract()
+  const { address, chain } = useAccount();
+  const queryClient = useQueryClient();
 
-  const feedbackScriptURL = UNSUB_FEEDBACK_SCRIPT_URL || ''
   const postFeedbackData = async () => {
-    const formData = new FormData()
-    formData.append('network', SELECTED_CHAIN)
-    formData.append('validator-id', validatorId.toString())
-    formData.append('why-options', selectedOptions.join('\n'))
-    formData.append('other-options', otherOptionSelected ? otherOption : '')
-    formData.append('improvements', improvementsFeedback)
+    const formData = new FormData();
+    formData.append('network', SELECTED_CHAIN);
+    formData.append('validator-id', validatorId.toString());
+    formData.append('why-options', selectedOptions.join('\n'));
+    formData.append('other-options', otherOptionSelected ? otherOption : '');
+    formData.append('improvements', improvementsFeedback);
+    formData.append('timestamp', new Date().toISOString());
 
-    const timestamp = new Date().toISOString()
-    formData.append('timestamp', timestamp)
-
-    if (feedbackScriptURL) {
-      await fetch(feedbackScriptURL, {
+    if (UNSUB_FEEDBACK_SCRIPT_URL) {
+      await fetch(UNSUB_FEEDBACK_SCRIPT_URL, {
         method: 'POST',
         body: formData,
-      })
+      });
     }
-  }
+  };
 
-  const abi = [...contractInterface] as const
+  const abi = [...contractInterface] as const;
+  const { writeContractAsync: write, data: hash, isPending, isSuccess: isTxSuccess, isError: isWriteError, error: writeError } = useWriteContract();
+  const { isLoading: isConfirming, isSuccess: isReceiptSuccess, isError: isReceiptError } = useWaitForTransactionReceipt({ hash });
 
-  // const contractWrite = useWriteContract({
-  //   address: SMOOTHING_POOL_ADDRESS,
-  //   abi,
-  //   functionName: 'unsubscribeValidator',
-  //   args: [validatorId],
-  //   onSuccess: () => {
-  //     setShowCloseButton(false)
-  //   },
-  // })
+  useEffect(() => setShowCloseButton(false), [isTxSuccess]);
 
-  const waitForTransaction = useWaitForTransaction({
-    hash: contractWrite.data?.hash,
-    confirmations: 2,
-    onSuccess: () => {
-      setShowCloseButton(true)
-      postFeedbackData()
-      handleChangeDialogState('success')
-      queryClient.invalidateQueries({
-        queryKey: ['validators', address],
-      })
-    },
-  })
+  useEffect(() => {
+    if (isReceiptSuccess) {
+      handleChangeDialogState('success');
+      postFeedbackData();
+      queryClient.invalidateQueries({ queryKey: ['validators', address] });
+    }
+  }, [isReceiptSuccess]);
+
+  const unsubValidator = async () => {
+    try {
+      await write({
+        abi,
+        address: SMOOTHING_POOL_ADDRESS,
+        functionName: 'unsubscribeValidator',
+        args: [validatorId],
+      });
+    } catch (err) {
+      console.error('Error unsubscribing validator:', err);
+    }
+  };
 
   return (
     <>
@@ -92,65 +82,74 @@ export function UnsubscribeDialog({
         <h3 className="mb-6 text-left text-2xl font-bold">Unsubscribe</h3>
         <StepProgressBar currentStep={2} steps={steps} />
       </div>
-      {!waitForTransaction.isError ? (
-        <div className="text-center text-DAppDeep dark:text-DAppDarkText">
-          <h4 className="text-lg font-normal">
-            You are unsubscribing validator <b>{validatorId}</b> from Smooth.
-          </h4>
-          {waitForTransaction.isLoading && (
-            <div className="mt-6 w-full rounded-lg bg-violet-50 px-4 py-8 text-sm font-normal dark:bg-DAppDarkSurface-300 dark:text-DAppDarkText">
-              <div className="mx-auto mb-2 flex w-fit flex-col items-center sm:flex-row">
-                <AiOutlineInfoCircle />
-                <p className="ml-2 mt-1 sm:mt-0">
-                  Your unsubscription is being processed.
-                </p>
-              </div>
-              <div className="mx-auto mt-2 max-w-fit">
-                <Link
-                  className=" text-violet-500 underline dark:text-violet-200"
-                  href={`${chain?.blockExplorers?.default.url}/tx/${contractWrite.data?.hash}`}
-                  target="_blank">
-                  Check the transaction on block explorer
-                </Link>
-              </div>
-            </div>
-          )}
+
+      {!isPending && !isConfirming && !isWriteError && !isReceiptError && (
+        <div className="mt-6 text-DAppDeep dark:text-DAppDarkText">
+          <p className="text-lg text-center">Are you sure you want to unsubscribe validator {validatorId}?</p>
         </div>
-      ) : (
-        <div className="mt-2 text-center text-base text-red-500 md:px-8">
-          <AiOutlineInfoCircle className="mx-auto h-8 w-8" />
-          <h4 className="mt-1 font-bold">Unsubscription error!</h4>
-          <p className="mt-1 font-normal">
-            Your unsubscription has failed. Please go back and try again.
-          </p>
-          <h4 className="my-1 font-bold">Error:</h4>
-          <div className="mb-4 h-32 overflow-scroll rounded-lg border border-red-400 p-2">
-            {waitForTransaction.error?.message}
+      )}
+
+      {isPending && (
+        <div className=" flex-1 flex mt-6 text-DAppDeep dark:text-DAppDarkText">
+          <div className="mx-auto mb-2 flex w-fit flex-col items-center sm:flex-row animate-pulse">
+            <AiOutlineInfoCircle />
+            <p className="ml-2 mt-1 sm:mt-0">Awaiting wallet confirmation.</p>
           </div>
         </div>
       )}
-      <div>
-        {!waitForTransaction.isLoading && (
-          <>
-            <Button
-              isDisabled={writeContract.isLoading}
-              onPress={() => writeContract ({
-                abi,
-                address: SMOOTHING_POOL_ADDRESS,
-                functionName: 'unsubscribeValidator',
-                args: [validatorId],
-              })}>
-              {waitForTransaction.isError ? 'Try again' : 'Unsubscribe'}
+
+      {isConfirming && (
+        <div className="mt-6 w-full rounded-lg bg-violet-50 px-4 py-8 text-sm font-normal dark:bg-DAppDarkSurface-300 dark:text-DAppDarkText">
+          <div className="mx-auto mb-2 flex w-fit flex-col items-center sm:flex-row animate-pulse">
+            <AiOutlineInfoCircle />
+            <p className="ml-2 mt-1 sm:mt-0">Your unsubscription is being processed.</p>
+          </div>
+          <div className="mx-auto mt-2 max-w-fit">
+            <Link
+              className="text-violet-500 underline dark:text-violet-200"
+              href={`${chain?.blockExplorers?.default.url}/tx/${hash}`}
+              target="_blank"
+            >
+              Check the transaction on block explorer
+            </Link>
+          </div>
+        </div>
+      )}
+
+      {isWriteError && (
+        <div className="mt-6 w-full rounded-lg bg-violet-50 px-4 py-4 text-sm font-normal dark:bg-DAppDarkSurface-300 dark:text-DAppDarkText">
+          <div className="mx-auto mb-2 flex w-fit flex-col items-center">
+            <p>An error occurred while sending the transaction. Please try again.</p>
+            {writeError && <div>Error: {(writeError as BaseError).shortMessage || writeError.message}</div>}
+          </div>
+        </div>
+      )}
+
+      {isReceiptError && (
+        <div className="mt-6 text-DAppDeep dark:text-DAppDarkText">
+          <p className="text-lg text-left">An error occurred while confirming the transaction. Please try again.</p>
+          {writeError && <div>Error: {(writeError as BaseError).shortMessage || writeError.message}</div>}
+        </div>
+      )}
+
+      {!isPending && !isConfirming && (
+        <div className="mt-6 text-DAppDeep dark:text-DAppDarkText">
+          <div className="mt-6">
+            <Button onClick={unsubValidator} isDisabled={isPending || isConfirming}>
+              {isReceiptError ? 'Try again' : 'Unsubscribe'}
             </Button>
-            <Button
-              buttonType="secondary"
-              className="mt-4"
-              onPress={handleClose}>
+            <Button buttonType="secondary" className="mt-4" onPress={handleClose}>
               Cancel
             </Button>
-          </>
-        )}
-      </div>
+          </div>
+        </div>
+      )}
+
+      {isReceiptSuccess && (
+        <div className="mt-6 text-DAppDeep dark:text-DAppDarkText">
+          <p className="text-lg text-left">Your unsubscription has been processed.</p>
+        </div>
+      )}
     </>
-  )
+  );
 }
