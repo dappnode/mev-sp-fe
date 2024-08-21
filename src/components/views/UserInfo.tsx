@@ -28,9 +28,16 @@ export function UserInfo() {
     enabled: !!address,
   })
 
-  const statusQuery = useQuery(['status'], fetchStatus)
-
-  const serverStatus = useQuery(['serverStatus'], validateServerStatus)
+  const statusQuery = useQuery({
+    queryKey: ['status'],
+    queryFn: fetchStatus,
+  });
+  
+  const serverStatus = useQuery({
+    queryKey: ['serverStatus'],
+    queryFn: validateServerStatus,
+  });
+  
 
   const totalAccumulatedRewards = weiToEth(
     onChainProofQuery.data?.totalAccumulatedRewardsWei

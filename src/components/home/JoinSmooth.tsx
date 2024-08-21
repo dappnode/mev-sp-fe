@@ -16,7 +16,11 @@ export default function JoinSmooth() {
 
   const { isConnected } = useAccount()
 
-  const statisticsQuery = useQuery(['statistics'], fetchStatistics)
+  const statisticsQuery = useQuery({
+    queryKey: ['statistics'],
+    queryFn: fetchStatistics,
+  });
+
   const totalSubscribedValidators =
     statisticsQuery.data?.totalSubscribedValidators
 

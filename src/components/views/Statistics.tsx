@@ -11,11 +11,26 @@ import {
 } from '@/client/api/queryFunctions'
 
 export function Statistics() {
-  const configQuery = useQuery(['config'], fetchConfig)
-  const statisticsQuery = useQuery(['statistics'], fetchStatistics)
-  const statusQuery = useQuery(['status'], fetchStatus)
-  const serverStatus = useQuery(['serverStatus'], validateServerStatus)
-
+  const configQuery = useQuery({
+    queryKey: ['config'],
+    queryFn: fetchConfig,
+  });
+  
+  const statisticsQuery = useQuery({
+    queryKey: ['statistics'],
+    queryFn: fetchStatistics,
+  });
+  
+  const statusQuery = useQuery({
+    queryKey: ['status'],
+    queryFn: fetchStatus,
+  });
+  
+  const serverStatus = useQuery({
+    queryKey: ['serverStatus'],
+    queryFn: validateServerStatus,
+  });
+  
   return (
     <div className="grid w-full grid-cols-1 items-center justify-center gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-6">
       <TotalSubscribersCard

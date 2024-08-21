@@ -2,8 +2,7 @@ import { DialogProps } from '../types'
 import Link from 'next/link'
 import {
   useAccount,
-  useNetwork,
-  useContractWrite,
+  useWriteContract,
   useWaitForTransaction,
 } from 'wagmi'
 import { AiOutlineInfoCircle } from 'react-icons/ai'
@@ -38,9 +37,9 @@ export function UnsubscribeDialog({
   otherOption,
   improvementsFeedback,
 }: UnsubscribeDialogProps) {
-  const { address } = useAccount()
-  const { chain } = useNetwork()
+  const { address, chain } = useAccount()
   const queryClient = useQueryClient()
+  const { writeContract } = useWriteContract()
 
   const feedbackScriptURL = UNSUB_FEEDBACK_SCRIPT_URL || ''
   const postFeedbackData = async () => {
@@ -64,15 +63,15 @@ export function UnsubscribeDialog({
 
   const abi = [...contractInterface] as const
 
-  const contractWrite = useContractWrite({
-    address: SMOOTHING_POOL_ADDRESS,
-    abi,
-    functionName: 'unsubscribeValidator',
-    args: [validatorId],
-    onSuccess: () => {
-      setShowCloseButton(false)
-    },
-  })
+  // const contractWrite = useWriteContract({
+  //   address: SMOOTHING_POOL_ADDRESS,
+  //   abi,
+  //   functionName: 'unsubscribeValidator',
+  //   args: [validatorId],
+  //   onSuccess: () => {
+  //     setShowCloseButton(false)
+  //   },
+  // })
 
   const waitForTransaction = useWaitForTransaction({
     hash: contractWrite.data?.hash,
@@ -134,8 +133,13 @@ export function UnsubscribeDialog({
         {!waitForTransaction.isLoading && (
           <>
             <Button
-              isDisabled={contractWrite.isLoading}
-              onPress={() => contractWrite.write?.()}>
+              isDisabled={writeContract.isLoading}
+              onPress={() => writeContract ({
+                abi,
+                address: SMOOTHING_POOL_ADDRESS,
+                functionName: 'unsubscribeValidator',
+                args: [validatorId],
+              })}>
               {waitForTransaction.isError ? 'Try again' : 'Unsubscribe'}
             </Button>
             <Button
