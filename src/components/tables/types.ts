@@ -32,6 +32,7 @@ export interface Validator {
   warning: Warnings
   subscribed: boolean
   checkbox: boolean
+  proposals: number
 }
 
 export type TableDataTypes = Validator | Block | Donation

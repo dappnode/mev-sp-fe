@@ -6,7 +6,7 @@ interface WarningIconProps {
 
 export function WarningIcon({ warning }: WarningIconProps) {
   if (warning === 'none') {
-    return null
+    return <div>-</div>
   }
   return (
     <div className="flex w-fit items-center justify-center pl-5">

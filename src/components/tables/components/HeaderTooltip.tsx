@@ -4,14 +4,16 @@ import {
   CaretDownIcon,
   CaretUpIcon,
 } from '@radix-ui/react-icons'
+
 import { ReactNode } from 'react'
 import { Tooltip } from '@/components/common/Tooltip'
-import type { Block } from '../types'
+import type { Block, Validator } from '../types'
+
 
 interface HeaderTooltipProps {
   header: string
   tooltip?: string
-  column?: Column<Block, number>
+  column?: Column<Block, number> | Column<Validator, number>
 }
 
 export function HeaderTooltip({ header, tooltip, column }: HeaderTooltipProps) {
