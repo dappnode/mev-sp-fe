@@ -40,8 +40,6 @@ export function UnsubscribeToMevDialog({
     if (!newOpen) setDialogState('initial')
   }
 
-  console.log("SELECTED CHAIN NAME: ", SELECTED_CHAIN)
-  console.log("CHAIN NAME: ", chain?.name)
 
   return (
     <BaseDialog
@@ -53,7 +51,7 @@ export function UnsubscribeToMevDialog({
       triggerButtonProp="outline"
       triggerText="Unsubscribe">
       <AnimatePresence>
-        <div className="flex h-full min-h-[100px] flex-col justify-between text-DAppDeep">
+        <div className="flex h-full min-h-[600px] flex-col justify-between text-DAppDeep">
           {dialogState === 'initial' ? (
             <InitialDialog
               handleChangeDialogState={setDialogState}
