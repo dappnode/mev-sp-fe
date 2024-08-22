@@ -53,7 +53,7 @@ export function UnsubscribeToMevDialog({
       triggerButtonProp="outline"
       triggerText="Unsubscribe">
       <AnimatePresence>
-        <div className="flex h-full min-h-[500px] flex-col justify-between text-DAppDeep">
+        <div className="flex h-full min-h-[100px] flex-col justify-between text-DAppDeep">
           {dialogState === 'initial' ? (
             <InitialDialog
               handleChangeDialogState={setDialogState}

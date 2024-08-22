@@ -19,7 +19,7 @@ export function InitialDialog({
           <AlertIcon />
           <span className="ml-2">Attention</span>
         </h4>
-        <p className="mt-1 text-center text-base font-normal leading-7 tracking-wide sm:mt-3 sm:px-2 sm:text-lg">
+        <p className="mt-1 mb-5 text-center text-base font-normal leading-7 tracking-wide sm:mt-3 sm:px-2 sm:text-lg">
         When unsubscribing a validator, all its pending rewards are redistributed back to the pool.<br />
   <br />
   It is recommended to unsubscribe a validator soon after it has proposed a block to minimize lost pending rewards.<br />
