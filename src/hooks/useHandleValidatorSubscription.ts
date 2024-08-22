@@ -1,16 +1,15 @@
 import {
-    useAccount,
-    useWriteContract,
-    useWaitForTransactionReceipt,
+  useAccount,
+  useWriteContract,
+  useWaitForTransactionReceipt,
 } from 'wagmi'
 import { useQueryClient } from '@tanstack/react-query'
 import contractInterface from '@/contract/abi.json'
-import {
-    SMOOTHING_POOL_ADDRESS
-} from '@/utils/config'
+import { SMOOTHING_POOL_ADDRESS } from '@/utils/config'
 import { useEffect, useCallback } from 'react'
 
-export function useUnsubscribeValidator(validatorId: number) {
+export function useHandleValidatorSubscription( type: 'sub' | 'unsub',
+  validatorId: number) {
   const { address } = useAccount()
   const queryClient = useQueryClient()
 
@@ -26,7 +25,7 @@ export function useUnsubscribeValidator(validatorId: number) {
   const {
     isLoading: isConfirming,
     isSuccess: isReceiptSuccess,
-    error: receiptError
+    error: receiptError,
   } = useWaitForTransactionReceipt({ hash })
 
   useEffect(() => {
@@ -35,12 +34,13 @@ export function useUnsubscribeValidator(validatorId: number) {
     }
   }, [isReceiptSuccess, address, queryClient])
 
-  const unsubValidator = useCallback(async () => {
+  const handleSubscription = useCallback(async () => {
     try {
       await write({
         abi,
         address: SMOOTHING_POOL_ADDRESS,
-        functionName: 'unsubscribeValidator',
+        functionName:
+          type === 'sub' ? 'subscribeValidator' : 'unsubscribeValidator',
         args: [validatorId],
       })
     } catch (err) {
@@ -49,7 +49,7 @@ export function useUnsubscribeValidator(validatorId: number) {
   }, [validatorId, write])
 
   return {
-    unsubValidator,
+    handleSubscription,
     awaitingWalletConfirmations,
     isConfirming,
     isReceiptSuccess,
