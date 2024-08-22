@@ -121,6 +121,17 @@ export function WithdrawDialog({
           </div>
         </div>
       )}
-    </div>
+
+      <div>
+        <Button
+          isDisabled={contractWrite.isLoading || waitForTransaction.isLoading}
+          onPress={() => handleChangeDialogState('success')}>
+          {waitForTransaction.isError ? 'Try again' : 'Withdraw'}
+        </Button>
+        <Button buttonType="secondary" className="mt-4" onPress={handleClose}>
+          Cancel
+        </Button>
+      </div>
+    </>
   )
 }

@@ -2,7 +2,7 @@ import { DialogProps } from '../types'
 import { Button } from '@/components/common/Button'
 import { CongratulationsIcon } from '@/components/icons'
 
-export function SuccessDialog({ handleClose }: DialogProps) {
+export function SuccessDialog({ handleChangeDialogState }: DialogProps) {
   return (
     <>
       <div className="px-6 text-center text-DAppDeep dark:text-DAppDarkText">
@@ -14,8 +14,10 @@ export function SuccessDialog({ handleClose }: DialogProps) {
           <p>You have claimed your rewards from Smooth.</p>
         </div>
       </div>
-      <Button className="mt-5" onPress={handleClose}>
-        Done
+      <Button
+        className="mt-5"
+        onPress={() => handleChangeDialogState('feedback')}>
+        Next
       </Button>
     </>
   )

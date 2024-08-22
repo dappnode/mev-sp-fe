@@ -1,4 +1,4 @@
-import { WithdrawDialog, SuccessDialog, InitialDialog } from './dialogs'
+import { WithdrawDialog, SuccessDialog, InitialDialog, FeedbackDialog } from './dialogs'
 import { BaseDialog } from '../BaseDialog'
 import { useState } from 'react'
 import { useDialog } from '@/hooks/useDialog'
@@ -44,12 +44,15 @@ export function ClaimRewardsDialog({
             handleChangeDialogState={setDialogState}
             handleClose={handleCloseDialog}
           />
-        ) : (
+        ) : dialogState === 'success' ? (
           <SuccessDialog
             handleChangeDialogState={setDialogState}
             handleClose={handleCloseDialog}
           />
-        )}
+        ): <FeedbackDialog
+        handleChangeDialogState={setDialogState}
+        handleClose={handleCloseDialog}
+      />}
       </div>
     </BaseDialog>
   )
