@@ -97,7 +97,7 @@ export function DepositDialog({
           <div className="flex w-full flex-1 flex-col items-center justify-center">
             <div className="flex w-fit animate-pulse flex-col items-center justify-center gap-3 rounded bg-violet-200 p-5 dark:bg-DAppDarkSurface-300 sm:flex-row">
               <AiOutlineInfoCircle />
-              <p>Your subscription is being processed.</p>
+              <p>Your deposit is being processed.</p>
             </div>
             <div className="mx-auto mt-2 max-w-fit">
               <Link
@@ -140,21 +140,19 @@ export function DepositDialog({
               </div>
             )}
 
-            {!awaitingWalletConfirmations && (
-              <div className="flex flex-1 flex-col justify-end">
-                <Button
-                  onPress={handleSubscription}
-                  isDisabled={awaitingWalletConfirmations || isConfirming}>
-                  {writeError ? 'Try again' : 'Deposit'}
-                </Button>
-                <Button
-                  buttonType="secondary"
-                  className="mt-4"
-                  onPress={handleClose}>
-                  Cancel
-                </Button>
-              </div>
-            )}
+            <div className="flex flex-1 flex-col justify-end">
+              <Button
+                onPress={handleSubscription}
+                isDisabled={awaitingWalletConfirmations || isConfirming}>
+                {writeError ? 'Try again' : 'Deposit'}
+              </Button>
+              <Button
+                buttonType="secondary"
+                className="mt-4"
+                onPress={handleClose}>
+                Cancel
+              </Button>
+            </div>
           </div>
         )}
       </div>

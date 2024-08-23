@@ -8,7 +8,8 @@ import contractInterface from '@/contract/abi.json'
 import { fetchConfig } from '@/client/api/queryFunctions'
 import { SMOOTHING_POOL_ADDRESS } from '@/utils/config'
 import { useEffect, useCallback } from 'react'
-import { utils } from 'ethers'
+import { BigNumber, utils } from 'ethers'
+import { weiToEth } from '@/utils/web3'
 
 /**
  * Hook used to handle and submit validator subscriptions and unsubscriptions
@@ -16,8 +17,9 @@ import { utils } from 'ethers'
 
 export function useHandleValidatorSubscription(
   type: 'sub' | 'unsub',
-  validatorId: number
+  validatorIds: number | number[]
 ) {
+  const isMultiAction = Array.isArray(validatorIds)
   const { address } = useAccount()
   const queryClient = useQueryClient()
 
@@ -47,25 +49,39 @@ export function useHandleValidatorSubscription(
     }
   }, [isReceiptSuccess, address, queryClient])
 
+  // Convert the collateralInWei to a BigNumber, to multiply it by number of validators in case of multisub
+  const collateralInWei = configQuery.data?.collateralInWei
+    ? BigNumber.from(configQuery.data.collateralInWei)
+    : BigNumber.from(0)
+
+  // Multiply the collateral by the number of validator IDs
+  const totalDepositValue = isMultiAction
+    ? collateralInWei.mul(validatorIds.length)
+    : collateralInWei.mul(1)
+  const totalDepositInEth = weiToEth(totalDepositValue.toString())
+  const totalDepositInString = totalDepositInEth.toString()
+
   const handleSubscription = useCallback(async () => {
     try {
       await write({
         abi,
         address: SMOOTHING_POOL_ADDRESS,
         functionName:
-          type === 'sub' ? 'subscribeValidator' : 'unsubscribeValidator',
+          type === 'sub'
+            ? isMultiAction
+              ? 'subscribeValidators'
+              : 'subscribeValidator'
+            : 'unsubscribeValidator',
         value:
           type === 'sub'
-            ? utils
-                .parseUnits(configQuery.data?.collateralInWei || '0', 'wei')
-                .toBigInt()
+            ? utils.parseEther(totalDepositInString).toBigInt()
             : undefined,
-        args: [validatorId],
+        args: [validatorIds],
       })
     } catch (err) {
       console.error('Error unsubscribing validator:', err)
     }
-  }, [validatorId, write])
+  }, [validatorIds, write])
 
   return {
     handleSubscription,
@@ -75,6 +91,7 @@ export function useHandleValidatorSubscription(
     writeError,
     receiptError,
     hash,
-    configQuery
+    configQuery,
+    totalDepositInString
   }
 }
