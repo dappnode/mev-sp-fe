@@ -19,8 +19,9 @@ export function useHandleValidatorSubscription(
   type: 'sub' | 'unsub',
   validatorIds: number | number[]
 ) {
-  if (type === 'unsub' && Array.isArray(validatorIds)) throw new Error("Mutiple unsubscription not unsported!");
-  
+  if (type === 'unsub' && Array.isArray(validatorIds))
+    throw new Error('Mutiple unsubscription not unsported!')
+
   const isMultiAction = Array.isArray(validatorIds)
   const { address } = useAccount()
   const queryClient = useQueryClient()
@@ -47,7 +48,8 @@ export function useHandleValidatorSubscription(
 
   useEffect(() => {
     if (isReceiptSuccess) {
-      queryClient.invalidateQueries({ queryKey: ['validators', address] })
+      queryClient.invalidateQueries({ queryKey: ['user-validators', address] })
+      console.log('invalidateQueries')
     }
   }, [isReceiptSuccess, address, queryClient])
 
@@ -94,6 +96,6 @@ export function useHandleValidatorSubscription(
     receiptError,
     hash,
     configQuery,
-    totalDepositInString
+    totalDepositInString,
   }
 }
