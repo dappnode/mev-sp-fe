@@ -5,7 +5,7 @@ import { AiOutlineInfoCircle } from 'react-icons/ai'
 import { StepProgressBar } from '@/components/common/StepProgressBar'
 import { Button } from '@/components/common/Button'
 import { Tooltip } from '@/components/common/Tooltip'
-import { useHandleValidatorSubscription } from '@/hooks/useHandleValidatorSubscription'
+import { useHandleSubscriptionStatus } from '@/hooks/useHandleSubscriptionStatus'
 import { useEffect } from 'react'
 import { weiToEth } from '@/utils/web3'
 
@@ -33,7 +33,7 @@ export function MultiDepositDialog({
     hash,
     configQuery,
     totalDepositInString,
-  } = useHandleValidatorSubscription('sub', validatorIds)
+  } = useHandleSubscriptionStatus('sub', validatorIds)
 
   useEffect(() => setShowCloseButton(false), [setShowCloseButton])
 

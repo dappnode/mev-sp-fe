@@ -15,7 +15,7 @@ import { weiToEth } from '@/utils/web3'
  * Hook used to handle and submit validator subscriptions and unsubscriptions
  */
 
-export function useHandleValidatorSubscription(
+export function useHandleSubscriptionStatus(
   type: 'sub' | 'unsub',
   validatorIds: number | number[]
 ) {

@@ -6,7 +6,7 @@ import { StepProgressBar } from '@/components/common/StepProgressBar'
 import { Button } from '@/components/common/Button'
 import { UNSUB_FEEDBACK_SCRIPT_URL, SELECTED_CHAIN } from '@/utils/config'
 import { useEffect, useCallback } from 'react'
-import { useHandleValidatorSubscription } from '@/hooks/useHandleValidatorSubscription'
+import { useHandleSubscriptionStatus } from '@/hooks/useHandleSubscriptionStatus'
 
 interface UnsubscribeDialogProps extends DialogProps {
   validatorId: number
@@ -36,7 +36,7 @@ export function UnsubscribeDialog({
     writeError,
     receiptError,
     hash,
-  } = useHandleValidatorSubscription('unsub', validatorId)
+  } = useHandleSubscriptionStatus('unsub', validatorId)
 
   const { chain } = useAccount()
   const postFeedbackData = useCallback(async () => {

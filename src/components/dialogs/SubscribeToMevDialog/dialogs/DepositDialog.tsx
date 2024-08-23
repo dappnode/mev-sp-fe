@@ -6,7 +6,7 @@ import { StepProgressBar } from '@/components/common/StepProgressBar'
 import { Button } from '@/components/common/Button'
 import { Tooltip } from '@/components/common/Tooltip'
 import { weiToEth } from '@/utils/web3'
-import { useHandleValidatorSubscription } from '@/hooks/useHandleValidatorSubscription'
+import { useHandleSubscriptionStatus } from '@/hooks/useHandleSubscriptionStatus'
 import { useEffect } from 'react'
 
 interface DepositDialogProps extends DialogProps {
@@ -32,7 +32,7 @@ export function DepositDialog({
     receiptError,
     hash,
     configQuery,
-  } = useHandleValidatorSubscription('unsub', validatorId)
+  } = useHandleSubscriptionStatus('unsub', validatorId)
 
   useEffect(() => setShowCloseButton(false), [setShowCloseButton])
 
