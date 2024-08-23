@@ -3,10 +3,13 @@ import {
   useWriteContract,
   useWaitForTransactionReceipt,
 } from 'wagmi'
-import { useQueryClient } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import contractInterface from '@/contract/abi.json'
+import { fetchConfig } from '@/client/api/queryFunctions'
 import { SMOOTHING_POOL_ADDRESS } from '@/utils/config'
 import { useEffect, useCallback } from 'react'
+import { utils } from 'ethers'
+
 
 export function useHandleValidatorSubscription( type: 'sub' | 'unsub',
   validatorId: number) {
@@ -14,6 +17,11 @@ export function useHandleValidatorSubscription( type: 'sub' | 'unsub',
   const queryClient = useQueryClient()
 
   const abi = [...contractInterface] as const
+
+  const configQuery = useQuery({
+    queryKey: ['config'],
+    queryFn: fetchConfig,
+  })
 
   const {
     writeContractAsync: write,
@@ -41,6 +49,9 @@ export function useHandleValidatorSubscription( type: 'sub' | 'unsub',
         address: SMOOTHING_POOL_ADDRESS,
         functionName:
           type === 'sub' ? 'subscribeValidator' : 'unsubscribeValidator',
+          value: type === 'sub' ? utils
+          .parseUnits(configQuery.data?.collateralInWei || '0', 'wei')
+          .toBigInt(): undefined,
         args: [validatorId],
       })
     } catch (err) {
