@@ -36,7 +36,7 @@ export function UnsubscribeDialog({
     writeError,
     receiptError,
     hash,
-  } = useHandleValidatorSubscription('sub', validatorId)
+  } = useHandleValidatorSubscription('unsub', validatorId)
 
   const { chain } = useAccount()
   const postFeedbackData = useCallback(async () => {

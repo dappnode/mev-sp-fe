@@ -19,6 +19,8 @@ export function useHandleValidatorSubscription(
   type: 'sub' | 'unsub',
   validatorIds: number | number[]
 ) {
+
+  // Throwing error if trying to multiunsub
   if (type === 'unsub' && Array.isArray(validatorIds))
     throw new Error('Mutiple unsubscription not unsported!')
 
@@ -49,7 +51,6 @@ export function useHandleValidatorSubscription(
   useEffect(() => {
     if (isReceiptSuccess) {
       queryClient.invalidateQueries({ queryKey: ['user-validators', address] })
-      console.log('invalidateQueries')
     }
   }, [isReceiptSuccess, address, queryClient])
 
