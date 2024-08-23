@@ -19,6 +19,8 @@ export function useHandleValidatorSubscription(
   type: 'sub' | 'unsub',
   validatorIds: number | number[]
 ) {
+  if (type === 'unsub' && Array.isArray(validatorIds)) throw new Error("Mutiple unsubscription not unsported!");
+  
   const isMultiAction = Array.isArray(validatorIds)
   const { address } = useAccount()
   const queryClient = useQueryClient()
@@ -57,7 +59,7 @@ export function useHandleValidatorSubscription(
   // Multiply the collateral by the number of validator IDs
   const totalDepositValue = isMultiAction
     ? collateralInWei.mul(validatorIds.length)
-    : collateralInWei.mul(1)
+    : collateralInWei
   const totalDepositInEth = weiToEth(totalDepositValue.toString())
   const totalDepositInString = totalDepositInEth.toString()
 
