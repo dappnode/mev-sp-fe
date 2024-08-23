@@ -29,7 +29,7 @@ export function UnsubscribeDialog({
   improvementsFeedback,
 }: UnsubscribeDialogProps) {
   const {
-    handleSubscription: handleSubscription,
+    handleSubscription,
     awaitingWalletConfirmations,
     isConfirming,
     isReceiptSuccess,

@@ -10,9 +10,14 @@ import { SMOOTHING_POOL_ADDRESS } from '@/utils/config'
 import { useEffect, useCallback } from 'react'
 import { utils } from 'ethers'
 
+/**
+ * Hook used to handle and submit validator subscriptions and unsubscriptions
+ */
 
-export function useHandleValidatorSubscription( type: 'sub' | 'unsub',
-  validatorId: number) {
+export function useHandleValidatorSubscription(
+  type: 'sub' | 'unsub',
+  validatorId: number
+) {
   const { address } = useAccount()
   const queryClient = useQueryClient()
 
@@ -49,9 +54,12 @@ export function useHandleValidatorSubscription( type: 'sub' | 'unsub',
         address: SMOOTHING_POOL_ADDRESS,
         functionName:
           type === 'sub' ? 'subscribeValidator' : 'unsubscribeValidator',
-          value: type === 'sub' ? utils
-          .parseUnits(configQuery.data?.collateralInWei || '0', 'wei')
-          .toBigInt(): undefined,
+        value:
+          type === 'sub'
+            ? utils
+                .parseUnits(configQuery.data?.collateralInWei || '0', 'wei')
+                .toBigInt()
+            : undefined,
         args: [validatorId],
       })
     } catch (err) {
@@ -67,5 +75,6 @@ export function useHandleValidatorSubscription( type: 'sub' | 'unsub',
     writeError,
     receiptError,
     hash,
+    configQuery
   }
 }
