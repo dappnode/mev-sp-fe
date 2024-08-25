@@ -57,9 +57,6 @@ export const weiToEth = (wei: string | number | undefined | null) => {
 }
 
 export const isWalletConnectedChainOk = (chain: Chain | undefined) => {
-  console.log("SELECTED CHAIN NAME: ", SELECTED_CHAIN)
-  console.log("CHAIN NAME: ", chain?.name)
-  console.log("CHAIN ID: ", chain?.id)
   if (!chain) {
     return false
   }
