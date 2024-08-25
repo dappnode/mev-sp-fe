@@ -44,6 +44,10 @@ createWeb3Modal({
   enableOnramp: false,
   enableSwaps: false,
   metadata,
+  themeVariables: {
+    '--w3m-accent': '#6B21A8', 
+    '--w3m-z-index': 1000, // Just in case, set the z-index to a high value
+  }
 })
 
 interface Web3ProviderProps {
