@@ -45,7 +45,7 @@ createWeb3Modal({
   enableSwaps: false,
   metadata,
   themeVariables: {
-    '--w3m-accent': '#6B21A8', 
+    '--w3m-accent': '#9333EA', 
     '--w3m-z-index': 1000, // Just in case, set the z-index to a high value
   }
 })
