@@ -13,6 +13,7 @@ const data: Validator[] = [
     validatorKey: '0x95222290DD7278Aa3Ddd389Cc1E1d165CC4BAfe5',
     subscribed: true,
     checkbox: true,
+    proposals: 1,
   },
   {
     address: '0x95222290DD7278Aa3Ddd389Cc1E1d165CC4BAfe5',
@@ -23,6 +24,7 @@ const data: Validator[] = [
     validatorKey: '0x95222290DD7278Aa3Ddd389Cc1E1d165CC4BAfe5',
     subscribed: true,
     checkbox: true,
+    proposals: 1,
   },
   {
     address: '0x388C818CA8B9251b393131C08a736A67ccB19297',
@@ -33,6 +35,7 @@ const data: Validator[] = [
     validatorKey: '0x95222290DD7278Aa3Ddd389Cc1E1d165CC4BAfe5',
     subscribed: true,
     checkbox: true,
+    proposals: 1,
   },
   {
     address: '0x97C28c835CE99b23F63414f8989ec410Ab41f52D',
@@ -43,6 +46,7 @@ const data: Validator[] = [
     warning: 'red',
     subscribed: false,
     checkbox: true,
+    proposals: 1,
   },
   {
     address: '0xE7d3982E214F9DFD53d23a7f72851a7044072250',
@@ -53,6 +57,7 @@ const data: Validator[] = [
     warning: 'yellow',
     subscribed: true,
     checkbox: true,
+    proposals: 1,
   },
   {
     address: '0xD2f43b11122C56D12d4cCef4Be503C4d47D33636',
@@ -63,6 +68,7 @@ const data: Validator[] = [
     warning: 'none',
     subscribed: false,
     checkbox: true,
+    proposals: 1,
   },
   {
     address: '0x492d818f545454D50F6e90bCC8b22692BDc22030',
@@ -73,6 +79,7 @@ const data: Validator[] = [
     warning: 'red',
     subscribed: false,
     checkbox: true,
+    proposals: 1,
   },
   {
     address: '0x30614bc1e56bf9f30f2dda7898b520a20b560ef3',
@@ -83,6 +90,7 @@ const data: Validator[] = [
     warning: 'yellow',
     subscribed: false,
     checkbox: true,
+    proposals: 1,
   },
 ]
 

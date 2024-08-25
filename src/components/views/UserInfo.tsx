@@ -8,10 +8,12 @@ import { useAccount } from 'wagmi'
 import { weiToEth } from '@/utils/web3'
 import {
   fetchOnChainProof,
+  fetchProposedBlocks,
   fetchStatus,
   fetchValidatorsByDepositor,
   validateServerStatus,
 } from '@/client/api/queryFunctions'
+
 
 export function UserInfo() {
   const { isConnected, address } = useAccount()
@@ -27,7 +29,13 @@ export function UserInfo() {
     queryFn: () => fetchOnChainProof(address),
     enabled: !!address,
   })
+  
+  // const fetchProposedBlocksCallback = useCallback(() => fetchProposedBlocks(), []);
 
+  const proposedBlocksQuery = useQuery({
+    queryKey: ['proposedblocks'],
+    queryFn: fetchProposedBlocks, // Directly pass the function reference
+  })
   const statusQuery = useQuery({
     queryKey: ['status'],
     queryFn: fetchStatus,
@@ -58,30 +66,35 @@ export function UserInfo() {
     }
   }
 
-  const memoizedTableData = useMemo(
-    () =>
-      validatorsQuery.data
-        ? validatorsQuery.data.map(
-            ({
-              status,
-              validatorKey,
-              validatorIndex,
-              pendingRewardsWei,
-              accumulatedRewardsWei,
-            }) => ({
-              address: validatorKey as `0x${string}`,
-              pending: weiToEth(pendingRewardsWei || 0),
-              accumulated: weiToEth(accumulatedRewardsWei || 0),
-              subscribed: ['active', 'yellowcard', 'redcard'].includes(status),
-              validatorId: validatorIndex,
-              validatorKey: validatorKey as `0x${string}`,
-              warning: setWarning(status) as Warnings, // Adjust the type here
-              checkbox: false,
-            })
-          )
-        : [],
-    [validatorsQuery.data]
-  )
+  const memoizedTableData = useMemo(() => {
+    if (!validatorsQuery.data || !proposedBlocksQuery.data) return []
+
+    return validatorsQuery.data.map(
+      ({
+        status,
+        validatorKey,
+        validatorIndex,
+        pendingRewardsWei,
+        accumulatedRewardsWei,
+      }) => {
+        const countProposedBlocks = proposedBlocksQuery.data.filter(
+          (block) => block.validatorIndex === validatorIndex
+        ).length
+
+        return {
+          address: validatorKey as `0x${string}`,
+          pending: weiToEth(pendingRewardsWei || 0),
+          accumulated: weiToEth(accumulatedRewardsWei || 0),
+          subscribed: ['active', 'yellowcard', 'redcard'].includes(status),
+          validatorId: validatorIndex,
+          validatorKey: validatorKey as `0x${string}`,
+          warning: setWarning(status) as Warnings,
+          checkbox: false,
+          proposals: countProposedBlocks,
+        }
+      }
+    )
+  }, [validatorsQuery.data, proposedBlocksQuery.data])
 
   return (
     <div className="mt-8 grid w-full grid-cols-1 gap-4 overflow-hidden sm:grid-cols-3 md:gap-6 lg:grid-cols-4">
