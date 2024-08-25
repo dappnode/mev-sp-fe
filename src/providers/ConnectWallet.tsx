@@ -32,6 +32,9 @@ const config = defaultWagmiConfig({
   storage: createStorage({
     storage: cookieStorage
   }),
+  auth: {
+    email: false, 
+  },
 })
 
 createWeb3Modal({
