@@ -57,9 +57,8 @@ export function MultiDepositDialog({
             <>
               <div className="flex flex-1 flex-col items-center justify-center ">
                 <p className="text-center text-lg">
-                  To subscribe and start earning To start earning rewards with{' '}
-                  {validatorIds.length} validators, please depositrewards,
-                  please deposit
+                  To subscribe and start earning rewards with{' '}
+                  {validatorIds.length} validators, please deposit
                 </p>
                 {configQuery.isLoading ? (
                   <div className="animate-pulse rounded bg-SkeletonGray p-5 dark:bg-DAppDarkSurface-300">
@@ -75,12 +74,12 @@ export function MultiDepositDialog({
                   <p>to Smooth </p>{' '}
                   <Link
                     className="ml-2 flex items-center"
-                    href="https://docs.dappnode.io/docs/smooth"
+                    href="https://docs.dappnode.io/docs/smooth/subscribe-to-smooth/manual"
                     rel="noopener noreferrer"
                     target="_blank">
                     <Tooltip
                       iconType="question"
-                      tooltip="To learn more about the required collateral for Smooth, click the ?"
+                      tooltip="Click here to learn more about the subscription process."
                     />
                   </Link>
                 </div>

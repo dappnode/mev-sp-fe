@@ -33,7 +33,7 @@ export function SuccessDialog({ steps, handleClose }: DialogProps) {
         </p>
         <p>to Smooth</p>
         <p>
-          You are now accumulating rewards from the Smoothing Pool. Claim them
+          You are now accumulating rewards from the Pool. Claim them
           after you successfully propose a block!
         </p>
       </div>
@@ -88,9 +88,9 @@ export function MultiSuccessDialog({
             `${totalDepositInEth} ETH`
           )}
         </p>
-        <p>to The MEV Smoothing Pool</p>
+        <p>to <b> Smooth</b> </p>
         <p>
-          You are now accumulating rewards from the Smoothing Pool. Claim them
+          You are now accumulating rewards from the Pool. Claim them
           after you successfully propose a block!
         </p>
       </div>
