@@ -5,13 +5,16 @@ import {
   InitialDialog,
 } from './dialogs'
 import { useState } from 'react'
+import { useAccount } from 'wagmi'
 import { useDialog } from '@/hooks/useDialog'
 import { BaseDialog } from '@/components/dialogs/BaseDialog'
 import type { IDialogStates } from './types'
+import { isWalletConnectedChainOk } from '@/utils/web3'
 
 export function DonateDialog() {
   const { open, handleClose, handleOpenChange } = useDialog()
   const [dialogState, setDialogState] = useState<IDialogStates>('initial')
+  const { chain } = useAccount()
 
   const handleCloseDialog = () => {
     handleClose()
@@ -28,6 +31,7 @@ export function DonateDialog() {
       handleOpenChange={handleOpenChangeDialog}
       open={open}
       subtitle="Donate to Smooth"
+      disabledTrigger={!isWalletConnectedChainOk(chain)}
       triggerText="Donate Now">
       {dialogState === 'initial' ? (
         <InitialDialog
