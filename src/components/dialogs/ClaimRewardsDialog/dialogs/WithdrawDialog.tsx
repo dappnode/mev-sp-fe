@@ -103,14 +103,14 @@ export function WithdrawDialog({
 
           {isReceiptSuccess && (
             <p className="text-left text-lg">
-              Your unsubscription has been processed.
+              Your claim has been processed.
             </p>
           )}
           <div className="flex w-full flex-col">
             <Button
               onPress={claimRewards}
               isDisabled={awaitingWalletConfirmations || isConfirming}>
-              Unsubscribe
+              Claim
             </Button>
             <Button
               buttonType="secondary"

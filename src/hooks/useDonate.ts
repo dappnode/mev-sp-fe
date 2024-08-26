@@ -28,11 +28,11 @@ export function useDonate() {
     error: receiptError,
   } = useWaitForTransactionReceipt({ hash })
 
-  const donate = async (ethAmount: string | undefined) => {
+  const donate = async (ethAmount: string ) => {
     try {
       await send({
         to: SMOOTHING_POOL_ADDRESS,
-        value: ethAmount ? utils.parseEther(ethAmount).toBigInt() : undefined,
+        value: utils.parseEther(ethAmount).toBigInt(),
       })
     } catch (err) {
       /* eslint-disable no-console */

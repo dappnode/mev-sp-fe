@@ -32,7 +32,7 @@ export function DepositDialog({
     receiptError,
     hash,
     configQuery,
-  } = useHandleSubscriptionStatus('unsub', validatorId)
+  } = useHandleSubscriptionStatus('sub', validatorId)
 
   useEffect(() => setShowCloseButton(false), [setShowCloseButton])
 

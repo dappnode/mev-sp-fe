@@ -8,6 +8,7 @@ import { BaseError } from 'wagmi'
 import { Button } from '@/components/common/Button'
 import { SELECTED_CHAIN } from '@/utils/config'
 import { useDonate } from '@/hooks/useDonate'
+import { utils } from 'ethers'
 
 const MIN_DONATION = 0.01
 
@@ -105,9 +106,8 @@ export function InitialDialog({
   return (
     <>
       <input
-        className={`min-h-full w-full rounded-md border bg-DAppLight p-2 pl-4 [appearance:textfield] focus:outline-none dark:border-DAppDarkSurface-300 dark:bg-DAppDarkSurface-300 ${
-          !isValueValid && 'border-red-500'
-        }`}
+        className={`min-h-full w-full rounded-md border bg-DAppLight p-2 pl-4 [appearance:textfield] focus:outline-none dark:border-DAppDarkSurface-300 dark:bg-DAppDarkSurface-300 ${!isValueValid && 'border-red-500'
+          }`}
         placeholder="0.01"
         min={0}
         type="text"
@@ -122,10 +122,13 @@ export function InitialDialog({
           Available:{' '}
           {isBalanceLoading ? (
             <span className="ml-2 inline-block h-4 w-16 animate-pulse rounded-md bg-gray-200 opacity-90 dark:bg-DAppDarkSurface-300" />
+          ) : balance && balance.value !== undefined ? (
+            `${parseFloat(utils.formatEther(balance.value)).toFixed(4)} ${balance.symbol}`
           ) : (
-            `${balance} ${balance?.symbol}`
+            <span className="ml-2 text-red-500">Could not get account balance</span>
           )}
         </p>
+
       </div>
       <div className="mt-6 flex w-full flex-col gap-y-5 rounded-lg bg-violet-50 p-4 text-sm font-normal text-DAppDeep dark:bg-DAppDarkSurface-300 dark:text-DAppDarkText">
         <div className="flex items-center justify-between">
