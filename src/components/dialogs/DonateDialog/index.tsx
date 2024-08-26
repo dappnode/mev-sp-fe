@@ -6,10 +6,10 @@ import {
 } from './dialogs'
 import { useState } from 'react'
 import { useAccount } from 'wagmi'
+import { isWalletConnectedChainOk } from '@/utils/web3'
 import { useDialog } from '@/hooks/useDialog'
 import { BaseDialog } from '@/components/dialogs/BaseDialog'
 import type { IDialogStates } from './types'
-import { isWalletConnectedChainOk } from '@/utils/web3'
 
 export function DonateDialog() {
   const { open, handleClose, handleOpenChange } = useDialog()
