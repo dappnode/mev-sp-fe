@@ -16,11 +16,11 @@ import { weiToEth } from '@/utils/web3'
  */
 
 export function useHandleSubscriptionStatus(
-  type: 'sub' | 'unsub',
+  methodName: 'sub' | 'unsub',
   validatorIds: number | number[]
 ) {
   // Throwing error if trying to multiunsub
-  if (type === 'unsub' && Array.isArray(validatorIds))
+  if (methodName === 'unsub' && Array.isArray(validatorIds))
     throw new Error('Mutiple unsubscription not unsported!')
 
   const isMultiAction = Array.isArray(validatorIds)
@@ -72,13 +72,13 @@ export function useHandleSubscriptionStatus(
         abi,
         address: SMOOTHING_POOL_ADDRESS,
         functionName:
-          type === 'sub'
+          methodName === 'sub'
             ? isMultiAction
               ? 'subscribeValidators'
               : 'subscribeValidator'
             : 'unsubscribeValidator',
         value:
-          type === 'sub'
+          methodName === 'sub'
             ? utils.parseEther(totalDepositInString).toBigInt()
             : undefined,
         args: [validatorIds],
@@ -87,7 +87,7 @@ export function useHandleSubscriptionStatus(
       /* eslint-disable no-console */
       console.error('Error unsubscribing validator:', err)
     }
-  }, [validatorIds, write, isMultiAction, totalDepositInString, type])
+  }, [validatorIds, write, isMultiAction, totalDepositInString, methodName])
 
   return {
     handleSubscription,
