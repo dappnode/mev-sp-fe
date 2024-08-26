@@ -2,12 +2,12 @@ import { DialogProps } from '../types'
 import Link from 'next/link'
 import { type BaseError, useAccount } from 'wagmi'
 import { AiOutlineInfoCircle } from 'react-icons/ai'
+import { useEffect } from 'react'
 import { StepProgressBar } from '@/components/common/StepProgressBar'
 import { Button } from '@/components/common/Button'
 import { Tooltip } from '@/components/common/Tooltip'
 import { weiToEth } from '@/utils/web3'
 import { useHandleSubscriptionStatus } from '@/hooks/useHandleSubscriptionStatus'
-import { useEffect } from 'react'
 
 interface DepositDialogProps extends DialogProps {
   validatorId: number
@@ -41,7 +41,7 @@ export function DepositDialog({
       setShowCloseButton(true)
       handleChangeDialogState('success')
     }
-  }, [isReceiptSuccess, handleChangeDialogState])
+  }, [isReceiptSuccess, handleChangeDialogState, setShowCloseButton])
 
   return (
     <>
@@ -54,36 +54,34 @@ export function DepositDialog({
           !receiptError &&
           !awaitingWalletConfirmations &&
           !isConfirming && (
-            <>
-              <div className="flex flex-1 flex-col items-center justify-center ">
-                <p className="text-center text-lg">
-                  To subscribe and start earning rewards, please deposit
-                </p>
-                {configQuery.isLoading ? (
-                  <div className="animate-pulse rounded bg-SkeletonGray p-5 dark:bg-DAppDarkSurface-300">
-                    Loading
-                  </div>
-                ) : (
-                  <p className="text-2xl font-bold">
-                    {weiToEth(configQuery.data?.collateralInWei)} ETH
-                  </p>
-                )}
-
-                <div className="mt-4 flex items-center justify-center text-lg font-normal tracking-wide">
-                  <p>to Smooth </p>{' '}
-                  <Link
-                    className="ml-2 flex items-center"
-                    href="https://docs.dappnode.io/docs/smooth"
-                    rel="noopener noreferrer"
-                    target="_blank">
-                    <Tooltip
-                      iconType="question"
-                      tooltip="To learn more about the required collateral for Smooth, click the ?"
-                    />
-                  </Link>
+            <div className="flex flex-1 flex-col items-center justify-center ">
+              <p className="text-center text-lg">
+                To subscribe and start earning rewards, please deposit
+              </p>
+              {configQuery.isLoading ? (
+                <div className="animate-pulse rounded bg-SkeletonGray p-5 dark:bg-DAppDarkSurface-300">
+                  Loading
                 </div>
+              ) : (
+                <p className="text-2xl font-bold">
+                  {weiToEth(configQuery.data?.collateralInWei)} ETH
+                </p>
+              )}
+
+              <div className="mt-4 flex items-center justify-center text-lg font-normal tracking-wide">
+                <p>to Smooth </p>{' '}
+                <Link
+                  className="ml-2 flex items-center"
+                  href="https://docs.dappnode.io/docs/smooth"
+                  rel="noopener noreferrer"
+                  target="_blank">
+                  <Tooltip
+                    iconType="question"
+                    tooltip="To learn more about the required collateral for Smooth, click the ?"
+                  />
+                </Link>
               </div>
-            </>
+            </div>
           )}
 
         {awaitingWalletConfirmations ? (

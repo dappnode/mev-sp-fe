@@ -4,10 +4,9 @@ import Link from 'next/link'
 import { AiOutlineInfoCircle } from 'react-icons/ai'
 
 import { useState, useEffect, useCallback } from 'react'
+import { BaseError } from 'wagmi'
 import { Button } from '@/components/common/Button'
 import { SELECTED_CHAIN } from '@/utils/config'
-import { utils } from 'ethers'
-import { BaseError, useAccount, useBalance } from 'wagmi'
 import { useDonate } from '@/hooks/useDonate'
 
 const MIN_DONATION = 0.01
@@ -35,7 +34,7 @@ export function InitialDialog({
 
   useEffect(() => {
     if (isReceiptSuccess) handleChangeDialogState('success')
-  }, [isReceiptSuccess])
+  }, [isReceiptSuccess, handleChangeDialogState])
 
   let blockExplorerUrl: string
   if (SELECTED_CHAIN === 'mainnet') {

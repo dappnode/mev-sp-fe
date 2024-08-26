@@ -1,11 +1,10 @@
 import { MyRewards } from '../cards/MyRewards'
 import { MyValidatorsTable } from '../tables/MyValidatorsTable'
 import { Warnings } from '../tables/MyValidatorsTable/components/WarningIcon'
-import { isWalletConnectedChainOk } from '@/utils/web3'
 import { useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useAccount } from 'wagmi'
-import { weiToEth } from '@/utils/web3'
+import { isWalletConnectedChainOk, weiToEth } from '@/utils/web3'
 import {
   fetchOnChainProof,
   fetchProposedBlocks,

@@ -12,8 +12,8 @@ import { useState } from 'react'
 import { useAccount } from 'wagmi'
 import { AnimatePresence } from 'framer-motion'
 import { useDialog } from '@/hooks/useDialog'
-import type { IDialogStates } from './types'
 import { isWalletConnectedChainOk } from '@/utils/web3'
+import type { IDialogStates } from './types'
 
 const steps = ['Fee recipient', 'MEV Blocks check', 'Deposit', 'Done']
 const stepsMulti = ['Fee recipient', 'Deposit', 'Done']

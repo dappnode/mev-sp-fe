@@ -2,10 +2,10 @@ import { DialogProps } from '../types'
 import Link from 'next/link'
 import { type BaseError, useAccount } from 'wagmi'
 import { AiOutlineInfoCircle } from 'react-icons/ai'
+import { useEffect, useCallback } from 'react'
 import { StepProgressBar } from '@/components/common/StepProgressBar'
 import { Button } from '@/components/common/Button'
 import { UNSUB_FEEDBACK_SCRIPT_URL, SELECTED_CHAIN } from '@/utils/config'
-import { useEffect, useCallback } from 'react'
 import { useHandleSubscriptionStatus } from '@/hooks/useHandleSubscriptionStatus'
 
 interface UnsubscribeDialogProps extends DialogProps {
@@ -84,7 +84,7 @@ export function UnsubscribeDialog({
             <p>Awaiting wallet confirmation.</p>
           </div>
         ) : isConfirming ? (
-          <div className="mx-auto mb-2 mt-2 flex w-fit flex-col items-center sm:flex-col">
+          <div className="mx-auto my-2 flex w-fit flex-col items-center sm:flex-col">
             <div className="flex w-fit animate-pulse flex-col items-center justify-center gap-3 rounded bg-violet-200 p-5 dark:bg-DAppDarkSurface-300 sm:flex-row">
               <AiOutlineInfoCircle />
               <p>Your unsubscription is being processed.</p>
@@ -134,14 +134,12 @@ export function UnsubscribeDialog({
               !receiptError &&
               !awaitingWalletConfirmations &&
               !isConfirming && (
-                <>
                   <div className="flex flex-1 flex-col items-center justify-center ">
                     <p className="text-center text-lg">
                       Are you sure you want to unsubscribe validator{' '}
                       {validatorId}?
                     </p>
                   </div>
-                </>
               )}
 
             {isReceiptSuccess && (

@@ -4,11 +4,11 @@ import {
   useWaitForTransactionReceipt,
 } from 'wagmi'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { BigNumber, utils } from 'ethers'
+import { useEffect, useCallback } from 'react'
 import contractInterface from '@/contract/abi.json'
 import { fetchConfig } from '@/client/api/queryFunctions'
 import { SMOOTHING_POOL_ADDRESS } from '@/utils/config'
-import { useEffect, useCallback } from 'react'
-import { BigNumber, utils } from 'ethers'
 import { weiToEth } from '@/utils/web3'
 
 /**
@@ -19,7 +19,6 @@ export function useHandleSubscriptionStatus(
   type: 'sub' | 'unsub',
   validatorIds: number | number[]
 ) {
-
   // Throwing error if trying to multiunsub
   if (type === 'unsub' && Array.isArray(validatorIds))
     throw new Error('Mutiple unsubscription not unsported!')
@@ -27,8 +26,6 @@ export function useHandleSubscriptionStatus(
   const isMultiAction = Array.isArray(validatorIds)
   const { address } = useAccount()
   const queryClient = useQueryClient()
-
-  const abi = [...contractInterface] as const
 
   const configQuery = useQuery({
     queryKey: ['config'],
@@ -67,6 +64,9 @@ export function useHandleSubscriptionStatus(
   const totalDepositInString = totalDepositInEth.toString()
 
   const handleSubscription = useCallback(async () => {
+    const abi = [...contractInterface] as const
+
+
     try {
       await write({
         abi,
@@ -84,9 +84,10 @@ export function useHandleSubscriptionStatus(
         args: [validatorIds],
       })
     } catch (err) {
+      /* eslint-disable no-console */
       console.error('Error unsubscribing validator:', err)
     }
-  }, [validatorIds, write])
+  }, [validatorIds, write, isMultiAction, totalDepositInString, type])
 
   return {
     handleSubscription,

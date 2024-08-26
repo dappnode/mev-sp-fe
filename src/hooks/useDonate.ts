@@ -1,11 +1,11 @@
-import { SMOOTHING_POOL_ADDRESS } from '@/utils/config'
 import { utils } from 'ethers'
 import {
-  useAccount,
-  useBalance,
-  useSendTransaction,
-  useWaitForTransactionReceipt,
+    useAccount,
+    useBalance,
+    useSendTransaction,
+    useWaitForTransactionReceipt,
 } from 'wagmi'
+import { SMOOTHING_POOL_ADDRESS } from '@/utils/config'
 
 export function useDonate() {
   const { address } = useAccount()
@@ -35,6 +35,7 @@ export function useDonate() {
         value: ethAmount ? utils.parseEther(ethAmount).toBigInt() : undefined,
       })
     } catch (err) {
+      /* eslint-disable no-console */
       console.error('Error while donating:', err)
     }
   }

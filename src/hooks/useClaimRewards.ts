@@ -4,16 +4,14 @@ import {
   useWaitForTransactionReceipt,
   useWriteContract,
 } from 'wagmi'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import contractInterface from '@/contract/abi.json'
 import { SMOOTHING_POOL_ADDRESS } from '@/utils/config'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { fetchOnChainProof } from '@/client/api/queryFunctions'
 
 export function useClaimRewards() {
   const { address } = useAccount()
   const queryClient = useQueryClient()
-
-  const abi = [...contractInterface] as const
 
   const {
     writeContractAsync: write,
@@ -41,6 +39,7 @@ export function useClaimRewards() {
   }, [isReceiptSuccess, address, queryClient])
 
   const claimRewards = useCallback(async () => {
+    const abi = [...contractInterface] as const
     try {
       await write({
         address: SMOOTHING_POOL_ADDRESS,
@@ -53,9 +52,10 @@ export function useClaimRewards() {
         ],
       })
     } catch (err) {
+      /* eslint-disable no-console */
       console.error('Error claiming rewards:', err)
     }
-  }, [address, onChainProofQuery])
+  }, [address, onChainProofQuery, write])
 
   return {
     claimRewards,
