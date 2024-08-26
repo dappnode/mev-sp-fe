@@ -1,8 +1,7 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/jsx-no-useless-fragment */
-import { WagmiProvider } from 'wagmi'
+import { WagmiProvider, cookieStorage, createStorage  } from 'wagmi'
 import { ReactNode, useEffect, useState } from 'react'
-import { cookieStorage, createStorage } from 'wagmi'
 import { createWeb3Modal } from '@web3modal/wagmi/react'
 import { defaultWagmiConfig } from '@web3modal/wagmi/react/config'
 import { mainnet, holesky } from 'wagmi/chains'

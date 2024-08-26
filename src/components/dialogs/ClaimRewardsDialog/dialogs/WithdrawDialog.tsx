@@ -2,9 +2,9 @@ import { DialogProps } from '../types'
 import Link from 'next/link'
 import { BaseError, useAccount } from 'wagmi'
 import { AiOutlineInfoCircle } from 'react-icons/ai'
+import { useEffect } from 'react'
 import { Button } from '@/components/common/Button'
 import { toFixedNoTrailingZeros } from '@/utils/decimals'
-import { useEffect } from 'react'
 import { useClaimRewards } from '@/hooks/useClaimRewards'
 
 interface WithdrawDialogProps extends DialogProps {
@@ -30,7 +30,7 @@ export function WithdrawDialog({
 
   useEffect(() => {
     if (isReceiptSuccess) handleChangeDialogState('success')
-  }, [isReceiptSuccess])
+  }, [isReceiptSuccess, handleChangeDialogState])
 
   return (
     <div className="flex h-full flex-1 flex-col items-center justify-center text-DAppDeep dark:text-DAppDarkText ">
@@ -40,7 +40,7 @@ export function WithdrawDialog({
           <p>Awaiting wallet confirmation.</p>
         </div>
       ) : isConfirming ? (
-        <div className="mx-auto mb-2 mt-2 flex w-fit flex-col items-center sm:flex-col">
+        <div className="mx-auto my-2 flex w-fit flex-col items-center sm:flex-col">
           <div className="flex w-fit animate-pulse flex-col items-center justify-center gap-3 rounded bg-violet-200 p-5 dark:bg-DAppDarkSurface-300 sm:flex-row">
             <AiOutlineInfoCircle />
             <p>Your withdrawal is being processed.</p>
@@ -55,7 +55,7 @@ export function WithdrawDialog({
           </div>
         </div>
       ) : (
-        <div className="flex flex-1  flex-col justify-between w-full">
+        <div className="flex w-full flex-1 flex-col justify-between">
           {writeError && (
             <div className="flex flex-1 flex-col items-center justify-center gap-5 text-center text-lg">
               <p className="rounded bg-violet-200 p-5 dark:bg-DAppDarkSurface-300">
@@ -90,7 +90,6 @@ export function WithdrawDialog({
             !receiptError &&
             !awaitingWalletConfirmations &&
             !isConfirming && (
-              <>
                 <div className="flex flex-1 flex-col items-center justify-center ">
                   <h3 className="text-lg font-normal">You are withdrawing</h3>
                   <p className="mt-4 text-2xl font-bold">
@@ -100,7 +99,6 @@ export function WithdrawDialog({
                     to your recipient wallet address
                   </p>
                 </div>
-              </>
             )}
 
           {isReceiptSuccess && (
@@ -108,7 +106,7 @@ export function WithdrawDialog({
               Your unsubscription has been processed.
             </p>
           )}
-          <div className="flex flex-col w-full">
+          <div className="flex w-full flex-col">
             <Button
               onPress={claimRewards}
               isDisabled={awaitingWalletConfirmations || isConfirming}>

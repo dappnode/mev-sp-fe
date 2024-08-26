@@ -2,12 +2,11 @@ import { DialogProps } from '../types'
 import Link from 'next/link'
 import { BaseError, useAccount } from 'wagmi'
 import { AiOutlineInfoCircle } from 'react-icons/ai'
+import { useEffect } from 'react'
 import { StepProgressBar } from '@/components/common/StepProgressBar'
 import { Button } from '@/components/common/Button'
 import { Tooltip } from '@/components/common/Tooltip'
 import { useHandleSubscriptionStatus } from '@/hooks/useHandleSubscriptionStatus'
-import { useEffect } from 'react'
-import { weiToEth } from '@/utils/web3'
 
 interface MultiDepositDialogProps extends DialogProps {
   validatorIds: number[]
@@ -42,7 +41,7 @@ export function MultiDepositDialog({
       setShowCloseButton(true)
       handleChangeDialogState('success')
     }
-  }, [isReceiptSuccess, handleChangeDialogState])
+  }, [isReceiptSuccess, handleChangeDialogState, setShowCloseButton])
   return (
     <>
       <div className="-mt-2 text-DAppDeep dark:text-DAppDarkText">
@@ -54,7 +53,6 @@ export function MultiDepositDialog({
           !receiptError &&
           !awaitingWalletConfirmations &&
           !isConfirming && (
-            <>
               <div className="flex flex-1 flex-col items-center justify-center ">
                 <p className="text-center text-lg">
                   To subscribe and start earning rewards with{' '}
@@ -84,7 +82,6 @@ export function MultiDepositDialog({
                   </Link>
                 </div>
               </div>
-            </>
           )}
 
         {awaitingWalletConfirmations ? (

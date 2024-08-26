@@ -57,7 +57,7 @@ export function InitialDialog({
   const renderLoadingOrError = () => {
     if (registeredRelaysQuery.isFetching) {
       return (
-        <div className='animate-pulse rounded bg-SkeletonGray dark:bg-DAppDarkSurface-300 p-5 mt-10'>
+        <div className="mt-10 animate-pulse rounded bg-SkeletonGray p-5 dark:bg-DAppDarkSurface-300">
           <h4 className="text-center">Checking MevBoost relays...</h4>
         </div>
       )
@@ -267,10 +267,8 @@ export function InitialDialog({
         <StepProgressBar currentStep={0} steps={steps} />
       </div>
       <div className="sm:px-6">
-        <div className='text-center rounded bg-violet-200 p-5 dark:bg-DAppDarkSurface-300 flex flex-col gap-3'>
-          <h4 className="text-lg">
-            Validator
-          </h4>
+        <div className="flex flex-col gap-3 rounded bg-violet-200 p-5 text-center dark:bg-DAppDarkSurface-300">
+          <h4 className="text-lg">Validator</h4>
           <p className="h-8">{shortenEthAddress(validatorKey, 16, 16)}</p>
         </div>
         {renderLoadingOrError() || renderRelayStatus()}

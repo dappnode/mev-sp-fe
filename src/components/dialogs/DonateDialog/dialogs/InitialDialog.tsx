@@ -1,17 +1,13 @@
 import { DialogProps } from '../types'
 import Link from 'next/link'
-import {
-  useAccount,
-  useBalance,
-  usePrepareSendTransaction,
-  useSendTransaction,
-  useWaitForTransaction,
-} from 'wagmi'
+
 import { AiOutlineInfoCircle } from 'react-icons/ai'
-import { utils } from 'ethers'
+
 import { useState, useEffect, useCallback } from 'react'
+import { BaseError } from 'wagmi'
 import { Button } from '@/components/common/Button'
-import { SELECTED_CHAIN, SMOOTHING_POOL_ADDRESS } from '@/utils/config'
+import { SELECTED_CHAIN } from '@/utils/config'
+import { useDonate } from '@/hooks/useDonate'
 
 const MIN_DONATION = 0.01
 
@@ -23,12 +19,22 @@ export function InitialDialog({
   const [isValueValid, setIsValueValid] = useState<boolean>(false)
   const [errorMessage, setErrorMessage] = useState<string>('')
 
-  const { address } = useAccount()
-  const { data, isLoading } = useBalance({ address })
+  const {
+    availableBalance,
+    isBalanceLoading,
+    balance,
+    donate,
+    awaitingWalletConfirmations,
+    hash,
+    sendError,
+    isConfirming,
+    isReceiptSuccess,
+    receiptError,
+  } = useDonate()
 
-  const availableBalance = data?.value
-    ? parseFloat(utils.formatEther(data.value))
-    : 0
+  useEffect(() => {
+    if (isReceiptSuccess) handleChangeDialogState('success')
+  }, [isReceiptSuccess, handleChangeDialogState])
 
   let blockExplorerUrl: string
   if (SELECTED_CHAIN === 'mainnet') {
@@ -36,21 +42,6 @@ export function InitialDialog({
   } else {
     blockExplorerUrl = 'https://holesky.etherscan.io'
   }
-
-  const { config } = usePrepareSendTransaction({
-    to: SMOOTHING_POOL_ADDRESS,
-    value:
-      ethAmount && isValueValid
-        ? utils.parseEther(ethAmount).toBigInt()
-        : undefined,
-  })
-
-  const contractWrite = useSendTransaction(config)
-
-  const waitForTransaction = useWaitForTransaction({
-    hash: contractWrite.data?.hash,
-    onSuccess: () => handleChangeDialogState('success'),
-  })
 
   const sanitizeInput = useCallback((value: string): string => {
     // Remove non-numeric characters except for the decimal point
@@ -129,10 +120,10 @@ export function InitialDialog({
       <div className="mt-3 flex w-full items-center justify-between px-2 text-xs text-DAppDeep dark:text-DAppDarkText">
         <p className="flex items-center">
           Available:{' '}
-          {isLoading ? (
+          {isBalanceLoading ? (
             <span className="ml-2 inline-block h-4 w-16 animate-pulse rounded-md bg-gray-200 opacity-90 dark:bg-DAppDarkSurface-300" />
           ) : (
-            `${data?.formatted} ${data?.symbol}`
+            `${balance} ${balance?.symbol}`
           )}
         </p>
       </div>
@@ -140,53 +131,77 @@ export function InitialDialog({
         <div className="flex items-center justify-between">
           <p>Donation to Solo Stakers</p>
           <p>
-            {ethAmount || '0'} {data?.symbol}
+            {ethAmount || '0'} {balance?.symbol}
           </p>
         </div>
       </div>
-      {waitForTransaction.isLoading ? (
-        <div className="mt-6 w-full rounded-lg bg-violet-50 px-4 py-8 text-sm font-normal text-DAppDeep dark:bg-DAppDarkSurface-300 dark:text-DAppDarkText">
-          <div className="mx-auto flex w-fit items-center">
+
+      <div className="mt-5 flex flex-col items-center justify-center">
+        {awaitingWalletConfirmations ? (
+          <div className="flex w-fit animate-pulse flex-col items-center justify-center gap-3 rounded bg-violet-200 p-5 dark:bg-DAppDarkSurface-300 sm:flex-row">
             <AiOutlineInfoCircle />
-            <p className="ml-2">Your donation is being processed.</p>
+            <p>Awaiting wallet confirmation.</p>
           </div>
-          <div className="mx-auto mt-2 max-w-fit">
-            <Link
-              className="text-violet-500 underline dark:text-violet-200"
-              href={`${blockExplorerUrl}/tx/${contractWrite.data?.hash}`}
-              target="_blank">
-              Check the transaction on block explorer
-            </Link>
+        ) : isConfirming ? (
+          <div className="mt-6 w-full rounded-lg bg-violet-50 px-4 py-8 text-sm font-normal text-DAppDeep dark:bg-DAppDarkSurface-300 dark:text-DAppDarkText">
+            <div className="mx-auto flex w-fit items-center">
+              <AiOutlineInfoCircle />
+              <p className="ml-2">Your donation is being processed.</p>
+            </div>
+            <div className="mx-auto mt-2 max-w-fit">
+              <Link
+                className="text-violet-500 underline dark:text-violet-200"
+                href={`${blockExplorerUrl}/tx/${hash}`}
+                target="_blank">
+                Check the transaction on block explorer
+              </Link>
+            </div>
           </div>
-        </div>
-      ) : waitForTransaction.isError ? (
-        <div className="px-8 text-center text-base text-red-500">
-          <AiOutlineInfoCircle className="mx-auto h-8 w-8" />
-          <h4 className="mt-4 font-bold">Donation error!</h4>
-          <p className="mt-4 font-normal">
-            Your donation has failed. Please go back and try again.
-          </p>
-          <h4 className="my-2 font-bold">Error:</h4>
-          <div className="mb-4 h-32 overflow-scroll rounded-lg border border-red-400 p-2">
-            {waitForTransaction.error?.message}
+        ) : sendError ? (
+          <div className="flex flex-1 flex-col items-center justify-center gap-5 text-center">
+            <p className="rounded bg-violet-200 p-5 dark:bg-DAppDarkSurface-300">
+              An error occurred while sending the transaction. Please try again.
+            </p>
+
+            <div className="text-DAppRed">
+              Error:{' '}
+              {(sendError as BaseError).shortMessage || sendError.message}
+            </div>
           </div>
-        </div>
-      ) : null}
+        ) : (
+          receiptError && (
+            <div className="flex flex-1 flex-col items-center justify-center gap-5 text-center">
+              <p className="rounded bg-violet-200 p-5 dark:bg-DAppDarkSurface-300">
+                An error occurred while confirming the transaction. Please try
+                again.
+              </p>
+              {receiptError && (
+                <div className="text-DAppRed">
+                  Error:{' '}
+                  {(receiptError as BaseError).shortMessage ||
+                    receiptError.message}
+                </div>
+              )}
+            </div>
+          )
+        )}
+      </div>
       <Button
         className="mt-6"
         isDisabled={
-          !contractWrite.sendTransaction ||
+          !donate ||
           ethAmount === '' ||
           !isValueValid ||
-          waitForTransaction.isLoading
+          awaitingWalletConfirmations ||
+          isConfirming
         }
-        onPress={() => contractWrite.sendTransaction?.()}>
+        onPress={() => donate(ethAmount)}>
         Donate
       </Button>
       <Button
         buttonType="secondary"
         className="mt-4"
-        isDisabled={waitForTransaction.isLoading}
+        isDisabled={awaitingWalletConfirmations || isConfirming}
         onPress={handleClose}>
         Cancel
       </Button>

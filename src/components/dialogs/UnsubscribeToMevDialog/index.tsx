@@ -1,13 +1,12 @@
 import { InitialDialog, FeedbackDialog, SuccessDialog } from './dialogs'
 import { UnsubscribeDialog } from './dialogs/UnsubscribeDialog'
 import { BaseDialog } from '../BaseDialog'
-import { isWalletConnectedChainOk } from '@/utils/web3'
 import { useState } from 'react'
 import { useAccount } from 'wagmi'
 import { AnimatePresence } from 'framer-motion'
+import { isWalletConnectedChainOk } from '@/utils/web3'
 import { useDialog } from '@/hooks/useDialog'
 import type { IDialogStates } from './types'
-import { SELECTED_CHAIN } from '@/utils/config'
 
 const steps = ['Confirmation', 'Feedback', 'Unsubscribe', 'Done']
 
