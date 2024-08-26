@@ -2,8 +2,9 @@ import { InitialDialog, FeedbackDialog, SuccessDialog } from './dialogs'
 import { UnsubscribeDialog } from './dialogs/UnsubscribeDialog'
 import { BaseDialog } from '../BaseDialog'
 import { useState } from 'react'
-import { useNetwork } from 'wagmi'
+import { useAccount } from 'wagmi'
 import { AnimatePresence } from 'framer-motion'
+import { isWalletConnectedChainOk } from '@/utils/web3'
 import { useDialog } from '@/hooks/useDialog'
 import type { IDialogStates } from './types'
 
@@ -16,7 +17,7 @@ interface UnsubscribeToMevDialogProps {
 export function UnsubscribeToMevDialog({
   validatorId,
 }: UnsubscribeToMevDialogProps) {
-  const { chain } = useNetwork()
+  const { chain } = useAccount()
   const [dialogState, setDialogState] = useState<IDialogStates>('initial')
   const [showCloseButton, setShowCloseButton] = useState<boolean>(true)
 
@@ -38,9 +39,10 @@ export function UnsubscribeToMevDialog({
     if (!newOpen) setDialogState('initial')
   }
 
+
   return (
     <BaseDialog
-      disabledTrigger={chain?.unsupported}
+      disabledTrigger={!isWalletConnectedChainOk(chain)}
       handleOpenChange={handleOpenChangeDialog}
       open={open}
       showCloseButton={showCloseButton}
@@ -48,7 +50,7 @@ export function UnsubscribeToMevDialog({
       triggerButtonProp="outline"
       triggerText="Unsubscribe">
       <AnimatePresence>
-        <div className="flex h-full min-h-[550px] flex-col justify-between text-DAppDeep">
+        <div className="flex h-full min-h-[600px] flex-col justify-between text-DAppDeep">
           {dialogState === 'initial' ? (
             <InitialDialog
               handleChangeDialogState={setDialogState}

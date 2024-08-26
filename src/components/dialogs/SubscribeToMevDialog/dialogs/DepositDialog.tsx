@@ -1,21 +1,13 @@
 import { DialogProps } from '../types'
 import Link from 'next/link'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
-import {
-  useContractWrite,
-  useWaitForTransaction,
-  useAccount,
-  useNetwork,
-} from 'wagmi'
+import { type BaseError, useAccount } from 'wagmi'
 import { AiOutlineInfoCircle } from 'react-icons/ai'
-import { utils } from 'ethers'
-import { fetchConfig } from '@/client/api/queryFunctions'
+import { useEffect } from 'react'
 import { StepProgressBar } from '@/components/common/StepProgressBar'
 import { Button } from '@/components/common/Button'
 import { Tooltip } from '@/components/common/Tooltip'
-import contractInterface from '@/contract/abi.json'
 import { weiToEth } from '@/utils/web3'
-import { SMOOTHING_POOL_ADDRESS } from '@/utils/config'
+import { useHandleSubscriptionStatus } from '@/hooks/useHandleSubscriptionStatus'
 
 interface DepositDialogProps extends DialogProps {
   validatorId: number
@@ -29,41 +21,27 @@ export function DepositDialog({
   handleClose,
   handleChangeDialogState,
 }: DepositDialogProps) {
-  const { address } = useAccount()
-  const { chain } = useNetwork()
-  const queryClient = useQueryClient()
+  const { chain } = useAccount()
 
-  const configQuery = useQuery({
-    queryKey: ['config'],
-    queryFn: fetchConfig,
-  })
+  const {
+    handleSubscription,
+    awaitingWalletConfirmations,
+    isConfirming,
+    isReceiptSuccess,
+    writeError,
+    receiptError,
+    hash,
+    configQuery,
+  } = useHandleSubscriptionStatus('sub', validatorId)
 
-  const abi = [...contractInterface] as const
+  useEffect(() => setShowCloseButton(false), [setShowCloseButton])
 
-  const contractWrite = useContractWrite({
-    address: SMOOTHING_POOL_ADDRESS,
-    abi,
-    functionName: 'subscribeValidator',
-    args: [validatorId],
-    value: utils
-      .parseUnits(configQuery.data?.collateralInWei || '0', 'wei')
-      .toBigInt(),
-    onSuccess: () => {
-      setShowCloseButton(false)
-    },
-  })
-
-  const waitForTransaction = useWaitForTransaction({
-    hash: contractWrite.data?.hash,
-    confirmations: 2,
-    onSuccess: () => {
+  useEffect(() => {
+    if (isReceiptSuccess) {
       setShowCloseButton(true)
       handleChangeDialogState('success')
-      queryClient.invalidateQueries({
-        queryKey: ['validators', address],
-      })
-    },
-  })
+    }
+  }, [isReceiptSuccess, handleChangeDialogState, setShowCloseButton])
 
   return (
     <>
@@ -71,77 +49,109 @@ export function DepositDialog({
         <h3 className="mb-6 text-left text-2xl font-bold">Deposit</h3>
         <StepProgressBar currentStep={2} steps={steps} />
       </div>
-      {!waitForTransaction.isError ? (
-        <div className="text-center">
-          <h4 className="mb-4 text-lg font-normal">
-            To subscribe and start earning rewards, please deposit
-          </h4>
-          {configQuery.isLoading ? (
-            <div className="mx-auto h-8 w-20 animate-pulse rounded bg-SkeletonGray dark:bg-DAppDarkSurface-300" />
-          ) : (
-            <p className="text-2xl font-bold">
-              {weiToEth(configQuery.data?.collateralInWei)} ETH
-            </p>
-          )}
-          <div className="mt-4 flex items-center justify-center text-lg font-normal tracking-wide">
-            <p>to Smooth </p>{' '}
-            <Link
-              className="ml-2 flex items-center"
-              href="https://docs.dappnode.io/docs/smooth"
-              rel="noopener noreferrer"
-              target="_blank">
-              <Tooltip
-                iconType="question"
-                tooltip="To learn more about the required collateral for Smooth, click the ?"
-              />
-            </Link>
-          </div>
-          {waitForTransaction.isLoading && (
-            <div className="mt-6 w-full rounded-lg bg-violet-50 px-4 py-7 text-sm font-normal text-DAppDeep dark:bg-DAppDarkSurface-300 dark:text-DAppDarkText">
-              <div className="mx-auto mb-2 flex w-fit flex-col items-center sm:flex-row">
-                <AiOutlineInfoCircle />
-                <p className="ml-2 mt-1 sm:mt-0">
-                  Your deposit is being processed.
+      <div className="flex h-full flex-1 flex-col text-DAppDeep dark:text-DAppDarkText">
+        {!writeError &&
+          !receiptError &&
+          !awaitingWalletConfirmations &&
+          !isConfirming && (
+            <div className="flex flex-1 flex-col items-center justify-center ">
+              <p className="text-center text-lg">
+                To subscribe and start earning rewards, please deposit
+              </p>
+              {configQuery.isLoading ? (
+                <div className="animate-pulse rounded bg-SkeletonGray p-5 dark:bg-DAppDarkSurface-300">
+                  Loading
+                </div>
+              ) : (
+                <p className="text-2xl font-bold">
+                  {weiToEth(configQuery.data?.collateralInWei)} ETH
                 </p>
+              )}
+
+              <div className="mt-4 flex items-center justify-center text-lg font-normal tracking-wide">
+                <p>to Smooth </p>{' '}
+                <Link
+                  className="ml-2 flex items-center"
+                  href="https://docs.dappnode.io/docs/smooth"
+                  rel="noopener noreferrer"
+                  target="_blank">
+                  <Tooltip
+                    iconType="question"
+                    tooltip="To learn more about the required collateral for Smooth, click the ?"
+                  />
+                </Link>
               </div>
+            </div>
+          )}
+
+        {awaitingWalletConfirmations ? (
+          <div className=" flex  flex-1 flex-col items-center justify-center sm:flex-col">
+            <div className="flex w-fit animate-pulse flex-col items-center justify-center gap-3 rounded bg-violet-200 p-5 dark:bg-DAppDarkSurface-300 sm:flex-row">
+              <AiOutlineInfoCircle />
+              <p>Awaiting wallet confirmation.</p>
+            </div>
+          </div>
+        ) : isConfirming ? (
+          <div className="flex w-full flex-1 flex-col items-center justify-center">
+            <div className="flex w-fit animate-pulse flex-col items-center justify-center gap-3 rounded bg-violet-200 p-5 dark:bg-DAppDarkSurface-300 sm:flex-row">
+              <AiOutlineInfoCircle />
+              <p>Your deposit is being processed.</p>
+            </div>
+            <div className="mx-auto mt-2 max-w-fit">
               <Link
                 className="text-violet-500 underline dark:text-violet-200"
-                href={`${chain?.blockExplorers?.default.url}/tx/${contractWrite.data?.hash}`}
+                href={`${chain?.blockExplorers?.default.url}/tx/${hash}`}
                 target="_blank">
                 Check the transaction on block explorer
               </Link>
             </div>
-          )}
-        </div>
-      ) : (
-        <div className="text-center text-base text-red-500 sm:px-8">
-          <AiOutlineInfoCircle className="mx-auto h-8 w-8" />
-          <h4 className="mt-1 font-bold sm:mt-4">Deposit error!</h4>
-          <p className="mt-1 font-normal sm:mt-4">
-            Your Deposit has failed. Please go back and try again.
-          </p>
-          <h4 className="my-2 font-bold">Error:</h4>
-          <div className="mb-4 h-32  overflow-scroll rounded-lg border border-red-400 p-2">
-            {waitForTransaction.error?.message}
           </div>
-        </div>
-      )}
+        ) : (
+          <div className="flex flex-1  flex-col justify-between">
+            {writeError && (
+              <div className="flex flex-1 flex-col items-center justify-center gap-5 text-center text-lg">
+                <p className="rounded bg-violet-200 p-5 dark:bg-DAppDarkSurface-300">
+                  An error occurred while sending the transaction. Please try
+                  again.
+                </p>
 
-      <div>
-        {!waitForTransaction.isLoading && (
-          <>
-            <Button
-              isDisabled={contractWrite.isLoading}
-              onPress={() => contractWrite.write?.()}>
-              {waitForTransaction.isError ? 'Try again' : 'Deposit'}
-            </Button>
-            <Button
-              buttonType="secondary"
-              className="mt-4"
-              onPress={handleClose}>
-              Cancel
-            </Button>
-          </>
+                <div className="text-DAppRed">
+                  Error:{' '}
+                  {(writeError as BaseError).shortMessage || writeError.message}
+                </div>
+              </div>
+            )}
+
+            {receiptError && (
+              <div className="flex flex-1 flex-col items-center justify-center gap-5 text-center text-lg">
+                <p className="rounded bg-violet-200 p-5 dark:bg-DAppDarkSurface-300">
+                  An error occurred while confirming the transaction. Please try
+                  again.
+                </p>
+                {receiptError && (
+                  <div className="text-DAppRed">
+                    Error:{' '}
+                    {(receiptError as BaseError).shortMessage ||
+                      receiptError.message}
+                  </div>
+                )}
+              </div>
+            )}
+
+            <div className="flex flex-1 flex-col justify-end">
+              <Button
+                onPress={handleSubscription}
+                isDisabled={awaitingWalletConfirmations || isConfirming}>
+                {writeError ? 'Try again' : 'Deposit'}
+              </Button>
+              <Button
+                buttonType="secondary"
+                className="mt-4"
+                onPress={handleClose}>
+                Cancel
+              </Button>
+            </div>
+          </div>
         )}
       </div>
     </>

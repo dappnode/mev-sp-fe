@@ -9,9 +9,21 @@ import { toFixedNoTrailingZeros } from '@/utils/decimals'
 const MULTIPLIER = 2.56
 
 export default function Stats() {
-  const statisticsQuery = useQuery(['statistics'], fetchStatistics);
-  const configQuery = useQuery(['config'], fetchConfig);
-  const proposedBlocksQuery = useQuery(['proposedblocks'], fetchProposedBlocks);
+  const statisticsQuery = useQuery({
+    queryKey: ['statistics'],
+    queryFn: fetchStatistics,
+  });
+  
+  const configQuery = useQuery({
+    queryKey: ['config'],
+    queryFn: fetchConfig,
+  });
+  
+  const proposedBlocksQuery = useQuery({
+    queryKey: ['proposedblocks'],
+    queryFn: fetchProposedBlocks,
+  });
+  
 
   const medianSolo = useMemo(() => {
     const proposedBlocks = proposedBlocksQuery.data;

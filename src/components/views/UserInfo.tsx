@@ -1,10 +1,10 @@
 import { MyRewards } from '../cards/MyRewards'
 import { MyValidatorsTable } from '../tables/MyValidatorsTable'
 import { Warnings } from '../tables/MyValidatorsTable/components/WarningIcon'
-import { useCallback, useMemo } from 'react'
+import { useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { useAccount, useNetwork } from 'wagmi'
-import { weiToEth } from '@/utils/web3'
+import { useAccount } from 'wagmi'
+import { isWalletConnectedChainOk, weiToEth } from '@/utils/web3'
 import {
   fetchOnChainProof,
   fetchProposedBlocks,
@@ -13,9 +13,10 @@ import {
   validateServerStatus,
 } from '@/client/api/queryFunctions'
 
+
 export function UserInfo() {
   const { isConnected, address } = useAccount()
-  const { chain } = useNetwork()
+  const { chain } = useAccount()
 
   const validatorsQuery = useQuery({
     queryKey: ['user-validators', address],
@@ -28,13 +29,22 @@ export function UserInfo() {
     enabled: !!address,
   })
   
-  const fetchProposedBlocksCallback = useCallback(() => fetchProposedBlocks(), []);
+  // const fetchProposedBlocksCallback = useCallback(() => fetchProposedBlocks(), []);
 
-  const proposedBlocksQuery = useQuery(['proposedblocks'], fetchProposedBlocksCallback);
-
-  const statusQuery = useQuery(['status'], fetchStatus)
-
-  const serverStatus = useQuery(['serverStatus'], validateServerStatus)
+  const proposedBlocksQuery = useQuery({
+    queryKey: ['proposedblocks'],
+    queryFn: fetchProposedBlocks, // Directly pass the function reference
+  })
+  const statusQuery = useQuery({
+    queryKey: ['status'],
+    queryFn: fetchStatus,
+  });
+  
+  const serverStatus = useQuery({
+    queryKey: ['serverStatus'],
+    queryFn: validateServerStatus,
+  });
+  
 
   const totalAccumulatedRewards = weiToEth(
     onChainProofQuery.data?.totalAccumulatedRewardsWei
@@ -106,7 +116,7 @@ export function UserInfo() {
             onChainProofQuery.isLoading ||
             onChainProofQuery.isError ||
             onChainProofQuery.data?.claimableRewardsWei === '0' ||
-            chain?.unsupported
+            !isWalletConnectedChainOk(chain)
           }
         />
       </div>

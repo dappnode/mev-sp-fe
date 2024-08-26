@@ -1,22 +1,12 @@
 import { DialogProps } from '../types'
 import Link from 'next/link'
-import {
-  useAccount,
-  useNetwork,
-  useContractWrite,
-  useWaitForTransaction,
-} from 'wagmi'
+import { type BaseError, useAccount } from 'wagmi'
 import { AiOutlineInfoCircle } from 'react-icons/ai'
-
-import { useQueryClient } from '@tanstack/react-query'
+import { useEffect, useCallback } from 'react'
 import { StepProgressBar } from '@/components/common/StepProgressBar'
 import { Button } from '@/components/common/Button'
-import contractInterface from '@/contract/abi.json'
-import {
-  SMOOTHING_POOL_ADDRESS,
-  UNSUB_FEEDBACK_SCRIPT_URL,
-  SELECTED_CHAIN,
-} from '@/utils/config'
+import { UNSUB_FEEDBACK_SCRIPT_URL, SELECTED_CHAIN } from '@/utils/config'
+import { useHandleSubscriptionStatus } from '@/hooks/useHandleSubscriptionStatus'
 
 interface UnsubscribeDialogProps extends DialogProps {
   validatorId: number
@@ -38,54 +28,48 @@ export function UnsubscribeDialog({
   otherOption,
   improvementsFeedback,
 }: UnsubscribeDialogProps) {
-  const { address } = useAccount()
-  const { chain } = useNetwork()
-  const queryClient = useQueryClient()
+  const {
+    handleSubscription,
+    awaitingWalletConfirmations,
+    isConfirming,
+    isReceiptSuccess,
+    writeError,
+    receiptError,
+    hash,
+  } = useHandleSubscriptionStatus('unsub', validatorId)
 
-  const feedbackScriptURL = UNSUB_FEEDBACK_SCRIPT_URL || ''
-  const postFeedbackData = async () => {
+  const { chain } = useAccount()
+  const postFeedbackData = useCallback(async () => {
     const formData = new FormData()
     formData.append('network', SELECTED_CHAIN)
     formData.append('validator-id', validatorId.toString())
     formData.append('why-options', selectedOptions.join('\n'))
     formData.append('other-options', otherOptionSelected ? otherOption : '')
     formData.append('improvements', improvementsFeedback)
+    formData.append('timestamp', new Date().toISOString())
 
-    const timestamp = new Date().toISOString()
-    formData.append('timestamp', timestamp)
-
-    if (feedbackScriptURL) {
-      await fetch(feedbackScriptURL, {
+    if (UNSUB_FEEDBACK_SCRIPT_URL) {
+      await fetch(UNSUB_FEEDBACK_SCRIPT_URL, {
         method: 'POST',
         body: formData,
       })
     }
-  }
+  }, [
+    validatorId,
+    selectedOptions,
+    otherOptionSelected,
+    otherOption,
+    improvementsFeedback,
+  ])
 
-  const abi = [...contractInterface] as const
+  useEffect(() => setShowCloseButton(false), [setShowCloseButton])
 
-  const contractWrite = useContractWrite({
-    address: SMOOTHING_POOL_ADDRESS,
-    abi,
-    functionName: 'unsubscribeValidator',
-    args: [validatorId],
-    onSuccess: () => {
-      setShowCloseButton(false)
-    },
-  })
-
-  const waitForTransaction = useWaitForTransaction({
-    hash: contractWrite.data?.hash,
-    confirmations: 2,
-    onSuccess: () => {
-      setShowCloseButton(true)
-      postFeedbackData()
+  useEffect(() => {
+    if (isReceiptSuccess) {
       handleChangeDialogState('success')
-      queryClient.invalidateQueries({
-        queryKey: ['validators', address],
-      })
-    },
-  })
+      postFeedbackData()
+    }
+  }, [isReceiptSuccess, handleChangeDialogState, postFeedbackData])
 
   return (
     <>
@@ -93,58 +77,90 @@ export function UnsubscribeDialog({
         <h3 className="mb-6 text-left text-2xl font-bold">Unsubscribe</h3>
         <StepProgressBar currentStep={2} steps={steps} />
       </div>
-      {!waitForTransaction.isError ? (
-        <div className="text-center text-DAppDeep dark:text-DAppDarkText">
-          <h4 className="text-lg font-normal">
-            You are unsubscribing validator <b>{validatorId}</b> from Smooth.
-          </h4>
-          {waitForTransaction.isLoading && (
-            <div className="mt-6 w-full rounded-lg bg-violet-50 px-4 py-8 text-sm font-normal dark:bg-DAppDarkSurface-300 dark:text-DAppDarkText">
-              <div className="mx-auto mb-2 flex w-fit flex-col items-center sm:flex-row">
-                <AiOutlineInfoCircle />
-                <p className="ml-2 mt-1 sm:mt-0">
-                  Your unsubscription is being processed.
-                </p>
-              </div>
-              <div className="mx-auto mt-2 max-w-fit">
-                <Link
-                  className=" text-violet-500 underline dark:text-violet-200"
-                  href={`${chain?.blockExplorers?.default.url}/tx/${contractWrite.data?.hash}`}
-                  target="_blank">
-                  Check the transaction on block explorer
-                </Link>
-              </div>
-            </div>
-          )}
-        </div>
-      ) : (
-        <div className="mt-2 text-center text-base text-red-500 md:px-8">
-          <AiOutlineInfoCircle className="mx-auto h-8 w-8" />
-          <h4 className="mt-1 font-bold">Unsubscription error!</h4>
-          <p className="mt-1 font-normal">
-            Your unsubscription has failed. Please go back and try again.
-          </p>
-          <h4 className="my-1 font-bold">Error:</h4>
-          <div className="mb-4 h-32 overflow-scroll rounded-lg border border-red-400 p-2">
-            {waitForTransaction.error?.message}
+      <div className="flex h-full flex-1 flex-col items-center justify-center text-DAppDeep dark:text-DAppDarkText">
+        {awaitingWalletConfirmations ? (
+          <div className="flex w-fit animate-pulse flex-col items-center justify-center gap-3 rounded bg-violet-200 p-5 dark:bg-DAppDarkSurface-300 sm:flex-row">
+            <AiOutlineInfoCircle />
+            <p>Awaiting wallet confirmation.</p>
           </div>
-        </div>
-      )}
-      <div>
-        {!waitForTransaction.isLoading && (
-          <>
-            <Button
-              isDisabled={contractWrite.isLoading}
-              onPress={() => contractWrite.write?.()}>
-              {waitForTransaction.isError ? 'Try again' : 'Unsubscribe'}
-            </Button>
-            <Button
-              buttonType="secondary"
-              className="mt-4"
-              onPress={handleClose}>
-              Cancel
-            </Button>
-          </>
+        ) : isConfirming ? (
+          <div className="mx-auto my-2 flex w-fit flex-col items-center sm:flex-col">
+            <div className="flex w-fit animate-pulse flex-col items-center justify-center gap-3 rounded bg-violet-200 p-5 dark:bg-DAppDarkSurface-300 sm:flex-row">
+              <AiOutlineInfoCircle />
+              <p>Your unsubscription is being processed.</p>
+            </div>
+            <div className="mx-auto mt-2 max-w-fit">
+              <Link
+                className="text-violet-500 underline dark:text-violet-200"
+                href={`${chain?.blockExplorers?.default.url}/tx/${hash}`}
+                target="_blank">
+                Check the transaction on block explorer
+              </Link>
+            </div>
+          </div>
+        ) : (
+          <div className="flex flex-1  flex-col justify-between">
+            {writeError && (
+              <div className="flex flex-1 flex-col items-center justify-center gap-5 text-center text-lg">
+                <p className="rounded bg-violet-200 p-5 dark:bg-DAppDarkSurface-300">
+                  An error occurred while sending the transaction. Please try
+                  again.
+                </p>
+
+                <div className="text-DAppRed">
+                  Error:{' '}
+                  {(writeError as BaseError).shortMessage || writeError.message}
+                </div>
+              </div>
+            )}
+
+            {receiptError && (
+              <div className="flex flex-1 flex-col items-center justify-center gap-5 text-center text-lg">
+                <p className="rounded bg-violet-200 p-5 dark:bg-DAppDarkSurface-300">
+                  An error occurred while confirming the transaction. Please try
+                  again.
+                </p>
+                {receiptError && (
+                  <div className="text-DAppRed">
+                    Error:{' '}
+                    {(receiptError as BaseError).shortMessage ||
+                      receiptError.message}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {!writeError &&
+              !receiptError &&
+              !awaitingWalletConfirmations &&
+              !isConfirming && (
+                  <div className="flex flex-1 flex-col items-center justify-center ">
+                    <p className="text-center text-lg">
+                      Are you sure you want to unsubscribe validator{' '}
+                      {validatorId}?
+                    </p>
+                  </div>
+              )}
+
+            {isReceiptSuccess && (
+              <p className="text-left text-lg">
+                Your unsubscription has been processed.
+              </p>
+            )}
+            <div className="flex flex-col ">
+              <Button
+                onPress={handleSubscription}
+                isDisabled={awaitingWalletConfirmations || isConfirming}>
+                Unsubscribe
+              </Button>
+              <Button
+                buttonType="secondary"
+                className="mt-4"
+                onPress={handleClose}>
+                Cancel
+              </Button>
+            </div>
+          </div>
         )}
       </div>
     </>

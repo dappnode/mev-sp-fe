@@ -9,9 +9,10 @@ import {
 } from './dialogs'
 import { BaseDialog } from '../BaseDialog'
 import { useState } from 'react'
-import { useNetwork } from 'wagmi'
+import { useAccount } from 'wagmi'
 import { AnimatePresence } from 'framer-motion'
 import { useDialog } from '@/hooks/useDialog'
+import { isWalletConnectedChainOk } from '@/utils/web3'
 import type { IDialogStates } from './types'
 
 const steps = ['Fee recipient', 'MEV Blocks check', 'Deposit', 'Done']
@@ -31,7 +32,7 @@ export function SubscribeToMevDialog({
   validatorId,
   validatorKey,
 }: SubscribeToMevDialogProps) {
-  const { chain } = useNetwork()
+  const { chain } = useAccount()
   const [dialogState, setDialogState] = useState<IDialogStates>('initial')
   const [showCloseButton, setShowCloseButton] = useState<boolean>(true)
   const { open, handleOpenChange, handleClose } = useDialog()
@@ -48,7 +49,7 @@ export function SubscribeToMevDialog({
 
   return (
     <BaseDialog
-      disabledTrigger={chain?.unsupported}
+      disabledTrigger={!isWalletConnectedChainOk(chain)}
       handleOpenChange={handleOpenChangeDialog}
       open={open}
       showCloseButton={showCloseButton}
@@ -98,7 +99,7 @@ export function MultiSubscribeToMevDialog({
   validatorIds,
   validatorKeys,
 }: MultiSubscribeToMevDialogProps) {
-  const { chain } = useNetwork()
+  const { chain } = useAccount()
   const [dialogState, setDialogState] = useState<IDialogStates>('initial')
   const [showCloseButton, setShowCloseButton] = useState<boolean>(true)
   const { open, handleOpenChange, handleClose } = useDialog()
@@ -115,7 +116,7 @@ export function MultiSubscribeToMevDialog({
 
   return (
     <BaseDialog
-      disabledTrigger={chain?.unsupported}
+      disabledTrigger={!isWalletConnectedChainOk(chain)}
       handleOpenChange={handleOpenChangeDialog}
       open={open}
       showCloseButton={showCloseButton}

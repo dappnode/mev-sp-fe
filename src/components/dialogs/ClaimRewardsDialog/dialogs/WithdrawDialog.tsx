@@ -1,18 +1,11 @@
 import { DialogProps } from '../types'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
 import Link from 'next/link'
-import {
-  useAccount,
-  useNetwork,
-  useContractWrite,
-  useWaitForTransaction,
-} from 'wagmi'
+import { BaseError, useAccount } from 'wagmi'
 import { AiOutlineInfoCircle } from 'react-icons/ai'
-import { fetchOnChainProof } from '@/client/api/queryFunctions'
+import { useEffect } from 'react'
 import { Button } from '@/components/common/Button'
 import { toFixedNoTrailingZeros } from '@/utils/decimals'
-import { SMOOTHING_POOL_ADDRESS } from '@/utils/config'
-import contractInterface from '@/contract/abi.json'
+import { useClaimRewards } from '@/hooks/useClaimRewards'
 
 interface WithdrawDialogProps extends DialogProps {
   claimableRewards: number
@@ -23,92 +16,111 @@ export function WithdrawDialog({
   handleClose,
   handleChangeDialogState,
 }: WithdrawDialogProps) {
-  const { chain } = useNetwork()
-  const { address } = useAccount()
-  const queryClient = useQueryClient()
+  const { chain } = useAccount()
 
-  const onChainProofQuery = useQuery({
-    queryKey: ['onchain-proof', address],
-    queryFn: () => fetchOnChainProof(address as `0x${string}`),
-    enabled: !!address,
-  })
+  const {
+    claimRewards,
+    awaitingWalletConfirmations,
+    isConfirming,
+    isReceiptSuccess,
+    writeError,
+    receiptError,
+    hash,
+  } = useClaimRewards()
 
-  const abi = [...contractInterface] as const
-
-  const contractWrite = useContractWrite({
-    address: SMOOTHING_POOL_ADDRESS,
-    abi,
-    functionName: 'claimRewards',
-    args: [
-      address,
-      onChainProofQuery.data?.leafAccumulatedBalance,
-      onChainProofQuery.data?.merkleProofs,
-    ],
-  })
-
-  const waitForTransaction = useWaitForTransaction({
-    hash: contractWrite.data?.hash,
-    confirmations: 2,
-    onSuccess: () => {
-      handleChangeDialogState('success')
-      queryClient.invalidateQueries({
-        queryKey: ['onchain-proof', address],
-      })
-    },
-  })
+  useEffect(() => {
+    if (isReceiptSuccess) handleChangeDialogState('success')
+  }, [isReceiptSuccess, handleChangeDialogState])
 
   return (
-    <>
-      {!waitForTransaction.isError ? (
-        <div className="px-10 text-center text-DAppDeep dark:text-DAppDarkText">
-          <h3 className="text-lg font-normal">You are withdrawing</h3>
-          <p className="mt-4 text-2xl font-bold">
-            {toFixedNoTrailingZeros(claimableRewards, 4)} ETH
-          </p>
-          <p className="mt-4 text-lg font-normal tracking-wide">
-            to your recipient wallet address
-          </p>
-          {waitForTransaction.isLoading && (
-            <div className="mt-6 w-full rounded-lg bg-violet-50 px-4 py-8 text-sm font-normal text-DAppDeep dark:bg-DAppDarkSurface-300 dark:text-DAppDarkText">
-              <div className="mx-auto flex w-fit items-center">
-                <AiOutlineInfoCircle />
-                <p className="ml-2">Your withdrawal is being processed.</p>
-              </div>
-              <div className="mx-auto mt-2 max-w-fit">
-                <Link
-                  className="text-violet-500 underline dark:text-violet-200"
-                  href={`${chain?.blockExplorers?.default.url}/tx/${contractWrite.data?.hash}`}
-                  target="_blank">
-                  Check the transaction on block explorer
-                </Link>
+    <div className="flex h-full flex-1 flex-col items-center justify-center text-DAppDeep dark:text-DAppDarkText ">
+      {awaitingWalletConfirmations ? (
+        <div className="flex w-fit animate-pulse flex-col items-center justify-center gap-3 rounded bg-violet-200 p-5 dark:bg-DAppDarkSurface-300 sm:flex-row">
+          <AiOutlineInfoCircle />
+          <p>Awaiting wallet confirmation.</p>
+        </div>
+      ) : isConfirming ? (
+        <div className="mx-auto my-2 flex w-fit flex-col items-center sm:flex-col">
+          <div className="flex w-fit animate-pulse flex-col items-center justify-center gap-3 rounded bg-violet-200 p-5 dark:bg-DAppDarkSurface-300 sm:flex-row">
+            <AiOutlineInfoCircle />
+            <p>Your withdrawal is being processed.</p>
+          </div>
+          <div className="mx-auto mt-2 max-w-fit">
+            <Link
+              className="text-violet-500 underline dark:text-violet-200"
+              href={`${chain?.blockExplorers?.default.url}/tx/${hash}`}
+              target="_blank">
+              Check the transaction on block explorer
+            </Link>
+          </div>
+        </div>
+      ) : (
+        <div className="flex w-full flex-1 flex-col justify-between">
+          {writeError && (
+            <div className="flex flex-1 flex-col items-center justify-center gap-5 text-center text-lg">
+              <p className="rounded bg-violet-200 p-5 dark:bg-DAppDarkSurface-300">
+                An error occurred while sending the transaction. Please try
+                again.
+              </p>
+
+              <div className="text-DAppRed">
+                Error:{' '}
+                {(writeError as BaseError).shortMessage || writeError.message}
               </div>
             </div>
           )}
-        </div>
-      ) : (
-        <div className="px-8 text-center text-base text-red-500">
-          <AiOutlineInfoCircle className="mx-auto h-8 w-8" />
-          <h4 className="mt-4 font-bold">Withdrawal error!</h4>
-          <p className="mt-4 font-normal">
-            Your Withdrawal has failed. Please go back and try again.
-          </p>
-          <h4 className="my-2  font-bold">Error:</h4>
-          <div className="mb-4 h-32  overflow-scroll rounded-lg border border-red-400 p-2">
-            {waitForTransaction.error?.message}
+
+          {receiptError && (
+            <div className="flex flex-1 flex-col items-center justify-center gap-5 text-center text-lg">
+              <p className="rounded bg-violet-200 p-5 dark:bg-DAppDarkSurface-300">
+                An error occurred while confirming the transaction. Please try
+                again.
+              </p>
+              {receiptError && (
+                <div className="text-DAppRed">
+                  Error:{' '}
+                  {(receiptError as BaseError).shortMessage ||
+                    receiptError.message}
+                </div>
+              )}
+            </div>
+          )}
+
+          {!writeError &&
+            !receiptError &&
+            !awaitingWalletConfirmations &&
+            !isConfirming && (
+                <div className="flex flex-1 flex-col items-center justify-center ">
+                  <h3 className="text-lg font-normal">You are withdrawing</h3>
+                  <p className="mt-4 text-2xl font-bold">
+                    {toFixedNoTrailingZeros(claimableRewards, 4)} ETH
+                  </p>
+                  <p className="mt-4 text-lg font-normal tracking-wide">
+                    to your recipient wallet address
+                  </p>
+                </div>
+            )}
+
+          {isReceiptSuccess && (
+            <p className="text-left text-lg">
+              Your claim has been processed.
+            </p>
+          )}
+          <div className="flex w-full flex-col">
+            <Button
+              onPress={claimRewards}
+              isDisabled={awaitingWalletConfirmations || isConfirming}>
+              Claim
+            </Button>
+            <Button
+              buttonType="secondary"
+              className="mt-4"
+              onPress={handleClose}>
+              Cancel
+            </Button>
           </div>
         </div>
       )}
-
-      <div>
-        <Button
-          isDisabled={contractWrite.isLoading || waitForTransaction.isLoading}
-          onPress={() => contractWrite.write?.()}>
-          {waitForTransaction.isError ? 'Try again' : 'Withdraw'}
-        </Button>
-        <Button buttonType="secondary" className="mt-4" onPress={handleClose}>
-          Cancel
-        </Button>
-      </div>
-    </>
+    </div>
   )
 }

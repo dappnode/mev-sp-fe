@@ -1,5 +1,6 @@
+import { SELECTED_CHAIN } from './config'
 import { BigNumber, utils } from 'ethers'
-
+import { Chain } from 'viem'
 /**
  * Shorten Ethereum address to 0x123...456 format
  * @param address Ethereum address
@@ -53,4 +54,14 @@ export const weiToEth = (wei: string | number | undefined | null) => {
   const weiAsBigNumber = BigNumber.from(String(wei))
   const etherAsString = utils.formatEther(weiAsBigNumber)
   return parseFloat(etherAsString)
+}
+
+export const isWalletConnectedChainOk = (chain: Chain | undefined) => {
+  if (!chain) {
+    return false
+  }
+  if (SELECTED_CHAIN === 'mainnet') {
+    return chain.id === 1
+  }
+  return chain.id === 17000
 }
