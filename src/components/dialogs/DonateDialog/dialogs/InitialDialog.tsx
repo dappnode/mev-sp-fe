@@ -1,14 +1,12 @@
 import { DialogProps } from '../types'
 import Link from 'next/link'
-
 import { AiOutlineInfoCircle } from 'react-icons/ai'
-
+import { utils } from 'ethers'
 import { useState, useEffect, useCallback } from 'react'
 import { BaseError } from 'wagmi'
 import { Button } from '@/components/common/Button'
 import { SELECTED_CHAIN } from '@/utils/config'
 import { useDonate } from '@/hooks/useDonate'
-import { utils } from 'ethers'
 
 const MIN_DONATION = 0.01
 
