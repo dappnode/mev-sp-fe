@@ -1,24 +1,38 @@
 import { DialogProps } from '../types'
 import { Button } from '@/components/common/Button'
 import { CongratulationsIcon } from '@/components/icons'
+import { CLAIM_FEEDBACK_TIMESTAMP } from '@/utils/config'
 
-export function SuccessDialog({ handleChangeDialogState }: DialogProps) {
+export function SuccessDialog({
+  handleChangeDialogState,
+  handleClose,
+}: DialogProps) {
+  const showFeedbackDialogInterval = 40 * 24 * 60 * 60 * 1000 // Forty days in ms
+  const storedTimestamp = localStorage.getItem(CLAIM_FEEDBACK_TIMESTAMP)
+  const parsedTimestamp = storedTimestamp ? parseInt(storedTimestamp, 10) : null
+  const currentTime = Date.now()
+
+  // check if 40 days have passed since the stored timestamp
+  const showFeedbackDialog = parsedTimestamp
+    ? currentTime - parsedTimestamp > showFeedbackDialogInterval
+    : true
+
+  const handleNext = () => {
+    showFeedbackDialog ? handleChangeDialogState('feedback') : handleClose()
+  }
+
   return (
     <>
-      <div className="px-6 text-center text-DAppDeep dark:text-DAppDarkText">
-        <div className="mb-4 flex justify-center">
+      <div className="flex h-full flex-col justify-center gap-5 px-6 text-center text-DAppDeep dark:text-DAppDarkText text-lg font-normal">
+        <div className="flex justify-center">
           <CongratulationsIcon />
         </div>
-        <h3 className="text-lg font-normal">Congratulations!</h3>
-        <div className="mt-4 text-lg font-normal tracking-wide">
+        <h3>Congratulations!</h3>
+        <div className="tracking-wide">
           <p>You have claimed your rewards from Smooth.</p>
         </div>
       </div>
-      <Button
-        className="mt-5"
-        onPress={() => handleChangeDialogState('feedback')}>
-        Next
-      </Button>
+      <Button onPress={handleNext}>{showFeedbackDialog ? 'Next' : 'Close'}</Button>
     </>
   )
 }

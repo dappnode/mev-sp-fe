@@ -7,9 +7,9 @@ export function InitialDialog({
 }: DialogProps) {
   return (
     <>
-      <div className="px-10 text-center text-DAppDeep dark:text-DAppDarkText">
+      <div className="flex h-full flex-col items-center justify-center gap-5 px-10 text-center text-DAppDeep dark:text-DAppDarkText">
         <h3 className="text-2xl font-bold">Withdraw rewards</h3>
-        <p className="mt-5 text-lg font-normal leading-7 tracking-wide">
+        <p className="text-lg font-normal leading-7 tracking-wide">
           Are you sure you wish to withdraw all pool rewards to your recipient
           address?
         </p>
