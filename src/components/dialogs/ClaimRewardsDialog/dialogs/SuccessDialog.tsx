@@ -17,13 +17,17 @@ export function SuccessDialog({
     ? currentTime - parsedTimestamp > showFeedbackDialogInterval
     : true
 
-  const handleNext = () => {
-    showFeedbackDialog ? handleChangeDialogState('feedback') : handleClose()
-  }
+    const handleNext = () => {
+      if (showFeedbackDialog) {
+        handleChangeDialogState('feedback');
+      } else {
+        handleClose();
+      }
+    };
 
   return (
     <>
-      <div className="flex h-full flex-col justify-center gap-5 px-6 text-center text-DAppDeep dark:text-DAppDarkText text-lg font-normal">
+      <div className="flex h-full flex-col justify-center gap-5 px-6 text-center text-lg font-normal text-DAppDeep dark:text-DAppDarkText">
         <div className="flex justify-center">
           <CongratulationsIcon />
         </div>
@@ -32,7 +36,9 @@ export function SuccessDialog({
           <p>You have claimed your rewards from Smooth.</p>
         </div>
       </div>
-      <Button onPress={handleNext}>{showFeedbackDialog ? 'Next' : 'Close'}</Button>
+      <Button onPress={handleNext}>
+        {showFeedbackDialog ? 'Next' : 'Close'}
+      </Button>
     </>
   )
 }
