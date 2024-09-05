@@ -5,8 +5,8 @@ import { useCallback, useEffect, useState } from 'react'
 import { Button } from '@/components/common/Button'
 import {
   SELECTED_CHAIN,
-  CLAIM_FEEDBACK_SCRIPT_URL,
   CLAIM_FEEDBACK_TIMESTAMP,
+  FEEDBACK_SCRIPT_URL
 } from '@/utils/config'
 
 interface FeedbackDialogProps extends DialogProps {
@@ -36,6 +36,7 @@ export function FeedbackDialog({
   const postFeedbackData = useCallback(async () => {
     setSendingFeedback(true)
     const formData = new FormData()
+    formData.append('sheetName', 'claim')
     formData.append('network', SELECTED_CHAIN)
     if (address) {
       formData.append('address', address.toString())
@@ -48,8 +49,8 @@ export function FeedbackDialog({
     formData.append('improvements', improvementsFeedback || '-')
     formData.append('claimAmount', claimableRewards.toString())
 
-    if (CLAIM_FEEDBACK_SCRIPT_URL) {
-      await fetch(CLAIM_FEEDBACK_SCRIPT_URL, {
+    if (FEEDBACK_SCRIPT_URL) {
+      await fetch(FEEDBACK_SCRIPT_URL, {
         method: 'POST',
         body: formData,
       })

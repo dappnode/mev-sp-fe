@@ -5,7 +5,7 @@ import { AiOutlineInfoCircle } from 'react-icons/ai'
 import { useEffect, useCallback } from 'react'
 import { StepProgressBar } from '@/components/common/StepProgressBar'
 import { Button } from '@/components/common/Button'
-import { UNSUB_FEEDBACK_SCRIPT_URL, SELECTED_CHAIN } from '@/utils/config'
+import { FEEDBACK_SCRIPT_URL, SELECTED_CHAIN } from '@/utils/config'
 import { useHandleSubscriptionStatus } from '@/hooks/useHandleSubscriptionStatus'
 
 interface UnsubscribeDialogProps extends DialogProps {
@@ -41,6 +41,7 @@ export function UnsubscribeDialog({
   const { chain } = useAccount()
   const postFeedbackData = useCallback(async () => {
     const formData = new FormData()
+    formData.append('sheetName', 'unsub')
     formData.append('network', SELECTED_CHAIN)
     formData.append('validator-id', validatorId.toString())
     formData.append('why-options', selectedOptions.join('\n'))
@@ -48,8 +49,8 @@ export function UnsubscribeDialog({
     formData.append('improvements', improvementsFeedback)
     formData.append('timestamp', new Date().toISOString())
 
-    if (UNSUB_FEEDBACK_SCRIPT_URL) {
-      await fetch(UNSUB_FEEDBACK_SCRIPT_URL, {
+    if (FEEDBACK_SCRIPT_URL) {
+      await fetch(FEEDBACK_SCRIPT_URL, {
         method: 'POST',
         body: formData,
       })
@@ -147,7 +148,7 @@ export function UnsubscribeDialog({
                 Your unsubscription has been processed.
               </p>
             )}
-            <div className="flex flex-col ">
+            <div className="flex flex-col">
               <Button
                 onPress={handleSubscription}
                 isDisabled={awaitingWalletConfirmations || isConfirming}>

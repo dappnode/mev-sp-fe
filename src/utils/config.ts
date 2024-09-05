@@ -19,10 +19,8 @@ export const SELECTED_CHAIN = process.env.NEXT_PUBLIC_SELECTED_CHAIN
 export const SMOOTHING_POOL_ADDRESS = process.env
   .NEXT_PUBLIC_SMOOTHING_POOL_ADDRESS as `0x${string}`
 
-export const UNSUB_FEEDBACK_SCRIPT_URL =
-  process.env.NEXT_PUBLIC_UNSUB_FEEDBACK_SCRIPT_URL
-export const CLAIM_FEEDBACK_SCRIPT_URL =
-  process.env.NEXT_PUBLIC_CLAIM_FEEDBACK_SCRIPT_URL
+export const FEEDBACK_SCRIPT_URL =
+  process.env.NEXT_PUBLIC_FEEDBACK_SCRIPT_URL
 
 export const getBeaconChainExplorer = (
   type: 'slot' | 'validator' | 'block' | 'tx',
