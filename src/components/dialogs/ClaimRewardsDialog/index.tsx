@@ -1,4 +1,9 @@
-import { WithdrawDialog, SuccessDialog, InitialDialog } from './dialogs'
+import {
+  WithdrawDialog,
+  SuccessDialog,
+  InitialDialog,
+  FeedbackDialog,
+} from './dialogs'
 import { BaseDialog } from '../BaseDialog'
 import { useState } from 'react'
 import { useDialog } from '@/hooks/useDialog'
@@ -29,10 +34,11 @@ export function ClaimRewardsDialog({
     <BaseDialog
       disabledTrigger={disabledTrigger}
       handleOpenChange={handleOpenChangeDialog}
+      showCloseButton={false}
       open={open}
       subtitle="Claim rewards"
       triggerText="Claim All">
-      <div className="flex h-[320px] flex-col justify-between text-DAppDeep dark:text-DAppDarkText sm:h-[280px]">
+      <div className="flex h-full min-h-[500px] flex-col justify-between text-DAppDeep dark:text-DAppDarkText sm:h-[280px]">
         {dialogState === 'initial' ? (
           <InitialDialog
             handleChangeDialogState={setDialogState}
@@ -44,8 +50,14 @@ export function ClaimRewardsDialog({
             handleChangeDialogState={setDialogState}
             handleClose={handleCloseDialog}
           />
-        ) : (
+        ) : dialogState === 'success' ? (
           <SuccessDialog
+            handleChangeDialogState={setDialogState}
+            handleClose={handleCloseDialog}
+          />
+        ) : (
+          <FeedbackDialog
+            claimableRewards={claimableRewards}
             handleChangeDialogState={setDialogState}
             handleClose={handleCloseDialog}
           />

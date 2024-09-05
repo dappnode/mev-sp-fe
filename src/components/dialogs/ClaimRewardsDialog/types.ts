@@ -1,4 +1,4 @@
-export type IDialogStates = 'initial' | 'confirm' | 'loading' | 'success'
+export type IDialogStates = 'initial' | 'confirm' | 'loading' | 'success' | 'feedback' 
 
 export interface DialogProps {
   handleClose: () => void
