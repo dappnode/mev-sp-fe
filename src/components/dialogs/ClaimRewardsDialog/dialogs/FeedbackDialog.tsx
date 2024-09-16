@@ -92,7 +92,7 @@ export function FeedbackDialog({
               </div>
             </div>
             <div className="w-full px-10">
-              <div>2. What can we do to even smoother?</div>
+              <div>2. What can we do to make it even smoother?</div>
               <textarea
                 className="mt-3 h-32 w-full resize-none rounded bg-gray-200 p-2 text-base dark:bg-DAppDarkSurface-300"
                 placeholder="Type here..."
