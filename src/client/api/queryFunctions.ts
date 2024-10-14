@@ -44,7 +44,14 @@ export const fetchValidatorsByDepositor = async (
   const response = await apiClient.get(
     endpoints.memoryValidators(address || '0x0')
   )
-  return ValidatorSchema.array().parse(convertKeysToCamelCase(response.data))
+  // Parse and convert the response data to camelCase
+  const validators = ValidatorSchema.array().parse(convertKeysToCamelCase(response.data))
+  // Filter validators to only include those with "active_ongoing" beaconStatus. We are not interested in them.
+  const filteredValidators = validators.filter(
+    (validator) => validator.beaconStatus === "active_ongoing"
+  );
+
+  return filteredValidators;
 }
 
 export const fetchValidatorByIndex = async (index: number) => {
@@ -100,7 +107,7 @@ export const fetchMultiValidatorRegisteredRelays = async (
   const delay = (ms: number | undefined) => new Promise(resolve => {
     setTimeout(resolve, ms);
   });
-    
+
   const responses = [];
 
   // eslint-disable-next-line no-restricted-syntax
