@@ -30,6 +30,7 @@ export const DonationSchema = z.object({
 
 export const ValidatorSchema = z.object({
   status: z.string(),
+  beaconStatus: z.string().or(z.null()),
   accumulatedRewardsWei: z.string().or(z.null()),
   pendingRewardsWei: z.string().or(z.null()),
   collateralWei: z.string().or(z.null()),
