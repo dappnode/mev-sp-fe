@@ -2,6 +2,7 @@ import { useAccount } from 'wagmi'
 import { Head } from '@/components/layout/Head'
 import { DonateDialog } from '@/components/dialogs/DonateDialog'
 import DonateCircle from '@/components/icons/DonateCircle'
+import SlidingBanner from '@/components/banners/SlidingBanner'
 
 export default function Donate() {
   const { isConnected } = useAccount()
@@ -9,6 +10,12 @@ export default function Donate() {
   return (
     <>
       <Head title="Support Solo Stakers" />
+      <SlidingBanner
+        title="SmoothDAO Proposal "
+        btnText="Click here"
+        text="Discuss and decide the future of Smooth!"
+        link="https://discourse.dappnode.io/t/proposal-sip1-smooth-terms-of-use-policy/2388/2?u=lanski"
+      />
       <main className="mx-auto flex max-w-5xl items-center justify-between pt-6">
         <div className="relative mt-20 hidden h-[520px] w-[490px] lg:block">
           <div className="absolute bottom-40 left-48">

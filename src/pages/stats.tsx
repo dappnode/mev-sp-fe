@@ -19,6 +19,7 @@ import { useAllBlocksData } from '@/components/charts/hooks/useAllBlocksData'
 import { useValidatorData } from '@/components/charts/hooks/useValidatorData'
 import { useValidatorStatuses } from '@/components/charts/hooks/useValidatorStatuses'
 import { usePoolHealth } from '@/components/charts/hooks/usePoolHealth'
+import SlidingBanner from '@/components/banners/SlidingBanner'
 
 export default function Stats() {
   const { resolvedTheme } = useTheme()
@@ -49,6 +50,12 @@ export default function Stats() {
       className={`${styles.statsContainer} ${
         resolvedTheme === 'dark' ? styles.dark : ''
       }`}>
+         <SlidingBanner
+        title="SmoothDAO Proposal "
+        btnText="Click here"
+        text="Discuss and decide the future of Smooth!"
+        link="https://discourse.dappnode.io/t/proposal-sip1-smooth-terms-of-use-policy/2388/2?u=lanski"
+      />
       <div className={styles.row}>
         <div className={styles.column}>
           <SmoothSubsChart
