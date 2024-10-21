@@ -32,6 +32,8 @@ export default function SlidingBanner({
     <a
       href={link}
       target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`Link to ${title}`}
       className={`group ${
         isFixed ? 'fixed left-0 top-0 ' : 'relative '
       } z-10 mb-8 flex h-14 w-screen flex-col  justify-center overflow-hidden
@@ -72,7 +74,7 @@ function BannerContent({ title, btnText, text }: BannerContentProps) {
           <p className="hidden text-lg lg:block">{'->'}</p>
           <p className="hidden text-lg lg:block">{text}</p>
         </div>
-        <div className="bg-white-100 flex items-center justify-center rounded-lg bg-white p-2 text-DAppPurple-900 transition-colors duration-300 ease-in-out">
+        <div className="flex items-center justify-center rounded-lg bg-white p-2 text-DAppPurple-900 transition-colors duration-300 ease-in-out">
           <p className="font-bold">{btnText}</p>
         </div>
       </div>
