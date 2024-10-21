@@ -56,6 +56,15 @@ module.exports = {
       minHeight: {
         'screen-content': 'calc(100vh - 176px)',
       },
+      animation: {
+        slide: 'slide 25s linear infinite',
+      },
+      keyframes: {
+        slide: {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(0)' },
+        },
+      },
     },
   },
   plugins: [],
