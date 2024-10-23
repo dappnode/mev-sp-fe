@@ -77,7 +77,7 @@ function BannerContent({ title, btnText, text }: BannerContentProps) {
           />
           <span className="text-xl font-bold">{title}</span>
           <Image
-            className="h-6 w-6 hidden lg:block"
+            className="hidden h-6 w-6 lg:block"
             alt="Dappnode logo"
             src="/images/dappnode-logo.svg"
             height={50}
@@ -85,7 +85,7 @@ function BannerContent({ title, btnText, text }: BannerContentProps) {
           />
         </div>
         <p className="hidden text-lg lg:block">{text}</p>
-        <div className=" flex-row items-center gap-x-3 hidden lg:flex">
+        <div className=" hidden flex-row items-center gap-x-3 lg:flex">
           <Image
             className="h-6 w-6"
             alt="Dappnode logo"
