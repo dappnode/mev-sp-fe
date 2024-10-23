@@ -14,7 +14,7 @@ export default function Donate() {
         title="SmoothDAO Proposal "
         btnText="Click here"
         text="Discuss and decide the future of Smooth!"
-        link="https://discourse.dappnode.io/t/proposal-sip1-smooth-terms-of-use-policy/2388"
+        link="https://link.dappnode.io/7bhotl6"
       />
       <main className="mx-auto flex max-w-5xl items-center justify-between pt-6">
         <div className="relative mt-20 hidden h-[520px] w-[490px] lg:block">
