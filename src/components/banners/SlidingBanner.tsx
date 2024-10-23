@@ -38,7 +38,7 @@ export default function SlidingBanner({
         aria-label={`Link to ${title}`}
         className={`group ${
           isFixed ? 'fixed left-0 top-0 ' : 'relative '
-        } z-10 mb-8 flex h-14 w-screen flex-col  justify-center overflow-hidden 
+        } z-10 mb-8 flex h-14 w-screen flex-col justify-center overflow-hidden 
       bg-purple-400/90 transition-colors ease-in-out
        [mask-image:_linear-gradient(to_right,transparent_0,_black_200px,_black_calc(100%-200px),transparent_100%)]
       hover:bg-purple-400 dark:bg-DAppPurple-900/90 hover:dark:bg-DAppPurple-900`}
@@ -85,7 +85,7 @@ function BannerContent({ title, btnText, text }: BannerContentProps) {
           />
         </div>
         <p className="hidden text-lg lg:block">{text}</p>
-        <div className=" hidden flex-row items-center gap-x-3 lg:flex">
+        <div className="hidden flex-row items-center gap-x-3 lg:flex">
           <Image
             className="h-6 w-6"
             alt="Dappnode logo"

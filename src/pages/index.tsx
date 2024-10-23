@@ -14,7 +14,7 @@ export default function Home() {
         title="SmoothDAO Proposal "
         btnText="Click here"
         text="Discuss and decide the future of Smooth!"
-        link="https://discourse.dappnode.io/t/proposal-sip1-smooth-terms-of-use-policy/2388"
+        link="https://link.dappnode.io/7bhotl6"
       />
       <Hero />
       <Stats />
