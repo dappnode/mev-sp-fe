@@ -43,7 +43,7 @@ export default function SlidingBanner({
        [mask-image:_linear-gradient(to_right,transparent_0,_black_200px,_black_calc(100%-200px),transparent_100%)]
       hover:bg-purple-400 dark:bg-DAppPurple-900/90 hover:dark:bg-DAppPurple-900`}
         style={{
-          marginLeft: 'calc(-50vw + 49.7%)',
+          marginLeft: 'calc(-50.2vw + 50%)',
           marginRight: 'calc(-50vw + 50%)',
         }}>
         <div className="flex animate-slide">
