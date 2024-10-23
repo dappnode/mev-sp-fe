@@ -57,7 +57,7 @@ module.exports = {
         'screen-content': 'calc(100vh - 176px)',
       },
       animation: {
-        slide: 'slide 25s linear infinite',
+        slide: 'slide 45s linear infinite',
       },
       keyframes: {
         slide: {
