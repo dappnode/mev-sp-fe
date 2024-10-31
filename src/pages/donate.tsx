@@ -11,10 +11,10 @@ export default function Donate() {
     <>
       <Head title="Support Solo Stakers" />
       <SlidingBanner
-        title="SmoothDAO Proposal "
-        btnText="Click here"
-        text="Discuss and decide the future of Smooth!"
-        link="https://link.dappnode.io/7bhotl6"
+        title="SmoothDAO - Vote on Snapshot "
+        btnText="Vote here"
+        text="The Future of Smooth is at Stake!"
+        link="https://snapshot.org/#/dao.smooth.dappnode.eth/proposal/0xddd71930ac1a2876cc7e012861320a19b24fc2c4cc8289060c626737413251a3"
       />
       <main className="mx-auto flex max-w-5xl items-center justify-between pt-6">
         <div className="relative mt-20 hidden h-[520px] w-[490px] lg:block">

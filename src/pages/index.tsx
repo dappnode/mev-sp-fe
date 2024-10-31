@@ -11,10 +11,10 @@ export default function Home() {
   return (
     <>
      <SlidingBanner
-        title="SmoothDAO Proposal "
-        btnText="Click here"
-        text="Discuss and decide the future of Smooth!"
-        link="https://link.dappnode.io/7bhotl6"
+        title="SmoothDAO - Vote on Snapshot "
+        btnText="Vote here"
+        text="The Future of Smooth is at Stake!"
+        link="https://snapshot.org/#/dao.smooth.dappnode.eth/proposal/0xddd71930ac1a2876cc7e012861320a19b24fc2c4cc8289060c626737413251a3"
       />
       <Hero />
       <Stats />
