@@ -14,7 +14,7 @@ export default function Donate() {
         title="SmoothDAO - Vote on Snapshot "
         btnText="Vote here"
         text="The Future of Smooth is at Stake!"
-        link="https://snapshot.org/#/dao.smooth.dappnode.eth/proposal/0xddd71930ac1a2876cc7e012861320a19b24fc2c4cc8289060c626737413251a3"
+        link="https://link.dappnode.io/G4WDuCg"
       />
       <main className="mx-auto flex max-w-5xl items-center justify-between pt-6">
         <div className="relative mt-20 hidden h-[520px] w-[490px] lg:block">
