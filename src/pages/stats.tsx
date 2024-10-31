@@ -54,7 +54,7 @@ export default function Stats() {
         title="SmoothDAO - Vote on Snapshot "
         btnText="Vote here"
         text="The Future of Smooth is at Stake!"
-        link="https://snapshot.org/#/dao.smooth.dappnode.eth/proposal/0xddd71930ac1a2876cc7e012861320a19b24fc2c4cc8289060c626737413251a3"
+        link="https://link.dappnode.io/G4WDuCg"
       />
       <div className={styles.row}>
         <div className={styles.column}>
