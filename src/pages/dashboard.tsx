@@ -10,9 +10,9 @@ export default function Dashboard() {
     <>
       <Head />
       <SlidingBanner
-        title="SmoothDAO - Vote on Snapshot "
-        btnText="Vote here"
-        text="The Future of Smooth is at Stake!"
+        title="SmoothDAO"
+        btnText="Click here"
+        text="SmoothDAO has approved the new terms of use."
         link="https://link.dappnode.io/G4WDuCg"
       />
       <main>
