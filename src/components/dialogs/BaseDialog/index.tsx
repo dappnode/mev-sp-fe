@@ -38,7 +38,7 @@ export function BaseDialog({
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 h-full w-full bg-gray-600 opacity-30 " />
-        <Dialog.Content className="fixed left-[50%] top-[50%] min-h-min w-[500px] max-w-[95%] translate-x-[-50%] translate-y-[-50%] rounded-lg bg-white p-6 dark:bg-DAppDarkSurface-200 md:max-w-[85%]">
+        <Dialog.Content className="fixed left-[50%] top-[50%] z-10 min-h-min w-[500px] max-w-[95%] translate-x-[-50%] translate-y-[-50%] rounded-lg bg-white p-6 dark:bg-DAppDarkSurface-200 md:max-w-[85%]">
           <div className="flex w-full justify-between">
             <h4 className="text-lg font-normal text-DAppDeep dark:text-DAppDarkText ">
               {subtitle}

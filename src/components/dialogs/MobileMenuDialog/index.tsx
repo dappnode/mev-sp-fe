@@ -40,7 +40,7 @@ export function MobileMenuDialog() {
         <AnimatePresence>
           <Dialog.Content>
             <motion.div
-              className="fixed right-0 top-0 h-screen w-[300px] max-w-[75%] border bg-white p-6 dark:border-0 dark:bg-DAppDarkSurface-200"
+              className="fixed right-0 top-0 z-10 h-screen w-[300px] max-w-[75%] border bg-white p-6 dark:border-0 dark:bg-DAppDarkSurface-200"
               animate={{
                 // opacity: 1,
                 x: 0,
