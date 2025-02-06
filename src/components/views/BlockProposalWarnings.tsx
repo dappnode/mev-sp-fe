@@ -1,14 +1,10 @@
 import { useGetAddressProposals } from '@/hooks/useGetAddressProposals'
 import { DashboardWarning } from '../banners/DashboardWarning'
-import { use, useEffect, useMemo, useState } from 'react'
-import { getSlotUnixTime } from '@/utils/slotsTime'
 import Link from 'next/link'
 import { ExternalLinkIcon } from '../icons/ExternalLinkIcon'
 import { getBeaconChainExplorer } from '@/utils/config'
-import { useAllValidatorsData } from '../charts/hooks/useAllValidatorsData'
-import { useQuery } from '@tanstack/react-query'
-import { fetchValidatorsByDepositor } from '@/client/api/queryFunctions'
-import { useAccount } from 'wagmi'
+import { useFilterVanillaProposals } from '@/hooks/useFilterVanillaProposals'
+import { daysSinceGivenSlot } from '@/utils/slotsTime'
 
 export default function BlockProposalWarnings() {
   const {
@@ -17,46 +13,14 @@ export default function BlockProposalWarnings() {
     withdrawalAddressProposals,
     wrongFeeProposals,
   } = useGetAddressProposals()
-  const [showVanillaWarning, setShowVanillaWarning] = useState(false)
 
-  const { address } = useAccount()
-  const validatorsQuery = useQuery({
-    queryKey: ['user-validators', address],
-    queryFn: () => fetchValidatorsByDepositor(address),
-    enabled: !!address,
-  })
-  console.log('validatorsQuery', validatorsQuery.data)
-
-  const activeValidators = validatorsQuery.data?.filter((validator) => {
-    return (
-      validator.status === 'active' ||
-      validator.status === 'yellowCard' ||
-      validator.status === 'redCard'
-    )
-  })
-
-  const activeValidatorsDaysLeftMap = (numValidators: number) => {
-    if (numValidators >= 1) {
-      return 7 * 30 // 7 months
-    } else if (numValidators >= 2 && numValidators <= 9) {
-      return 5 * 30 // 5 months
-    } else if (numValidators > 9) {
-      return 1 * 30 // 1 months
-    } else {
-      return 0
-    }
-  }
-
-  const daysSinceGivenSlot = (slot: number) => {
-    const slotTime = getSlotUnixTime(slot)
-
-    const currentTime = Math.floor(Date.now() / 1000)
-    const timeDifference = currentTime - slotTime
-    return Math.floor(timeDifference / 86400)
-  }
+  const {
+    filteredVanillaProposals,
+    showVanillaWarning,
+    daysSinceFirstVanilla,
+  } = useFilterVanillaProposals(vanillaProposals)
 
   const LatestProposalData = withdrawalAddressProposals[0]
-  console.log('LatestProposalData', LatestProposalData)
 
   const islatestProposalVanilla = LatestProposalData?.rewardType === 'vanila'
 
@@ -66,90 +30,116 @@ export default function BlockProposalWarnings() {
   const islatestProposalWrongFee =
     LatestProposalData?.blockType === 'wrongfeerecipient'
 
-  const { validatorsData } = useAllValidatorsData()
-  console.log('validatorsData', validatorsData)
-
-  useEffect(() => {
-    if (activeValidators && vanillaProposals[0]) {
-      setShowVanillaWarning(
-        daysSinceGivenSlot(vanillaProposals[0].slot) <
-          activeValidatorsDaysLeftMap(activeValidators.length)
-      )
-    }
-  }, [vanillaProposals, activeValidators])
-
   return (
     <>
       <DashboardWarning
-        title="Last block proposed was a Vanilla"
-        href={' '}
+        title="Last block proposal was Vanilla"
+        href="https://docs.dappnode.io/docs/smooth/deep-dive-into-smooth/vanilla-blocks"
         showIf={islatestProposalVanilla}>
         <div className="flex flex-col items-center gap-2">
-          <div className="flex w-full flex-row justify-evenly font-semibold xl:w-1/2">
-            <p>
-              Validator:{' '}
-              <span className="text-DAppPurple-900  ">
-                {LatestProposalData?.slot.toString()}
-              </span>
-            </p>
-            <p>
-              Slot:{' '}
-              <span className="text-DAppPurple-900  ">
-                {LatestProposalData?.slot.toString()}
-              </span>
-            </p>
-            <p>
-              Block:{' '}
-              <span className="text-DAppPurple-900  ">
-                {' '}
-                {LatestProposalData?.block.toString()}
-              </span>
-            </p>
-            <p>
+          <div className="flex flex-col items-center justify-center rounded-lg bg-DAppOrange/50 px-5 py-2  md:flex-row md:gap-2">
+            <div className="flex flex-row gap-2">
+              <p>Block</p>
               <Link
                 target="_blank"
                 className="flex flex-row font-bold text-DAppPurple-900 hover:underline"
                 href={getBeaconChainExplorer(
                   'block',
-                  LatestProposalData?.block.toString()
+                  LatestProposalData.block.toString()
                 )}>
-                See more
-                <ExternalLinkIcon />
+                {LatestProposalData.block.toString()} <ExternalLinkIcon />
               </Link>
-            </p>
-          </div>
-          <p>
-            You are at risk of being banned from the pool due to a Vanilla block
-            proposal.
-          </p>
-          <p>
-            Please review your setup and ensure that MEV is properly configured.
-          </p>
-        </div>
-      </DashboardWarning>
-      
-      <DashboardWarning
-        title="You've proposed a Vanilla block"
-        showIf={showVanillaWarning}>
-        <div className="flex flex-col items-center gap-2">
-          <p className='flex flex-row gap-2'>
-            {' '}
-            You have proposed a Vanilla block{' '}
-            <b>{daysSinceGivenSlot(vanillaProposals[0]?.slot)}</b> days ago.
-            <Link
+            </div>
+            <div className="flex flex-row gap-2">
+              <p>
+                <span className="hidden md:inline-block">proposed</span> by
+                validator
+              </p>
+              <Link
                 target="_blank"
                 className="flex flex-row font-bold text-DAppPurple-900 hover:underline"
                 href={getBeaconChainExplorer(
-                  'block',
-                  vanillaProposals[0]?.block.toString()
+                  'validator',
+                  LatestProposalData.validatorIndex.toString()
                 )}>
-                See more
+                #{LatestProposalData.validatorIndex.toString()}{' '}
                 <ExternalLinkIcon />
               </Link>
+            </div>
+            <p>{daysSinceGivenSlot(LatestProposalData.slot)} days ago</p>
+          </div>
+          <p>
+            You are at risk of being banned from the pool due to a Vanilla block
+            proposal.{' '}
+          </p>{' '}
+          <p className="flex flex-row gap-1">
+            You can <b>check your ban proposal</b>{' '}
+            <Link
+              className="flex flex-row font-bold text-DAppPurple-900 hover:underline"
+              // href={`https://discourse.dappnode.io/t/watchtower-ban-notice-for-'+address`}
+              href={
+                'https://discourse.dappnode.io/t/0x6ef0451ed967a58477e6a04a497fc24143ffa4f9-vanilla-blocks-tracker/'
+              }
+              target="_blank">
+              here <ExternalLinkIcon />{' '}
+            </Link>
           </p>
           <p>
-            To avoid being banned, check your setup and ensure that MEV is
-            properly configured.
+            Please review your setup and ensure that MEV relays are activated.
+          </p>
+        </div>
+      </DashboardWarning>
+      <DashboardWarning
+        title="You've proposed Vanilla blocks"
+        href="https://docs.dappnode.io/docs/smooth/deep-dive-into-smooth/vanilla-blocks"
+        showIf={showVanillaWarning && !islatestProposalVanilla}>
+        <div className="flex flex-col items-center gap-2">
+          <p className="flex flex-row gap-1">
+            {' '}
+            <span className="hidden md:block">You have proposed</span>{' '}
+            <b>{filteredVanillaProposals?.length}</b> Vanilla block/s within{' '}
+            <span className="hidden md:block">the last</span>
+            <b>{daysSinceFirstVanilla}</b>days:
+          </p>
+
+          {vanillaProposals.map((proposal) => (
+            <div className="flex w-full flex-col items-center justify-center ">
+              <div className="flex flex-col items-center justify-center rounded-lg bg-DAppOrange/50 px-5 py-2  md:flex-row md:gap-2">
+                <div className="flex flex-row gap-2">
+                  <p>Block</p>
+                  <Link
+                    target="_blank"
+                    className="flex flex-row font-bold text-DAppPurple-900 hover:underline"
+                    href={getBeaconChainExplorer(
+                      'block',
+                      proposal.block.toString()
+                    )}>
+                    {proposal.block.toString()} <ExternalLinkIcon />
+                  </Link>
+                </div>
+                <div className="flex flex-row gap-2">
+                  <p>
+                    <span className="hidden md:inline-block">proposed</span> by
+                    validator
+                  </p>
+                  <Link
+                    target="_blank"
+                    className="flex flex-row font-bold text-DAppPurple-900 hover:underline"
+                    href={getBeaconChainExplorer(
+                      'validator',
+                      proposal.validatorIndex.toString()
+                    )}>
+                    #{proposal.validatorIndex.toString()} <ExternalLinkIcon />
+                  </Link>
+                </div>
+                <p>{daysSinceGivenSlot(proposal.slot)} days ago</p>
+              </div>
+            </div>
+          ))}
+
+          <p>
+            To avoid being banned, check your setup and ensure that MEV relays
+            are activated.
           </p>
           <p>
             Repeated vanilla block proposals like this could lead to your

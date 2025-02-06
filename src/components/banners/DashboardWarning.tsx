@@ -25,11 +25,14 @@ export const DashboardWarning = ({
             </div>
 
             {children}
-           {href && <Link
-              className="font-bold text-DAppPurple-900 hover:underline"
-              href={href}>
-              Learn more here
-            </Link>}
+            {href && (
+              <Link
+                className="font-bold text-DAppPurple-900 hover:underline"
+                href={href}
+                target="_blank">
+                Learn more in our Documentation
+              </Link>
+            )}
           </div>
         </div>
       )}
