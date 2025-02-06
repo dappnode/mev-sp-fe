@@ -16,8 +16,8 @@ import { useSearchInput } from '@/hooks/useSearchInput';
 import { addEthSuffix, shortenEthAddress } from '@/utils/web3';
 import { toFixedNoTrailingZeros } from '@/utils/decimals';
 import { getBeaconChainExplorer } from '@/utils/config';
-import type { Block } from '../types';
 import { getSlotUnixTime } from '@/utils/slotsTime';
+import type { Block } from '../types';
 
 const columnHelper = createColumnHelper<Block>();
 

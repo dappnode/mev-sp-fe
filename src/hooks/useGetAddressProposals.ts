@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
-import { fetchAllBlocks } from '@/client/api/queryFunctions'
 import { useAccount } from 'wagmi'
 import { useMemo } from 'react'
+import { fetchAllBlocks } from '@/client/api/queryFunctions'
 
 export const useGetAddressProposals = () => {
   const { address } = useAccount()
@@ -16,12 +16,13 @@ export const useGetAddressProposals = () => {
     return allBlocksQuery.data.filter(
       (block) => block.withdrawalAddress.toLowerCase() === address.toLowerCase()
     )
-  }, [allBlocksQuery.data, address])
+  }, [allBlocksQuery.data, allBlocksQuery.isSuccess, address])
 
   // Sorting all proposals by slot in descending order
-  const sortedWithdrawalAddressProposals = useMemo(() => {
-    return [...withdrawalAddressProposals].sort((a, b) => b.slot - a.slot)
-  }, [withdrawalAddressProposals])
+  const sortedWithdrawalAddressProposals = useMemo(
+    () => [...withdrawalAddressProposals].sort((a, b) => b.slot - a.slot),
+    [withdrawalAddressProposals]
+  )
 
   const missedProposals = useMemo(
     () =>

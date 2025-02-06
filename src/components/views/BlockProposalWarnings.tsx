@@ -1,7 +1,7 @@
-import { useGetAddressProposals } from '@/hooks/useGetAddressProposals'
+import { ExternalLinkIcon } from '../icons/ExternalLinkIcon'
 import { DashboardWarning } from '../banners/DashboardWarning'
 import Link from 'next/link'
-import { ExternalLinkIcon } from '../icons/ExternalLinkIcon'
+import { useGetAddressProposals } from '@/hooks/useGetAddressProposals'
 import { getBeaconChainExplorer } from '@/utils/config'
 import { useFilterVanillaProposals } from '@/hooks/useFilterVanillaProposals'
 import { daysSinceGivenSlot } from '@/utils/slotsTime'
@@ -9,9 +9,9 @@ import { daysSinceGivenSlot } from '@/utils/slotsTime'
 export default function BlockProposalWarnings() {
   const {
     vanillaProposals,
-    missedProposals,
+    // missedProposals,
     withdrawalAddressProposals,
-    wrongFeeProposals,
+    // wrongFeeProposals,
   } = useGetAddressProposals()
 
   const {
@@ -24,14 +24,15 @@ export default function BlockProposalWarnings() {
 
   const islatestProposalVanilla = LatestProposalData?.rewardType === 'vanila'
 
-  const islatestProposalMissed =
-    LatestProposalData?.blockType === 'missedproposal'
+  // const islatestProposalMissed =
+  //   LatestProposalData?.blockType === 'missedproposal'
 
-  const islatestProposalWrongFee =
-    LatestProposalData?.blockType === 'wrongfeerecipient'
+  // const islatestProposalWrongFee =
+  //   LatestProposalData?.blockType === 'wrongfeerecipient'
 
   return (
     <>
+      {/* LAST PROPOSAL VANILLA */}
       <DashboardWarning
         title="Last block proposal was Vanilla"
         href="https://docs.dappnode.io/docs/smooth/deep-dive-into-smooth/vanilla-blocks"
@@ -45,9 +46,9 @@ export default function BlockProposalWarnings() {
                 className="flex flex-row font-bold text-DAppPurple-900 hover:underline"
                 href={getBeaconChainExplorer(
                   'block',
-                  LatestProposalData.block.toString()
+                  LatestProposalData?.block.toString()
                 )}>
-                {LatestProposalData.block.toString()} <ExternalLinkIcon />
+                {LatestProposalData?.block.toString()} <ExternalLinkIcon />
               </Link>
             </div>
             <div className="flex flex-row gap-2">
@@ -60,13 +61,13 @@ export default function BlockProposalWarnings() {
                 className="flex flex-row font-bold text-DAppPurple-900 hover:underline"
                 href={getBeaconChainExplorer(
                   'validator',
-                  LatestProposalData.validatorIndex.toString()
+                  LatestProposalData?.validatorIndex.toString()
                 )}>
-                #{LatestProposalData.validatorIndex.toString()}{' '}
+                #{LatestProposalData?.validatorIndex.toString()}{' '}
                 <ExternalLinkIcon />
               </Link>
             </div>
-            <p>{daysSinceGivenSlot(LatestProposalData.slot)} days ago</p>
+            <p>{daysSinceGivenSlot(LatestProposalData?.slot)} days ago</p>
           </div>
           <p>
             You are at risk of being banned from the pool due to a Vanilla block
@@ -77,9 +78,7 @@ export default function BlockProposalWarnings() {
             <Link
               className="flex flex-row font-bold text-DAppPurple-900 hover:underline"
               // href={`https://discourse.dappnode.io/t/watchtower-ban-notice-for-'+address`}
-              href={
-                'https://discourse.dappnode.io/t/0x6ef0451ed967a58477e6a04a497fc24143ffa4f9-vanilla-blocks-tracker/'
-              }
+              href="https://discourse.dappnode.io/t/0x6ef0451ed967a58477e6a04a497fc24143ffa4f9-vanilla-blocks-tracker/"
               target="_blank">
               here <ExternalLinkIcon />{' '}
             </Link>
@@ -89,6 +88,7 @@ export default function BlockProposalWarnings() {
           </p>
         </div>
       </DashboardWarning>
+      {/* VANILLA PROPOSAL WITHIN - TIME */}
       <DashboardWarning
         title="You've proposed Vanilla blocks"
         href="https://docs.dappnode.io/docs/smooth/deep-dive-into-smooth/vanilla-blocks"
@@ -103,7 +103,9 @@ export default function BlockProposalWarnings() {
           </p>
 
           {vanillaProposals.map((proposal) => (
-            <div className="flex w-full flex-col items-center justify-center ">
+            <div
+              className="flex w-full flex-col items-center justify-center"
+              key={proposal.block}>
               <div className="flex flex-col items-center justify-center rounded-lg bg-DAppOrange/50 px-5 py-2  md:flex-row md:gap-2">
                 <div className="flex flex-row gap-2">
                   <p>Block</p>

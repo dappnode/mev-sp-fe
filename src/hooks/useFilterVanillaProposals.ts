@@ -1,8 +1,8 @@
-import { fetchValidatorsByDepositor } from '@/client/api/queryFunctions'
-import { daysSinceGivenSlot } from '@/utils/slotsTime'
 import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 import { useAccount } from 'wagmi'
+import { fetchValidatorsByDepositor } from '@/client/api/queryFunctions'
+import { daysSinceGivenSlot } from '@/utils/slotsTime'
 
 interface Proposal {
   block: number
@@ -32,14 +32,16 @@ export const useFilterVanillaProposals = (vanillaProposals: Proposal[]) => {
     enabled: !!address,
   })
 
-  const activeValidators = useMemo(() => {
-    return validators.filter(
-      (validator) =>
-        validator.status === 'active' ||
-        validator.status === 'yellowCard' ||
-        validator.status === 'redCard'
-    )
-  }, [validators])
+  const activeValidators = useMemo(
+    () =>
+      validators.filter(
+        (validator) =>
+          validator.status === 'active' ||
+          validator.status === 'yellowCard' ||
+          validator.status === 'redCard'
+      ),
+    [validators]
+  )
 
   const activeValidatorsDaysLeftMap = (numValidators: number) => {
     if (numValidators >= 10) return 30 // 1 month
@@ -61,7 +63,7 @@ export const useFilterVanillaProposals = (vanillaProposals: Proposal[]) => {
 
   // Days since the 1st vanilla proposal within the time frame
   const daysSinceFirstVanilla = daysSinceGivenSlot(
-    filteredVanillaProposals[filteredVanillaProposals.length - 1].slot
+    filteredVanillaProposals[filteredVanillaProposals.length - 1]?.slot
   )
 
   return { filteredVanillaProposals, showVanillaWarning, daysSinceFirstVanilla }
