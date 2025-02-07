@@ -1,4 +1,3 @@
-import { ExternalLinkIcon } from '../icons/ExternalLinkIcon'
 import { DashboardWarning } from '../banners/DashboardWarning'
 import Link from 'next/link'
 import { useGetAddressProposals } from '@/hooks/useGetAddressProposals'
@@ -43,28 +42,28 @@ export default function BlockProposalWarnings() {
               <p>Block</p>
               <Link
                 target="_blank"
-                className="flex flex-row font-bold text-DAppPurple-900 hover:underline"
+                className="flex flex-row font-bold text-DAppPurple-900 underline"
                 href={getBeaconChainExplorer(
                   'block',
                   LatestProposalData?.block.toString()
                 )}>
-                {LatestProposalData?.block.toString()} <ExternalLinkIcon />
+                {LatestProposalData?.block.toString()} 
               </Link>
             </div>
             <div className="flex flex-row gap-2">
               <p>
-                <span className="hidden md:inline-block">proposed</span> by
+                <span className="hidden md:inline-block">was proposed</span> by
                 validator
               </p>
               <Link
                 target="_blank"
-                className="flex flex-row font-bold text-DAppPurple-900 hover:underline"
+                className="flex flex-row font-bold text-DAppPurple-900 underline"
                 href={getBeaconChainExplorer(
                   'validator',
                   LatestProposalData?.validatorIndex.toString()
                 )}>
                 #{LatestProposalData?.validatorIndex.toString()}{' '}
-                <ExternalLinkIcon />
+                
               </Link>
             </div>
             <p>{daysSinceGivenSlot(LatestProposalData?.slot)} days ago</p>
@@ -76,11 +75,11 @@ export default function BlockProposalWarnings() {
           <p className="flex flex-row gap-1">
             You can <b>check your ban proposal</b>{' '}
             <Link
-              className="flex flex-row font-bold text-DAppPurple-900 hover:underline"
+              className="flex flex-row font-bold text-DAppPurple-900 underline"
               // href={`https://discourse.dappnode.io/t/watchtower-ban-notice-for-'+address`}
               href="https://discourse.dappnode.io/t/0x6ef0451ed967a58477e6a04a497fc24143ffa4f9-vanilla-blocks-tracker/"
               target="_blank">
-              here <ExternalLinkIcon />{' '}
+              here {' '}
             </Link>
           </p>
           <p>
@@ -111,27 +110,27 @@ export default function BlockProposalWarnings() {
                   <p>Block</p>
                   <Link
                     target="_blank"
-                    className="flex flex-row font-bold text-DAppPurple-900 hover:underline"
+                    className="flex flex-row font-bold text-DAppPurple-900 underline"
                     href={getBeaconChainExplorer(
                       'block',
                       proposal.block.toString()
                     )}>
-                    {proposal.block.toString()} <ExternalLinkIcon />
+                    {proposal.block.toString()} 
                   </Link>
                 </div>
                 <div className="flex flex-row gap-2">
                   <p>
-                    <span className="hidden md:inline-block">proposed</span> by
+                    <span className="hidden md:inline-block"> was proposed</span> by
                     validator
                   </p>
                   <Link
                     target="_blank"
-                    className="flex flex-row font-bold text-DAppPurple-900 hover:underline"
+                    className="flex flex-row font-bold text-DAppPurple-900 underline"
                     href={getBeaconChainExplorer(
                       'validator',
                       proposal.validatorIndex.toString()
                     )}>
-                    #{proposal.validatorIndex.toString()} <ExternalLinkIcon />
+                    #{proposal.validatorIndex.toString()} 
                   </Link>
                 </div>
                 <p>{daysSinceGivenSlot(proposal.slot)} days ago</p>

@@ -25,7 +25,7 @@ export function DashboardWarning({
         {children}
         {href && (
           <Link
-            className="font-bold text-DAppPurple-900 hover:underline"
+            className="font-bold text-DAppPurple-900 underline"
             href={href}
             target="_blank">
             Learn more in our Documentation
