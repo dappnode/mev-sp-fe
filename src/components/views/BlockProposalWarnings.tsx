@@ -4,6 +4,7 @@ import { useGetAddressProposals } from '@/hooks/useGetAddressProposals'
 import { getBeaconChainExplorer } from '@/utils/config'
 import { useFilterVanillaProposals } from '@/hooks/useFilterVanillaProposals'
 import { daysSinceGivenSlot } from '@/utils/slotsTime'
+import { SELECTED_CHAIN } from '@/utils/config'
 
 export default function BlockProposalWarnings() {
   const {
@@ -11,6 +12,7 @@ export default function BlockProposalWarnings() {
     // missedProposals,
     withdrawalAddressProposals,
     // wrongFeeProposals,
+    address,
   } = useGetAddressProposals()
 
   const {
@@ -28,6 +30,8 @@ export default function BlockProposalWarnings() {
 
   // const islatestProposalWrongFee =
   //   LatestProposalData?.blockType === 'wrongfeerecipient'
+
+  const banProposalURL = `https://discourse.dappnode.io/t/${address}-vanilla-blocks-tracker/`
 
   return (
     <>
@@ -47,7 +51,7 @@ export default function BlockProposalWarnings() {
                   'block',
                   LatestProposalData?.block.toString()
                 )}>
-                {LatestProposalData?.block.toString()} 
+                {LatestProposalData?.block.toString()}
               </Link>
             </div>
             <div className="flex flex-row gap-2">
@@ -63,7 +67,6 @@ export default function BlockProposalWarnings() {
                   LatestProposalData?.validatorIndex.toString()
                 )}>
                 #{LatestProposalData?.validatorIndex.toString()}{' '}
-                
               </Link>
             </div>
             <p>{daysSinceGivenSlot(LatestProposalData?.slot)} days ago</p>
@@ -72,16 +75,17 @@ export default function BlockProposalWarnings() {
             You are at risk of being banned from the pool due to a Vanilla block
             proposal.{' '}
           </p>{' '}
-          <p className="flex flex-row gap-1">
-            You can <b>check your ban proposal</b>{' '}
-            <Link
-              className="flex flex-row font-bold text-DAppPurple-900 underline"
-              // href={`https://discourse.dappnode.io/t/watchtower-ban-notice-for-'+address`}
-              href="https://discourse.dappnode.io/t/0x6ef0451ed967a58477e6a04a497fc24143ffa4f9-vanilla-blocks-tracker/"
-              target="_blank">
-              here {' '}
-            </Link>
-          </p>
+          {SELECTED_CHAIN === 'mainnet' && (
+            <p className="flex flex-row gap-1">
+              You can <b>check your ban proposal</b>{' '}
+              <Link
+                className="flex flex-row font-bold text-DAppPurple-900 underline"
+                href={banProposalURL}
+                target="_blank">
+                here{' '}
+              </Link>
+            </p>
+          )}
           <p>
             Please review your setup and ensure that MEV relays are activated.
           </p>
@@ -101,7 +105,7 @@ export default function BlockProposalWarnings() {
             <b>{daysSinceFirstVanilla}</b>days:
           </p>
 
-          {vanillaProposals.map((proposal) => (
+          {filteredVanillaProposals.map((proposal) => (
             <div
               className="flex w-full flex-col items-center justify-center"
               key={proposal.block}>
@@ -115,13 +119,16 @@ export default function BlockProposalWarnings() {
                       'block',
                       proposal.block.toString()
                     )}>
-                    {proposal.block.toString()} 
+                    {proposal.block.toString()}
                   </Link>
                 </div>
                 <div className="flex flex-row gap-2">
                   <p>
-                    <span className="hidden md:inline-block"> was proposed</span> by
-                    validator
+                    <span className="hidden md:inline-block">
+                      {' '}
+                      was proposed
+                    </span>{' '}
+                    by validator
                   </p>
                   <Link
                     target="_blank"
@@ -130,7 +137,7 @@ export default function BlockProposalWarnings() {
                       'validator',
                       proposal.validatorIndex.toString()
                     )}>
-                    #{proposal.validatorIndex.toString()} 
+                    #{proposal.validatorIndex.toString()}
                   </Link>
                 </div>
                 <p>{daysSinceGivenSlot(proposal.slot)} days ago</p>

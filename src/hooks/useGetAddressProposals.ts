@@ -53,5 +53,6 @@ export const useGetAddressProposals = () => {
     missedProposals,
     wrongFeeProposals,
     vanillaProposals,
+    address
   }
 }
