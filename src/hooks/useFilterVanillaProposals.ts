@@ -1,24 +1,9 @@
+import { useCheckFalseVanillas, Proposal } from './useCheckFalseVanillas'
 import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 import { useAccount } from 'wagmi'
 import { fetchValidatorsByDepositor } from '@/client/api/queryFunctions'
 import { daysSinceGivenSlot } from '@/utils/slotsTime'
-import { useCheckFalseVanillas } from './useCheckFalseVanillas'
-
-export interface Proposal {
-  block: number
-  slot: number
-  validatorIndex: number
-  validatorKey: string
-  blockType:
-    | 'okpoolproposal'
-    | 'okpoolproposalblskeys'
-    | 'missedproposal'
-    | 'wrongfeerecipient'
-  rewardWei: string
-  rewardType: string
-  withdrawalAddress: string
-}
 
 /**
  * Filters and returns vanilla block proposals within a specified time period

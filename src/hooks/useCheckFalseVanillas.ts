@@ -1,6 +1,20 @@
 import { useEffect, useState } from 'react'
-import { Proposal } from './useFilterVanillaProposals'
 import { z } from 'zod'
+
+export interface Proposal {
+  block: number
+  slot: number
+  validatorIndex: number
+  validatorKey: string
+  blockType:
+    | 'okpoolproposal'
+    | 'okpoolproposalblskeys'
+    | 'missedproposal'
+    | 'wrongfeerecipient'
+  rewardWei: string
+  rewardType: string
+  withdrawalAddress: string
+}
 
 const mevCheckResponseSchema = z.object({
   isVanilla: z.boolean(),
@@ -30,18 +44,20 @@ export function useCheckFalseVanillas({
         try {
           const res = await fetch(`/api/mev-check-api?slot=${proposal.slot}`)
           const data: typeof mevCheckResponseSchema._type = await res.json()
-          data.isVanilla && filteredProposals.push(proposal)
+
+          if (data.isVanilla) {
+            filteredProposals.push(proposal)
+          }
         } catch (error) {
-          console.error(
-            `Error checking mev proposal for slot ${proposal.slot}:`,
-            error
-          )
+          throw new Error(`Failed to fetch MEV check for slot ${proposal.slot}`)
         }
       })
+
       await Promise.all(requests)
 
       setFilteredVanillaProposals(filteredProposals)
     }
+
     checkMEV()
   }, [proposalsToCheck])
 

@@ -45,6 +45,6 @@ export default async function handler(
 
     return res.json({ slot, isVanilla, mevRelays })
   } catch (error) {
-    console.error('Error checking MEV status:', error)
+    return res.status(500).json({ error: 'Error checking MEV status' })
   }
 }
