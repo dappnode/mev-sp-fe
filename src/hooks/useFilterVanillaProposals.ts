@@ -3,8 +3,9 @@ import { useMemo } from 'react'
 import { useAccount } from 'wagmi'
 import { fetchValidatorsByDepositor } from '@/client/api/queryFunctions'
 import { daysSinceGivenSlot } from '@/utils/slotsTime'
+import { useCheckFalseVanillas } from './useCheckFalseVanillas'
 
-interface Proposal {
+export interface Proposal {
   block: number
   slot: number
   validatorIndex: number
@@ -50,7 +51,7 @@ export const useFilterVanillaProposals = (vanillaProposals: Proposal[]) => {
   }
 
   // Filters the vanilla proposals within a time according to 'activeValidatorsDaysLeftMap'
-  const filteredVanillaProposals = useMemo(() => {
+  const filteredVanillaProposalsByTime = useMemo(() => {
     if (!activeValidators.length || !vanillaProposals.length) return []
     return vanillaProposals.filter(
       (proposal) =>
@@ -59,11 +60,17 @@ export const useFilterVanillaProposals = (vanillaProposals: Proposal[]) => {
     )
   }, [activeValidators, vanillaProposals])
 
+  // Filters the false positives vanilla proposals
+  const filteredVanillaProposals = useCheckFalseVanillas({
+    proposalsToCheck: filteredVanillaProposalsByTime,
+  })
+
   const showVanillaWarning = filteredVanillaProposals.length > 0
 
   // Days since the 1st vanilla proposal within the time frame
   const daysSinceFirstVanilla = daysSinceGivenSlot(
-    filteredVanillaProposals[filteredVanillaProposals.length - 1]?.slot
+    filteredVanillaProposals[filteredVanillaProposals.length - 1]
+      ?.slot
   )
 
   return { filteredVanillaProposals, showVanillaWarning, daysSinceFirstVanilla }
