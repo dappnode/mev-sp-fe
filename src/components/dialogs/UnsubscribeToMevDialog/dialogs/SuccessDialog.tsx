@@ -29,7 +29,7 @@ export function SuccessDialog({
             <div className="flex flex-1  items-center">
               <ul className="flex max-h-56 flex-col gap-2 overflow-y-scroll ">
                 {validatorIds.map((validator) => (
-                  <li>- {validator}</li>
+                  <li key={validator}>- {validator}</li>
                 ))}
               </ul>
             </div>
