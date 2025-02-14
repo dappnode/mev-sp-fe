@@ -1,10 +1,10 @@
 import { DashboardWarning } from '../banners/DashboardWarning'
 import Link from 'next/link'
 import { useGetAddressProposals } from '@/hooks/useGetAddressProposals'
-import { getBeaconChainExplorer } from '@/utils/config'
+import { getBeaconChainExplorer, SELECTED_CHAIN } from '@/utils/config'
 import { useFilterVanillaProposals } from '@/hooks/useFilterVanillaProposals'
 import { daysSinceGivenSlot } from '@/utils/slotsTime'
-import { SELECTED_CHAIN } from '@/utils/config'
+import { useDiscourseLinkExists } from '@/hooks/useDiscourseLinkExists'
 
 export default function BlockProposalWarnings() {
   const {
@@ -22,7 +22,6 @@ export default function BlockProposalWarnings() {
   } = useFilterVanillaProposals(vanillaProposals)
 
   const LatestProposalData = withdrawalAddressProposals[0]
-
   const islatestProposalVanilla = LatestProposalData?.rewardType === 'vanila'
 
   // const islatestProposalMissed =
@@ -32,6 +31,8 @@ export default function BlockProposalWarnings() {
   //   LatestProposalData?.blockType === 'wrongfeerecipient'
 
   const banProposalURL = `https://discourse.dappnode.io/t/${address}-vanilla-blocks-tracker/`
+  const banProposalExists = useDiscourseLinkExists(address)
+  
 
   return (
     <>
@@ -75,7 +76,7 @@ export default function BlockProposalWarnings() {
             You are at risk of being banned from the pool due to a Vanilla block
             proposal.{' '}
           </p>{' '}
-          {SELECTED_CHAIN === 'mainnet' && (
+          {SELECTED_CHAIN === 'mainnet' && banProposalExists && (
             <p className="flex flex-row gap-1">
               You can <b>check your ban proposal</b>{' '}
               <Link
