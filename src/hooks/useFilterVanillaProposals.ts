@@ -1,4 +1,4 @@
-import { useCheckFalseVanillas, Proposal } from './useCheckFalseVanillas'
+import { useFalseVanillaFilter, Proposal } from './useFalseVanillaFilter'
 import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 import { useAccount } from 'wagmi'
@@ -46,7 +46,7 @@ export const useFilterVanillaProposals = (vanillaProposals: Proposal[]) => {
   }, [activeValidators, vanillaProposals])
 
   // Filters the false positives vanilla proposals
-  const filteredVanillaProposals = useCheckFalseVanillas({
+  const filteredVanillaProposals = useFalseVanillaFilter({
     proposalsToCheck: filteredVanillaProposalsByTime,
   })
 

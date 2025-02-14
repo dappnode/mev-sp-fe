@@ -26,7 +26,7 @@ const mevCheckResponseSchema = z.object({
  * This is because the oracle cannot fully guarantee that a block is vanilla,
  * even if it has been categorized as such.
  */
-export function useCheckFalseVanillas({
+export function useFalseVanillaFilter({
   proposalsToCheck,
 }: {
   proposalsToCheck: Proposal[]
