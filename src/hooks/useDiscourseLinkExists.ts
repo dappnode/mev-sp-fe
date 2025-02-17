@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 
 /**
- * Checks if the discourse link for the vanilla blocks ban proposal exists filtering by its html code,
- * since the link will exist even if the proposal is not there
+ * Checks if the discourse link for the vanilla blocks ban proposal exists.
+ * the request is done through the server side `discourse-api.ts` to avoid CORS.
  */
 export const useDiscourseLinkExists = (address: string | undefined) => {
   const [banProposalExists, setBanProposalExists] = useState<boolean>(false)
@@ -12,16 +12,11 @@ export const useDiscourseLinkExists = (address: string | undefined) => {
       if (!address) return
 
       const res = await fetch(`/api/discourse-api?address=${address}`)
+      const jsonResponse = await res.json()
 
-      const text = await res.text()
-
-      const jsonResponse = await JSON.parse(text)
-      if (
-        jsonResponse.exists === false ||
-        text.includes('<title>Page Not Found - DAppNode</title>')
-      ) {
-        setBanProposalExists(false)
-      } else setBanProposalExists(true)
+      if (jsonResponse.exists === true) {
+        setBanProposalExists(true)
+      } else setBanProposalExists(false)
     }
 
     checkLinkExists()

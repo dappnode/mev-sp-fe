@@ -16,8 +16,7 @@ export default async function handler(
     const response = await fetch(externalApiUrl)
 
     if (response.ok) {
-      const htmlContent = await response.text()
-      return res.status(200).send(htmlContent)
+      return res.status(200).json({ exists: true })
     }
     return res.status(404).json({ exists: false })
   } catch (error) {
