@@ -153,7 +153,7 @@ export default function BlockProposalWarnings() {
           </p>
           <p className='flex flex-row gap-1'>
       
-             Check out Smooth's new
+             Check out Smooth&#39;s new
             <Link
               target="_blank"
               className="flex flex-row font-bold text-DAppPurple-900 underline"
