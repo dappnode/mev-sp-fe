@@ -33,7 +33,6 @@ export default function BlockProposalWarnings() {
   const banProposalURL = `https://discourse.dappnode.io/t/${address}-vanilla-blocks-tracker/`
   const banProposalExists = useDiscourseLinkExists(address)
   
-
   return (
     <>
       {/* LAST PROPOSAL VANILLA */}
@@ -73,8 +72,8 @@ export default function BlockProposalWarnings() {
             <p>{daysSinceGivenSlot(LatestProposalData?.slot)} days ago</p>
           </div>
           <p>
-            You are at risk of being banned from the pool due to a Vanilla block
-            proposal.{' '}
+            Your validators are at risk of being banned from the pool due to a
+            Vanilla block proposal.{' '}
           </p>{' '}
           {SELECTED_CHAIN === 'mainnet' && banProposalExists && (
             <p className="flex flex-row gap-1">
@@ -88,7 +87,7 @@ export default function BlockProposalWarnings() {
             </p>
           )}
           <p>
-            Please review your setup and ensure that MEV relays are activated.
+            Please review your setup and ensure that multiple MEV relays are activated.
           </p>
         </div>
       </DashboardWarning>
@@ -146,13 +145,26 @@ export default function BlockProposalWarnings() {
             </div>
           ))}
 
+         
           <p>
-            To avoid being banned, check your setup and ensure that MEV relays
-            are activated.
+            Repeated vanilla block proposals like this may result in your
+            validators being banned from smooth.
+            
+          </p>
+          <p className='flex flex-row gap-1'>
+      
+             Check out Smooth's new
+            <Link
+              target="_blank"
+              className="flex flex-row font-bold text-DAppPurple-900 underline"
+              href="https://snapshot.box/#/s:dao.smooth.dappnode.eth/proposal/0xddd71930ac1a2876cc7e012861320a19b24fc2c4cc8289060c626737413251a3">
+                Terms of Use
+            </Link>{' '}
+            for more details
           </p>
           <p>
-            Repeated vanilla block proposals like this could lead to your
-            account being banned from Smooth.
+            To avoid being banned, check your setup and ensure that multiple MEV relays
+            are activated.
           </p>
         </div>
       </DashboardWarning>{' '}
