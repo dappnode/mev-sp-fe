@@ -13,14 +13,17 @@ const steps = ['Confirmation', 'Feedback', 'Unsubscribe', 'Done']
 
 interface UnsubscribeToMevDialogProps {
   validatorId: number
+  onActionComplete?: () => void;
 }
 
 interface MultiUnsubscribeToMevDialogProps {
   validatorIds: number[]
+  onActionComplete?: () => void;
 }
 
 export function UnsubscribeToMevDialog({
   validatorId,
+  onActionComplete,
 }: UnsubscribeToMevDialogProps) {
   const { chain } = useAccount()
   const [dialogState, setDialogState] = useState<IDialogStates>('initial')
@@ -81,6 +84,7 @@ export function UnsubscribeToMevDialog({
               handleChangeDialogState={setDialogState}
               handleClose={handleCloseDialog}
               setShowCloseButton={setShowCloseButton}
+              onActionComplete={onActionComplete}
               steps={steps}
               validatorId={validatorId}
               selectedOptions={selectedOptions}
@@ -105,6 +109,7 @@ export function UnsubscribeToMevDialog({
 
 export function MultiUnsubscribeToMevDialog({
   validatorIds,
+  onActionComplete,
 }: MultiUnsubscribeToMevDialogProps) {
   const { chain } = useAccount()
   const [dialogState, setDialogState] = useState<IDialogStates>('initial')
@@ -164,6 +169,7 @@ export function MultiUnsubscribeToMevDialog({
               handleChangeDialogState={setDialogState}
               handleClose={handleCloseDialog}
               setShowCloseButton={setShowCloseButton}
+              onActionComplete={onActionComplete}
               steps={steps}
               validatorIds={validatorIds}
               selectedOptions={selectedOptions}

@@ -8,9 +8,10 @@ import { ServerErrorWarning } from './components/ServerErrorWarning'
 import { headerTooltip, PAGE_SIZE } from './config'
 import { TableLayout } from '../components/Table'
 import { HeaderTooltip } from '../components/HeaderTooltip'
-import { useMemo, useState, useEffect, ChangeEventHandler } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import Link from 'next/link'
 import {
+  Table,
   ColumnDef,
   createColumnHelper,
   getCoreRowModel,
@@ -35,12 +36,7 @@ import type { Validator } from '../types'
 
 const columnHelper = createColumnHelper<Validator>()
 
-const useTableColumns = (table: {
-  getIsAllRowsSelected: () => boolean | undefined
-  getToggleAllRowsSelectedHandler: () =>
-    | ChangeEventHandler<HTMLInputElement>
-    | undefined
-}) =>
+const useTableColumns = (table: Table<Validator>) =>
   useMemo(
     () => [
       columnHelper.accessor('checkbox', {
@@ -129,11 +125,15 @@ const useTableColumns = (table: {
           return (
             <div className="mr-3">
               {isSubscribed ? (
-                <UnsubscribeToMevDialog validatorId={validatorId} />
+                <UnsubscribeToMevDialog
+                  validatorId={validatorId}
+                  onActionComplete={() => table.resetRowSelection()}
+                />
               ) : (
                 <SubscribeToMevDialog
                   validatorId={validatorId}
                   validatorKey={validatorKey}
+                  onActionComplete={() => table.resetRowSelection()}
                 />
               )}
             </div>
@@ -253,8 +253,12 @@ export function MyValidatorsTable({
           <MultiSubscribeToMevDialog
             validatorIds={selectedValidatorIds}
             validatorKeys={selectedValidatorKeys}
+            onActionComplete={() => table.resetRowSelection()}
           />
-          <MultiUnsubscribeToMevDialog validatorIds={selectedValidatorIds} />
+          <MultiUnsubscribeToMevDialog
+            validatorIds={selectedValidatorIds}
+            onActionComplete={() => table.resetRowSelection()}
+          />
         </div>
       )}
       <TableLayout

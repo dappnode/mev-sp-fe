@@ -12,6 +12,7 @@ import { useHandleSubscriptionStatus } from '@/hooks/useHandleSubscriptionStatus
 interface DepositDialogProps extends DialogProps {
   validatorId: number
   setShowCloseButton: (show: boolean) => void
+  onActionComplete?: () => void;
 }
 
 export function DepositDialog({
@@ -20,6 +21,7 @@ export function DepositDialog({
   setShowCloseButton,
   handleClose,
   handleChangeDialogState,
+  onActionComplete,
 }: DepositDialogProps) {
   const { chain } = useAccount()
 
@@ -40,8 +42,9 @@ export function DepositDialog({
     if (isReceiptSuccess) {
       setShowCloseButton(true)
       handleChangeDialogState('success')
+      onActionComplete?.()
     }
-  }, [isReceiptSuccess, handleChangeDialogState, setShowCloseButton])
+  }, [isReceiptSuccess, handleChangeDialogState, setShowCloseButton, onActionComplete])
 
   return (
     <>
