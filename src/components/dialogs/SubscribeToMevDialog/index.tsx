@@ -48,7 +48,10 @@ export function SubscribeToMevDialog({
 
   const handleOpenChangeDialog = (newOpen: boolean) => {
     handleOpenChange(newOpen)
-    if (!newOpen) setDialogState('initial')
+    if (!newOpen) {
+      setDialogState('initial')
+      onActionComplete?.()
+    }
   }
 
   return (
@@ -117,7 +120,10 @@ export function MultiSubscribeToMevDialog({
 
   const handleOpenChangeDialog = (newOpen: boolean) => {
     handleOpenChange(newOpen)
-    if (!newOpen) setDialogState('initial')
+    if (!newOpen) {
+      setDialogState('initial')
+      onActionComplete?.()
+    }
   }
 
   return (
