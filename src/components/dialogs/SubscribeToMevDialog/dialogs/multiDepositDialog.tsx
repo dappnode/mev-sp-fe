@@ -11,7 +11,6 @@ import { useHandleSubscriptionStatus } from '@/hooks/useHandleSubscriptionStatus
 interface MultiDepositDialogProps extends DialogProps {
   validatorIds: number[]
   setShowCloseButton: (show: boolean) => void
-  onActionComplete?: () => void;
 }
 
 export function MultiDepositDialog({
@@ -20,7 +19,6 @@ export function MultiDepositDialog({
   setShowCloseButton,
   handleClose,
   handleChangeDialogState,
-  onActionComplete,
 }: MultiDepositDialogProps) {
   const { chain } = useAccount()
 
@@ -42,9 +40,8 @@ export function MultiDepositDialog({
     if (isReceiptSuccess) {
       setShowCloseButton(true)
       handleChangeDialogState('success')
-      onActionComplete?.()
     }
-  }, [isReceiptSuccess, handleChangeDialogState, setShowCloseButton, onActionComplete])
+  }, [isReceiptSuccess, handleChangeDialogState, setShowCloseButton])
   return (
     <>
       <div className="-mt-2 text-DAppDeep dark:text-DAppDarkText">

@@ -42,6 +42,7 @@ export function SubscribeToMevDialog({
 
   const handleCloseDialog = () => {
     setDialogState('initial')
+    onActionComplete?.()
     handleClose()
   }
 
@@ -82,7 +83,6 @@ export function SubscribeToMevDialog({
               handleChangeDialogState={setDialogState}
               handleClose={handleCloseDialog}
               setShowCloseButton={setShowCloseButton}
-              onActionComplete={onActionComplete}
               steps={steps}
               validatorId={validatorId}
             />
@@ -111,6 +111,7 @@ export function MultiSubscribeToMevDialog({
 
   const handleCloseDialog = () => {
     setDialogState('initial')
+    onActionComplete?.()
     handleClose()
   }
 
@@ -142,7 +143,6 @@ export function MultiSubscribeToMevDialog({
               handleChangeDialogState={setDialogState}
               handleClose={handleCloseDialog}
               setShowCloseButton={setShowCloseButton}
-              onActionComplete={onActionComplete}
               steps={stepsMulti}
               validatorIds={validatorIds}
             />

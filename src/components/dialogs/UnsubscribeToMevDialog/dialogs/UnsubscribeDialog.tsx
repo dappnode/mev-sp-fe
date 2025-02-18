@@ -11,7 +11,6 @@ import { useHandleSubscriptionStatus } from '@/hooks/useHandleSubscriptionStatus
 interface UnsubscribeDialogProps extends DialogProps {
   validatorId: number
   setShowCloseButton: (show: boolean) => void
-  onActionComplete?: () => void;
   selectedOptions: string[]
   otherOption: string
   otherOptionSelected: boolean
@@ -24,7 +23,6 @@ export function UnsubscribeDialog({
   setShowCloseButton,
   handleChangeDialogState,
   handleClose,
-  onActionComplete,
   selectedOptions,
   otherOptionSelected,
   otherOption,
@@ -70,10 +68,9 @@ export function UnsubscribeDialog({
   useEffect(() => {
     if (isReceiptSuccess) {
       handleChangeDialogState('success')
-      onActionComplete?.()
       postFeedbackData()
     }
-  }, [isReceiptSuccess, handleChangeDialogState, postFeedbackData, onActionComplete])
+  }, [isReceiptSuccess, handleChangeDialogState, postFeedbackData])
 
   return (
     <>

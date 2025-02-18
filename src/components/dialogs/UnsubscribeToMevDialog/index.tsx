@@ -39,6 +39,7 @@ export function UnsubscribeToMevDialog({
 
   const handleCloseDialog = () => {
     setDialogState('initial')
+    onActionComplete?.()
     handleClose()
   }
 
@@ -84,7 +85,6 @@ export function UnsubscribeToMevDialog({
               handleChangeDialogState={setDialogState}
               handleClose={handleCloseDialog}
               setShowCloseButton={setShowCloseButton}
-              onActionComplete={onActionComplete}
               steps={steps}
               validatorId={validatorId}
               selectedOptions={selectedOptions}
@@ -124,6 +124,7 @@ export function MultiUnsubscribeToMevDialog({
 
   const handleCloseDialog = () => {
     setDialogState('initial')
+    onActionComplete?.()
     handleClose()
   }
 
@@ -169,7 +170,6 @@ export function MultiUnsubscribeToMevDialog({
               handleChangeDialogState={setDialogState}
               handleClose={handleCloseDialog}
               setShowCloseButton={setShowCloseButton}
-              onActionComplete={onActionComplete}
               steps={steps}
               validatorIds={validatorIds}
               selectedOptions={selectedOptions}

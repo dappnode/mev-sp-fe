@@ -24,20 +24,10 @@ export function SuccessDialog({
         <CongratulationsIcon />
         <h4 className="font-bold">Success!</h4>
         {isMultiAction ? (
-          <div className="my-10 flex flex-1 flex-col items-center gap-5">
-            <p>You have successfully unsubscribed the following validators:</p>
-            <div className="flex flex-1  items-center">
-              <ul className="flex max-h-56 flex-col gap-2 overflow-y-scroll ">
-                {validatorIds.map((validator) => (
-                  <li key={validator}>- {validator}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
+          <p>You have successfully unsubscribed your validators from Smooth.</p>
         ) : (
           <p>
-            You have successfully unsubscribed validator <b>{validatorIds}</b>{' '}
-            from Smooth.
+            You have successfully unsubscribed your validator from Smooth.
           </p>
         )}
 
