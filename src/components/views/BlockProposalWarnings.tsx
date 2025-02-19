@@ -5,13 +5,14 @@ import { getBeaconChainExplorer, SELECTED_CHAIN } from '@/utils/config'
 import { useFilterVanillaProposals } from '@/hooks/useFilterVanillaProposals'
 import { daysSinceGivenSlot } from '@/utils/slotsTime'
 import { useDiscourseLinkExists } from '@/hooks/useDiscourseLinkExists'
+import { useFilterValidatorsBannedByDAO } from '@/hooks/useFilterValidatorsBannedByDAO'
 
 export default function BlockProposalWarnings() {
   const {
     vanillaProposals,
     // missedProposals,
     withdrawalAddressProposals,
-    // wrongFeeProposals,
+    wrongFeeProposals,
     address,
   } = useGetAddressProposals()
 
@@ -20,6 +21,9 @@ export default function BlockProposalWarnings() {
     showVanillaWarning,
     daysSinceFirstVanilla,
   } = useFilterVanillaProposals(vanillaProposals)
+
+  const validatorsBannedByDAO =
+    useFilterValidatorsBannedByDAO(wrongFeeProposals)
 
   const LatestProposalData = withdrawalAddressProposals[0]
   const islatestProposalVanilla = LatestProposalData?.rewardType === 'vanila'
@@ -32,12 +36,55 @@ export default function BlockProposalWarnings() {
 
   const banProposalURL = `https://discourse.dappnode.io/t/${address}-vanilla-blocks-tracker/`
   const banProposalExists = useDiscourseLinkExists(address)
-  
+
   return (
     <>
+      {/* BANNED BY DAO */}
+      <DashboardWarning
+        title="One of your validators has been banned by the DAO"
+        variant="danger"
+        href="https://docs.dappnode.io/docs/smooth/deep-dive-into-smooth/vanilla-blocks"
+        showIf={validatorsBannedByDAO.length > 0}>
+        {' '}
+        <p>
+          The following validators were banned by the DAO because of vanilla
+          blocks proposals:
+        </p>
+        {validatorsBannedByDAO.map((validator) => (
+          <div
+            className="flex flex-col items-center gap-2"
+            key={validator.validatorIndex}>
+            <div className="flex items-center justify-center gap-2 rounded-lg bg-red-400 px-5 py-2 dark:bg-red-950/30">
+              <p>Validator</p>
+              <Link
+                target="_blank"
+                className="flex flex-row font-bold text-DAppPurple-900 underline"
+                href={getBeaconChainExplorer(
+                  'validator',
+                  validator.validatorIndex.toString()
+                )}>
+                #{validator.validatorIndex.toString()}{' '}
+              </Link>
+            </div>
+          </div>
+        ))}
+        {SELECTED_CHAIN === 'mainnet' && banProposalExists && (
+          <p className="flex flex-row gap-1">
+            You can <b>check your ban proposal</b>{' '}
+            <Link
+              className="flex flex-row font-bold text-DAppPurple-900 underline"
+              href={banProposalURL}
+              target="_blank">
+              here{' '}
+            </Link>
+          </p>
+        )}
+        <p>In order to unban your validators you may...</p>
+      </DashboardWarning>
       {/* LAST PROPOSAL VANILLA */}
       <DashboardWarning
         title="Last block proposal was Vanilla"
+        variant="caution"
         href="https://docs.dappnode.io/docs/smooth/deep-dive-into-smooth/vanilla-blocks"
         showIf={islatestProposalVanilla}>
         <div className="flex flex-col items-center gap-2">
@@ -87,13 +134,15 @@ export default function BlockProposalWarnings() {
             </p>
           )}
           <p>
-            Please review your setup and ensure that multiple MEV relays are activated.
+            Please review your setup and ensure that multiple MEV relays are
+            activated.
           </p>
         </div>
       </DashboardWarning>
       {/* VANILLA PROPOSAL WITHIN - TIME */}
       <DashboardWarning
         title="You've proposed Vanilla blocks"
+        variant="caution"
         href="https://docs.dappnode.io/docs/smooth/deep-dive-into-smooth/vanilla-blocks"
         showIf={showVanillaWarning && !islatestProposalVanilla}>
         <div className="flex flex-col items-center gap-2">
@@ -145,26 +194,23 @@ export default function BlockProposalWarnings() {
             </div>
           ))}
 
-         
           <p>
             Repeated vanilla block proposals like this may result in your
             validators being banned from smooth.
-            
           </p>
-          <p className='flex flex-row gap-1'>
-      
-             Check out Smooth&#39;s new
+          <p className="flex flex-row gap-1">
+            Check out Smooth&#39;s new
             <Link
               target="_blank"
               className="flex flex-row font-bold text-DAppPurple-900 underline"
               href="https://snapshot.box/#/s:dao.smooth.dappnode.eth/proposal/0xddd71930ac1a2876cc7e012861320a19b24fc2c4cc8289060c626737413251a3">
-                Terms of Use
+              Terms of Use
             </Link>{' '}
             for more details
           </p>
           <p>
-            To avoid being banned, check your setup and ensure that multiple MEV relays
-            are activated.
+            To avoid being banned, check your setup and ensure that multiple MEV
+            relays are activated.
           </p>
         </div>
       </DashboardWarning>{' '}
