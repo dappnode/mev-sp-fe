@@ -1,25 +1,5 @@
 import { useEffect, useState } from 'react'
-import { z } from 'zod'
-
-export interface Proposal {
-  block: number
-  slot: number
-  validatorIndex: number
-  validatorKey: string
-  blockType:
-    | 'okpoolproposal'
-    | 'okpoolproposalblskeys'
-    | 'missedproposal'
-    | 'wrongfeerecipient'
-  rewardWei: string
-  rewardType: string
-  withdrawalAddress: string
-}
-
-const mevCheckResponseSchema = z.object({
-  isVanilla: z.boolean(),
-  relays: z.array(z.string()),
-})
+import { Proposal } from '@/client/api/schemas'
 
 /**
  * Returns only the proposals that are truly vanilla proposals.
@@ -43,7 +23,10 @@ export function useFalseVanillaFilter({
       const requests = proposalsToCheck.map(async (proposal) => {
         try {
           const res = await fetch(`/api/mev-check-api?slot=${proposal.slot}`)
-          const data: typeof mevCheckResponseSchema._type = await res.json()
+          const data: {
+            isVanilla: boolean
+            relays: string[]
+          } = await res.json()
 
           if (data.isVanilla) {
             filteredProposals.push(proposal)

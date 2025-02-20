@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react'
 export const useDiscourseLinkExists = (address: string | undefined) => {
   const [banProposalExists, setBanProposalExists] = useState<boolean>(false)
 
+  const banProposalURL = `https://discourse.dappnode.io/t/${address}-vanilla-blocks-tracker/`
+
   useEffect(() => {
     const checkLinkExists = async () => {
       if (!address) return
@@ -22,5 +24,5 @@ export const useDiscourseLinkExists = (address: string | undefined) => {
     checkLinkExists()
   }, [address])
 
-  return banProposalExists
+  return { banProposalExists, banProposalURL }
 }

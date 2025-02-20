@@ -1,14 +1,14 @@
 import { useQuery } from '@tanstack/react-query'
 import { useAccount } from 'wagmi'
 import { fetchValidatorsByDepositor } from '@/client/api/queryFunctions'
-import { BlockType } from '@/client/api/schemas'
+import {  Proposal } from '@/client/api/schemas'
 
 /**
  * Filters and returns validators banned by DAO
  * @param userWrongFeeProposals Array of user's wrong fee proposals
  */
 export function useFilterValidatorsBannedByDAO(
-  userWrongFeeProposals: BlockType[]
+  userWrongFeeProposals: Proposal[]
 ) {
   const { address } = useAccount()
 

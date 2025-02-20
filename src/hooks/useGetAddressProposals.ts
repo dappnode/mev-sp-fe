@@ -1,10 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
-import { useAccount } from 'wagmi'
 import { useMemo } from 'react'
 import { fetchAllBlocks } from '@/client/api/queryFunctions'
 
-export const useGetAddressProposals = () => {
-  const { address } = useAccount()
+export const useGetAddressProposals = (address:`0x${string}` | undefined) => {
 
   const allBlocksQuery = useQuery({
     queryKey: ['allblocks'],
@@ -53,6 +51,5 @@ export const useGetAddressProposals = () => {
     missedProposals,
     wrongFeeProposals,
     vanillaProposals,
-    address
   }
 }

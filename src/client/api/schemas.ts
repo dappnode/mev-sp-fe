@@ -21,7 +21,7 @@ export const BlockSchema = z.object({
   withdrawalAddress: z.string(),
 })
 
-export interface BlockType {
+export interface Proposal {
   block: number
   slot: number
   validatorIndex: number

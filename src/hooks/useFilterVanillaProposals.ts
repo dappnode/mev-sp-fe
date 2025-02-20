@@ -1,9 +1,10 @@
-import { useFalseVanillaFilter, Proposal } from './useFalseVanillaFilter'
+import { useFalseVanillaFilter } from './useFalseVanillaFilter'
 import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 import { useAccount } from 'wagmi'
 import { fetchValidatorsByDepositor } from '@/client/api/queryFunctions'
 import { daysSinceGivenSlot } from '@/utils/slotsTime'
+import { Proposal } from '@/client/api/schemas'
 
 /**
  * Filters and returns vanilla block proposals within a specified time period
