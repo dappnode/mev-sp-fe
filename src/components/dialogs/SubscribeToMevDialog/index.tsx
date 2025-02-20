@@ -21,16 +21,19 @@ const stepsMulti = ['Fee recipient', 'Deposit', 'Done']
 interface SubscribeToMevDialogProps {
   validatorId: number
   validatorKey: `0x${string}`
+  onActionComplete?: () => void
 }
 
 interface MultiSubscribeToMevDialogProps {
   validatorIds: number[]
   validatorKeys: `0x${string}`[]
+  onActionComplete?: () => void
 }
 
 export function SubscribeToMevDialog({
   validatorId,
   validatorKey,
+  onActionComplete,
 }: SubscribeToMevDialogProps) {
   const { chain } = useAccount()
   const [dialogState, setDialogState] = useState<IDialogStates>('initial')
@@ -39,12 +42,16 @@ export function SubscribeToMevDialog({
 
   const handleCloseDialog = () => {
     setDialogState('initial')
+    onActionComplete?.()
     handleClose()
   }
 
   const handleOpenChangeDialog = (newOpen: boolean) => {
     handleOpenChange(newOpen)
-    if (!newOpen) setDialogState('initial')
+    if (!newOpen) {
+      setDialogState('initial')
+      onActionComplete?.()
+    }
   }
 
   return (
@@ -98,6 +105,7 @@ export function SubscribeToMevDialog({
 export function MultiSubscribeToMevDialog({
   validatorIds,
   validatorKeys,
+  onActionComplete,
 }: MultiSubscribeToMevDialogProps) {
   const { chain } = useAccount()
   const [dialogState, setDialogState] = useState<IDialogStates>('initial')
@@ -106,12 +114,16 @@ export function MultiSubscribeToMevDialog({
 
   const handleCloseDialog = () => {
     setDialogState('initial')
+    onActionComplete?.()
     handleClose()
   }
 
   const handleOpenChangeDialog = (newOpen: boolean) => {
     handleOpenChange(newOpen)
-    if (!newOpen) setDialogState('initial')
+    if (!newOpen) {
+      setDialogState('initial')
+      onActionComplete?.()
+    }
   }
 
   return (

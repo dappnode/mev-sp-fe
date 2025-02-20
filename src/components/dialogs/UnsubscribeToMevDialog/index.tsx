@@ -13,14 +13,17 @@ const steps = ['Confirmation', 'Feedback', 'Unsubscribe', 'Done']
 
 interface UnsubscribeToMevDialogProps {
   validatorId: number
+  onActionComplete?: () => void
 }
 
 interface MultiUnsubscribeToMevDialogProps {
   validatorIds: number[]
+  onActionComplete?: () => void
 }
 
 export function UnsubscribeToMevDialog({
   validatorId,
+  onActionComplete,
 }: UnsubscribeToMevDialogProps) {
   const { chain } = useAccount()
   const [dialogState, setDialogState] = useState<IDialogStates>('initial')
@@ -36,14 +39,17 @@ export function UnsubscribeToMevDialog({
 
   const handleCloseDialog = () => {
     setDialogState('initial')
+    onActionComplete?.()
     handleClose()
   }
 
   const handleOpenChangeDialog = (newOpen: boolean) => {
     handleOpenChange(newOpen)
-    if (!newOpen) setDialogState('initial')
+    if (!newOpen) {
+      setDialogState('initial')
+      onActionComplete?.()
+    }
   }
-
 
   return (
     <BaseDialog
@@ -102,9 +108,9 @@ export function UnsubscribeToMevDialog({
   )
 }
 
-
 export function MultiUnsubscribeToMevDialog({
   validatorIds,
+  onActionComplete,
 }: MultiUnsubscribeToMevDialogProps) {
   const { chain } = useAccount()
   const [dialogState, setDialogState] = useState<IDialogStates>('initial')
@@ -119,14 +125,17 @@ export function MultiUnsubscribeToMevDialog({
 
   const handleCloseDialog = () => {
     setDialogState('initial')
+    onActionComplete?.()
     handleClose()
   }
 
   const handleOpenChangeDialog = (newOpen: boolean) => {
     handleOpenChange(newOpen)
-    if (!newOpen) setDialogState('initial')
+    if (!newOpen) {
+      setDialogState('initial')
+      onActionComplete?.()
+    }
   }
-
 
   return (
     <BaseDialog
