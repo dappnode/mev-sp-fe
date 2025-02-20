@@ -21,6 +21,21 @@ export const BlockSchema = z.object({
   withdrawalAddress: z.string(),
 })
 
+export interface Proposal {
+  block: number
+  slot: number
+  validatorIndex: number
+  validatorKey: string
+  blockType:
+    | 'okpoolproposal'
+    | 'okpoolproposalblskeys'
+    | 'missedproposal'
+    | 'wrongfeerecipient'
+  rewardWei: string
+  rewardType: 'vanila' | 'mev' | 'unknownrewardtype' | ''
+  withdrawalAddress: string
+}
+
 export const DonationSchema = z.object({
   amountWei: z.string(),
   blockNumber: z.number(),

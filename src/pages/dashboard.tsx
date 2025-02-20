@@ -4,7 +4,7 @@ import { Statistics } from '@/components/views/Statistics'
 import { LatestBlocksSP } from '@/components/views/LatestBlocksSP'
 import { LatestDonationsSP } from '@/components/views/LatestDonationsSP'
 import SlidingBanner from '@/components/banners/SlidingBanner'
-import BlockProposalWarnings from '@/components/views/BlockProposalWarnings'
+import DashboardWarnings from '@/components/views/DashboardWarnings'
 
 export default function Dashboard() {
   return (
@@ -18,7 +18,7 @@ export default function Dashboard() {
       />
       <main>
         <Statistics />
-        <BlockProposalWarnings />
+        <DashboardWarnings />
         <UserInfo />
         <LatestBlocksSP />
         <LatestDonationsSP />
