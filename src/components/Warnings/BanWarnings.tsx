@@ -30,7 +30,7 @@ export default function BanWarnings({
         title="One of your validators has been banned by the DAO"
         variant="danger"
         href="https://docs.dappnode.io/docs/smooth/deep-dive-into-smooth/vanilla-blocks"
-        showIf={validatorsBannedByDAO.length>0}>
+        showIf={false}>
         {' '}
         <WarningContentWrapper>
           <p>
@@ -62,7 +62,6 @@ export default function BanWarnings({
               </Link>
             </p>
           )}
-          <p>In order to unban your validators you may...</p>
         </WarningContentWrapper>{' '}
       </WarningCard>
     </>

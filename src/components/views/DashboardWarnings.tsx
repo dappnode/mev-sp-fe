@@ -3,7 +3,7 @@ import VanillaWarnings from '../Warnings/VanillaWarnings'
 import { useAccount } from 'wagmi'
 import { useGetAddressProposals } from '@/hooks/useGetAddressProposals'
 
-export default function BlockProposalWarnings() {
+export default function DashboardWarnings() {
   const { address } = useAccount()
 
   const {
