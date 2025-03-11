@@ -25,7 +25,7 @@ export function WarningCard({
       className={`mx-auto mt-6 h-full w-full rounded-lg px-6 py-4 ${
         variant === 'caution'
           ? 'bg-DAppOrange/70 dark:bg-DAppOrange/75'
-          : 'bg-red-600/70 dark:bg-red-800/75'
+          : 'bg-red-600/70 dark:bg-[#74191a]/75'
       }`}>
       <div className="flex h-full w-full flex-col justify-around gap-2 text-center">
         <div className="flex w-full flex-row  justify-center gap-5">

@@ -23,10 +23,11 @@ export function useFilterValidatorsBannedByDAO(
   )
 
   // Is considered a validator banned by DAO if its state is 'banned' but it has not proposed a wrong fee block
-  const validatorsBannedByDAO = bannedValidators.filter((validator) =>
-    userWrongFeeProposals.some(
-      (proposal) => proposal.validatorIndex !== validator.validatorIndex
-    )
+  const validatorsBannedByDAO = bannedValidators.filter(
+    (validator) =>
+      !userWrongFeeProposals.some(
+        (proposal) => proposal.validatorIndex === validator.validatorIndex
+      )
   )
 
   return validatorsBannedByDAO
