@@ -17,7 +17,7 @@ export default function DashboardWarnings() {
 
   return (
     <>
-      <BanWarnings address={address} wrongFeeProposals={wrongFeeProposals} />
+      <BanWarnings wrongFeeProposals={wrongFeeProposals} />
       <VanillaWarnings
         address={address}
         latestProposalData={latestProposalData}
