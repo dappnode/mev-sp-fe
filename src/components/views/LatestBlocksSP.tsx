@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import type { Block } from '@/components/tables/types'
 import { fetchAllBlocks } from '@/client/api/queryFunctions'
 import { weiToEth } from '@/utils/web3'
-import { SELECTED_CHAIN } from '@/utils/config'
+import { BEACON_CHAIN_URLS, SELECTED_CHAIN } from '@/utils/config'
 
 export function LatestBlocksSP() {
   const { data, isLoading } = useQuery({
@@ -43,11 +43,7 @@ export function LatestBlocksSP() {
       <LatestBlocksTable
         data={blocks}
         isLoading={isLoading}
-        blockExplorerUrl={
-          SELECTED_CHAIN === 'mainnet'
-            ? 'https://beaconcha.in'
-            : 'https://holesky.beaconcha.in'
-        }
+        blockExplorerUrl={BEACON_CHAIN_URLS[SELECTED_CHAIN]}
       />
     </div>
   )

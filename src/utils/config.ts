@@ -1,36 +1,53 @@
-const SUPPORTED_CHAINS = ['mainnet', 'holesky']
+const SUPPORTED_CHAINS = ['mainnet', 'holesky', 'hoodi'] as const
+
+export type Chain = (typeof SUPPORTED_CHAINS)[number]
+
+const selectedChain = process.env.NEXT_PUBLIC_SELECTED_CHAIN
 
 if (!process.env.NEXT_PUBLIC_SMOOTHING_POOL_ADDRESS) {
   throw new Error('NEXT_PUBLIC_SMOOTHING_POOL_ADDRESS is not set')
 }
 
-if (!process.env.NEXT_PUBLIC_SELECTED_CHAIN) {
+if (!selectedChain) {
   throw new Error('NEXT_PUBLIC_SELECTED_CHAIN is not set')
 }
 
-if (!SUPPORTED_CHAINS.includes(process.env.NEXT_PUBLIC_SELECTED_CHAIN)) {
+if (!SUPPORTED_CHAINS.includes(selectedChain as Chain)) {
   throw new Error(
     'NEXT_PUBLIC_SELECTED_CHAIN is not one of the supported chains'
   )
 }
 
-export const SELECTED_CHAIN = process.env.NEXT_PUBLIC_SELECTED_CHAIN
+export const SELECTED_CHAIN = selectedChain as Chain
 
 export const SMOOTHING_POOL_ADDRESS = process.env
   .NEXT_PUBLIC_SMOOTHING_POOL_ADDRESS as `0x${string}`
 
-export const FEEDBACK_SCRIPT_URL =
-  process.env.NEXT_PUBLIC_FEEDBACK_SCRIPT_URL
+export const GENESIS_CHAIN_TIMESTAMP: Record<Chain, number> = {
+  mainnet: 1606824023,
+  holesky: 1695902400,
+  hoodi: 1742212800,
+}
+
+export const FEEDBACK_SCRIPT_URL = process.env.NEXT_PUBLIC_FEEDBACK_SCRIPT_URL
+
+export const BEACON_CHAIN_URLS: Record<Chain, string> = {
+  mainnet: 'https://beaconcha.in',
+  holesky: 'https://holesky.beaconcha.in',
+  hoodi: 'https://hoodi.beaconcha.in',
+}
+
+export const EL_EXPLORER_URLS: Record<Chain, string> = {
+  mainnet: 'https://eth.blockscout.com',
+  holesky: 'https://eth-holesky.blockscout.com',
+  hoodi: 'https://eth-hoodi.blockscout.com',
+}
 
 export const getBeaconChainExplorer = (
   type: 'slot' | 'validator' | 'block' | 'tx',
   endpoint: string | number
-) => {
-  const baseUrl =
-    SELECTED_CHAIN === 'mainnet'
-      ? 'https://beaconcha.in'
-      : 'https://holesky.beaconcha.in'
-
+): string => {
+  const baseUrl = BEACON_CHAIN_URLS[SELECTED_CHAIN]
   return `${baseUrl}/${type}/${endpoint}`
 }
 

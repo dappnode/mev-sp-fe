@@ -2,6 +2,10 @@ if (!process.env.BACKEND_URL) {
   throw new Error('BACKEND_URL environment variable is not defined');
 }
 
+const isTestnet =
+  process.env.NEXT_PUBLIC_SELECTED_CHAIN === 'holesky' ||
+  process.env.NEXT_PUBLIC_SELECTED_CHAIN === 'hoodi'
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -21,7 +25,7 @@ const nextConfig = {
 
   async headers() {
     const headers = [];
-    if (process.env.NEXT_PUBLIC_SELECTED_CHAIN === 'holesky') {
+    if (isTestnet) {
       headers.push({
         headers: [
           {

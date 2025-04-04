@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import type { Donation } from '@/components/tables/types'
 import { fetchAllDonations } from '@/client/api/queryFunctions'
 import { weiToEth } from '@/utils/web3'
-import { SELECTED_CHAIN } from '@/utils/config'
+import { EL_EXPLORER_URLS, SELECTED_CHAIN } from '@/utils/config'
 
 export function LatestDonationsSP() {
   const { data, isLoading } = useQuery({
@@ -26,11 +26,7 @@ export function LatestDonationsSP() {
       <LatestDonationsTable
         data={donations}
         isLoading={isLoading}
-        blockExplorerUrl={
-          SELECTED_CHAIN === 'mainnet'
-            ? 'https://eth.blockscout.com'
-            : 'https://eth-holesky.blockscout.com'
-        }
+        blockExplorerUrl={EL_EXPLORER_URLS[SELECTED_CHAIN]}
       />
     </div>
   )

@@ -5,7 +5,7 @@ import { utils } from 'ethers'
 import { useState, useEffect, useCallback } from 'react'
 import { BaseError } from 'wagmi'
 import { Button } from '@/components/common/Button'
-import { SELECTED_CHAIN } from '@/utils/config'
+import { EL_EXPLORER_URLS, SELECTED_CHAIN } from '@/utils/config'
 import { useDonate } from '@/hooks/useDonate'
 
 const MIN_DONATION = 0.01
@@ -34,13 +34,6 @@ export function InitialDialog({
   useEffect(() => {
     if (isReceiptSuccess) handleChangeDialogState('success')
   }, [isReceiptSuccess, handleChangeDialogState])
-
-  let blockExplorerUrl: string
-  if (SELECTED_CHAIN === 'mainnet') {
-    blockExplorerUrl = 'https://etherscan.io'
-  } else {
-    blockExplorerUrl = 'https://holesky.etherscan.io'
-  }
 
   const sanitizeInput = useCallback((value: string): string => {
     // Remove non-numeric characters except for the decimal point
@@ -152,7 +145,7 @@ export function InitialDialog({
             <div className="mx-auto mt-2 max-w-fit">
               <Link
                 className="text-violet-500 underline dark:text-violet-200"
-                href={`${blockExplorerUrl}/tx/${hash}`}
+                href={`${EL_EXPLORER_URLS[SELECTED_CHAIN]}/tx/${hash}`}
                 target="_blank">
                 Check the transaction on block explorer
               </Link>
