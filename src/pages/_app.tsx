@@ -1,5 +1,5 @@
 import '@/styles/globals.css'
-import { Inter, Urbanist } from '@next/font/google'
+import { Inter, Urbanist } from 'next/font/google';
 import { useIsMounted } from '@/hooks/useIsMounted'
 import { MainLayout } from '@/components/layout/MainLayout'
 import { Seo } from '@/components/layout/Seo'
@@ -9,14 +9,16 @@ import { NextThemeProvider } from '@/providers/ThemeProvider'
 import type { AppProps } from 'next/app'
 
 const inter = Inter({
+  weight: '400',
   subsets: ['latin'],
   variable: '--font-inter',
-})
+});
 
 const urbanist = Urbanist({
+  weight: '400',
   subsets: ['latin'],
   variable: '--font-urbanist',
-})
+});
 
 export default function App({ Component, pageProps }: AppProps) {
   const isMounted = useIsMounted()
