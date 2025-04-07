@@ -1,19 +1,26 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/jsx-no-useless-fragment */
-import { WagmiProvider, cookieStorage, createStorage  } from 'wagmi'
+import { WagmiProvider, cookieStorage, createStorage } from 'wagmi'
 import { ReactNode, useEffect, useState } from 'react'
 import { createWeb3Modal } from '@web3modal/wagmi/react'
 import { defaultWagmiConfig } from '@web3modal/wagmi/react/config'
-import { mainnet, holesky } from 'wagmi/chains'
+import { mainnet, holesky, hoodi, Chain } from 'wagmi/chains'
 import { SELECTED_CHAIN } from '@/utils/config'
+import { Chain as SupportedChain } from '@/utils/config'
 
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID
 if (!projectId) {
   throw new Error('NEXT_PUBLIC_PROJECT_ID is not set')
 }
 
-const WEB3_CHAINS = [SELECTED_CHAIN === 'mainnet' ? mainnet : holesky] as const
-const chains = WEB3_CHAINS 
+export const WAGMI_CHAIN_OBJECTS: Record<SupportedChain, Chain> = {
+  mainnet,
+  holesky,
+  hoodi,
+}
+
+const WEB3_CHAINS = [WAGMI_CHAIN_OBJECTS[SELECTED_CHAIN]] as const
+const chains = WEB3_CHAINS
 
 const metadata = {
   name: 'Dappnode Smooth',
