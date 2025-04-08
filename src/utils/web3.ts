@@ -1,7 +1,6 @@
 import { SELECTED_CHAIN } from './config'
 import { BigNumber, utils } from 'ethers'
-import { Chain } from 'viem'
-/**
+import { Chain } from '@reown/appkit/networks'/**
  * Shorten Ethereum address to 0x123...456 format
  * @param address Ethereum address
  * @param leftSideLength Amount of characters to show on the left side of the ellipsis
@@ -63,5 +62,5 @@ export const isWalletConnectedChainOk = (chain: Chain | undefined) => {
   if (SELECTED_CHAIN === 'mainnet') {
     return chain.id === 1
   }
-  return chain.id === 17000
+  return chain.id === 560048
 }

@@ -1,26 +1,23 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/jsx-no-useless-fragment */
-import { WagmiProvider, cookieStorage, createStorage } from 'wagmi'
+import { WagmiProvider } from 'wagmi'
 import { ReactNode, useEffect, useState } from 'react'
-import { createWeb3Modal } from '@web3modal/wagmi/react'
-import { defaultWagmiConfig } from '@web3modal/wagmi/react/config'
-import { mainnet, holesky, hoodi, Chain } from 'wagmi/chains'
-import { SELECTED_CHAIN } from '@/utils/config'
-import { Chain as SupportedChain } from '@/utils/config'
+
+import { createAppKit } from '@reown/appkit/react'
+import { mainnet, hoodi } from '@reown/appkit/networks'
+import { WagmiAdapter } from '@reown/appkit-adapter-wagmi'
+
+// import { Config } from '@wagmi/core';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+import {
+  SELECTED_CHAIN,
+} from '@/utils/config'
 
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID
 if (!projectId) {
   throw new Error('NEXT_PUBLIC_PROJECT_ID is not set')
 }
-
-export const WAGMI_CHAIN_OBJECTS: Record<SupportedChain, Chain> = {
-  mainnet,
-  holesky,
-  hoodi,
-}
-
-const WEB3_CHAINS = [WAGMI_CHAIN_OBJECTS[SELECTED_CHAIN]] as const
-const chains = WEB3_CHAINS
 
 const metadata = {
   name: 'Dappnode Smooth',
@@ -30,32 +27,33 @@ const metadata = {
   icons: ['https://avatars.githubusercontent.com/u/37784886'],
 }
 
-const config = defaultWagmiConfig({
-  chains,
+const queryClient = new QueryClient()
+const wagmiAdapter = new WagmiAdapter({
+  networks: [mainnet, hoodi],
   projectId,
-  metadata,
-  ssr: true,
-  storage: createStorage({
-    storage: cookieStorage
-  }),
-  auth: {
-    email: false, 
-  },
+  ssr: true
 })
 
-createWeb3Modal({
-  wagmiConfig: config,
-  projectId,
-  enableAnalytics: true,
-  enableOnramp: false,
-  enableSwaps: false,
+const network = SELECTED_CHAIN === 'mainnet' ? mainnet : hoodi
+
+createAppKit({
+  adapters: [wagmiAdapter],
+  networks: [network],
+  defaultNetwork : network,
   metadata,
+  projectId,
+  features: {
+    analytics: true,
+    email: false,
+    onramp: false,
+    swaps: false,
+    socials: false,
+  },
   themeVariables: {
     '--w3m-accent': '#9333EA', 
     '--w3m-z-index': 1000, // Just in case, set the z-index to a high value
   }
-})
-
+ })
 interface Web3ProviderProps {
   children: ReactNode
 }
@@ -70,7 +68,11 @@ export function ConnectWallet({ children }: Web3ProviderProps) {
   return (
     <>
       {ready ? (
-        <WagmiProvider config={config}>{children}</WagmiProvider>
+        <WagmiProvider config={wagmiAdapter.wagmiConfig}>
+          <QueryClientProvider client={queryClient}>
+          {children}
+          </QueryClientProvider>
+        </WagmiProvider>
       ) : null}
     </>
   )
