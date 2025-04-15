@@ -5,8 +5,8 @@ import { ReactNode, useEffect, useState } from 'react'
 import { createWeb3Modal } from '@web3modal/wagmi/react'
 import { defaultWagmiConfig } from '@web3modal/wagmi/react/config'
 import { mainnet } from 'viem/chains'
-import { SELECTED_CHAIN } from '@/utils/config'
 import { defineChain } from 'viem'
+import { SELECTED_CHAIN } from '@/utils/config'
 
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID
 if (!projectId) {
