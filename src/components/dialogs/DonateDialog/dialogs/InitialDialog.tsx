@@ -39,7 +39,7 @@ export function InitialDialog({
   if (SELECTED_CHAIN === 'mainnet') {
     blockExplorerUrl = 'https://etherscan.io'
   } else {
-    blockExplorerUrl = 'https://holesky.etherscan.io'
+    blockExplorerUrl = 'https://hoodi.etherscan.io'
   }
 
   const sanitizeInput = useCallback((value: string): string => {

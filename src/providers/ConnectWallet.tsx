@@ -4,16 +4,41 @@ import { WagmiProvider, cookieStorage, createStorage  } from 'wagmi'
 import { ReactNode, useEffect, useState } from 'react'
 import { createWeb3Modal } from '@web3modal/wagmi/react'
 import { defaultWagmiConfig } from '@web3modal/wagmi/react/config'
-import { mainnet, holesky } from 'wagmi/chains'
+import { mainnet } from 'viem/chains'
 import { SELECTED_CHAIN } from '@/utils/config'
+import { defineChain } from 'viem'
 
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID
 if (!projectId) {
   throw new Error('NEXT_PUBLIC_PROJECT_ID is not set')
-}
+} 
 
-const WEB3_CHAINS = [SELECTED_CHAIN === 'mainnet' ? mainnet : holesky] as const
-const chains = WEB3_CHAINS 
+export const hoodiCustom = defineChain({
+  id: 560048,
+  name: 'Hoodi',
+  nativeCurrency: { name: 'Hoodi Ether', symbol: 'ETH', decimals: 18 },
+  rpcUrls: {
+    default: {
+      http: ['https://ethereum-hoodi-rpc.publicnode.com'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'Etherscan',
+      url: 'https://hoodi.etherscan.io',
+    },
+  },
+  contracts: {
+    multicall3: {
+      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+      blockCreated: 2589,
+    },
+  },
+  testnet: true,
+})
+
+const WEB3_CHAINS = [SELECTED_CHAIN === 'mainnet' ? mainnet : hoodiCustom] as const
+const chains = WEB3_CHAINS
 
 const metadata = {
   name: 'Dappnode Smooth',

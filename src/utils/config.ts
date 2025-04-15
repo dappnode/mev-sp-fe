@@ -1,4 +1,4 @@
-const SUPPORTED_CHAINS = ['mainnet', 'holesky']
+const SUPPORTED_CHAINS = ['mainnet', 'hoodi']
 
 if (!process.env.NEXT_PUBLIC_SMOOTHING_POOL_ADDRESS) {
   throw new Error('NEXT_PUBLIC_SMOOTHING_POOL_ADDRESS is not set')
@@ -29,7 +29,7 @@ export const getBeaconChainExplorer = (
   const baseUrl =
     SELECTED_CHAIN === 'mainnet'
       ? 'https://beaconcha.in'
-      : 'https://holesky.beaconcha.in'
+      : 'https://hoodi.beaconcha.in'
 
   return `${baseUrl}/${type}/${endpoint}`
 }
