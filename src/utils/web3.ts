@@ -63,5 +63,5 @@ export const isWalletConnectedChainOk = (chain: Chain | undefined) => {
   if (SELECTED_CHAIN === 'mainnet') {
     return chain.id === 1
   }
-  return chain.id === 17000
+  return chain.id === 560048
 }
