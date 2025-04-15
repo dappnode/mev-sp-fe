@@ -29,7 +29,7 @@ export function LatestDonationsSP() {
         blockExplorerUrl={
           SELECTED_CHAIN === 'mainnet'
             ? 'https://eth.blockscout.com'
-            : 'https://eth-holesky.blockscout.com'
+            : 'https://eth-hoodi.blockscout.com'
         }
       />
     </div>

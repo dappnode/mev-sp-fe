@@ -46,7 +46,7 @@ export function LatestBlocksSP() {
         blockExplorerUrl={
           SELECTED_CHAIN === 'mainnet'
             ? 'https://beaconcha.in'
-            : 'https://holesky.beaconcha.in'
+            : 'https://hoodi.beaconcha.in'
         }
       />
     </div>

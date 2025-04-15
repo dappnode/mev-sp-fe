@@ -4,7 +4,7 @@ import { WagmiProvider, cookieStorage, createStorage  } from 'wagmi'
 import { ReactNode, useEffect, useState } from 'react'
 import { createWeb3Modal } from '@web3modal/wagmi/react'
 import { defaultWagmiConfig } from '@web3modal/wagmi/react/config'
-import { mainnet, holesky } from 'wagmi/chains'
+import { mainnet, hoodi } from 'viem/chains'
 import { SELECTED_CHAIN } from '@/utils/config'
 
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID
@@ -12,7 +12,7 @@ if (!projectId) {
   throw new Error('NEXT_PUBLIC_PROJECT_ID is not set')
 }
 
-const WEB3_CHAINS = [SELECTED_CHAIN === 'mainnet' ? mainnet : holesky] as const
+const WEB3_CHAINS = [SELECTED_CHAIN === 'mainnet' ? mainnet : hoodi] as const
 const chains = WEB3_CHAINS 
 
 const metadata = {
