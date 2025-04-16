@@ -85,7 +85,9 @@ export function AverageCard({
           <h4 className="mr-1 text-2xl font-bold leading-8 text-DAppDeep dark:text-DAppDarkText">
             {toFixedNoTrailingZeros(ethReward, 4)}
           </h4>
-          <h5 className="text-lg font-normal leading-6 text-DAppGray">ETH</h5>
+          <div className="flex  gap-1 font-normal text-DAppGray">
+            <h5 className="text-lg font-normal leading-6">ETH</h5>x 32 ETH
+          </div>
         </div>
       </div>
     </SummaryCard>
