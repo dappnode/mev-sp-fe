@@ -1,7 +1,6 @@
 import { SummaryCard, SummaryCardProps } from '..'
-import { BsFillPersonFill } from 'react-icons/bs'
-import { toFixedNoTrailingZeros } from '@/utils/decimals'
 import { FaEthereum } from 'react-icons/fa'
+import { toFixedNoTrailingZeros } from '@/utils/decimals'
 
 interface TotalSStakedEthCardProps
   extends Pick<SummaryCardProps, 'isError' | 'isLoading'> {
