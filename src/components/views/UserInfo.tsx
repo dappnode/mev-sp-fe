@@ -82,6 +82,7 @@ export function UserInfo() {
 
         return {
           address: validatorKey as `0x${string}`,
+          balance: 32.45, // TODO: Replace with actual balance
           pending: weiToEth(pendingRewardsWei || 0),
           accumulated: weiToEth(accumulatedRewardsWei || 0),
           subscribed: ['active', 'yellowcard', 'redcard'].includes(status),

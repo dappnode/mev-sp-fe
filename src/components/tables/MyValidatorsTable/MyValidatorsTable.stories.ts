@@ -6,6 +6,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 const data: Validator[] = [
   {
     address: '0x95222290DD7278Aa3Ddd389Cc1E1d165CC4BAfe5',
+    balance: 32.5,
     pending: 1.21,
     accumulated: 0.12,
     warning: 'none',
@@ -17,6 +18,7 @@ const data: Validator[] = [
   },
   {
     address: '0x95222290DD7278Aa3Ddd389Cc1E1d165CC4BAfe5',
+    balance: 32.0,
     pending: 1.21,
     accumulated: 0.12,
     warning: 'banned',
@@ -28,6 +30,7 @@ const data: Validator[] = [
   },
   {
     address: '0x388C818CA8B9251b393131C08a736A67ccB19297',
+    balance: 64.0,
     pending: 1.21,
     accumulated: 0.12,
     warning: 'yellow',
@@ -39,6 +42,7 @@ const data: Validator[] = [
   },
   {
     address: '0x97C28c835CE99b23F63414f8989ec410Ab41f52D',
+    balance: 32.0,
     pending: 3.32,
     accumulated: 3.42,
     validatorId: 3,
@@ -50,6 +54,7 @@ const data: Validator[] = [
   },
   {
     address: '0xE7d3982E214F9DFD53d23a7f72851a7044072250',
+    balance: 96.292,
     pending: 1.21,
     accumulated: 0.12,
     validatorId: 4,
@@ -61,6 +66,7 @@ const data: Validator[] = [
   },
   {
     address: '0xD2f43b11122C56D12d4cCef4Be503C4d47D33636',
+    balance: 256.6455,
     pending: 1.21,
     accumulated: 0.12,
     validatorId: 5,
@@ -72,6 +78,7 @@ const data: Validator[] = [
   },
   {
     address: '0x492d818f545454D50F6e90bCC8b22692BDc22030',
+    balance: 30.571,
     pending: 3.32,
     accumulated: 3.42,
     validatorId: 6,
@@ -83,6 +90,7 @@ const data: Validator[] = [
   },
   {
     address: '0x30614bc1e56bf9f30f2dda7898b520a20b560ef3',
+    balance: 32.4674,
     pending: 3.32,
     accumulated: 3.42,
     validatorId: 7,

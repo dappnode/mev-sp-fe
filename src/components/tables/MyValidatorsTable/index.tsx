@@ -61,7 +61,7 @@ const useTableColumns = (table: Table<Validator>) =>
         ),
         cell: (info) => {
           const address = info.getValue()
-          const shortAddress = shortenEthAddress(address, 7, 7)
+          const shortAddress = shortenEthAddress(address, 4, 4)
 
           return (
             <Link
@@ -73,6 +73,18 @@ const useTableColumns = (table: Table<Validator>) =>
             </Link>
           )
         },
+      }),
+      columnHelper.accessor('balance', {
+        header: ({ column }) => (
+          <HeaderTooltip
+            column={column}
+            header="Balance"
+            tooltip={headerTooltip.balance}
+          />
+        ),
+        cell: (info) =>
+          addEthSuffix(toFixedNoTrailingZeros(info.getValue(), 4)),
+        enableSorting: true,
       }),
       columnHelper.accessor('pending', {
         header: ({ column }) => (
