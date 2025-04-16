@@ -6,9 +6,12 @@ export interface Block {
   proposer: Proposer
   rewardType: 'vanila' | 'mev' | 'unknownrewardtype' | ''
   reward: number
-  blockType: 'okpoolproposal' | 'okpoolproposalblskeys' | 'missedproposal' | 'wrongfeerecipient'
+  blockType:
+    | 'okpoolproposal'
+    | 'okpoolproposalblskeys'
+    | 'missedproposal'
+    | 'wrongfeerecipient'
 }
-
 
 export interface Donation {
   txHash: string
@@ -25,6 +28,7 @@ interface Proposer {
 
 export interface Validator {
   address: `0x${string}`
+  balance: number
   pending: number
   validatorId: number
   validatorKey: `0x${string}`
