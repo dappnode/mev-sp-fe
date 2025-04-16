@@ -55,6 +55,7 @@ interface AverageCardProps
     'children' | 'bottomLeftText' | 'bottomRightText'
   > {
   ethRewardWei: string | undefined
+  adjustedPoolFeesPercent: number | undefined
 }
 
 // Create the AverageCard component
@@ -64,6 +65,7 @@ export function AverageCard({
   title,
   tooltip,
   ethRewardWei,
+  adjustedPoolFeesPercent,
 }: AverageCardProps) {
   const ethReward = weiToEth(ethRewardWei)
   return (
@@ -71,6 +73,11 @@ export function AverageCard({
       isError={isError}
       isLoading={isLoading}
       title={title}
+      bottomLeftText="Smooth Fee"
+      bottomRightText={`${toFixedNoTrailingZeros(
+        adjustedPoolFeesPercent || NaN,
+        4
+      )}%`}
       tooltip={tooltip}>
       <div className="flex items-center">
         <FaEthereum className="mr-2 h-[24px] w-[14px] text-DAppDeep dark:text-DAppDarkText" />
@@ -78,7 +85,9 @@ export function AverageCard({
           <h4 className="mr-1 text-2xl font-bold leading-8 text-DAppDeep dark:text-DAppDarkText">
             {toFixedNoTrailingZeros(ethReward, 4)}
           </h4>
-          <h5 className="text-lg font-normal leading-6 text-DAppGray">ETH</h5>
+          <div className="flex  gap-1 font-normal text-DAppGray">
+            <h5 className="text-lg font-normal leading-6">ETH</h5>x 32 ETH
+          </div>
         </div>
       </div>
     </SummaryCard>

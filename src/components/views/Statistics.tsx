@@ -1,4 +1,4 @@
-import { TotalSubscribersCard } from '../cards/SummaryCard/TotalSubscribersCard'
+import { TotalStakedEthCard } from '../cards/SummaryCard/TotalStakedEthCard'
 import { AverageRewardsCard } from '../cards/SummaryCard/RewardsCard/AverageRewardsCard'
 import { TotalRewardsCard } from '../cards/SummaryCard/RewardsCard/TotalRewardsCard'
 import { LastCheckpointCard } from '../cards/SummaryCard/LastCheckpointCard'
@@ -32,11 +32,11 @@ export function Statistics() {
   });
   
   return (
-    <div className="grid w-full grid-cols-1 items-center justify-center gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-6">
-      <TotalSubscribersCard
+    <div className="grid w-full grid-cols-1 items-center justify-center gap-4 sm:grid-cols-2  lg:grid-cols-4 lg:gap-6">
+      <TotalStakedEthCard
         isError={statisticsQuery.isError}
         isLoading={!serverStatus.data?.ready || statisticsQuery.isLoading}
-        poolFeesPercent={configQuery.data?.poolFeesPercent}
+        totalStakedEth={42180.4621} // TODO: Replace with actual data
         subscribers={statisticsQuery.data?.totalSubscribedValidators}
       />
       <AverageRewardsCard
