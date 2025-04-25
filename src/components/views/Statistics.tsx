@@ -9,6 +9,7 @@ import {
   fetchStatus,
   validateServerStatus,
 } from '@/client/api/queryFunctions'
+import { gweiToEth } from '@/utils/web3'
 
 export function Statistics() {
   const configQuery = useQuery({
@@ -36,7 +37,7 @@ export function Statistics() {
       <TotalStakedEthCard
         isError={statisticsQuery.isError}
         isLoading={!serverStatus.data?.ready || statisticsQuery.isLoading}
-        totalStakedEth={42180.4621} // TODO: Replace with actual data
+        totalStakedEth={gweiToEth(statisticsQuery.data?.totalEffectiveBalanceGwei)} // TODO: Replace with actual data
         subscribers={statisticsQuery.data?.totalSubscribedValidators}
       />
       <AverageRewardsCard
