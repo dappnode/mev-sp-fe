@@ -4,7 +4,7 @@ import { Warnings } from '../tables/MyValidatorsTable/components/WarningIcon'
 import { useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useAccount } from 'wagmi'
-import { isWalletConnectedChainOk, weiToEth } from '@/utils/web3'
+import { gweiToEth, isWalletConnectedChainOk, weiToEth } from '@/utils/web3'
 import {
   fetchOnChainProof,
   fetchProposedBlocks,
@@ -71,6 +71,7 @@ export function UserInfo() {
     return validatorsQuery.data.map(
       ({
         status,
+        beaconEffectiveBalanceGwei,
         validatorKey,
         validatorIndex,
         pendingRewardsWei,
@@ -82,7 +83,7 @@ export function UserInfo() {
 
         return {
           address: validatorKey as `0x${string}`,
-          balance: 32.45, // TODO: Replace with actual balance
+          balance: gweiToEth(beaconEffectiveBalanceGwei),
           pending: weiToEth(pendingRewardsWei || 0),
           accumulated: weiToEth(accumulatedRewardsWei || 0),
           subscribed: ['active', 'yellowcard', 'redcard'].includes(status),
