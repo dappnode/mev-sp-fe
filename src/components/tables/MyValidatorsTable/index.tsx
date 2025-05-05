@@ -56,8 +56,12 @@ const useTableColumns = (table: Table<Validator>) =>
         ),
       }),
       columnHelper.accessor('validatorId', {
-        header: () => (
-          <HeaderTooltip header="Index" tooltip={headerTooltip.index} />
+        header: ({ column }) => (
+          <HeaderTooltip
+            column={column}
+            header="Index"
+            tooltip={headerTooltip.index}
+          />
         ),
         cell: (info) => {
           const validatorIndex = info.getValue()
@@ -72,6 +76,7 @@ const useTableColumns = (table: Table<Validator>) =>
             </Link>
           )
         },
+        enableSorting: true,
       }),
       columnHelper.accessor('balance', {
         header: ({ column }) => (
