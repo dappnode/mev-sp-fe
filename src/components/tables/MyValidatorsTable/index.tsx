@@ -29,7 +29,7 @@ import {
   UnsubscribeToMevDialog,
 } from '@/components/dialogs/UnsubscribeToMevDialog'
 import { useSearchInput } from '@/hooks/useSearchInput'
-import { addEthSuffix, shortenEthAddress } from '@/utils/web3'
+import { addEthSuffix } from '@/utils/web3'
 import { toFixedNoTrailingZeros } from '@/utils/decimals'
 import { getBeaconChainExplorer } from '@/utils/config'
 import type { Validator } from '../types'
@@ -55,21 +55,20 @@ const useTableColumns = (table: Table<Validator>) =>
           />
         ),
       }),
-      columnHelper.accessor('address', {
+      columnHelper.accessor('validatorId', {
         header: () => (
-          <HeaderTooltip header="Address" tooltip={headerTooltip.address} />
+          <HeaderTooltip header="Index" tooltip={headerTooltip.index} />
         ),
         cell: (info) => {
-          const address = info.getValue()
-          const shortAddress = shortenEthAddress(address, 4, 4)
+          const validatorIndex = info.getValue()
 
           return (
             <Link
               className="font-medium underline"
-              href={getBeaconChainExplorer('validator', address)}
+              href={getBeaconChainExplorer('validator', validatorIndex)}
               rel="noopener noreferrer"
               target="_blank">
-              {shortAddress}
+              {validatorIndex}
             </Link>
           )
         },
