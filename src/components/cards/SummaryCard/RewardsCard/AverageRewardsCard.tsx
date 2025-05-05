@@ -40,6 +40,7 @@ export function AverageRewardsCard({
       isError={isError}
       isLoading={isLoading}
       title="Expected Monthly Rewards"
+      adjustedPoolFeesPercent={adjustedPoolFeesPercent}
       tooltip="Expected Validator Rewards per Month"
     />
   )
