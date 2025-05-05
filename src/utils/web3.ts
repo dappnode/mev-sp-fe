@@ -56,6 +56,23 @@ export const weiToEth = (wei: string | number | undefined | null) => {
   return parseFloat(etherAsString)
 }
 
+/*
+ * Convert Gwei to Ether
+ * @param gwei Gwei value
+ * @returns Ether value as a number. Returns 0 if number is undefined
+ * @example
+ * gweiToEth(1234567890)
+ * // => 1.23456789
+ * gweiToEth(undefined)
+ * // => 0
+ */
+export const gweiToEth = (gwei: string | number | undefined | null) => {
+  if (!gwei) return 0
+  const gweiAsBigNumber = BigNumber.from(String(gwei))
+  const etherAsString = utils.formatUnits(gweiAsBigNumber, 'gwei')
+  return parseFloat(etherAsString)
+}
+
 export const isWalletConnectedChainOk = (chain: Chain | undefined) => {
   if (!chain) {
     return false
