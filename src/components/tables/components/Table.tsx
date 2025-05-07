@@ -118,7 +118,7 @@ export function TableLayout<T extends TableDataTypes>({
               table.getRowModel().rows.map((row) => (
                 <tr
                   key={row.id}
-                  className="border-b-[0.5px] dark:border-DAppDarkSurface-300 h-[62px]">
+                  className="h-[62px] border-b-[0.5px] dark:border-DAppDarkSurface-300">
                   {row.getVisibleCells().map((cell) => (
                     <td
                       key={cell.id}
