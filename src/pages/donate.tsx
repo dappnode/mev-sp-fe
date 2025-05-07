@@ -11,10 +11,10 @@ export default function Donate() {
     <>
       <Head title="Support Solo Stakers" />
       <SlidingBanner
-        title="SmoothDAO"
-        btnText="Click here"
-        text="SmoothDAO has approved the new terms of use."
-        link="https://link.dappnode.io/G4WDuCg"
+        title="Pectra hard fork"
+        btnText="Check Docs"
+        text="⚠️ Learn how Pectra hard fork affects Smooth ⚠️"
+        link="https://docs.dappnode.io/docs/smooth/deep-dive-into-smooth/consolidations/"
       />
       <main className="mx-auto flex max-w-5xl items-center justify-between pt-6">
         <div className="relative mt-20 hidden h-[520px] w-[490px] lg:block">

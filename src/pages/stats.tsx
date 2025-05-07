@@ -51,10 +51,10 @@ export default function Stats() {
         resolvedTheme === 'dark' ? styles.dark : ''
       }`}>
       <SlidingBanner
-        title="SmoothDAO"
-        btnText="Click here"
-        text="SmoothDAO has approved the new terms of use."
-        link="https://link.dappnode.io/G4WDuCg"
+        title="Pectra hard fork"
+        btnText="Check Docs"
+        text="⚠️ Learn how Pectra hard fork affects Smooth ⚠️"
+        link="https://docs.dappnode.io/docs/smooth/deep-dive-into-smooth/consolidations/"
       />
       <div className={styles.row}>
         <div className={styles.column}>
