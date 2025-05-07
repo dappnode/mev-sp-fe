@@ -13,7 +13,7 @@ import {
   SortingState,
 } from '@tanstack/react-table';
 import { useSearchInput } from '@/hooks/useSearchInput';
-import { addEthSuffix, shortenEthAddress } from '@/utils/web3';
+import { addEthSuffix } from '@/utils/web3';
 import { toFixedNoTrailingZeros } from '@/utils/decimals';
 import { getBeaconChainExplorer } from '@/utils/config';
 import { getSlotUnixTime } from '@/utils/slotsTime';
@@ -110,7 +110,7 @@ const getColumns = (blackExplorerUrl?: string) => [
           href={`${blackExplorerUrl}/validator/${proposer.validatorIndex}`}
           rel="noopener noreferrer"
           target="_blank">
-          {shortenEthAddress(proposer.validatorKey.toLocaleString())}
+          {proposer.validatorIndex}
         </Link>
       );
     },
