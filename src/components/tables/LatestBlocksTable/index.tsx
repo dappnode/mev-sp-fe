@@ -110,7 +110,7 @@ const getColumns = (blackExplorerUrl?: string) => [
           href={`${blackExplorerUrl}/validator/${proposer.validatorIndex}`}
           rel="noopener noreferrer"
           target="_blank">
-          {shortenEthAddress(proposer.validatorKey.toLocaleString())}
+          {proposer.validatorIndex}
         </Link>
       );
     },
