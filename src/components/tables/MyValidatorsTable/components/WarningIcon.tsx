@@ -6,10 +6,10 @@ interface WarningIconProps {
 
 export function WarningIcon({ warning }: WarningIconProps) {
   if (warning === 'none') {
-    return <div>-</div>
+    return <div className="pl-1">-</div>
   }
   return (
-    <div className="flex w-fit items-center justify-center pl-5">
+    <div className="flex w-fit items-center justify-center">
       {warning === 'banned' ? (
         <div>💀</div>
       ) : (
