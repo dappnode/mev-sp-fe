@@ -118,7 +118,9 @@ export function TableLayout<T extends TableDataTypes>({
               table.getRowModel().rows.map((row) => (
                 <tr
                   key={row.id}
-                  className="h-[62px] border-b-[0.5px] dark:border-DAppDarkSurface-300">
+                  className={`border-b-[0.5px] dark:border-DAppDarkSurface-300 ${
+                    title === 'My Validators' && 'h-[62px]'
+                  } `}>
                   {row.getVisibleCells().map((cell) => (
                     <td
                       key={cell.id}
