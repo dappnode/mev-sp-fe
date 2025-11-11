@@ -19,7 +19,6 @@ import { useAllBlocksData } from '@/components/charts/hooks/useAllBlocksData'
 import { useValidatorData } from '@/components/charts/hooks/useValidatorData'
 import { useValidatorStatuses } from '@/components/charts/hooks/useValidatorStatuses'
 import { usePoolHealth } from '@/components/charts/hooks/usePoolHealth'
-import SlidingBanner from '@/components/banners/SlidingBanner'
 
 export default function Stats() {
   const { resolvedTheme } = useTheme()
@@ -50,12 +49,6 @@ export default function Stats() {
       className={`${styles.statsContainer} ${
         resolvedTheme === 'dark' ? styles.dark : ''
       }`}>
-      <SlidingBanner
-        title="Pectra hard fork"
-        btnText="Check Docs"
-        text="⚠️ Learn how Pectra hard fork affects Smooth ⚠️"
-        link="https://docs.dappnode.io/docs/smooth/deep-dive-into-smooth/consolidations/"
-      />
       <div className={styles.row}>
         <div className={styles.column}>
           <SmoothSubsChart
