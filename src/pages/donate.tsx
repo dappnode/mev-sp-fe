@@ -2,7 +2,6 @@ import { useAccount } from 'wagmi'
 import { Head } from '@/components/layout/Head'
 import { DonateDialog } from '@/components/dialogs/DonateDialog'
 import DonateCircle from '@/components/icons/DonateCircle'
-import SlidingBanner from '@/components/banners/SlidingBanner'
 
 export default function Donate() {
   const { isConnected } = useAccount()
@@ -10,12 +9,6 @@ export default function Donate() {
   return (
     <>
       <Head title="Support Solo Stakers" />
-      <SlidingBanner
-        title="Pectra hard fork"
-        btnText="Check Docs"
-        text="⚠️ Learn how Pectra hard fork affects Smooth ⚠️"
-        link="https://docs.dappnode.io/docs/smooth/deep-dive-into-smooth/consolidations/"
-      />
       <main className="mx-auto flex max-w-5xl items-center justify-between pt-6">
         <div className="relative mt-20 hidden h-[520px] w-[490px] lg:block">
           <div className="absolute bottom-40 left-48">
