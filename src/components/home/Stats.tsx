@@ -1,63 +1,149 @@
 /* eslint-disable react/function-component-definition */
 import { useQuery } from '@tanstack/react-query'
-import { BigNumber, utils } from 'ethers'
+import { BigNumber } from 'ethers'
 import { useMemo } from 'react'
 import { fetchConfig, fetchProposedBlocks, fetchStatistics } from '@/client/api/queryFunctions'
 import { weiToEth } from '@/utils/web3'
 import { toFixedNoTrailingZeros } from '@/utils/decimals'
 
-const MULTIPLIER = 2.56
+const SLOTS_IN_30_DAYS = 30 * 7200
+const DAYS_PER_YEAR = 365.25
+const THIRTY_TWO_ETH_GWEI = 32_000_000_000
+
+const SIMULATIONS = 20000
+const SIMULATION_SEED = 24290
+
+// Deterministic PRNG (Park-Miller) so the headline figure does not jitter
+// between reloads.
+function seededRandom(seed: number) {
+  const MODULUS = 2147483647
+  let state = seed % MODULUS
+  if (state <= 0) state += MODULUS - 1
+
+  return () => {
+    state = (state * 16807) % MODULUS
+    return (state - 1) / (MODULUS - 1)
+  }
+}
+
+/*
+ * Median ETH a solo staker takes home in a year.
+ *
+ * A year of solo proposals is a compound Poisson: a random number of blocks,
+ * each worth a random amount drawn from a heavily right-skewed distribution.
+ * Its median has no closed form, so sample it. Shortcuts like
+ * `medianBlock * blocksPerYear` are not the median of the sum and understate it,
+ * which would overstate how far ahead Smooth is.
+ */
+function medianAnnualSoloEth(blockRewardsEth: number[], blocksPerYear: number) {
+  if (!blockRewardsEth.length || blocksPerYear <= 0) return 0
+
+  const random = seededRandom(SIMULATION_SEED)
+  const zeroBlockOdds = Math.exp(-blocksPerYear)
+  const outcomes = new Float64Array(SIMULATIONS)
+
+  for (let i = 0; i < SIMULATIONS; i += 1) {
+    // Knuth's method: draw this year's block count from Poisson(blocksPerYear)
+    let blocks = 0
+    let p = 1
+    for (;;) {
+      p *= random()
+      if (p <= zeroBlockOdds) break
+      blocks += 1
+    }
+
+    let yearEth = 0
+    for (let b = 0; b < blocks; b += 1) {
+      yearEth += blockRewardsEth[Math.floor(random() * blockRewardsEth.length)]
+    }
+    outcomes[i] = yearEth
+  }
+
+  outcomes.sort()
+  return outcomes[Math.floor(SIMULATIONS / 2)]
+}
 
 export default function Stats() {
   const statisticsQuery = useQuery({
     queryKey: ['statistics'],
     queryFn: fetchStatistics,
   });
-  
+
   const configQuery = useQuery({
     queryKey: ['config'],
     queryFn: fetchConfig,
   });
-  
+
   const proposedBlocksQuery = useQuery({
     queryKey: ['proposedblocks'],
     queryFn: fetchProposedBlocks,
   });
-  
 
-  const medianSolo = useMemo(() => {
+  // Everything below is derived from the last 30 days. Pool-lifetime averages
+  // still carry MEV levels from years ago and overstate today's rewards ~3x.
+  const recentRewardsEth = useMemo(() => {
     const proposedBlocks = proposedBlocksQuery.data;
-    if (!proposedBlocks) return 0; // Handle loading or error states
+    const latestSlot = statisticsQuery.data?.latestCheckpointSlot;
+    if (!proposedBlocks || !latestSlot) return []; // Handle loading or error states
 
-    const rewards = proposedBlocks.map(block => weiToEth(block.rewardWei));
-    const sortedRewards = rewards.sort((a, b) => a - b);
-    const mid = Math.floor(sortedRewards.length / 2);
-    const median = sortedRewards.length % 2 !== 0
-      ? sortedRewards[mid]
-      : (sortedRewards[mid - 1] + sortedRewards[mid]) / 2;
+    return proposedBlocks
+      .filter(
+        (block) =>
+          block.blockType === 'okpoolproposal' &&
+          block.slot > latestSlot - SLOTS_IN_30_DAYS
+      )
+      .map((block) => weiToEth(block.rewardWei));
+  }, [proposedBlocksQuery.data, statisticsQuery.data?.latestCheckpointSlot]);
 
-    return parseFloat(median.toFixed(4)); // Rounds the median to three decimal places
-  }, [proposedBlocksQuery.data]);
+  // Since the Electra fork, proposal odds track effective balance, so a block
+  // rate is only meaningful per unit of stake, not per validator.
+  const blocksPerYearPer32Eth = useMemo(() => {
+    const totalEffectiveBalanceGwei = statisticsQuery.data?.totalEffectiveBalanceGwei;
+    if (!recentRewardsEth.length || !totalEffectiveBalanceGwei) return 0;
 
-  const averageSolo = MULTIPLIER * medianSolo; // Dynamically calculated as 2.56 times the median reward
+    const stakeShare = THIRTY_TWO_ETH_GWEI / Number(totalEffectiveBalanceGwei);
+    return recentRewardsEth.length * (DAYS_PER_YEAR / 30) * stakeShare;
+  }, [recentRewardsEth, statisticsQuery.data?.totalEffectiveBalanceGwei]);
 
+  // Solo, you keep only the blocks luck hands you.
+  const medianSolo = useMemo(
+    () => medianAnnualSoloEth(recentRewardsEth, blocksPerYearPer32Eth),
+    [recentRewardsEth, blocksPerYearPer32Eth]
+  );
+
+  // In Smooth every 32 ETH of stake earns 32 / totalEffectiveBalance of whatever
+  // the pool takes in, whether or not it proposed anything itself.
   const averagePool = useMemo(() => {
-    const avgBlockRewardWei = statisticsQuery.data?.avgBlockRewardWei;
+    const totalRewardsSent30daysWei = statisticsQuery.data?.totalRewardsSent30daysWei;
+    const totalEffectiveBalanceGwei = statisticsQuery.data?.totalEffectiveBalanceGwei;
     const poolFeesPercent = configQuery.data?.poolFeesPercent;
 
-    if (!avgBlockRewardWei || !poolFeesPercent) return 0;
+    if (
+      !totalRewardsSent30daysWei ||
+      !totalEffectiveBalanceGwei ||
+      poolFeesPercent === undefined
+    ) return 0;
 
-    const rewardWei = BigNumber.from(avgBlockRewardWei);
-    const fees = rewardWei.mul(poolFeesPercent).div(10000);
-    const netRewardWei = rewardWei.sub(fees);
-    const netRewardEth = parseFloat(utils.formatEther(netRewardWei));
-    return netRewardEth * MULTIPLIER;  // Apply multiplier
-  }, [statisticsQuery.data?.avgBlockRewardWei, configQuery.data?.poolFeesPercent]);
+    const netRewardWei = BigNumber.from(totalRewardsSent30daysWei)
+      .mul(THIRTY_TWO_ETH_GWEI)
+      .div(BigNumber.from(totalEffectiveBalanceGwei))
+      .mul(10000 - poolFeesPercent)
+      .div(10000);
 
-  const percentageIncrease = useMemo(() => {
-    if (!averagePool || !averageSolo) return 0;
-    return (averagePool / averageSolo) * 100; // Adjusted calculation
-  }, [averagePool, averageSolo]);
+    return weiToEth(netRewardWei.toString()) * (DAYS_PER_YEAR / 30);
+  }, [
+    statisticsQuery.data?.totalRewardsSent30daysWei,
+    statisticsQuery.data?.totalEffectiveBalanceGwei,
+    configQuery.data?.poolFeesPercent,
+  ]);
+
+  // How much further Smooth carries the typical staker, as a plain multiplier.
+  // A ratio rendered as "217%" reads as "217% more", which is a different (and
+  // much larger) claim than the number actually supports.
+  const timesMore = useMemo(() => {
+    if (!averagePool || !medianSolo) return 0;
+    return averagePool / medianSolo;
+  }, [averagePool, medianSolo]);
 
   return (
     <div className="pt-24 sm:pt-32">
@@ -74,13 +160,16 @@ export default function Stats() {
               <div className="flex flex-col">
                 <div className="overflow-hidden rounded-lg bg-gray-400/5 px-4 py-5 shadow sm:p-8">
                   <dd className="staking-solo-stats text-3xl font-semibold tracking-tight">
-                    {averageSolo !== undefined
-                      ? `~ ${averageSolo.toFixed(4)} ETH`
+                    {medianSolo !== undefined
+                      ? `~ ${medianSolo.toFixed(4)} ETH`
                       : 'Loading...'}
                   </dd>
                   <dt className="mt-2 text-base font-medium leading-6 text-DAppDeep dark:text-DAppDarkText">
-                    Average Yearly Earnings for{' '}
+                    Typical Yearly Earnings for{' '}
                     <strong className="staking-solo-stats">Solo Stakers</strong>
+                    <span className="mt-1 block text-sm font-normal text-DAppGray">
+                      Median luck, per 32 ETH staked
+                    </span>
                   </dt>
                 </div>
                 <div className="flex w-full items-center justify-center">
@@ -98,9 +187,9 @@ export default function Stats() {
                   <span
                     className="absolute right-0 top-0 z-10 -mr-4 -mt-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-purple-600 text-xs font-extralight text-white sm:h-24 sm:w-24 sm:text-sm sm:font-bold"
                     style={{ transform: 'rotate(-25deg)' }}>
-                    {percentageIncrease !== undefined ? (
+                    {timesMore ? (
                       <>
-                        {`${(percentageIncrease).toFixed(2)}%`}
+                        {`${toFixedNoTrailingZeros(timesMore, 1)}x`}
                         <br />
                         ETH!
                       </>
@@ -121,6 +210,9 @@ export default function Stats() {
                     <strong className="text-purple-600">
                       Smooth Solo Stakers
                     </strong>
+                    <span className="mt-1 block text-sm font-normal text-DAppGray">
+                      Paid to everyone, per 32 ETH staked
+                    </span>
                   </dt>
                 </div>
 

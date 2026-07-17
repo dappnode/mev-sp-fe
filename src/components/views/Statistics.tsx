@@ -41,10 +41,11 @@ export function Statistics() {
         subscribers={statisticsQuery.data?.totalSubscribedValidators}
       />
       <AverageRewardsCard
-        avgBlockRewardWei={statisticsQuery.data?.avgBlockRewardWei}
         isError={statisticsQuery.isError}
         isLoading={!serverStatus.data?.ready || statisticsQuery.isLoading}
         poolFeesPercent={configQuery.data?.poolFeesPercent}
+        totalEffectiveBalanceGwei={statisticsQuery.data?.totalEffectiveBalanceGwei}
+        totalRewardsSent30daysWei={statisticsQuery.data?.totalRewardsSent30daysWei}
       />
       <TotalRewardsCard
         isError={statisticsQuery.isError}
