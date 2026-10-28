@@ -3,8 +3,7 @@ const { fontFamily } = require('tailwindcss/defaultTheme')
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./**/*.{js,ts,jsx,tsx}'],
-  purge: ['./src/**/*.{js,jsx,ts,tsx}'],
+  content: ['./src/**/*.{js,ts,jsx,tsx}', './.storybook/**/*.{js,ts,jsx,tsx}'],
   darkMode: 'class',
   theme: {
     extend: {

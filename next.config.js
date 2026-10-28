@@ -16,6 +16,11 @@ const nextConfig = {
 
   webpack: (config) => {
     config.externals.push('pino-pretty', 'lokijs', 'encoding');
+    // MetaMask's browser bundle also references storage used only on React Native.
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      '@react-native-async-storage/async-storage': false,
+    };
     return config;
   },
 

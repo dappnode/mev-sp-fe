@@ -1,6 +1,5 @@
 /* eslint-disable react/function-component-definition */
 import { useQuery } from '@tanstack/react-query'
-import { BigNumber } from 'ethers'
 import { useMemo } from 'react'
 import { fetchConfig, fetchProposedBlocks, fetchStatistics } from '@/client/api/queryFunctions'
 import { weiToEth } from '@/utils/web3'
@@ -124,11 +123,10 @@ export default function Stats() {
       poolFeesPercent === undefined
     ) return 0;
 
-    const netRewardWei = BigNumber.from(totalRewardsSent30daysWei)
-      .mul(THIRTY_TWO_ETH_GWEI)
-      .div(BigNumber.from(totalEffectiveBalanceGwei))
-      .mul(10000 - poolFeesPercent)
-      .div(10000);
+    const netRewardWei =
+      (((BigInt(totalRewardsSent30daysWei) * BigInt(THIRTY_TWO_ETH_GWEI)) /
+        BigInt(totalEffectiveBalanceGwei)) * BigInt(10000 - poolFeesPercent)) /
+      BigInt(10000);
 
     return weiToEth(netRewardWei.toString()) * (DAYS_PER_YEAR / 30);
   }, [

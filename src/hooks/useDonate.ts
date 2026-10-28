@@ -1,9 +1,9 @@
-import { utils } from 'ethers'
+import { formatEther, parseEther } from 'ethers'
 import {
-    useAccount,
-    useBalance,
-    useSendTransaction,
-    useWaitForTransactionReceipt,
+  useAccount,
+  useBalance,
+  useSendTransaction,
+  useWaitForTransactionReceipt,
 } from 'wagmi'
 import { SMOOTHING_POOL_ADDRESS } from '@/utils/config'
 
@@ -12,7 +12,7 @@ export function useDonate() {
   const { data: balance, isLoading: isBalanceLoading } = useBalance({ address })
 
   const availableBalance = balance?.value
-    ? parseFloat(utils.formatEther(balance.value))
+    ? parseFloat(formatEther(balance.value))
     : 0
 
   const {
@@ -28,11 +28,11 @@ export function useDonate() {
     error: receiptError,
   } = useWaitForTransactionReceipt({ hash })
 
-  const donate = async (ethAmount: string ) => {
+  const donate = async (ethAmount: string) => {
     try {
       await send({
         to: SMOOTHING_POOL_ADDRESS,
-        value: utils.parseEther(ethAmount).toBigInt(),
+        value: parseEther(ethAmount),
       })
     } catch (err) {
       /* eslint-disable no-console */

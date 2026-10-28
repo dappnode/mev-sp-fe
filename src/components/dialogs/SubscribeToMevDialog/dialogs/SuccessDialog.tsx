@@ -1,5 +1,4 @@
 import { DialogProps, MultiDialogProps } from '../types'
-import { BigNumber } from 'ethers'
 import { useQuery } from '@tanstack/react-query'
 import { StepProgressBar } from '@/components/common/StepProgressBar'
 import { Button } from '@/components/common/Button'
@@ -59,13 +58,10 @@ export function MultiSuccessDialog({
     queryFn: fetchConfig,
   })
 
-  // Convert the collateralInWei to a BigNumber, to multiply it by number of validators
-  const collateralInWei = configQuery.data?.collateralInWei
-    ? BigNumber.from(configQuery.data.collateralInWei)
-    : BigNumber.from(0)
+  const collateralInWei = BigInt(configQuery.data?.collateralInWei ?? '0')
 
   // Multiply the collateral by the number of validator IDs
-  const totalDepositValue = collateralInWei.mul(validatorIds.length)
+  const totalDepositValue = collateralInWei * BigInt(validatorIds.length)
   const totalDepositInEth = weiToEth(totalDepositValue.toString())
 
   return (

@@ -1,7 +1,7 @@
 import { DialogProps } from '../types'
 import Link from 'next/link'
 import { AiOutlineInfoCircle } from 'react-icons/ai'
-import { utils } from 'ethers'
+import { formatEther } from 'ethers'
 import { useState, useEffect, useCallback } from 'react'
 import { BaseError } from 'wagmi'
 import { Button } from '@/components/common/Button'
@@ -121,7 +121,7 @@ export function InitialDialog({
           {isBalanceLoading ? (
             <span className="ml-2 inline-block h-4 w-16 animate-pulse rounded-md bg-gray-200 opacity-90 dark:bg-DAppDarkSurface-300" />
           ) : balance && balance.value !== undefined ? (
-            `${parseFloat(utils.formatEther(balance.value)).toFixed(4)} ${balance.symbol}`
+            `${parseFloat(formatEther(balance.value)).toFixed(4)} ${balance.symbol}`
           ) : (
             <span className="ml-2 text-red-500">Could not get account balance</span>
           )}
