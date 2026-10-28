@@ -1,9 +1,8 @@
 import { AverageCard } from '.';
-import { BigNumber } from 'ethers';
 
 // The card states its figure per 32 ETH of stake, so a standard
 // (non-consolidated) validator maps to exactly one unit.
-const THIRTY_TWO_ETH_GWEI = BigNumber.from('32000000000');
+const THIRTY_TWO_ETH_GWEI = BigInt('32000000000');
 
 interface AverageRewardsCardProps {
   isLoading: boolean
@@ -31,25 +30,23 @@ export function AverageRewardsCard({
     totalEffectiveBalanceGwei !== undefined
   ) {
     // poolFeesPercent is scaled by 10000 onchain. Only the display needs the
-    // human percent; the reward math below stays integer to avoid BigNumber
-    // rejecting a fractional multiplier.
+    // human percent; the reward math below stays integer.
     adjustedPoolFeesPercent = poolFeesPercent / 100;
 
-    const totalEffectiveBalance = BigNumber.from(totalEffectiveBalanceGwei);
+    const totalEffectiveBalance = BigInt(totalEffectiveBalanceGwei);
 
-    if (totalEffectiveBalance.isZero()) {
+    if (totalEffectiveBalance === BigInt(0)) {
       adjustedRewardsWei = undefined;
     } else {
       // Since the Electra fork the oracle splits every reward in proportion to
       // effective balance, so 32 ETH of stake earns 32 / totalEffectiveBalance
       // of whatever the pool takes in. The last 30 days is the projection basis:
       // it tracks current MEV conditions and needs no assumed blocks-per-year.
-      adjustedRewardsWei = BigNumber.from(totalRewardsSent30daysWei)
-        .mul(THIRTY_TWO_ETH_GWEI)
-        .div(totalEffectiveBalance)
-        .mul(10000 - poolFeesPercent)
-        .div(10000)
-        .toString();
+      adjustedRewardsWei = (
+        (((BigInt(totalRewardsSent30daysWei) * THIRTY_TWO_ETH_GWEI) /
+          totalEffectiveBalance) * BigInt(10000 - poolFeesPercent)) /
+        BigInt(10000)
+      ).toString();
     }
   } else {
     adjustedRewardsWei = undefined;

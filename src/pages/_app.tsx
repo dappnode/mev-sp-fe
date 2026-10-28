@@ -1,5 +1,5 @@
 import '@/styles/globals.css'
-import { Inter, Urbanist } from '@next/font/google'
+import { Inter, Urbanist } from 'next/font/google'
 import { useIsMounted } from '@/hooks/useIsMounted'
 import { MainLayout } from '@/components/layout/MainLayout'
 import { Seo } from '@/components/layout/Seo'

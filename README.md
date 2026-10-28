@@ -6,6 +6,12 @@
 pnpm install
 ```
 
+Use Node.js 24.22.1 or newer in the Node.js 24 release line and the pnpm version
+specified in `package.json`. Configure the public chain, contract and wallet
+project variables and `BACKEND_URL` in `.env.local` (see `.env_testnet` for the
+Hoodi configuration). The SIWE API also requires `IRON_SESSION_PASSWORD`, a
+private, randomly generated password of at least 32 characters.
+
 ```bash
 pnpm dev
 ```
@@ -13,7 +19,11 @@ pnpm dev
 Before pushing and deploying run:
 
 ```bash
+pnpm typecheck
+pnpm lint
+pnpm test
 pnpm run build
+pnpm build-storybook
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.

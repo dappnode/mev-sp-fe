@@ -1,5 +1,5 @@
 import { SELECTED_CHAIN } from './config'
-import { BigNumber, utils } from 'ethers'
+import { formatEther, formatUnits } from 'ethers'
 import { Chain } from 'viem'
 /**
  * Shorten Ethereum address to 0x123...456 format
@@ -51,8 +51,7 @@ export const addEthSuffix = (value: number | string) => `${value} ETH`
  */
 export const weiToEth = (wei: string | number | undefined | null) => {
   if (!wei) return 0
-  const weiAsBigNumber = BigNumber.from(String(wei))
-  const etherAsString = utils.formatEther(weiAsBigNumber)
+  const etherAsString = formatEther(String(wei))
   return parseFloat(etherAsString)
 }
 
@@ -68,8 +67,7 @@ export const weiToEth = (wei: string | number | undefined | null) => {
  */
 export const gweiToEth = (gwei: string | number | undefined | null) => {
   if (!gwei) return 0
-  const gweiAsBigNumber = BigNumber.from(String(gwei))
-  const etherAsString = utils.formatUnits(gweiAsBigNumber, 'gwei')
+  const etherAsString = formatUnits(String(gwei), 'gwei')
   return parseFloat(etherAsString)
 }
 

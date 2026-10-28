@@ -4,12 +4,11 @@ import {
   useWaitForTransactionReceipt,
 } from 'wagmi'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { BigNumber, utils } from 'ethers'
+import { formatEther } from 'ethers'
 import { useEffect, useCallback } from 'react'
 import contractInterface from '@/contract/abi.json'
 import { fetchConfig } from '@/client/api/queryFunctions'
 import { SMOOTHING_POOL_ADDRESS } from '@/utils/config'
-import { weiToEth } from '@/utils/web3'
 
 /**
  * Hook used to handle and submit validator subscriptions and unsubscriptions
@@ -47,17 +46,13 @@ export function useHandleSubscriptionStatus(
     }
   }, [isReceiptSuccess, address, queryClient])
 
-  // Convert the collateralInWei to a BigNumber, to multiply it by number of validators in case of multisub
-  const collateralInWei = configQuery.data?.collateralInWei
-    ? BigNumber.from(configQuery.data.collateralInWei)
-    : BigNumber.from(0)
+  const collateralInWei = BigInt(configQuery.data?.collateralInWei ?? '0')
 
   // Multiply the collateral by the number of validator IDs
   const totalDepositValue = isMultiAction
-    ? collateralInWei.mul(validatorIds.length)
+    ? collateralInWei * BigInt(validatorIds.length)
     : collateralInWei
-  const totalDepositInEth = weiToEth(totalDepositValue.toString())
-  const totalDepositInString = totalDepositInEth.toString()
+  const totalDepositInString = formatEther(totalDepositValue)
 
   const handleSubscription = useCallback(async () => {
     const abi = [...contractInterface] as const
@@ -72,21 +67,18 @@ export function useHandleSubscriptionStatus(
               ? 'subscribeValidators'
               : 'subscribeValidator'
             : methodName === 'unsub'
-            ? isMultiAction
-              ? 'unsubscribeValidators'
-              : 'unsubscribeValidator'
-            : '',
-        value:
-          methodName === 'sub'
-            ? utils.parseEther(totalDepositInString).toBigInt()
-            : undefined,
+              ? isMultiAction
+                ? 'unsubscribeValidators'
+                : 'unsubscribeValidator'
+              : '',
+        value: methodName === 'sub' ? totalDepositValue : undefined,
         args: [validatorIds],
       })
     } catch (err) {
       /* eslint-disable no-console */
       console.error('Error unsubscribing validator:', err)
     }
-  }, [validatorIds, write, isMultiAction, totalDepositInString, methodName])
+  }, [validatorIds, write, isMultiAction, totalDepositValue, methodName])
 
   return {
     handleSubscription,

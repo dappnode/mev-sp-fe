@@ -1,13 +1,20 @@
-import { withIronSessionApiRoute } from 'iron-session/next'
+import { getIronSession } from 'iron-session'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { IRON_SESSION_CONFIG } from '@/utils/config'
+import type { SessionData } from '@/types/iron-session'
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   if (req.method === 'GET') {
-    return res.send({ address: req.session.siwe?.address })
+    const session = await getIronSession<SessionData>(
+      req,
+      res,
+      IRON_SESSION_CONFIG
+    )
+    return res.send({ address: session.siwe?.address })
   }
   res.setHeader('Allow', ['GET'])
   return res.status(405).end(`Method ${req.method} Not Allowed`)
 }
-
-export default withIronSessionApiRoute(handler, IRON_SESSION_CONFIG)
